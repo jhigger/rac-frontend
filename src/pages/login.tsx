@@ -22,13 +22,16 @@ const login = () => {
 
         <div className="text-white">
           <span className="label-lg">New to RAC Logistics? </span>
-          <a href="#" className="label-lg px-[12px] py-[10px] text-primary-200">
+          <a
+            href="#"
+            className="label-lg px-[12px] py-[10px] text-primary-200 hover:underline"
+          >
             Sign up
           </a>
         </div>
         <a
           href="#"
-          className="label-lg relative px-[12px] py-[10px] text-primary-200"
+          className="label-lg relative px-[12px] py-[10px] text-primary-200 hover:underline"
         >
           Forgot your password?
         </a>

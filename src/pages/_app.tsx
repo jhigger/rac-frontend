@@ -7,7 +7,7 @@ import tailmater from "~/js/tailmater";
 import "~/styles/globals.css";
 
 const roboto = Roboto({
-  weight: "400",
+  weight: ["400", "500"],
   subsets: ["latin"],
 });
 

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const login = () => {
   return (
@@ -22,12 +23,12 @@ const login = () => {
 
         <div className="text-white">
           <span className="label-lg">New to RAC Logistics? </span>
-          <a
-            href="#"
+          <Link
+            href="/register"
             className="label-lg px-[12px] py-[10px] text-primary-200 hover:underline"
           >
             Sign up
-          </a>
+          </Link>
         </div>
         <a
           href="#"

@@ -41,7 +41,7 @@ const EmailInput = () => {
   return (
     <div className="relative flex flex-col">
       <input
-        type="text"
+        type="email"
         aria-label="Email"
         name="email"
         id="email"

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import tailmater from "~/js/tailmater";
 
 import "~/styles/globals.css";
+import "material-icons/iconfont/material-icons.css";
 
 const roboto = Roboto({
   weight: ["400", "500"],

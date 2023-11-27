@@ -41,7 +41,7 @@ const login = () => {
   );
 };
 
-const EmailInput = () => {
+export const EmailInput = () => {
   return (
     <div className="relative flex flex-col">
       <input
@@ -66,7 +66,7 @@ const EmailInput = () => {
   );
 };
 
-const PasswordInput = () => {
+export const PasswordInput = () => {
   return (
     <div className="relative flex flex-col">
       <div className="relative z-0">

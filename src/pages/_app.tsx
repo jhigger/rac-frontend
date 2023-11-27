@@ -1,7 +1,8 @@
 import { type AppType } from "next/dist/shared/lib/utils";
+import { Roboto } from "next/font/google";
+import Head from "next/head";
 import { useEffect } from "react";
 import tailmater from "~/js/tailmater";
-import { Roboto } from "next/font/google";
 
 import "~/styles/globals.css";
 
@@ -16,9 +17,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   }, []);
 
   return (
-    <main className={roboto.className}>
-      <Component {...pageProps} />
-    </main>
+    <>
+      <Head>
+        <title>RAC Logistics</title>
+        <link rel="icon" href="/images/brand_icon.svg" />
+      </Head>
+      <main className={roboto.className}>
+        <Component {...pageProps} />
+      </main>
+    </>
   );
 };
 

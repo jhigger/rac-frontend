@@ -66,7 +66,7 @@ const PasswordInput = () => {
   return (
     <div className="relative flex flex-col">
       <div className="relative z-0">
-        <button className="absolute right-4 top-4 z-10">
+        <button className="absolute right-4 top-4 z-10" type="button">
           <span className="material-icons-outlined">visibility_off</span>
         </button>
 

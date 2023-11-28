@@ -4,17 +4,17 @@ import { useState } from "react";
 type NavItemType = { src: string; title: string };
 
 const topNavItems: NavItemType[] = [
-  { src: "/images/shop_icon.svg", title: "Shop for me" },
-  { src: "/images/shop_icon.svg", title: "Export" },
-  { src: "/images/shop_icon.svg", title: "Import" },
-  { src: "/images/shop_icon.svg", title: "Auto Import" },
-  { src: "/images/shop_icon.svg", title: "Tracking" },
+  { src: "/images/nav/shop_icon.svg", title: "Shop for me" },
+  { src: "/images/nav/shop_icon.svg", title: "Export" },
+  { src: "/images/nav/shop_icon.svg", title: "Import" },
+  { src: "/images/nav/shop_icon.svg", title: "Auto Import" },
+  { src: "/images/nav/shop_icon.svg", title: "Tracking" },
 ];
 
 const bottomNavItems: NavItemType[] = [
-  { src: "/images/shop_icon.svg", title: "Get a Quote" },
-  { src: "/images/shop_icon.svg", title: "Help" },
-  { src: "/images/shop_icon.svg", title: "Settings" },
+  { src: "/images/nav/shop_icon.svg", title: "Get a Quote" },
+  { src: "/images/nav/shop_icon.svg", title: "Help" },
+  { src: "/images/nav/shop_icon.svg", title: "Settings" },
 ];
 
 const shop = () => {
@@ -25,12 +25,16 @@ const shop = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-neutral-50">
-      <nav className="fixed flex h-full min-h-screen w-[266px] flex-col overflow-y-auto bg-brand py-[40px]">
+    <div className="relative flex min-h-screen bg-neutral-50">
+      <nav className="fixed hidden h-full min-h-screen w-[266px] flex-col overflow-y-auto bg-brand py-[40px] md:flex">
         <Welcome />
         <TopNav {...{ active, onClick: handleChangeActive }} />
         <BottomNav {...{ active, onClick: handleChangeActive }} />
       </nav>
+      <main className="w-full md:ml-[266px]">
+        <TopAppBar />
+        <SideSheet {...{ active, onClick: handleChangeActive }} />
+      </main>
     </div>
   );
 };
@@ -83,7 +87,7 @@ const TopNav = ({ active, onClick }: NavProps) => {
   return (
     <div className="flex flex-col gap-[16px]">
       <NavItem
-        navItem={{ src: "/images/shop_icon.svg", title: "Home" }}
+        navItem={{ src: "/images/nav/home_icon.svg", title: "Home" }}
         active={active}
         onClick={onClick}
       />
@@ -100,7 +104,7 @@ const TopNav = ({ active, onClick }: NavProps) => {
         })}
       </div>
       <NavItem
-        navItem={{ src: "/images/shop_icon.svg", title: "Billing" }}
+        navItem={{ src: "/images/nav/shop_icon.svg", title: "Billing" }}
         active={active}
         onClick={onClick}
       />
@@ -124,6 +128,90 @@ const BottomNav = ({ active, onClick }: NavProps) => {
           />
         );
       })}
+    </div>
+  );
+};
+
+const TopAppBar = () => {
+  return (
+    <div className="flex flex-col">
+      <div className="flex w-full items-center justify-between gap-1.5 bg-white pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
+        <div className="md:hidden">
+          <button
+            data-type="dialogs"
+            data-target="#sheet_b"
+            className="material-icons-outlined relative !inline-flex h-12 w-12 !items-center justify-center gap-x-2 rounded-[6.25rem] px-6 py-2.5 text-center text-sm font-medium tracking-[.00714em] text-secondary-600 hover:bg-surface-300 focus:bg-surface-400"
+          >
+            menu
+          </button>
+        </div>
+        <div className="hidden flex-col gap-[10px] md:flex">
+          <h1 className="headline-md text-center text-brand md:text-left">
+            Shop for me
+          </h1>
+          <div className="flex gap-4">
+            <img
+              src="/images/nav/home_icon.svg"
+              alt="home icon"
+              className="h-[19px] w-[19px]"
+            />
+            <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
+            <span className="title-sm text-secondary-600">
+              shop for me - orders
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-row items-center justify-end">
+          <button className="relative !inline-flex h-12 w-12 !items-center justify-center gap-x-2 rounded-[6.25rem] px-6 py-2.5 text-center text-sm font-medium tracking-[.00714em] hover:bg-surface-300 focus:bg-surface-400">
+            <span className="material-icons-outlined text-gray-500">
+              notifications
+            </span>
+            <div className="absolute right-3 top-3 flex h-[10px] w-[10px] items-center justify-center rounded-full bg-error-600 text-[11px] font-medium leading-none tracking-[.045em] text-white">
+              {/* put notification count here */}
+            </div>
+          </button>
+          <button className="material-icons-outlined relative !inline-flex h-12 w-12 !items-center justify-center gap-x-2 rounded-[6.25rem] px-6 py-2.5 text-center text-sm font-medium tracking-[.00714em] text-gray-500 hover:bg-surface-300 focus:bg-surface-400">
+            person
+          </button>
+        </div>
+      </div>
+      {/* mobile version */}
+      <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
+        <h1 className="headline-md text-center text-brand md:text-left">
+          Shop for me
+        </h1>
+        <div className="flex gap-4">
+          <img
+            src="/images/nav/home_icon.svg"
+            alt="home icon"
+            className="h-[19px] w-[19px]"
+          />
+          <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
+          <span className="title-sm text-secondary-600">
+            shop for me - orders
+          </span>
+        </div>
+      </div>
+      {/* tabs */}
+      <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white"></div>
+    </div>
+  );
+};
+
+const SideSheet = ({ active, onClick }: NavProps) => {
+  // mobile nav
+  return (
+    <div id="sheet_b" className="group md:hidden">
+      <div
+        data-close="#sheet_b"
+        className="fixed -top-full z-40 bg-neutral-900 opacity-0 group-[&.show]:inset-0 group-[&.show]:opacity-60"
+      ></div>
+      <nav className="fixed bottom-0 left-0 top-0 z-50 flex h-full min-h-screen w-[266px] -translate-x-full flex-col overflow-y-auto bg-brand py-[40px] transition-transform duration-[400ms] group-[&.show]:translate-x-0">
+        <Welcome />
+        <TopNav {...{ active, onClick }} />
+        <BottomNav {...{ active, onClick }} />
+      </nav>
     </div>
   );
 };

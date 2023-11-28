@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
-import FormTitle from "~/components/FormTitle";
+import FormHeader from "~/components/FormHeader";
+import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import PasswordInput from "~/components/PasswordInput";
 import TextInput from "~/components/TextInput";
@@ -9,15 +9,10 @@ const login = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-brand">
       <div className="container flex flex-col items-center justify-center px-14 py-16">
-        <Image
-          src="/images/brand_logo.svg"
-          width={240}
-          height={76}
-          alt="Logo"
-        />
+        <Logo />
 
         <form className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]">
-          <FormTitle text="Login" />
+          <FormHeader title="Login" />
           <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
             <EmailInput />
             <PasswordInput id="password" label="Password" />

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import FormTitle from "~/components/FormTitle";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import PasswordInput from "~/components/PasswordInput";
 import TextInput from "~/components/TextInput";
@@ -16,7 +17,7 @@ const login = () => {
         />
 
         <form className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]">
-          <h1 className="title-lg uppercase text-gray-500">Login</h1>
+          <FormTitle text="Login" />
           <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
             <EmailInput />
             <PasswordInput id="password" label="Password" />

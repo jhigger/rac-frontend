@@ -168,7 +168,7 @@ const TopAppBar = () => {
           />
           <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
           <span className="title-sm text-secondary-600">
-            shop for me - orders
+            {`shop for me - ${activeTab}`}
           </span>
         </div>
       </div>

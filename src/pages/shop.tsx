@@ -32,8 +32,8 @@ const shop = () => {
         <BottomNav {...{ active, onClick: handleChangeActive }} />
       </nav>
       <main className="w-full md:ml-[266px]">
-        <TopAppBar />
         <SideSheet {...{ active, onClick: handleChangeActive }} />
+        <TopAppBar />
       </main>
     </div>
   );
@@ -194,7 +194,9 @@ const TopAppBar = () => {
         </div>
       </div>
       {/* tabs */}
-      <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white"></div>
+      <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
+        <AppBarTabs />
+      </div>
     </div>
   );
 };
@@ -212,6 +214,60 @@ const SideSheet = ({ active, onClick }: NavProps) => {
         <TopNav {...{ active, onClick }} />
         <BottomNav {...{ active, onClick }} />
       </nav>
+    </div>
+  );
+};
+
+type AppBarTabType = {
+  id: string;
+  title: string;
+  content: JSX.Element;
+};
+
+const tabs: AppBarTabType[] = [
+  { id: "tab-1", title: "Orders", content: <h3>Tabs content 1</h3> },
+  { id: "tab-2", title: "Requests", content: <h3>Tabs content 2</h3> },
+  { id: "tab-3", title: "Draft", content: <h3>Tabs content 3</h3> },
+];
+
+const AppBarTabs = () => {
+  return (
+    <div className="tabs flex w-full flex-col">
+      <div className="relative flex flex-row items-center">
+        {tabs.map(({ id: dataTarget, title }) => {
+          return (
+            <button
+              key={`tab-${dataTarget}`}
+              data-type="tabs"
+              data-target={`#${dataTarget}`}
+              className="active flex h-[49px] w-1/3 flex-col items-center justify-end gap-1 px-4 py-2 md:w-[120px]"
+            >
+              <p className="text-sm tracking-[.00714em]">{title}</p>
+            </button>
+          );
+        })}
+        <div
+          role="indicator"
+          className="absolute bottom-0 left-0 ml-[12%] h-0.5 w-[40px] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out sm:ml-[14%] md:ml-[40px]"
+        ></div>
+      </div>
+
+      <div className="flex flex-col">
+        {tabs.map(({ id: dataTarget, content }, i) => {
+          return (
+            <div
+              key={`panel-${dataTarget}`}
+              id={dataTarget}
+              role="tabpanel"
+              className={`duration-400 hidden py-4 transition ease-in-out [&.active]:block ${
+                i === 0 && "active"
+              }`}
+            >
+              {content}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

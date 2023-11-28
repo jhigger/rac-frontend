@@ -1,18 +1,32 @@
+import { useState } from "react";
+
 type PasswordInputProps = {
   id: string;
   label: string;
 };
 
 const PasswordInput = ({ id, label }: PasswordInputProps) => {
+  const [show, setShow] = useState(false);
+
+  const toggleVisibility = () => {
+    setShow((prev) => !prev);
+  };
+
   return (
     <div className="relative flex flex-col">
       <div className="relative z-0">
-        <button className="absolute right-4 top-4 z-10" type="button">
-          <span className="material-icons-outlined">visibility_off</span>
+        <button
+          className="absolute right-4 top-4 z-10"
+          type="button"
+          onClick={toggleVisibility}
+        >
+          <span className="material-icons-outlined">
+            {show ? "visibility" : "visibility_off"}
+          </span>
         </button>
 
         <input
-          type="password"
+          type={show ? "text" : "password"}
           aria-label="Password"
           name={id}
           id={id}

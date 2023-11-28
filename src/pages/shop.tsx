@@ -1,5 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
+import DraftPanel from "~/components/Shop/DraftPanel";
+import OrdersPanel from "~/components/Shop/OrdersPanel";
+import RequestsPanel from "~/components/Shop/RequestsPanel";
 
 type NavItemType = { src: string; title: string };
 
@@ -71,8 +74,9 @@ const NavItem = ({ navItem, active, onClick }: NavItemProps) => {
     <button
       onClick={() => onClick(navItem.title)}
       type="button"
-      className={`flex w-full items-center bg-opacity-[8%] hover:bg-[url('/images/nav_item_hover_bg.svg')] ${
-        navItem.title === active && "bg-[url('/images/nav_item_hover_bg.svg')]"
+      className={`flex w-full items-center bg-opacity-[8%] hover:bg-[url('/images/nav/nav_item_hover_bg.svg')] ${
+        navItem.title === active &&
+        "bg-[url('/images/nav/nav_item_hover_bg.svg')]"
       }`}
     >
       <img src={navItem.src} alt="nav item icon" className="p-[16px]" />
@@ -133,9 +137,15 @@ const BottomNav = ({ active, onClick }: NavProps) => {
 };
 
 const TopAppBar = () => {
+  const [activeTab, setActiveTab] = useState("orders");
+
+  const handleChange = (tab: string) => {
+    setActiveTab(tab);
+  };
+
   return (
     <div className="flex flex-col">
-      <div className="flex w-full items-center justify-between gap-1.5 bg-white pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
+      <div className="flex w-full items-center justify-between gap-1.5 bg-white px-[20px] pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
         <div className="md:hidden">
           <button
             data-type="dialogs"
@@ -157,7 +167,7 @@ const TopAppBar = () => {
             />
             <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
             <span className="title-sm text-secondary-600">
-              shop for me - orders
+              {`shop for me - ${activeTab}`}
             </span>
           </div>
         </div>
@@ -195,7 +205,7 @@ const TopAppBar = () => {
       </div>
       {/* tabs */}
       <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
-        <AppBarTabs />
+        <AppBarTabs handleChange={handleChange} />
       </div>
     </div>
   );
@@ -225,22 +235,29 @@ type AppBarTabType = {
 };
 
 const tabs: AppBarTabType[] = [
-  { id: "tab-1", title: "Orders", content: <h3>Tabs content 1</h3> },
-  { id: "tab-2", title: "Requests", content: <h3>Tabs content 2</h3> },
-  { id: "tab-3", title: "Draft", content: <h3>Tabs content 3</h3> },
+  {
+    id: "orders",
+    title: "Orders",
+    content: <OrdersPanel />,
+  },
+  { id: "requests", title: "Requests", content: <RequestsPanel /> },
+  { id: "draft", title: "Draft", content: <DraftPanel /> },
 ];
 
-const AppBarTabs = () => {
+type AppBarTabsProps = { handleChange: (tab: string) => void };
+
+const AppBarTabs = ({ handleChange }: AppBarTabsProps) => {
   return (
     <div className="tabs flex w-full flex-col">
       <div className="relative flex flex-row items-center">
-        {tabs.map(({ id: dataTarget, title }) => {
+        {tabs.map(({ id, title }) => {
           return (
             <button
-              key={`tab-${dataTarget}`}
+              key={`tab-${id}`}
               data-type="tabs"
-              data-target={`#${dataTarget}`}
+              data-target={`#${id}`}
               className="active flex h-[49px] w-1/3 flex-col items-center justify-end gap-1 px-4 py-2 md:w-[120px]"
+              onClick={() => handleChange(id)}
             >
               <p className="text-sm tracking-[.00714em]">{title}</p>
             </button>
@@ -253,13 +270,13 @@ const AppBarTabs = () => {
       </div>
 
       <div className="flex flex-col">
-        {tabs.map(({ id: dataTarget, content }, i) => {
+        {tabs.map(({ id, content }, i) => {
           return (
             <div
-              key={`panel-${dataTarget}`}
-              id={dataTarget}
+              key={`panel-${id}`}
+              id={id}
               role="tabpanel"
-              className={`duration-400 hidden py-4 transition ease-in-out [&.active]:block ${
+              className={`duration-400 hidden transition ease-in-out [&.active]:block ${
                 i === 0 && "active"
               }`}
             >

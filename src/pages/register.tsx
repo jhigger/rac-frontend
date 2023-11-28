@@ -1,43 +1,78 @@
-import { Country } from "country-state-city";
-import Image from "next/image";
 import Link from "next/link";
-import FormTitle from "~/components/FormTitle";
+import { useState, type FormEvent } from "react";
+import Balancer from "react-wrap-balancer";
+import AccountForm from "~/components/Forms/AccountForm";
+import AddressForm from "~/components/Forms/AddressForm";
+import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import PasswordInput from "~/components/PasswordInput";
-import SelectInput from "~/components/SelectInput";
-import TextInput from "~/components/TextInput";
-import { EmailInput } from "./login";
+import useMultiStepForm from "~/hooks/useMultistepForm";
+
+export type FormData = {
+  country: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  state: string;
+  city: string;
+  streetAddress: string;
+  countryCode: string;
+  phoneNumber: string;
+  zipPostalCode: string;
+};
+
+const INITIAL_DATA: FormData = {
+  country: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  state: "",
+  city: "",
+  streetAddress: "",
+  countryCode: "",
+  phoneNumber: "",
+  zipPostalCode: "",
+};
 
 const register = () => {
+  const [formData, setFormData] = useState(INITIAL_DATA);
+
+  const updateFields = (update: Partial<FormData>) => {
+    setFormData((prev) => {
+      return { ...prev, ...update };
+    });
+  };
+
+  const { step, next, isFirstStep, back, isLastStep } = useMultiStepForm([
+    <AccountForm {...formData} updateFields={updateFields} />,
+    <AddressForm {...formData} updateFields={updateFields} />,
+  ]);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!isLastStep) return next();
+    alert(JSON.stringify(formData, null, 2));
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-brand">
       <div className="container flex flex-col items-center justify-center px-14 py-16">
-        <Image
-          src="/images/brand_logo.svg"
-          width={240}
-          height={76}
-          alt="Logo"
-        />
+        <Logo />
 
-        <form className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]">
-          <FormTitle text="Create your account" />
-          <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
-            <SelectCountry />
-            <TextInput id={"first-name"} label={"First Name"} />
-            <TextInput id={"last-name"} label={"Last Name"} />
-            <EmailInput />
-            <PasswordInput id="password" label="Password" />
-            <PasswordInput id="confirm-password" label="Confirm Password" />
-            <div className="grid grid-rows-2 gap-[30px] md:grid-cols-3 md:gap-[10px]">
-              <div className="md col-span-full md:col-span-1">
-                <SelectCountryPhoneCode />
-              </div>
-              <div className="col-span-full md:col-span-2">
-                <TextInput id="phone-number" label="Phone Number" type="tel" />
-              </div>
-            </div>
+        <form
+          onSubmit={handleSubmit}
+          className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]"
+        >
+          {step}
+          <div className="flex gap-4">
+            <BackButton {...{ back, isFirstStep }} />
+            <ProceedButton {...{ next, isFirstStep }} />
+            <CreateAccountButton {...{ next, isLastStep }} />
           </div>
-          <ProceedButton />
+          <TermsAndCondition isLastStep={isLastStep} />
         </form>
 
         <div className="text-white">
@@ -55,59 +90,68 @@ const register = () => {
   );
 };
 
-const SelectCountry = () => {
+type BackButtonProps = { back: () => void; isFirstStep: boolean };
+
+const BackButton = ({ back, isFirstStep }: BackButtonProps) => {
+  if (isFirstStep) return;
+
   return (
-    <SelectInput
-      id="country"
-      label="Country"
-      options={
-        <>
-          <option value="" disabled selected hidden>
-            Enter your country
-          </option>
-          {Country.getAllCountries().map(({ name, isoCode }) => {
-            return (
-              <option key={name} value={isoCode}>
-                {name}
-              </option>
-            );
-          })}
-        </>
-      }
-    />
+    <button
+      type="button"
+      onClick={back}
+      className="btn-outline relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600"
+    >
+      <span className="material-icons">arrow_back</span>
+    </button>
   );
 };
 
-const SelectCountryPhoneCode = () => {
-  return (
-    <SelectInput
-      id="country-code"
-      label="Country Code"
-      options={
-        <>
-          <option value="" disabled selected hidden>
-            Country code
-          </option>
-          {Country.getAllCountries().map(({ name, phonecode }) => {
-            return (
-              <option key={phonecode} value={phonecode}>
-                {`${name} ${
-                  phonecode.startsWith("+") ? phonecode : "+" + phonecode
-                }`}
-              </option>
-            );
-          })}
-        </>
-      }
-    />
-  );
-};
+type ProceedButtonProps = { next: () => void; isFirstStep: boolean };
 
-const ProceedButton = () => {
+const ProceedButton = ({ next, isFirstStep }: ProceedButtonProps) => {
+  if (!isFirstStep) return;
+
   return (
-    <button className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md">
+    <button
+      type="submit"
+      onClick={next}
+      className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md"
+    >
       Proceed
     </button>
+  );
+};
+
+type CreateAccountButtonProps = { next: () => void; isLastStep: boolean };
+
+const CreateAccountButton = ({
+  next,
+  isLastStep,
+}: CreateAccountButtonProps) => {
+  if (!isLastStep) return;
+
+  return (
+    <button
+      type="submit"
+      onClick={next}
+      className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md"
+    >
+      Create My Account
+    </button>
+  );
+};
+
+const TermsAndCondition = ({ isLastStep }: { isLastStep: boolean }) => {
+  if (!isLastStep) return;
+
+  return (
+    <div className="body-md text-center text-black">
+      <Balancer>
+        You accept the privacy statement of RAC&nbsp;Logistics by clicking the{" "}
+        <span className="label-lg text-primary-600">Create My Account </span>
+        button
+      </Balancer>
+    </div>
   );
 };
 

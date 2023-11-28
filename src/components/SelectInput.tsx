@@ -1,16 +1,27 @@
+import { type ChangeEventHandler } from "react";
+
 type SelectInputProps = {
   id: string;
   label: string;
   options: JSX.Element;
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
 };
 
-const SelectInput = ({ id, label, options }: SelectInputProps) => {
+const SelectInput = ({
+  id,
+  label,
+  options,
+  value,
+  onChange,
+}: SelectInputProps) => {
   return (
     <div className="relative z-0">
       <select
         name={id}
         id={id}
-        defaultValue=""
+        value={value ?? ""}
+        onChange={onChange}
         className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
       >
         {options}

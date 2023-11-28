@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { type ChangeEvent } from "react";
 import FormHeader from "~/components/FormHeader";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
@@ -41,8 +42,21 @@ const login = () => {
   );
 };
 
-export const EmailInput = () => {
-  return <TextInput id="email" label="Email" type="email" />;
+type EmailInputProps = {
+  value?: string;
+  onChange?: (update: ChangeEvent<HTMLInputElement>) => void;
+};
+
+export const EmailInput = ({ value, onChange }: EmailInputProps) => {
+  return (
+    <TextInput
+      name="email"
+      label="Email"
+      type="email"
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 const LoginButton = () => {

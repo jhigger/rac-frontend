@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 
 type PasswordInputProps = {
   id: string;
   label: string;
+  value?: string;
+  onChange?: (update: ChangeEvent<HTMLInputElement>) => void;
 };
 
-const PasswordInput = ({ id, label }: PasswordInputProps) => {
+const PasswordInput = ({ id, label, value, onChange }: PasswordInputProps) => {
   const [show, setShow] = useState(false);
 
   const toggleVisibility = () => {
@@ -32,6 +34,8 @@ const PasswordInput = ({ id, label }: PasswordInputProps) => {
           id={id}
           className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 py-2 pl-4 pr-14 leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
           placeholder=" "
+          value={value}
+          onChange={onChange}
         />
 
         <label

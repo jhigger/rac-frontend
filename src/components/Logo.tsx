@@ -1,15 +1,17 @@
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
 
 const Logo = () => {
   return (
-    <Image
-      src="/images/brand_logo.svg"
-      width={240}
-      height={76}
-      alt="Logo"
-      priority
-    />
+    <Link href="/">
+      <Image
+        src="/images/brand_logo.svg"
+        width={240}
+        height={76}
+        alt="Logo"
+        priority
+      />
+    </Link>
   );
 };
 

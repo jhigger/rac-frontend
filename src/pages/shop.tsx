@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BottomNav, TopNav } from "~/components/Navigation";
 import SlideSheet from "~/components/Navigation/SlideSheet";
 import Welcome from "~/components/Navigation/Welcome";
@@ -61,12 +61,26 @@ type AppBarTabsProps = {
 };
 
 const AppBarTabs = ({ activeTab, handleChange }: AppBarTabsProps) => {
+  const ref = useRef<HTMLButtonElement[]>([]);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    ref.current.forEach((button) => {
+      if (button.getAttribute("data-target")?.slice(1) !== activeTab) return;
+      button.click();
+    });
+  }, []);
+
   return (
     <div className="tabs flex w-full flex-col">
       <div className="relative flex flex-row items-center">
         {tabs.map(({ id, title }) => {
           return (
             <button
+              ref={(el) => {
+                if (!el) return;
+                ref.current.push(el);
+              }}
               key={`tab-${id}`}
               data-type="tabs"
               data-target={`#${id}`}
@@ -106,7 +120,7 @@ const AppBarTabs = ({ activeTab, handleChange }: AppBarTabsProps) => {
 };
 
 const TopAppBar = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0]?.id ?? "");
+  const [activeTab, setActiveTab] = useState(tabs[1]?.id ?? "orders");
 
   const handleChange = (tab: string) => {
     setActiveTab(tab);

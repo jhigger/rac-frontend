@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { type ChangeEvent } from "react";
-import FormHeader from "~/components/FormHeader";
+import FormHeader from "~/components/Forms/FormHeader";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import PasswordInput from "~/components/PasswordInput";
-import TextInput from "~/components/TextInput";
+import PasswordInput from "~/components/Forms/PasswordInput";
+import TextInput from "~/components/Forms/TextInput";
 
 const login = () => {
   return (

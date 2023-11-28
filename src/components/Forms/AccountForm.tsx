@@ -2,10 +2,10 @@ import { Country } from "country-state-city";
 import { type ChangeEvent } from "react";
 import { EmailInput } from "~/pages/login";
 import { type FormData } from "~/pages/register";
-import FormHeader from "../FormHeader";
-import PasswordInput from "../PasswordInput";
-import SelectInput from "../SelectInput";
-import TextInput from "../TextInput";
+import FormHeader from "./FormHeader";
+import PasswordInput from "./PasswordInput";
+import SelectInput from "./SelectInput";
+import TextInput from "./TextInput";
 
 type AccountFormProps = FormData & {
   updateFields: (update: Partial<FormData>) => void;

@@ -8,7 +8,7 @@ import "~/styles/globals.css";
 import "material-icons/iconfont/material-icons.css";
 
 const roboto = Roboto({
-  weight: ["400", "500"],
+  weight: ["400", "500", "700"],
   subsets: ["latin"],
 });
 

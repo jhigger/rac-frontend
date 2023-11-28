@@ -5,6 +5,7 @@ type route = { href: string; title: string };
 const routes: route[] = [
   { href: "/login", title: "Login" },
   { href: "/register", title: "Register" },
+  { href: "/shop", title: "Shop" },
 ];
 
 export default function Home() {

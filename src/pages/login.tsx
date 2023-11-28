@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import NeedHelpFAB from "~/components/NeedHelpFAB";
 
 const login = () => {
   return (
@@ -37,6 +38,7 @@ const login = () => {
           Forgot your password?
         </a>
       </div>
+      <NeedHelpFAB />
     </main>
   );
 };

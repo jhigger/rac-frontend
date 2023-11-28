@@ -2,6 +2,7 @@ import { Country } from "country-state-city";
 import Image from "next/image";
 import { EmailInput, PasswordInput } from "./login";
 import Link from "next/link";
+import NeedHelpFAB from "~/components/NeedHelpFAB";
 
 const register = () => {
   return (
@@ -46,6 +47,7 @@ const register = () => {
           </Link>
         </div>
       </div>
+      <NeedHelpFAB />
     </main>
   );
 };

@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import Head from "next/head";
 import { useEffect } from "react";
 import tailmater from "~/js/tailmater";
+import { useRouter } from "next/router";
 
 import "~/styles/globals.css";
 import "material-icons/iconfont/material-icons.css";
@@ -13,9 +14,10 @@ const roboto = Roboto({
 });
 
 const MyApp: AppType = ({ Component, pageProps }) => {
+  const router = useRouter();
   useEffect(() => {
     tailmater();
-  }, []);
+  }, [router.asPath]);
 
   return (
     <>

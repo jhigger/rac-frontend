@@ -55,9 +55,12 @@ const tabs: AppBarTabType[] = [
   { id: "draft", title: "Draft", content: <DraftPanel /> },
 ];
 
-type AppBarTabsProps = { handleChange: (tab: string) => void };
+type AppBarTabsProps = {
+  activeTab: string;
+  handleChange: (tab: string) => void;
+};
 
-const AppBarTabs = ({ handleChange }: AppBarTabsProps) => {
+const AppBarTabs = ({ activeTab, handleChange }: AppBarTabsProps) => {
   return (
     <div className="tabs flex w-full flex-col">
       <div className="relative flex flex-row items-center">
@@ -67,7 +70,9 @@ const AppBarTabs = ({ handleChange }: AppBarTabsProps) => {
               key={`tab-${id}`}
               data-type="tabs"
               data-target={`#${id}`}
-              className="active flex h-[49px] w-1/3 flex-col items-center justify-end gap-1 px-4 py-2 md:w-[120px]"
+              className={`flex h-[49px] w-1/3 flex-col items-center justify-end gap-1 px-4 py-2 md:w-[120px] ${
+                id === activeTab && "active"
+              }`}
               onClick={() => handleChange(id)}
             >
               <p className="text-sm tracking-[.00714em]">{title}</p>
@@ -81,14 +86,14 @@ const AppBarTabs = ({ handleChange }: AppBarTabsProps) => {
       </div>
 
       <div className="flex flex-col">
-        {tabs.map(({ id, content }, i) => {
+        {tabs.map(({ id, content }) => {
           return (
             <div
               key={`panel-${id}`}
               id={id}
               role="tabpanel"
               className={`duration-400 hidden transition ease-in-out [&.active]:block ${
-                i === 0 && "active"
+                id === activeTab && "active"
               }`}
             >
               {content}
@@ -101,7 +106,7 @@ const AppBarTabs = ({ handleChange }: AppBarTabsProps) => {
 };
 
 const TopAppBar = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0]?.id);
+  const [activeTab, setActiveTab] = useState(tabs[0]?.id ?? "");
 
   const handleChange = (tab: string) => {
     setActiveTab(tab);
@@ -169,7 +174,7 @@ const TopAppBar = () => {
       </div>
       {/* tabs */}
       <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
-        <AppBarTabs handleChange={handleChange} />
+        <AppBarTabs {...{ activeTab, handleChange }} />
       </div>
     </div>
   );

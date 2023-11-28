@@ -16,7 +16,7 @@ export default function Home() {
         <nav className="m-4 flex gap-4 rounded-lg bg-surfacedark-500 px-4 py-2 text-white">
           {routes.map(({ href, title }) => {
             return (
-              <Link href={href} className="hover:underline">
+              <Link key={href} href={href} className="hover:underline">
                 {title}
               </Link>
             );

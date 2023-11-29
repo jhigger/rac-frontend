@@ -30,23 +30,6 @@ const AppBarTabs = () => {
           className="absolute bottom-0 left-0 ml-[12%] h-0.5 w-[40px] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out sm:ml-[14%] md:ml-[40px]"
         ></div>
       </div>
-
-      <div className="flex flex-col">
-        {tabs.map(({ id, content }) => {
-          return (
-            <div
-              key={`panel-${id}`}
-              id={id}
-              role="tabpanel"
-              className={`duration-400 hidden transition ease-in-out [&.active]:block ${
-                id === activeTab && "active"
-              }`}
-            >
-              {content}
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
 };

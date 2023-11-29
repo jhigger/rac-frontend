@@ -27,10 +27,10 @@ export type NavProps = Pick<NavItemProps, "active" | "onClick">;
 
 const topNavItems: NavItemType[] = [
   { src: "/images/nav/shop_icon.svg", title: "Shop for me" },
-  { src: "/images/nav/shop_icon.svg", title: "Export" },
-  { src: "/images/nav/shop_icon.svg", title: "Import" },
-  { src: "/images/nav/shop_icon.svg", title: "Auto Import" },
-  { src: "/images/nav/shop_icon.svg", title: "Tracking" },
+  { src: "/images/nav/export_icon.svg", title: "Export" },
+  { src: "/images/nav/import_icon.svg", title: "Import" },
+  { src: "/images/nav/auto_import_icon.svg", title: "Auto Import" },
+  { src: "/images/nav/tracking_icon.svg", title: "Tracking" },
 ];
 
 export const TopNav = ({ active, onClick }: NavProps) => {
@@ -54,7 +54,7 @@ export const TopNav = ({ active, onClick }: NavProps) => {
         })}
       </div>
       <NavItem
-        navItem={{ src: "/images/nav/shop_icon.svg", title: "Billing" }}
+        navItem={{ src: "/images/nav/billing_icon.svg", title: "Billing" }}
         active={active}
         onClick={onClick}
       />
@@ -63,9 +63,9 @@ export const TopNav = ({ active, onClick }: NavProps) => {
 };
 
 const bottomNavItems: NavItemType[] = [
-  { src: "/images/nav/shop_icon.svg", title: "Get a Quote" },
-  { src: "/images/nav/shop_icon.svg", title: "Help" },
-  { src: "/images/nav/shop_icon.svg", title: "Settings" },
+  { src: "/images/nav/get_a_quote_icon.svg", title: "Get a Quote" },
+  { src: "/images/nav/help_icon.svg", title: "Help" },
+  { src: "/images/nav/settings_icon.svg", title: "Settings" },
 ];
 
 export const BottomNav = ({ active, onClick }: NavProps) => {

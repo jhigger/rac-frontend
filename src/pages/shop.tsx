@@ -56,9 +56,9 @@ const TopAppBar = () => {
           <button
             data-type="dialogs"
             data-target="#sheet_b"
-            className="material-icons-outlined relative !inline-flex h-12 w-12 !items-center justify-center gap-x-2 rounded-[6.25rem] px-6 py-2.5 text-center text-sm font-medium tracking-[.00714em] text-secondary-600 hover:bg-surface-300 focus:bg-surface-400"
+            className="flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
           >
-            menu
+            <img src="/images/top app bar/menu_icon.svg" alt="menu icon" />
           </button>
         </div>
         <div className="hidden flex-col gap-[10px] md:flex">
@@ -79,16 +79,22 @@ const TopAppBar = () => {
         </div>
 
         <div className="flex flex-row items-center justify-end">
-          <button className="relative !inline-flex h-12 w-12 !items-center justify-center gap-x-2 rounded-[6.25rem] px-6 py-2.5 text-center text-sm font-medium tracking-[.00714em] hover:bg-surface-300 focus:bg-surface-400">
-            <span className="material-icons-outlined text-gray-500">
-              notifications
-            </span>
-            <div className="absolute right-3 top-3 flex h-[10px] w-[10px] items-center justify-center rounded-full bg-error-600 text-[11px] font-medium leading-none tracking-[.045em] text-white">
+          <button className="relative flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
+            <img
+              src="/images/top app bar/notification_icon.svg"
+              alt="notification icon"
+            />
+            <div className="label-sm absolute right-3 top-3 flex h-[10px] min-w-[10px] items-center justify-center rounded-full bg-error-600 p-1 text-[8px] text-white">
               {/* put notification count here */}
             </div>
           </button>
-          <button className="material-icons-outlined relative !inline-flex h-12 w-12 !items-center justify-center gap-x-2 rounded-[6.25rem] px-6 py-2.5 text-center text-sm font-medium tracking-[.00714em] text-gray-500 hover:bg-surface-300 focus:bg-surface-400">
-            person
+          <button className="group flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
+            <img src="/images/top app bar/user_icon.svg" alt="user icon" />
+            <img
+              src="/images/top app bar/arrow_down_bold_icon.svg"
+              alt="arrow down bold icon"
+              className="hidden group-hover:block"
+            />
           </button>
         </div>
       </div>
@@ -118,11 +124,7 @@ const TopAppBar = () => {
 };
 
 const AppBarTabs = () => {
-  const {
-    activeTab,
-    handleTabChange,
-    tabsRef: ref,
-  } = useTabsContext();
+  const { activeTab, handleTabChange, tabsRef: ref } = useTabsContext();
 
   return (
     <div className="tabs flex w-full flex-col">

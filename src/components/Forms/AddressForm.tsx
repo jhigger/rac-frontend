@@ -1,8 +1,8 @@
 import { City, State } from "country-state-city";
 import { type FormData } from "~/pages/register";
 import FormHeader from "./FormHeader";
-import SelectInput from "./SelectInput";
-import TextInput from "./TextInput";
+import SelectInput from "./Inputs/SelectInput";
+import TextInput from "./Inputs/TextInput";
 import { SelectCountry, SelectCountryPhoneCode } from "./AccountForm";
 
 type AddressFormProps = FormData & {

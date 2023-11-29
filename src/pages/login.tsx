@@ -3,8 +3,8 @@ import { type ChangeEvent } from "react";
 import FormHeader from "~/components/Forms/FormHeader";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import PasswordInput from "~/components/Forms/PasswordInput";
-import TextInput from "~/components/Forms/TextInput";
+import PasswordInput from "~/components/Forms/Inputs/PasswordInput";
+import TextInput from "~/components/Forms/Inputs/TextInput";
 
 const login = () => {
   return (

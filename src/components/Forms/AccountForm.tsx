@@ -3,9 +3,9 @@ import { type ChangeEvent } from "react";
 import { EmailInput } from "~/pages/login";
 import { type FormData } from "~/pages/register";
 import FormHeader from "./FormHeader";
-import PasswordInput from "./PasswordInput";
-import SelectInput from "./SelectInput";
-import TextInput from "./TextInput";
+import PasswordInput from "./Inputs/PasswordInput";
+import SelectInput from "./Inputs/SelectInput";
+import TextInput from "./Inputs/TextInput";
 
 type AccountFormProps = FormData & {
   updateFields: (update: Partial<FormData>) => void;

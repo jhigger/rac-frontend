@@ -45,7 +45,7 @@ const AddressForm = ({
           updateFields={updateFields}
         />
         <TextInput
-          name={"street-address"}
+          id={"street-address"}
           label={"Street Address"}
           value={streetAddress}
           onChange={(e) => updateFields({ streetAddress: e.target.value })}
@@ -59,7 +59,7 @@ const AddressForm = ({
           </div>
           <div className="col-span-full md:col-span-7">
             <TextInput
-              name="phone-number"
+              id="phone-number"
               label="Phone Number"
               type="tel"
               value={phoneNumber}
@@ -68,7 +68,7 @@ const AddressForm = ({
           </div>
         </div>
         <TextInput
-          name={"zip-postal-code"}
+          id={"zip-postal-code"}
           label={"Zip/Postal Code"}
           value={zipPostalCode}
           onChange={(e) => updateFields({ zipPostalCode: e.target.value })}

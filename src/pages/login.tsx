@@ -50,7 +50,7 @@ type EmailInputProps = {
 export const EmailInput = ({ value, onChange }: EmailInputProps) => {
   return (
     <TextInput
-      name="email"
+      id="email"
       label="Email"
       type="email"
       value={value}

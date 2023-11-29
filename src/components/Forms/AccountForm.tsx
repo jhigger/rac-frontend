@@ -28,13 +28,13 @@ const AccountForm = ({
       <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
         <SelectCountry value={country} updateFields={updateFields} />
         <TextInput
-          name={"first-name"}
+          id={"first-name"}
           label={"First Name"}
           value={firstName}
           onChange={(e) => updateFields({ firstName: e.target.value })}
         />
         <TextInput
-          name={"last-name"}
+          id={"last-name"}
           label={"Last Name"}
           value={lastName}
           onChange={(e) => updateFields({ lastName: e.target.value })}
@@ -64,7 +64,7 @@ const AccountForm = ({
           </div>
           <div className="col-span-full md:col-span-7">
             <TextInput
-              name="phone-number"
+              id="phone-number"
               label="Phone Number"
               type="tel"
               value={phoneNumber}

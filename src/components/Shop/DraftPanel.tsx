@@ -1,9 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
+import { type PanelProps } from "~/pages/shop";
 import RequestOrderButton from "./RequestOrderButton";
 import TabContentLayout from "./TabContentLayout";
 
-const DraftPanel = () => {
+const DraftPanel = ({ handleChange }: PanelProps) => {
   return (
     <TabContentLayout>
       <div className="flex min-h-[calc(100vh-170px)] w-full flex-col items-center justify-center gap-[30px]">
@@ -13,7 +14,7 @@ const DraftPanel = () => {
             would you like to request for a new order?
           </Balancer>
         </h2>
-        <RequestOrderButton />
+        <RequestOrderButton handleChange={handleChange} />
       </div>
     </TabContentLayout>
   );

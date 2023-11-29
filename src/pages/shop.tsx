@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { BottomNav, TopNav } from "~/components/Navigation";
 import SlideSheet from "~/components/Navigation/SlideSheet";
 import Welcome from "~/components/Navigation/Welcome";
-import DraftPanel from "~/components/Shop/DraftPanel";
-import OrdersPanel from "~/components/Shop/OrdersPanel";
-import RequestsPanel from "~/components/Shop/RequestsPanel";
+import TabsContextProvider, {
+  tabs,
+  useTabsContext,
+} from "~/contexts/TabsContext";
 
 const shop = () => {
   const [active, setActive] = useState("Shop for me");
@@ -15,116 +16,38 @@ const shop = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen bg-neutral-50">
-      <nav className="fixed hidden h-full min-h-screen w-[266px] flex-col overflow-y-auto bg-brand py-[40px] md:flex">
-        <Welcome
-          {...{
-            id: "RAC45678",
-            name: "Rex",
-            src: "https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto",
-          }}
-        />
-        <TopNav {...{ active, onClick: handleChangeActive }} />
-        <BottomNav {...{ active, onClick: handleChangeActive }} />
-      </nav>
-      <main className="w-full md:ml-[266px]">
-        <SlideSheet
-          {...{
-            active,
-            onClick: handleChangeActive,
-            id: "RAC45678",
-            name: "Rex",
-            src: "https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto",
-          }}
-        />
-        <TopAppBar />
-      </main>
-    </div>
-  );
-};
-
-type AppBarTabType = {
-  id: string;
-  title: string;
-  content: JSX.Element;
-};
-
-const tabs: AppBarTabType[] = [
-  { id: "orders", title: "Orders", content: <OrdersPanel /> },
-  { id: "requests", title: "Requests", content: <RequestsPanel /> },
-  { id: "draft", title: "Draft", content: <DraftPanel /> },
-];
-
-type AppBarTabsProps = {
-  activeTab: string;
-  handleChange: (tab: string) => void;
-};
-
-const AppBarTabs = ({ activeTab, handleChange }: AppBarTabsProps) => {
-  const ref = useRef<HTMLButtonElement[]>([]);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    ref.current.forEach((button) => {
-      if (button.getAttribute("data-target")?.slice(1) !== activeTab) return;
-      button.click();
-    });
-  }, []);
-
-  return (
-    <div className="tabs flex w-full flex-col">
-      <div className="relative flex flex-row items-center">
-        {tabs.map(({ id, title }) => {
-          return (
-            <button
-              ref={(el) => {
-                if (!el) return;
-                ref.current.push(el);
-              }}
-              key={`tab-${id}`}
-              data-type="tabs"
-              data-target={`#${id}`}
-              className={`flex h-[49px] w-1/3 flex-col items-center justify-end gap-1 px-4 py-2 md:w-[120px] ${
-                id === activeTab && "active"
-              }`}
-              onClick={() => handleChange(id)}
-            >
-              <p className="text-sm tracking-[.00714em]">{title}</p>
-            </button>
-          );
-        })}
-        <div
-          role="indicator"
-          className="absolute bottom-0 left-0 ml-[12%] h-0.5 w-[40px] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out sm:ml-[14%] md:ml-[40px]"
-        ></div>
+    <TabsContextProvider>
+      <div className="relative flex min-h-screen bg-neutral-50">
+        <nav className="fixed hidden h-full min-h-screen w-[266px] flex-col overflow-y-auto bg-brand py-[40px] md:flex">
+          <Welcome
+            {...{
+              id: "RAC45678",
+              name: "Rex",
+              src: "https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto",
+            }}
+          />
+          <TopNav {...{ active, onClick: handleChangeActive }} />
+          <BottomNav {...{ active, onClick: handleChangeActive }} />
+        </nav>
+        <main className="w-full md:ml-[266px]">
+          <SlideSheet
+            {...{
+              active,
+              onClick: handleChangeActive,
+              id: "RAC45678",
+              name: "Rex",
+              src: "https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto",
+            }}
+          />
+          <TopAppBar />
+        </main>
       </div>
-
-      <div className="flex flex-col">
-        {tabs.map(({ id, content }) => {
-          return (
-            <div
-              key={`panel-${id}`}
-              id={id}
-              role="tabpanel"
-              className={`duration-400 hidden transition ease-in-out [&.active]:block ${
-                id === activeTab && "active"
-              }`}
-            >
-              {content}
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    </TabsContextProvider>
   );
 };
 
 const TopAppBar = () => {
-  const [activeTab, setActiveTab] = useState(tabs[1]?.id ?? "orders");
-
-  const handleChange = (tab: string) => {
-    setActiveTab(tab);
-  };
+  const { activeTab } = useTabsContext();
 
   return (
     <div className="flex flex-col">
@@ -188,7 +111,58 @@ const TopAppBar = () => {
       </div>
       {/* tabs */}
       <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
-        <AppBarTabs {...{ activeTab, handleChange }} />
+        <AppBarTabs />
+      </div>
+    </div>
+  );
+};
+
+const AppBarTabs = () => {
+  const { activeTab, handleChange, tabsRef: ref } = useTabsContext();
+
+  return (
+    <div className="tabs flex w-full flex-col">
+      <div className="relative flex flex-row items-center">
+        {tabs.map(({ id, title }) => {
+          return (
+            <button
+              ref={(el) => {
+                if (!el) return;
+                ref.current.push(el);
+              }}
+              key={`tab-${id}`}
+              data-type="tabs"
+              data-target={`#${id}`}
+              className={`flex h-[49px] w-1/3 flex-col items-center justify-end gap-1 px-4 py-2 md:w-[120px] ${
+                id === activeTab && "active"
+              }`}
+              onClick={() => handleChange(id)}
+            >
+              <p className="text-sm tracking-[.00714em]">{title}</p>
+            </button>
+          );
+        })}
+        <div
+          role="indicator"
+          className="absolute bottom-0 left-0 ml-[12%] h-0.5 w-[40px] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out sm:ml-[14%] md:ml-[40px]"
+        ></div>
+      </div>
+
+      <div className="flex flex-col">
+        {tabs.map(({ id, content }) => {
+          return (
+            <div
+              key={`panel-${id}`}
+              id={id}
+              role="tabpanel"
+              className={`duration-400 hidden transition ease-in-out [&.active]:block ${
+                id === activeTab && "active"
+              }`}
+            >
+              {content}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

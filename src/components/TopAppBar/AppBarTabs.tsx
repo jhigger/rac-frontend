@@ -1,7 +1,7 @@
 import { tabs, useTabsContext } from "~/contexts/TabsContext";
 
 const AppBarTabs = () => {
-  const { activeTab, handleTabChange, tabsRef } = useTabsContext();
+  const { activeTab, tabsRef, handleTabChange } = useTabsContext();
 
   return (
     <div className="tabs flex w-full flex-col">

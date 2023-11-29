@@ -3,6 +3,7 @@ import { BottomNav, TopNav } from "~/components/Navigation";
 import SlideSheet from "~/components/Navigation/SlideSheet";
 import Welcome from "~/components/Navigation/Welcome";
 import TopAppBar from "~/components/TopAppBar";
+import TabContentPanels from "~/components/TopAppBar/TabContentPanels";
 import NavContextProvider from "~/contexts/NavigationContext";
 import TabsContextProvider from "~/contexts/TabsContext";
 
@@ -31,6 +32,7 @@ const shop = () => {
               }}
             />
             <TopAppBar />
+            <TabContentPanels />
           </main>
         </div>
       </NavContextProvider>

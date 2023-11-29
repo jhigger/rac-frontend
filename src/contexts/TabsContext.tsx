@@ -13,7 +13,7 @@ import RequestsPanel from "~/components/Shop/RequestsPanel";
 export type TabsContextType = {
   activeTab: string;
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
-  handleChange: (tab: string) => void;
+  handleTabChange: (tab: string) => void;
 };
 
 export const TabsContext = createContext<TabsContextType>(
@@ -38,14 +38,14 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]?.id ?? "orders");
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
-  const handleChange = (tab: string) => {
+  const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
 
   const value: TabsContextType = {
     activeTab,
     tabsRef,
-    handleChange,
+    handleTabChange,
   };
 
   return <TabsContext.Provider value={value}>{children}</TabsContext.Provider>;

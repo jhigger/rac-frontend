@@ -1,19 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
-export type NavItemType = { src: string; title: string };
+import {
+  bottomNavItems,
+  topNavItems,
+  useNavContext,
+  type NavItemType,
+} from "~/contexts/NavigationContext";
 
 export type NavItemProps = {
   navItem: NavItemType;
-  active: string;
-  onClick: (title: string) => void;
 };
 
-export const NavItem = ({ navItem, active, onClick }: NavItemProps) => {
+export const NavItem = ({ navItem }: NavItemProps) => {
+  const { activeNav, handleActiveNavChange } = useNavContext();
+
   return (
     <button
-      onClick={() => onClick(navItem.title)}
+      onClick={() => handleActiveNavChange(navItem.title)}
       type="button"
       className={`flex w-full items-center bg-opacity-[8%] hover:bg-[url('/images/nav/nav_item_hover_bg.svg')] ${
-        navItem.title === active &&
+        navItem.title === activeNav &&
         "bg-[url('/images/nav/nav_item_hover_bg.svg')]"
       }`}
     >
@@ -23,66 +28,30 @@ export const NavItem = ({ navItem, active, onClick }: NavItemProps) => {
   );
 };
 
-export type NavProps = Pick<NavItemProps, "active" | "onClick">;
-
-const topNavItems: NavItemType[] = [
-  { src: "/images/nav/shop_icon.svg", title: "Shop for me" },
-  { src: "/images/nav/export_icon.svg", title: "Export" },
-  { src: "/images/nav/import_icon.svg", title: "Import" },
-  { src: "/images/nav/auto_import_icon.svg", title: "Auto Import" },
-  { src: "/images/nav/tracking_icon.svg", title: "Tracking" },
-];
-
-export const TopNav = ({ active, onClick }: NavProps) => {
+export const TopNav = () => {
   return (
     <div className="flex flex-col gap-[16px]">
-      <NavItem
-        navItem={{ src: "/images/nav/home_icon.svg", title: "Home" }}
-        active={active}
-        onClick={onClick}
-      />
+      <NavItem navItem={{ src: "/images/nav/home_icon.svg", title: "Home" }} />
       <div>
         {topNavItems.map((navItem) => {
-          return (
-            <NavItem
-              key={navItem.title}
-              navItem={navItem}
-              active={active}
-              onClick={onClick}
-            />
-          );
+          return <NavItem key={navItem.title} navItem={navItem} />;
         })}
       </div>
       <NavItem
         navItem={{ src: "/images/nav/billing_icon.svg", title: "Billing" }}
-        active={active}
-        onClick={onClick}
       />
     </div>
   );
 };
 
-const bottomNavItems: NavItemType[] = [
-  { src: "/images/nav/get_a_quote_icon.svg", title: "Get a Quote" },
-  { src: "/images/nav/help_icon.svg", title: "Help" },
-  { src: "/images/nav/settings_icon.svg", title: "Settings" },
-];
-
-export const BottomNav = ({ active, onClick }: NavProps) => {
+export const BottomNav = () => {
   return (
     <div className="flex flex-1 flex-col justify-end pb-[44px]">
       <div className="px-[20px]">
         <hr className="w-full border-gray-700" />
       </div>
       {bottomNavItems.map((navItem) => {
-        return (
-          <NavItem
-            key={navItem.title}
-            navItem={navItem}
-            active={active}
-            onClick={onClick}
-          />
-        );
+        return <NavItem key={navItem.title} navItem={navItem} />;
       })}
     </div>
   );

@@ -1,10 +1,9 @@
-import { BottomNav, TopNav, type NavProps } from ".";
+import { BottomNav, TopNav } from ".";
 import Welcome, { type WelcomeProps } from "./Welcome";
 
-type SlideSheetProps = NavProps & WelcomeProps;
-
+type SlideSheetProps = WelcomeProps;
 // mobile nav
-const SlideSheet = ({ active, onClick, id, name, src }: SlideSheetProps) => {
+const SlideSheet = ({ id, name, src }: SlideSheetProps) => {
   return (
     <div id="sheet_b" className="group md:hidden">
       <div
@@ -19,8 +18,8 @@ const SlideSheet = ({ active, onClick, id, name, src }: SlideSheetProps) => {
             src,
           }}
         />
-        <TopNav {...{ active, onClick }} />
-        <BottomNav {...{ active, onClick }} />
+        <TopNav />
+        <BottomNav />
       </nav>
     </div>
   );

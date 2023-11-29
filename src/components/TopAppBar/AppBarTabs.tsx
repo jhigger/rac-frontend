@@ -1,7 +1,7 @@
 import { tabs, useTabsContext } from "~/contexts/TabsContext";
 
 const AppBarTabs = () => {
-  const { activeTab, handleTabChange, tabsRef: ref } = useTabsContext();
+  const { activeTab, handleTabChange, tabsRef } = useTabsContext();
 
   return (
     <div className="tabs flex w-full flex-col">
@@ -11,7 +11,7 @@ const AppBarTabs = () => {
             <button
               ref={(el) => {
                 if (!el) return;
-                ref.current.push(el);
+                tabsRef.current.push(el);
               }}
               key={`tab-${id}`}
               data-type="tabs"

@@ -1,10 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+import { useNavContext } from "~/contexts/NavigationContext";
 import { useTabsContext } from "~/contexts/TabsContext";
 import AppBarTabs from "./AppBarTabs";
 
-type TopAppBar = { title: string };
-
-const TopAppBar = ({ title = "Shop for me" }: TopAppBar) => {
+const TopAppBar = () => {
   return (
     <div className="flex flex-col">
       <div className="flex w-full items-center justify-between gap-1.5 bg-white px-[20px] pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
@@ -18,8 +17,8 @@ const TopAppBar = ({ title = "Shop for me" }: TopAppBar) => {
           </button>
         </div>
         <div className="hidden flex-col gap-[10px] md:flex">
-          <TopAppBarHeader title={title} />
-          <TopAppBarBreadCrumbs title={title} />
+          <TopAppBarHeader />
+          <TopAppBarBreadCrumbs />
         </div>
 
         <div className="flex flex-row items-center justify-end">
@@ -44,8 +43,8 @@ const TopAppBar = ({ title = "Shop for me" }: TopAppBar) => {
       </div>
       {/* mobile version */}
       <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
-        <TopAppBarHeader title={title} />
-        <TopAppBarBreadCrumbs title={title} />
+        <TopAppBarHeader />
+        <TopAppBarBreadCrumbs />
       </div>
       {/* tabs */}
       <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
@@ -55,17 +54,18 @@ const TopAppBar = ({ title = "Shop for me" }: TopAppBar) => {
   );
 };
 
-type TopAppBarHeader = { title: string };
+const TopAppBarHeader = () => {
+  const { activeNav } = useNavContext();
 
-const TopAppBarHeader = ({ title }: TopAppBarHeader) => {
   return (
-    <h1 className="headline-md text-center text-brand md:text-left">{title}</h1>
+    <h1 className="headline-md text-center text-brand md:text-left">
+      {activeNav}
+    </h1>
   );
 };
 
-type TopAppBarBreadCrumbs = TopAppBarHeader;
-
-const TopAppBarBreadCrumbs = ({ title }: TopAppBarBreadCrumbs) => {
+const TopAppBarBreadCrumbs = () => {
+  const { activeNav } = useNavContext();
   const { activeTab } = useTabsContext();
 
   return (
@@ -76,7 +76,9 @@ const TopAppBarBreadCrumbs = ({ title }: TopAppBarBreadCrumbs) => {
         className="h-[19px] w-[19px]"
       />
       <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
-      <span className="title-sm text-secondary-600">{title.toLowerCase()}</span>
+      <span className="title-sm text-secondary-600">
+        {activeNav.toLowerCase()}
+      </span>
       <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
       <span className="title-sm text-secondary-600">{activeTab}</span>
     </div>

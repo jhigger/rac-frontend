@@ -1,4 +1,3 @@
-import React from "react";
 import { tabs, useTabsContext } from "~/contexts/TabsContext";
 
 const TabContentPanels = () => {

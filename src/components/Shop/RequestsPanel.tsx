@@ -440,7 +440,7 @@ const ItemPreview = () => {
   return (
     <div
       id="item_preview"
-      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center md:overflow-hidden [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
     >
       <div
         data-close="#item_preview"
@@ -535,7 +535,7 @@ const ItemPreview = () => {
               </div>
               <div className="">
                 <div className="flex justify-between">
-                  <div className="flex flex-col gap-[5px] justify-end">
+                  <div className="flex flex-col justify-end gap-[5px]">
                     <span className="label-lg">Total:</span>
                     <span className="title-lg">₦28,000.00</span>
                   </div>

@@ -1,4 +1,4 @@
-import { type OrderItemType } from "~/contexts/TabsContext";
+import { useTabsContext, type OrderItemType } from "~/contexts/TabsContext";
 /* eslint-disable @next/next/no-img-element */
 
 type OrderItemProps = { order: OrderItemType };
@@ -21,10 +21,6 @@ type OrderItemHeaderProps = Pick<OrderItemType, "state"> & {
 };
 
 export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
-  const handleTakeAction = () => {
-    return;
-  };
-
   return (
     <>
       <div className="flex items-center">
@@ -35,9 +31,7 @@ export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
           </div>
           <div className="hidden items-center gap-[10px] md:flex">
             <OrderState state={state} />
-            {state === action && (
-              <TakeActionNowButton handleTakeAction={handleTakeAction} />
-            )}
+            {state === action && <TakeActionNowButton />}
           </div>
         </div>
         <div className="flex flex-grow justify-end">
@@ -48,9 +42,7 @@ export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
       {/* for mobile screen */}
       <div className="flex items-center justify-between md:hidden">
         <OrderState state={state} />
-        {state === "responded" && (
-          <TakeActionNowButton handleTakeAction={handleTakeAction} />
-        )}
+        {state === "responded" && <TakeActionNowButton />}
       </div>
     </>
   );
@@ -140,14 +132,12 @@ const OrderState = ({ state }: OrderStateProps) => {
   );
 };
 
-type TakeActionNowButtonProps = { handleTakeAction: () => void };
+const TakeActionNowButton = () => {
+  const { handleTakeAction } = useTabsContext();
 
-const TakeActionNowButton = ({
-  handleTakeAction,
-}: TakeActionNowButtonProps) => {
   return (
     <button
-      onClick={handleTakeAction}
+      onClick={() => handleTakeAction(true)}
       aria-label="Take Action Now"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
     >

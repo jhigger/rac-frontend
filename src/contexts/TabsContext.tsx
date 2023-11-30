@@ -12,10 +12,12 @@ import RequestsPanel from "~/components/Shop/RequestsPanel";
 
 export type TabsContextType = {
   activeTab: string;
+  hasRequests: boolean;
   requestOrderClicked: boolean;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
   handleTabChange: (tab: string) => void;
+  handleRequests: () => void;
   handleRequestOrder: (value: boolean) => void;
 };
 
@@ -40,6 +42,7 @@ export const tabs: AppBarTabType[] = [
 const TabsContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]?.id ?? "orders");
   const [requestOrderClicked, setRequestOrderClicked] = useState(false);
+  const [hasRequests, setHasRequests] = useState(false);
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
   const handleTabChange = (tab: string) => {
@@ -51,12 +54,18 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
     setRequestOrderClicked(value);
   };
 
+  const handleRequests = () => {
+    setHasRequests(true);
+  };
+
   const value: TabsContextType = {
     activeTab,
+    hasRequests,
     requestOrderClicked,
     tabs,
     tabsRef,
     handleTabChange,
+    handleRequests,
     handleRequestOrder,
   };
 

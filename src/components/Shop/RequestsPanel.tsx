@@ -15,29 +15,55 @@ import RequestOrderButton from "./RequestOrderButton";
 import TabContentLayout from "./TabContentLayout";
 
 const RequestsPanel = () => {
-  const { requestOrderClicked } = useTabsContext();
+  const { hasRequests, requestOrderClicked, handleTabChange, handleRequests } =
+    useTabsContext();
+
+  const handleFinish = () => {
+    handleRequests();
+    handleTabChange("requests");
+  };
+
+  const handleBack = () => {
+    handleTabChange("requests");
+  };
+
+  if (hasRequests) {
+    return <TabContentLayout>{/* todo */}</TabContentLayout>;
+  }
+
+  if (requestOrderClicked) {
+    return (
+      <TabContentLayout>
+        <RequestOrderForm {...{ handleBack, handleFinish }} />
+      </TabContentLayout>
+    );
+  }
 
   return (
     <TabContentLayout>
-      {!requestOrderClicked ? (
-        <div className="flex w-full flex-grow flex-col items-center justify-center gap-[30px]">
-          <h2 className="title-lg max-w-[462px] text-center">
-            <Balancer>
-              You have not requested for any shop for me order before, would you
-              like to request for a new order?
-            </Balancer>
-          </h2>
-          <RequestOrderButton />
-        </div>
-      ) : (
-        <RequestOrderForm />
-      )}
+      <div className="flex w-full flex-grow flex-col items-center justify-center gap-[30px]">
+        <h2 className="title-lg max-w-[462px] text-center">
+          <Balancer>
+            You have not requested for any shop for me order before, would you
+            like to request for a new order?
+          </Balancer>
+        </h2>
+        <RequestOrderButton />
+      </div>
     </TabContentLayout>
   );
 };
 
-const RequestOrderForm = () => {
-  const { step, next, isFirstStep } = useMultiStepForm([
+type RequestOrderFormProps = {
+  handleBack: () => void;
+  handleFinish: () => void;
+};
+
+const RequestOrderForm = ({
+  handleBack,
+  handleFinish,
+}: RequestOrderFormProps) => {
+  const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
     <RequestOrderStep1 />,
     <RequestOrderStep2 />,
   ]);
@@ -48,13 +74,13 @@ const RequestOrderForm = () => {
       {isFirstStep && (
         <>
           <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-            <BackButton />
+            <BackButton handleBack={handleBack} />
             <SaveAsDraftButton />
             <ProceedButton next={next} />
           </div>
           <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
             <div className="col-span-1 w-full">
-              <BackButton />
+              <BackButton handleBack={handleBack} />
             </div>
             <div className="col-span-1">
               <ProceedButton next={next} />
@@ -64,6 +90,11 @@ const RequestOrderForm = () => {
             </div>
           </div>
         </>
+      )}
+      {isLastStep && (
+        <div className="w-1/3">
+          <DoneButton handleFinish={handleFinish} />
+        </div>
       )}
       <NeedHelpFAB />
     </div>
@@ -159,9 +190,6 @@ const RequestOrderStep2 = () => {
           </ul>
         </div>
       </SectionContentLayout>
-      <div className="w-1/3">
-        <DoneButton />
-      </div>
     </>
   );
 };
@@ -625,9 +653,12 @@ const AddButton = ({ title }: AddButtonProps) => {
   );
 };
 
-const BackButton = () => {
+type BackButtonProps = { handleBack: () => void };
+
+const BackButton = ({ handleBack }: BackButtonProps) => {
   return (
     <button
+      onClick={handleBack}
       aria-label="Preview Item"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
@@ -667,9 +698,12 @@ const ProceedButton = ({ next }: ProceedButtonProps) => {
   );
 };
 
-const DoneButton = () => {
+type DoneButtonProps = { handleFinish: () => void };
+
+const DoneButton = ({ handleFinish }: DoneButtonProps) => {
   return (
     <button
+      onClick={handleFinish}
       aria-label="Done"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >

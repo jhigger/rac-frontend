@@ -1,5 +1,4 @@
 import { tabs, useTabsContext } from "~/contexts/TabsContext";
-import TabContentPanels from "./TabContentPanels";
 
 const AppBarTabs = () => {
   const { activeTab, tabsRef, handleTabChange } = useTabsContext();
@@ -32,7 +31,6 @@ const AppBarTabs = () => {
             className="absolute bottom-0 left-0 ml-[12%] h-0.5 w-[40px] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out sm:ml-[14%] md:ml-[40px]"
           ></div>
         </div>
-        <TabContentPanels />
       </div>
     </>
   );

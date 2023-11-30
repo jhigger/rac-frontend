@@ -116,9 +116,9 @@ export default function () {
         for (let i = 0; i < isTab.length; i++) {
           isTab[i].classList.remove("active");
         }
-        const activePaneId = clickTarget.getAttribute("data-target");
-        const activePane = tabParent.querySelector(activePaneId);
-        activePane.classList.add("active");
+        // const activePaneId = clickTarget.getAttribute("data-target");
+        // const activePane = tabParent.querySelector(activePaneId);
+        // activePane.classList.add("active");
       }
 
       for (let i = 0; i < set_tabs.length; i++) {

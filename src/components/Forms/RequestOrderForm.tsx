@@ -9,20 +9,24 @@ import QuantityInput from "./Inputs/QuantityInput";
 import SelectInput from "./Inputs/SelectInput";
 import TextAreaInput from "./Inputs/TextAreaInput";
 import TextInput from "./Inputs/TextInput";
+import { useTabsContext } from "~/contexts/TabsContext";
 
-type RequestOrderFormProps = {
-  handleBack: () => void;
-  handleFinish: () => void;
-};
-
-const RequestOrderForm = ({
-  handleBack,
-  handleFinish,
-}: RequestOrderFormProps) => {
+const RequestOrderForm = () => {
   const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
     <RequestOrderStep1 />,
     <RequestOrderStep2 />,
   ]);
+
+  const { handleTabChange, handleRequests } = useTabsContext();
+
+  const handleFinish = () => {
+    handleRequests();
+    handleTabChange("requests");
+  };
+
+  const handleBack = () => {
+    handleTabChange("requests");
+  };
 
   return (
     <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">

@@ -9,26 +9,12 @@ import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
 
 const RequestsPanel = () => {
-  const {
-    requestedOrders,
-    requestOrderClicked,
-    handleTabChange,
-    handleRequests,
-  } = useTabsContext();
-
-  const handleFinish = () => {
-    handleRequests();
-    handleTabChange("requests");
-  };
-
-  const handleBack = () => {
-    handleTabChange("requests");
-  };
+  const { requestedOrders, requestOrderClicked } = useTabsContext();
 
   if (requestOrderClicked) {
     return (
       <TabContentLayout>
-        <RequestOrderForm {...{ handleBack, handleFinish }} />
+        <RequestOrderForm />
       </TabContentLayout>
     );
   }

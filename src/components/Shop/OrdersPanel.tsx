@@ -9,22 +9,12 @@ import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
 
 const OrdersPanel = () => {
-  const { orderItems, requestOrderClicked, handleRequests, handleTabChange } =
-    useTabsContext();
-
-  const handleFinish = () => {
-    handleRequests();
-    handleTabChange("requests");
-  };
-
-  const handleBack = () => {
-    handleTabChange("requests");
-  };
+  const { orderItems, requestOrderClicked } = useTabsContext();
 
   if (requestOrderClicked) {
     return (
       <TabContentLayout>
-        <RequestOrderForm {...{ handleBack, handleFinish }} />
+        <RequestOrderForm />
       </TabContentLayout>
     );
   }
@@ -109,7 +99,7 @@ const UnprocessedOrder = ({ order }: UnprocessedOrderProps) => {
           <span>Tracking ID:</span>
           <span className="font-bold">SH78667</span>
         </div>
-        <div className="flex h-[164px] rounded-[20px] bg-primary-900 py-[10px] px-[20px] text-white">
+        <div className="flex h-[164px] rounded-[20px] bg-primary-900 px-[20px] py-[10px] text-white">
           <hr className="h-[65px] border-r border-solid border-white" />
           <div className="flex flex-col">
             <div className="flex flex-col gap-[1px] pl-[10px]">

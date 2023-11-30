@@ -17,10 +17,12 @@ export type TabsContextType = {
   requestOrderClicked: boolean;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
+  takeActionClicked: boolean;
   handleTabChange: (tab: string) => void;
   handleOrders: () => void;
   handleRequests: () => void;
   handleRequestOrder: (value: boolean) => void;
+  handleTakeAction: (value: boolean) => void;
 };
 
 export const TabsContext = createContext<TabsContextType>(
@@ -62,11 +64,13 @@ const orders: OrderItemType[] = [
 
 const TabsContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]?.id ?? "orders");
-  const [requestOrderClicked, setRequestOrderClicked] = useState(false);
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
   const [requestedOrders, setRequestedOrders] = useState<
     OrderItemType[] | null
   >(null);
+  const [requestOrderClicked, setRequestOrderClicked] = useState(false);
+  const [takeActionClicked, setTakeActionClicked] = useState(false);
+
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
   const handleOrders = () => {
@@ -91,6 +95,10 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
     setRequestOrderClicked(false);
   };
 
+  const handleTakeAction = (value: boolean) => {
+    setTakeActionClicked(value);
+  };
+
   const value: TabsContextType = {
     activeTab,
     orderItems,
@@ -98,10 +106,12 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
     requestOrderClicked,
     tabs,
     tabsRef,
+    takeActionClicked,
     handleTabChange,
     handleOrders,
     handleRequests,
     handleRequestOrder,
+    handleTakeAction,
   };
 
   return <TabsContext.Provider value={value}>{children}</TabsContext.Provider>;

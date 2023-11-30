@@ -10,6 +10,8 @@ import SelectInput from "./Inputs/SelectInput";
 import TextAreaInput from "./Inputs/TextAreaInput";
 import TextInput from "./Inputs/TextInput";
 import { useTabsContext } from "~/contexts/TabsContext";
+import AccordionButton from "./AccordionButton";
+import useAccordion from "~/hooks/useAccordion";
 
 const RequestOrderForm = () => {
   const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
@@ -62,14 +64,22 @@ const RequestOrderForm = () => {
 };
 
 const RequestOrderStep1 = () => {
+  const [items, setItems] = useState<string[]>(Array(2).fill(""));
+
+  const handleAddItem = (item: string) => {
+    setItems((prev) => [...prev, item]);
+  };
+
   return (
     <>
       <RequestFormHeader title="Requesting For New Shop For Me Service" />
       <ImportantNotice />
       <SelectWarehouseOriginSection />
-      <ItemDetailsSection />
+      {items.map((_, i) => {
+        return <ItemDetailsSection key={i} index={i} expanded={i === 0} />;
+      })}
       <div className="w-max">
-        <AddButton title="Add Item" />
+        <AddButton title="Add Item" onClick={() => handleAddItem("")} />
       </div>
     </>
   );
@@ -229,13 +239,17 @@ const TooltipButton = () => {
   );
 };
 
-const ItemDetailsSection = () => {
-  const [open, setOpen] = useState(false);
-  const [filename, setFilename] = useState("");
+type ItemDetailsSectionProps = {
+  index: number;
+  expanded?: boolean;
+};
 
-  const toggle = () => {
-    setOpen((prev) => !prev);
-  };
+const ItemDetailsSection = ({
+  index,
+  expanded = false,
+}: ItemDetailsSectionProps) => {
+  const { open, toggle } = useAccordion(expanded);
+  const [filename, setFilename] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -252,13 +266,13 @@ const ItemDetailsSection = () => {
           <div className="flex w-full flex-col gap-[30px]">
             <div className="col-span-full flex items-center gap-[30px]">
               <h4 className="title-md md:title-lg text-gray-700">
-                Item - <span className="text-primary-600">#1</span>
+                Item - <span className="text-primary-600">#{index + 1}</span>
               </h4>
               <div className="hidden md:block">
                 {/* <PreviewItemButton /> */}
               </div>
               <div className="flex flex-grow justify-end">
-                <ExpandCollapseButton {...{ open, toggle }} />
+                <AccordionButton {...{ open, toggle }} />
               </div>
             </div>
 
@@ -574,36 +588,12 @@ const ItemPreview = () => {
   );
 };
 
-type ExpandCollapseButtonProps = { open: boolean; toggle: () => void };
+type AddButtonProps = { title: string; onClick?: () => void };
 
-const ExpandCollapseButton = ({ open, toggle }: ExpandCollapseButtonProps) => {
+const AddButton = ({ title, onClick }: AddButtonProps) => {
   return (
     <button
-      aria-label={open ? "collapse" : "expand"}
-      onClick={toggle}
-      className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
-    >
-      {open ? (
-        <img
-          src="/images/arrow_circle_up_icon.svg"
-          alt="arrow circle up icon"
-        />
-      ) : (
-        <img
-          src="/images/arrow_circle_up_icon.svg"
-          alt="arrow circle up icon"
-          className="rotate-180 transform"
-        />
-      )}
-    </button>
-  );
-};
-
-type AddButtonProps = { title: string };
-
-const AddButton = ({ title }: AddButtonProps) => {
-  return (
-    <button
+      onClick={onClick}
       aria-label={title}
       className="btn relative flex h-14 w-full flex-row items-center justify-center gap-x-2 rounded-[20px] bg-gray-700 px-8 py-2.5 text-sm font-medium tracking-[.00714em] text-white"
     >

@@ -1,17 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
+import { useTabsContext } from "~/contexts/TabsContext";
+import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
 import NeedHelpFAB from "../NeedHelpFAB";
+import AccordionButton from "./AccordionButton";
 import CurrencyInput from "./Inputs/CurrencyInput";
 import FileInput from "./Inputs/FileInput";
 import QuantityInput from "./Inputs/QuantityInput";
 import SelectInput from "./Inputs/SelectInput";
 import TextAreaInput from "./Inputs/TextAreaInput";
 import TextInput from "./Inputs/TextInput";
-import { useTabsContext } from "~/contexts/TabsContext";
-import AccordionButton from "./AccordionButton";
-import useAccordion from "~/hooks/useAccordion";
 
 const RequestOrderForm = () => {
   const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
@@ -64,7 +64,7 @@ const RequestOrderForm = () => {
 };
 
 const RequestOrderStep1 = () => {
-  const [items, setItems] = useState<string[]>(Array(2).fill(""));
+  const [items, setItems] = useState<string[]>([]);
 
   const handleAddItem = (item: string) => {
     setItems((prev) => [...prev, item]);
@@ -76,7 +76,7 @@ const RequestOrderStep1 = () => {
       <ImportantNotice />
       <SelectWarehouseOriginSection />
       {items.map((_, i) => {
-        return <ItemDetailsSection key={i} index={i} expanded={i === 0} />;
+        return <ItemDetailsSection key={i} index={i} expanded />;
       })}
       <div className="w-max">
         <AddButton title="Add Item" onClick={() => handleAddItem("")} />
@@ -269,7 +269,7 @@ const ItemDetailsSection = ({
                 Item - <span className="text-primary-600">#{index + 1}</span>
               </h4>
               <div className="hidden md:block">
-                {/* <PreviewItemButton /> */}
+                <PreviewItemButton index={index} />
               </div>
               <div className="flex flex-grow justify-end">
                 <AccordionButton {...{ open, toggle }} />
@@ -378,7 +378,7 @@ const ItemDetailsSection = ({
             )}
 
             <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 p-[10px] md:hidden">
-              {/* <PreviewItemButton /> */}
+              <PreviewItemButton index={index} />
               <DeleteItemButton />
             </div>
           </div>
@@ -387,7 +387,7 @@ const ItemDetailsSection = ({
           <DeleteButtonIcon />
         </div>
       </div>
-      <ItemPreview />
+      <ItemPreview index={index} />
     </div>
   );
 };
@@ -425,7 +425,11 @@ const DeleteItemButton = () => {
   );
 };
 
-const PreviewItemButton = () => {
+type PreviewItemButtonProps = { index: number };
+
+const PreviewItemButton = ({ index }: PreviewItemButtonProps) => {
+  const dataTarget = `#preview-item-${index}`;
+
   useEffect(() => {
     tailmater();
   }, []);
@@ -434,7 +438,7 @@ const PreviewItemButton = () => {
     <button
       aria-label="Preview Item"
       data-type="dialogs"
-      data-target="#item_preview"
+      data-target={dataTarget}
       className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <img src="/images/eye_bold_icon.svg" alt="eye bold icon" />
@@ -443,17 +447,22 @@ const PreviewItemButton = () => {
   );
 };
 
-const ItemPreview = () => {
+type ItemPreviewProps = PreviewItemButtonProps;
+
+const ItemPreview = ({ index }: ItemPreviewProps) => {
+  const id = `preview-item-${index}`;
+  const dataClose = `#preview-item-${index}`;
+
   return (
     <div
-      id="item_preview"
-      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center md:overflow-hidden [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+      id={id}
+      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center  [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
     >
       <div
-        data-close="#item_preview"
+        data-close={dataClose}
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
-      <div className="z-50 flex h-max w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+      <div className="fixed z-50 flex h-max w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Item Preview" />
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2">
           <div className="col-span-1 flex flex-col gap-[30px] text-2xl font-normal text-gray-900">
@@ -571,7 +580,7 @@ const ItemPreview = () => {
           <div className="w-1/2">
             <button
               aria-label="Back"
-              data-close="#item_preview"
+              data-close={dataClose}
               className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
             >
               <img
@@ -588,7 +597,10 @@ const ItemPreview = () => {
   );
 };
 
-type AddButtonProps = { title: string; onClick?: () => void };
+type AddButtonProps = {
+  title: string;
+  onClick?: () => void;
+};
 
 const AddButton = ({ title, onClick }: AddButtonProps) => {
   return (

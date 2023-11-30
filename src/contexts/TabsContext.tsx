@@ -11,18 +11,20 @@ import OrdersPanel from "~/components/Shop/OrdersPanel";
 import RequestsPanel from "~/components/Shop/RequestsPanel";
 
 export type TabsContextType = {
-  activeTab: string;
+  activeTab: tabIdType;
+  orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
   requestedOrders: OrderItemType[] | null;
+  requestActionClicked: boolean;
   requestOrderClicked: boolean;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
-  takeActionClicked: boolean;
-  handleTabChange: (tab: string) => void;
+  handleTabChange: (tab: tabIdType) => void;
+  handleOrderAction: (value: boolean) => void;
   handleOrders: () => void;
   handleRequests: () => void;
+  handleRequestAction: (value: boolean) => void;
   handleRequestOrder: (value: boolean) => void;
-  handleTakeAction: (value: boolean) => void;
 };
 
 export const TabsContext = createContext<TabsContextType>(
@@ -31,8 +33,12 @@ export const TabsContext = createContext<TabsContextType>(
 
 export const useTabsContext = () => useContext(TabsContext);
 
+const tabIds = ["orders", "requests", "draft"] as const;
+
+type tabIdType = (typeof tabIds)[number];
+
 type AppBarTabType = {
-  id: string;
+  id: tabIdType;
   title: string;
   content: JSX.Element;
 };
@@ -63,15 +69,24 @@ const orders: OrderItemType[] = [
 ];
 
 const TabsContextProvider = ({ children }: { children: ReactNode }) => {
-  const [activeTab, setActiveTab] = useState(tabs[0]?.id ?? "orders");
+  const [activeTab, setActiveTab] = useState<tabIdType>(
+    tabs[0]?.id ?? "orders",
+  );
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
   const [requestedOrders, setRequestedOrders] = useState<
     OrderItemType[] | null
   >(null);
   const [requestOrderClicked, setRequestOrderClicked] = useState(false);
-  const [takeActionClicked, setTakeActionClicked] = useState(false);
+  const [orderActionClicked, setOrderActionClicked] = useState(false);
+  const [requestActionClicked, setRequestActionClicked] = useState(false);
 
   const tabsRef = useRef<HTMLButtonElement[]>([]);
+
+  const resetAllClicked = () => {
+    setRequestOrderClicked(false);
+    setOrderActionClicked(false);
+    setRequestActionClicked(false);
+  };
 
   const handleOrders = () => {
     const unprocessedOrders = orders.filter((order) => {
@@ -83,36 +98,43 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
   const handleRequests = () => {
     handleOrders();
     setRequestedOrders(orders);
-    setRequestOrderClicked(false);
+    resetAllClicked();
   };
 
   const handleRequestOrder = (value: boolean) => {
+    resetAllClicked();
     setRequestOrderClicked(value);
   };
 
-  const handleTabChange = (tab: string) => {
+  const handleTabChange = (tab: tabIdType) => {
     setActiveTab(tab);
-    setRequestOrderClicked(false);
   };
 
-  const handleTakeAction = (value: boolean) => {
-    setTakeActionClicked(value);
-    setRequestOrderClicked(false);
+  const handleOrderAction = (value: boolean) => {
+    resetAllClicked();
+    setOrderActionClicked(value);
+  };
+
+  const handleRequestAction = (value: boolean) => {
+    resetAllClicked();
+    setRequestActionClicked(value);
   };
 
   const value: TabsContextType = {
     activeTab,
+    orderActionClicked,
     orderItems,
+    requestActionClicked,
     requestedOrders,
     requestOrderClicked,
     tabs,
     tabsRef,
-    takeActionClicked,
     handleTabChange,
+    handleOrderAction,
     handleOrders,
+    handleRequestAction,
     handleRequests,
     handleRequestOrder,
-    handleTakeAction,
   };
 
   return <TabsContext.Provider value={value}>{children}</TabsContext.Provider>;

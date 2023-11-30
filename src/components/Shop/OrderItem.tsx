@@ -133,11 +133,18 @@ const OrderState = ({ state }: OrderStateProps) => {
 };
 
 const TakeActionNowButton = () => {
-  const { handleTakeAction } = useTabsContext();
+  const { activeTab, handleOrderAction, handleRequestAction } =
+    useTabsContext();
+
+  const onClick = {
+    orders: () => handleOrderAction(true),
+    requests: () => handleRequestAction(true),
+    draft: () => null,
+  };
 
   return (
     <button
-      onClick={() => handleTakeAction(true)}
+      onClick={onClick[activeTab]}
       aria-label="Take Action Now"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
     >

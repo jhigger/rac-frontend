@@ -9,7 +9,12 @@ import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
 
 const RequestsPanel = () => {
-  const { requestedOrders, requestOrderClicked } = useTabsContext();
+  const { requestedOrders, requestOrderClicked, requestActionClicked } =
+    useTabsContext();
+
+  if (requestActionClicked) {
+    return <TabContentLayout>ACTION CLICKED</TabContentLayout>;
+  }
 
   if (requestOrderClicked) {
     return (

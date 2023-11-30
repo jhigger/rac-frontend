@@ -19,7 +19,8 @@ const RequestOrderForm = () => {
     <RequestOrderStep2 />,
   ]);
 
-  const { handleTabChange, handleRequests } = useTabsContext();
+  const { handleTabChange, handleRequests, handleRequestOrder } =
+    useTabsContext();
 
   const handleFinish = () => {
     handleRequests();
@@ -27,7 +28,7 @@ const RequestOrderForm = () => {
   };
 
   const handleBack = () => {
-    handleTabChange("requests");
+    handleRequestOrder(false);
   };
 
   return (

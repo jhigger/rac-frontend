@@ -380,6 +380,7 @@ const ItemDetailsSection = () => {
           <DeleteButtonIcon />
         </div>
       </div>
+      <ItemPreview />
     </div>
   );
 };
@@ -423,149 +424,160 @@ const PreviewItemButton = () => {
   }, []);
 
   return (
-    <>
-      <button
-        aria-label="Preview Item"
-        data-type="dialogs"
-        data-target="#item_preview"
-        className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-      >
-        <img src="/images/eye_bold_icon.svg" alt="eye bold icon" />
-        <span>Preview Item</span>
-      </button>
+    <button
+      aria-label="Preview Item"
+      data-type="dialogs"
+      data-target="#item_preview"
+      className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
+      <img src="/images/eye_bold_icon.svg" alt="eye bold icon" />
+      <span>Preview Item</span>
+    </button>
+  );
+};
 
+const ItemPreview = () => {
+  return (
+    <div
+      id="item_preview"
+      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+    >
       <div
-        id="item_preview"
-        className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto opacity-0 duration-[400ms] [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
-      >
-        <div
-          data-close="#item_preview"
-          className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
-        ></div>
-        <div className="z-50 flex h-auto w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
-          <RequestFormHeader title="Item Preview" />
-          <div className="flex gap-[20px]">
-            <div className="flex w-1/2 flex-col gap-[30px] text-2xl font-normal text-gray-900">
-              <img
-                src="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-                alt=""
-                className="aspect-square rounded-[20px] bg-center object-cover"
-              />
+        data-close="#item_preview"
+        className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
+      ></div>
+      <div className="z-50 flex h-max w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+        <RequestFormHeader title="Item Preview" />
+        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2">
+          <div className="col-span-1 flex flex-col gap-[30px] text-2xl font-normal text-gray-900">
+            <img
+              src="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
+              alt=""
+              className="aspect-square rounded-[20px] bg-center object-cover"
+            />
+            <div className="flex flex-col px-[14px]">
+              <label htmlFor="item-name" className="body-md text-neutral-700">
+                Item Name:
+              </label>
+              <span id="item-name" className="title-lg text-neutral-900">
+                SteelSeries Rival 5 Gaming Mouse with PrismSync RGB Lighting and
+                9.....
+              </span>
+            </div>
+          </div>
+          <div className="col-span-1 flex flex-col gap-[10px] text-sm leading-5 tracking-[0.25px]">
+            <div className="flex flex-col gap-[10px] overflow-y-auto rounded-[10px] bg-surface-500 px-[20px] py-[20px] md:max-h-[250px] md:gap-[20px] md:px-[24px] ">
+              <div className="flex flex-col gap-[10px] md:flex-row md:justify-between">
+                <div className="flex flex-col px-[14px]">
+                  <label className="body-md text-neutral-700">
+                    Item Color:
+                  </label>
+                  <span
+                    id="item-name"
+                    className="title-md md:title-lg text-neutral-900"
+                  >
+                    Amstel white
+                  </span>
+                </div>
+                <div className="flex flex-col px-[14px]">
+                  <label className="body-md text-neutral-700">
+                    Item Quantity:
+                  </label>
+                  <span
+                    id="item-name"
+                    className="title-md md:title-lg text-neutral-900"
+                  >
+                    2
+                  </span>
+                </div>
+              </div>
+
               <div className="flex flex-col px-[14px]">
-                <label htmlFor="item-name" className="body-md text-neutral-700">
-                  Item Name:
+                <label className="body-md text-neutral-700">
+                  Country Of Purchase:
                 </label>
-                <span id="item-name" className="title-lg text-neutral-900">
-                  SteelSeries Rival 5 Gaming Mouse with PrismSync RGB Lighting
-                  and 9.....
+                <span
+                  id="item-name"
+                  className="title-md md:title-lg text-neutral-900"
+                >
+                  United States (Houston - warehouse)
+                </span>
+              </div>
+
+              <div className="flex flex-col px-[14px]">
+                <label className="body-md text-neutral-700">Item Link:</label>
+                <span
+                  id="item-name"
+                  className="title-md md:title-lg text-error-600 underline"
+                >
+                  https://a.co/d/gNEGYFM
                 </span>
               </div>
             </div>
-            <div className="flex flex-grow flex-col gap-[10px] text-sm leading-5 tracking-[0.25px]">
-              <div className="flex flex-col gap-[20px] rounded-[10px] bg-surface-500 px-[24px] py-[20px]">
+            <div className="flex flex-col gap-[20px] rounded-[10px] bg-secondary-600 px-[24px] py-[20px] text-primary-10">
+              <span className="title-lg">Shop For Me Costs</span>
+              <div className="flex flex-col gap-[10px]">
+                <div className="label-lg flex justify-between">
+                  <span>Urgent Purchase Cost:</span>
+                  <span>₦0.00</span>
+                </div>
+                <hr className="bg-gray-200" />
                 <div className="flex justify-between">
-                  <div className="flex flex-col px-[14px]">
-                    <label className="body-md text-neutral-700">
-                      Item Color:
-                    </label>
-                    <span id="item-name" className="title-lg text-neutral-900">
-                      Amstel white
-                    </span>
-                  </div>
-                  <div className="flex flex-col px-[14px]">
-                    <label className="body-md text-neutral-700">
-                      Item Quantity:
-                    </label>
-                    <span id="item-name" className="title-lg text-neutral-900">
-                      2
-                    </span>
-                  </div>
+                  <span>Cost of Item from Store</span>
+                  <span>₦189,000.00</span>
                 </div>
-
-                <div className="flex flex-col px-[14px]">
-                  <label className="body-md text-neutral-700">
-                    Country Of Purchase:
-                  </label>
-                  <span id="item-name" className="title-lg text-neutral-900">
-                    United States (Houston - warehouse)
-                  </span>
+                <hr className="bg-gray-200" />
+                <div className="flex justify-between">
+                  <span>Processing Fee:</span>
+                  <span>₦28,000.00</span>
                 </div>
-
-                <div className="flex flex-col px-[14px]">
-                  <label className="body-md text-neutral-700">Item Link:</label>
-                  <span
-                    id="item-name"
-                    className="title-lg text-error-600 underline"
-                  >
-                    https://a.co/d/gNEGYFM
-                  </span>
-                </div>
+                <hr className="bg-gray-200" />
               </div>
-              <div className="flex flex-col gap-[20px] rounded-[10px] bg-secondary-600 px-[24px] py-[20px] text-primary-10">
-                <span className="title-lg">Shop For Me Costs</span>
-                <div className="flex flex-col gap-[10px]">
-                  <div className="label-lg flex justify-between">
-                    <span>Urgent Purchase Cost:</span>
-                    <span>₦0.00</span>
+              <div className="">
+                <div className="flex justify-between">
+                  <div className="flex flex-col gap-[5px]">
+                    <span className="label-lg">Total:</span>
+                    <span className="title-lg">₦28,000.00</span>
                   </div>
-                  <hr className="bg-gray-200" />
-                  <div className="flex justify-between">
-                    <span>Cost of Item from Store</span>
-                    <span>₦189,000.00</span>
-                  </div>
-                  <hr className="bg-gray-200" />
-                  <div className="flex justify-between">
-                    <span>Processing Fee:</span>
-                    <span>₦28,000.00</span>
-                  </div>
-                  <hr className="bg-gray-200" />
-                </div>
-                <div className="">
-                  <div className="flex justify-between">
-                    <div className="flex flex-col gap-[5px]">
-                      <span className="label-lg">Total:</span>
-                      <span className="title-lg">₦28,000.00</span>
-                    </div>
-                    <div className="flex flex-col gap-[5px]">
-                      <span className="body-md">
-                        Default Currency: <span className="title-sm">USD</span>
-                      </span>
+                  <div className="flex flex-col gap-[5px]">
+                    <span className="body-md">
+                      Default Currency: <span className="title-sm">USD</span>
+                    </span>
 
-                      <button
-                        aria-label="change currency"
-                        className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-400 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-100 md:px-6"
-                      >
-                        <img
-                          src="/images/change_currency_icon.svg"
-                          alt="change currency icon"
-                        />
-                        <span className="label-lg">Change Currency</span>
-                      </button>
-                    </div>
+                    <button
+                      aria-label="change currency"
+                      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-400 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-100 md:px-6"
+                    >
+                      <img
+                        src="/images/change_currency_icon.svg"
+                        alt="change currency icon"
+                      />
+                      <span className="label-lg">Change Currency</span>
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="flex flex-row items-end justify-end">
-            <div className="w-1/2">
-              <button
-                aria-label="Back"
-                data-close="#item_preview"
-                className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-              >
-                <img
-                  src="/images/arrow_right_bold_icon.svg"
-                  alt="arrow left bold icon"
-                  className="rotate-180"
-                />
-                <span className="label-lg text-white">Back</span>
-              </button>
             </div>
           </div>
         </div>
+        <div className="flex flex-row items-end justify-end">
+          <div className="w-1/2">
+            <button
+              aria-label="Back"
+              data-close="#item_preview"
+              className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+            >
+              <img
+                src="/images/arrow_right_bold_icon.svg"
+                alt="arrow left bold icon"
+                className="rotate-180"
+              />
+              <span className="label-lg text-white">Back</span>
+            </button>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

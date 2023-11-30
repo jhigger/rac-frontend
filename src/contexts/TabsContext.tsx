@@ -56,6 +56,7 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleRequests = () => {
     setHasRequests(true);
+    setRequestOrderClicked(false);
   };
 
   const value: TabsContextType = {

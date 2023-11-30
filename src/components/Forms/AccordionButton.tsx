@@ -17,7 +17,7 @@ const AccordionButton = ({ open, toggle }: AccordionButtonProps) => {
         <img
           src="/images/arrow_circle_up_icon.svg"
           alt="arrow circle up icon"
-          className="rotate-180 transform"
+          className="rotate-180"
         />
       )}
     </button>

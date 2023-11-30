@@ -15,8 +15,13 @@ import RequestOrderButton from "./RequestOrderButton";
 import TabContentLayout from "./TabContentLayout";
 
 const RequestsPanel = () => {
-  const { hasRequests, requestOrderClicked, handleTabChange, handleRequests } =
-    useTabsContext();
+  const {
+    hasRequests,
+    requestOrderClicked,
+    handleTabChange,
+    handleRequests,
+    handleRequestOrder,
+  } = useTabsContext();
 
   const handleFinish = () => {
     handleRequests();
@@ -27,14 +32,44 @@ const RequestsPanel = () => {
     handleTabChange("requests");
   };
 
-  if (hasRequests) {
-    return <TabContentLayout>{/* todo */}</TabContentLayout>;
-  }
-
   if (requestOrderClicked) {
     return (
       <TabContentLayout>
         <RequestOrderForm {...{ handleBack, handleFinish }} />
+      </TabContentLayout>
+    );
+  }
+
+  if (hasRequests) {
+    return (
+      <TabContentLayout>
+        <div className="hidden gap-[20px] sm:flex">
+          <div className="w-max">
+            <FilterButton />
+          </div>
+          <div className="w-max sm:w-full md:w-max">
+            <SearchInput />
+          </div>
+          <div className="flex flex-grow justify-end">
+            <div className="w-max">
+              <RequestNewOrderButton onClick={() => handleRequestOrder(true)} />
+            </div>
+          </div>
+        </div>
+        {/* for mobile version */}
+        <div className="flex flex-col items-center gap-[9px] sm:hidden">
+          <div className="w-full">
+            <SearchInput />
+          </div>
+          <div className="flex w-full justify-between gap-[20px]">
+            <div className="min-w-max">
+              <FilterButton />
+            </div>
+            <div className="w-full">
+              <RequestNewOrderButton onClick={() => handleRequestOrder(true)} />
+            </div>
+          </div>
+        </div>
       </TabContentLayout>
     );
   }
@@ -712,6 +747,86 @@ const DoneButton = ({ handleFinish }: DoneButtonProps) => {
         alt="tick circle bold icon"
       />
       <span className="body-lg text-white">Done</span>
+    </button>
+  );
+};
+
+const FilterButton = () => {
+  return (
+    <button
+      aria-label="Filter"
+      className="btn relative flex h-14 w-14 flex-row items-center justify-center gap-x-[12px] rounded-[20px] bg-brand p-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 sm:p-4 md:w-full"
+    >
+      <img src="/images/filter_icon.svg" alt="filter icon" />
+      <span className="label-lg hidden text-neutral-100 lg:block">
+        Filter View
+      </span>
+      <div className="label-sm absolute right-0 top-0 flex h-[16px] min-w-[16px] items-center justify-center rounded-full border-2 border-white bg-error-600 p-1 text-[8px] text-white">
+        {/* put notification count here */}
+      </div>
+    </button>
+  );
+};
+
+const SearchInput = () => {
+  return (
+    <div className="relative flex w-full">
+      <div className="relative z-0 w-full">
+        <div className="absolute left-4 top-4 z-10">
+          <img src="/images/search_icon.svg" alt="search icon" />
+        </div>
+
+        <input
+          type="search"
+          aria-label="Search for users with any related keyword"
+          name="search_input"
+          id="search_input"
+          className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-transparent py-2 pl-14 pr-4 leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0 lg:min-w-[410px]"
+          placeholder=" "
+          value=""
+        />
+
+        <label
+          htmlFor="search_input"
+          className="absolute left-12 top-4 z-10 hidden w-max origin-[0] -translate-y-7 scale-75 transform whitespace-nowrap px-1 tracking-[.03125em] text-secondary-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-invalid:text-error-600 peer-focus:left-12 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:bg-neutral-50 peer-focus:px-1 peer-focus:text-primary-600 lg:block"
+        >
+          Search for users with any related keyword
+        </label>
+        {/* for mobile screen */}
+        <label
+          htmlFor="search_input"
+          className="absolute left-12 top-4 z-10 block w-max origin-[0] -translate-y-7 scale-75 transform whitespace-nowrap px-1 tracking-[.03125em] text-secondary-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-invalid:text-error-600 peer-focus:left-12 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:bg-neutral-50 peer-focus:px-1 peer-focus:text-primary-600 lg:hidden"
+        >
+          Search
+        </label>
+      </div>
+      <div className="hidden px-4 pt-1 text-xs tracking-[0.4px]">
+        Supporting text
+      </div>
+    </div>
+  );
+};
+
+type RequestNewOrderButton = { onClick: () => void };
+
+const RequestNewOrderButton = ({ onClick }: RequestNewOrderButton) => {
+  return (
+    <button
+      onClick={onClick}
+      aria-label="Filter"
+      className="btn relative flex h-14 w-full flex-row items-center justify-center gap-[9px] rounded-[20px] bg-brand px-[8px] py-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 md:gap-x-[12px] md:p-4"
+    >
+      <img
+        src="/images/import_bold_icon.svg"
+        alt="import bold icon"
+        className="hidden h-6 w-6 md:block"
+      />
+      <img
+        src="/images/export_bold_icon.svg"
+        alt="export bold icon"
+        className="block h-6 w-6 md:hidden"
+      />
+      <span className="label-lg text-neutral-100">Request new order</span>
     </button>
   );
 };

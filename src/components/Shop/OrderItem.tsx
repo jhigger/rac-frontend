@@ -6,7 +6,7 @@ type OrderItemProps = { order: OrderItemType };
 const OrderItem = ({ order }: OrderItemProps) => {
   return (
     <div className="flex w-full flex-col gap-[17px] rounded-[20px] bg-white p-[20px]">
-      <OrderItemHeader state={order.state} />
+      <OrderItemHeader state={order.state} action="responded" />
       <OrderItemImages images={order.images} />
       <div className="label-lg flex items-center gap-[20px] py-[10px] text-neutral-900">
         <span className="font-bold">Order Request Date:</span>
@@ -16,9 +16,11 @@ const OrderItem = ({ order }: OrderItemProps) => {
   );
 };
 
-type OrderItemHeaderProps = Pick<OrderItemType, "state">;
+type OrderItemHeaderProps = Pick<OrderItemType, "state"> & {
+  action: OrderItemType["state"];
+};
 
-export const OrderItemHeader = ({ state }: OrderItemHeaderProps) => {
+export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
   const handleTakeAction = () => {
     return;
   };
@@ -33,7 +35,7 @@ export const OrderItemHeader = ({ state }: OrderItemHeaderProps) => {
           </div>
           <div className="hidden items-center gap-[10px] md:flex">
             <OrderState state={state} />
-            {state === "responded" && (
+            {state === action && (
               <TakeActionNowButton handleTakeAction={handleTakeAction} />
             )}
           </div>
@@ -106,7 +108,7 @@ const MoreButton = () => {
   );
 };
 
-type OrderStateProps = OrderItemHeaderProps;
+type OrderStateProps = Pick<OrderItemType, "state">;
 
 const OrderState = ({ state }: OrderStateProps) => {
   return (

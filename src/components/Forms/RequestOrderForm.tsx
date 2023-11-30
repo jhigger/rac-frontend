@@ -40,6 +40,7 @@ const RequestOrderForm = () => {
             <SaveAsDraftButton />
             <ProceedButton next={next} />
           </div>
+          {/* for mobile screen */}
           <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
             <div className="col-span-1 w-full">
               <BackButton handleBack={handleBack} />

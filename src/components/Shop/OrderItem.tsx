@@ -1,57 +1,13 @@
+import { type OrderItemType } from "~/contexts/TabsContext";
 /* eslint-disable @next/next/no-img-element */
-const STATES = ["responded", "processed", "not responded to"] as const;
 
-type OrderItemProps = {
-  state: (typeof STATES)[number];
-};
+type OrderItemProps = { order: OrderItemType };
 
-const OrderItem = ({ state }: OrderItemProps) => {
-  const images = Array(6)
-    .fill(null)
-    .map((_, i) => {
-      return `https://placehold.co/500x500/cac4d0/1d192b?text=Image ${i}`;
-    });
-
+const OrderItem = ({ order }: OrderItemProps) => {
   return (
     <div className="flex w-full flex-col gap-[17px] rounded-[20px] bg-white p-[20px]">
-      <OrderItemHeader state={state} />
-      <div className="flex w-max items-center gap-[10px] rounded-[20px] bg-surface-100 p-[10px]">
-        <div className="hidden gap-[10px] sm:flex">
-          {images.slice(0, 4).map((src) => {
-            return (
-              <img
-                key={src}
-                src={src}
-                alt={src}
-                className="w-[84px] rounded-[13px]"
-              />
-            );
-          })}
-        </div>
-        <div className="flex sm:hidden">
-          {images.slice(0, 1).map((src) => {
-            return (
-              <img
-                key={src}
-                src={src}
-                alt={src}
-                className="w-[84px] rounded-[13px]"
-              />
-            );
-          })}
-        </div>
-        {images.length >= 5 && (
-          <>
-            <div className="label-lg hidden h-[84px] w-[84px] items-center p-[10px] text-secondary-600 sm:flex">{`${
-              images.length - 4
-            }+ more`}</div>
-            {/* for mobile screen */}
-            <div className="label-lg flex h-[84px] w-[84px] items-center p-[10px] text-secondary-600 sm:hidden">{`${
-              images.length - 1
-            }+ more`}</div>
-          </>
-        )}
-      </div>
+      <OrderItemHeader state={order.state} />
+      <OrderItemImages images={order.images} />
       <div className="label-lg flex items-center gap-[20px] py-[10px] text-neutral-900">
         <span className="font-bold">Order Request Date:</span>
         <span className="text-secondary-600">23rd Jan 2023</span>
@@ -60,9 +16,9 @@ const OrderItem = ({ state }: OrderItemProps) => {
   );
 };
 
-type OrderItemHeaderProps = OrderItemProps;
+type OrderItemHeaderProps = Pick<OrderItemType, "state">;
 
-const OrderItemHeader = ({ state }: OrderItemHeaderProps) => {
+export const OrderItemHeader = ({ state }: OrderItemHeaderProps) => {
   const handleTakeAction = () => {
     return;
   };
@@ -95,6 +51,50 @@ const OrderItemHeader = ({ state }: OrderItemHeaderProps) => {
         )}
       </div>
     </>
+  );
+};
+
+type OrderItemImagesProps = Pick<OrderItemType, "images">;
+
+export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
+  return (
+    <div className="flex w-max items-center gap-[10px] rounded-[20px] bg-surface-100 p-[10px]">
+      <div className="hidden gap-[10px] sm:flex">
+        {images.slice(0, 4).map((src) => {
+          return (
+            <img
+              key={src}
+              src={src}
+              alt={src}
+              className="w-[84px] rounded-[13px]"
+            />
+          );
+        })}
+      </div>
+      <div className="flex sm:hidden">
+        {images.slice(0, 1).map((src) => {
+          return (
+            <img
+              key={src}
+              src={src}
+              alt={src}
+              className="w-[84px] rounded-[13px]"
+            />
+          );
+        })}
+      </div>
+      {images.length >= 5 && (
+        <>
+          <div className="label-lg hidden h-[84px] w-[84px] items-center p-[10px] text-secondary-600 sm:flex">{`${
+            images.length - 4
+          }+ more`}</div>
+          {/* for mobile screen */}
+          <div className="label-lg flex h-[84px] w-[84px] items-center p-[10px] text-secondary-600 sm:hidden">{`${
+            images.length - 1
+          }+ more`}</div>
+        </>
+      )}
+    </div>
   );
 };
 

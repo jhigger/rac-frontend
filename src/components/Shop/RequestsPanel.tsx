@@ -3,14 +3,18 @@ import Balancer from "react-wrap-balancer";
 import { useTabsContext } from "~/contexts/TabsContext";
 import RequestOrderForm from "../Forms/RequestOrderForm";
 import NeedHelpFAB from "../NeedHelpFAB";
+import OrderItem from "./OrderItem";
 import RequestOrderButton from "./RequestOrderButton";
 import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
-import OrderItem from "./OrderItem";
 
 const RequestsPanel = () => {
-  const { hasRequests, requestOrderClicked, handleTabChange, handleRequests } =
-    useTabsContext();
+  const {
+    requestedOrders,
+    requestOrderClicked,
+    handleTabChange,
+    handleRequests,
+  } = useTabsContext();
 
   const handleFinish = () => {
     handleRequests();
@@ -29,14 +33,14 @@ const RequestsPanel = () => {
     );
   }
 
-  if (hasRequests) {
+  if (requestedOrders) {
     return (
       <TabContentLayout>
         <SearchBar />
         <div className="flex flex-col gap-[20px] sm:w-max">
-          <OrderItem state="responded" />
-          <OrderItem state="processed" />
-          <OrderItem state="not responded to" />
+          {requestedOrders.map((order) => {
+            return <OrderItem key={order.id} order={order} />;
+          })}
         </div>
         <NeedHelpFAB />
       </TabContentLayout>

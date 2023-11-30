@@ -251,7 +251,7 @@ const ItemDetailsSection = () => {
                 Item - <span className="text-primary-600">#1</span>
               </h4>
               <div className="hidden md:block">
-                <PreviewItemButton />
+                {/* <PreviewItemButton /> */}
               </div>
               <div className="flex flex-grow justify-end">
                 <ExpandCollapseButton {...{ open, toggle }} />
@@ -360,7 +360,7 @@ const ItemDetailsSection = () => {
             )}
 
             <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 p-[10px] md:hidden">
-              <PreviewItemButton />
+              {/* <PreviewItemButton /> */}
               <DeleteItemButton />
             </div>
           </div>

@@ -108,6 +108,7 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleTabChange = (tab: tabIdType) => {
     setActiveTab(tab);
+    resetAllClicked();
   };
 
   const handleOrderAction = (value: boolean) => {

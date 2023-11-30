@@ -146,7 +146,7 @@ const TakeActionNowButton = ({
   return (
     <button
       onClick={handleTakeAction}
-      aria-label="Preview Item"
+      aria-label="Take Action Now"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
     >
       <img

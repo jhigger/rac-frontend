@@ -2,6 +2,7 @@
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 import Balancer from "react-wrap-balancer";
 import { useTabsContext } from "~/contexts/TabsContext";
+import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
 import CurrencyInput from "../Forms/Inputs/CurrencyInput";
 import FileInput from "../Forms/Inputs/FileInput";
@@ -36,26 +37,27 @@ const RequestsPanel = () => {
 };
 
 const RequestOrderForm = () => {
+  const { step, next, isFirstStep } = useMultiStepForm([
+    <RequestOrderStep1 />,
+    <RequestOrderStep2 />,
+  ]);
+
   return (
     <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      <RequestFormHeader title="Requesting For New Shop For Me Service" />
-      <ImportantNotice />
-      <SelectWarehouseOriginSection />
-      <ItemDetailsSection />
-      <div className="w-max">
-        <AddButton title="Add Item" />
-      </div>
-      <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-        <BackButton />
-        <SaveAsDraftButton />
-        <ProceedButton />
-      </div>
+      {step}
+      {isFirstStep && (
+        <div className="hidden gap-[10px] md:flex [&>*]:w-max">
+          <BackButton />
+          <SaveAsDraftButton />
+          <ProceedButton next={next} />
+        </div>
+      )}
       <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
         <div className="col-span-1 w-full">
           <BackButton />
         </div>
         <div className="col-span-1">
-          <ProceedButton />
+          <ProceedButton next={next} />
         </div>
         <div className="col-span-full">
           <SaveAsDraftButton />
@@ -63,6 +65,99 @@ const RequestOrderForm = () => {
       </div>
       <NeedHelpFAB />
     </div>
+  );
+};
+
+const RequestOrderStep1 = () => {
+  return (
+    <>
+      <RequestFormHeader title="Requesting For New Shop For Me Service" />
+      <ImportantNotice />
+      <SelectWarehouseOriginSection />
+      <ItemDetailsSection />
+      <div className="w-max">
+        <AddButton title="Add Item" />
+      </div>
+    </>
+  );
+};
+
+const RequestOrderStep2 = () => {
+  return (
+    <>
+      <RequestFormHeader title="Requesting For New Shop For Me Service" />
+      <SectionContentLayout>
+        <div className="flex w-full items-center justify-center gap-[5px] p-[10px]">
+          <span className="headline-md">Request ID:</span>
+          <span className="headline-md font-bold">R78667</span>
+        </div>
+      </SectionContentLayout>
+      <div className="flex gap-[10px] rounded-[20px] bg-primary-600 px-[14px] py-[10px]">
+        <img
+          src="/images/drone_flying_with_package.png"
+          alt="drone flying with package"
+        />
+        <div className="flex flex-col justify-center gap-[10px] text-white">
+          <span className="headline-md font-bold">Congratulations!</span>
+          <span className="headline-md">
+            You have just successfully requested for shop for me service.
+          </span>
+        </div>
+      </div>
+      <SectionHeader title="What next?" />
+      <SectionContentLayout>
+        <div className="flex flex-col gap-[10px]">
+          <h3 className="title-lg font-bold text-neutral-900">
+            Do the following to process your Order
+          </h3>
+          <ul className="flex flex-col gap-[13px]">
+            <li className="flex items-center gap-[26px]">
+              <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
+                1
+              </span>
+              <span className="title-lg text-neutral-900">
+                Kindly note that we will review the details of the items that
+                you provided and make changes to the them if they don&apos;t
+                tally with the ones we verify from store.
+              </span>
+            </li>
+            <li className="flex items-center gap-[26px]">
+              <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
+                2
+              </span>
+              <span className="title-lg text-neutral-900">
+                You will then be requested to confirm and pay for the
+                procurement cost only to place an order.
+              </span>
+            </li>
+            <li className="flex items-center gap-[26px]">
+              <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
+                3
+              </span>
+              <span className="title-lg text-neutral-900">
+                To begin import processing for your procured items, you will be
+                sent a quote containing the shipping cost to Nigeria only when
+                we have purchased and brought the procured items to the Origin
+                warehouse You selected.
+              </span>
+            </li>
+            <li className="flex items-center gap-[26px]">
+              <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
+                4
+              </span>
+              <span className="title-lg text-neutral-900">
+                And finally, you will be paying for the shipping cost when the
+                package gets to our office in Nigeria (you could inform us about
+                the one closest to you)
+              </span>
+            </li>
+          </ul>
+        </div>
+      </SectionContentLayout>
+      <div className="w-1/3">
+        <DoneButton />
+      </div>
+    </>
   );
 };
 
@@ -537,9 +632,12 @@ const SaveAsDraftButton = () => {
   );
 };
 
-const ProceedButton = () => {
+type ProceedButtonProps = { next: () => void };
+
+const ProceedButton = ({ next }: ProceedButtonProps) => {
   return (
     <button
+      onClick={next}
       aria-label="Proceed"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
@@ -547,7 +645,22 @@ const ProceedButton = () => {
         src="/images/arrow_right_bold_icon.svg"
         alt="arrow right bold icon"
       />
-      <span className="body-lg text-neutral-100">Proceed</span>
+      <span className="body-lg text-white">Proceed</span>
+    </button>
+  );
+};
+
+const DoneButton = () => {
+  return (
+    <button
+      aria-label="Done"
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
+      <img
+        src="/images/tick_circle_bold_icon.svg"
+        alt="tick circle bold icon"
+      />
+      <span className="body-lg text-white">Done</span>
     </button>
   );
 };

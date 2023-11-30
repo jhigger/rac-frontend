@@ -97,6 +97,7 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleTakeAction = (value: boolean) => {
     setTakeActionClicked(value);
+    setRequestOrderClicked(false);
   };
 
   const value: TabsContextType = {

@@ -7,13 +7,13 @@ import tailmater from "~/js/tailmater";
 import CurrencyInput from "../Forms/Inputs/CurrencyInput";
 import FileInput from "../Forms/Inputs/FileInput";
 import QuantityInput from "../Forms/Inputs/QuantityInput";
+import SearchInput from "../Forms/Inputs/SearchInput";
 import SelectInput from "../Forms/Inputs/SelectInput";
 import TextAreaInput from "../Forms/Inputs/TextAreaInput";
 import TextInput from "../Forms/Inputs/TextInput";
 import NeedHelpFAB from "../NeedHelpFAB";
 import RequestOrderButton from "./RequestOrderButton";
 import TabContentLayout from "./TabContentLayout";
-import SearchInput from "../Forms/Inputs/SearchInput";
 
 const RequestsPanel = () => {
   const {
@@ -44,7 +44,7 @@ const RequestsPanel = () => {
   if (hasRequests) {
     return (
       <TabContentLayout>
-        <div className="hidden gap-[20px] sm:flex">
+        <div className="mb-[59px] hidden gap-[20px] sm:flex">
           <div className="w-max">
             <FilterButton />
           </div>
@@ -77,6 +77,13 @@ const RequestsPanel = () => {
             </div>
           </div>
         </div>
+
+        <div className="flex w-max flex-col gap-[20px]">
+          <OrderItem state="responded" />
+          <OrderItem state="processed" />
+          <OrderItem state="not responded to" />
+        </div>
+        <NeedHelpFAB />
       </TabContentLayout>
     );
   }
@@ -93,6 +100,121 @@ const RequestsPanel = () => {
         <RequestOrderButton />
       </div>
     </TabContentLayout>
+  );
+};
+
+const STATES = ["responded", "processed", "not responded to"] as const;
+
+type OrderItemProps = {
+  state: (typeof STATES)[number];
+};
+
+const OrderItem = ({ state }: OrderItemProps) => {
+  const images = Array(4)
+    .fill(null)
+    .map((_, i) => {
+      return `https://placehold.co/500x500/cac4d0/1d192b?text=Order ${i}`;
+    });
+
+  return (
+    <div className="flex w-full flex-col gap-[17px] rounded-[20px] bg-white p-[20px]">
+      <OrderItemHeader state={state} />
+      <div className="flex w-max gap-[10px] rounded-[20px] bg-surface-100 p-[10px]">
+        {images.map((src) => {
+          return (
+            <img
+              key={src}
+              src={src}
+              alt={src}
+              className="w-[84px] rounded-[13px]"
+            />
+          );
+        })}
+      </div>
+      <div className="label-lg flex items-center gap-[20px] py-[10px] text-neutral-900">
+        <span className="font-bold">Order Request Date:</span>
+        <span className="text-secondary-600">23rd Jan 2023</span>
+      </div>
+    </div>
+  );
+};
+
+type OrderItemHeaderProps = OrderItemProps;
+
+const OrderItemHeader = ({ state }: OrderItemHeaderProps) => {
+  const handleTakeAction = () => {
+    return;
+  };
+
+  return (
+    <div className="flex items-center gap-[24px]">
+      <div className="flex items-center gap-[15px]">
+        <div className="headline-sm flex items-center gap-[5px] text-neutral-900">
+          <span>Order ID:</span>
+          <span className="font-bold">OD78667</span>
+        </div>
+        <div className="flex items-center gap-[10px]">
+          <div className="flex items-center gap-[5px]">
+            {state === "responded" && (
+              <>
+                <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
+
+                <span className="label-lg font-bold text-primary-600">
+                  Responded
+                </span>
+              </>
+            )}
+            {state === "processed" && (
+              <>
+                <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
+
+                <span className="label-lg font-bold text-primary-600">
+                  Processed
+                </span>
+              </>
+            )}
+            {state === "not responded to" && (
+              <>
+                <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
+
+                <span className="label-lg font-bold text-primary-600">
+                  Not Responded to
+                </span>
+              </>
+            )}
+          </div>
+          {state === "responded" && (
+            <TakeActionNowButton handleTakeAction={handleTakeAction} />
+          )}
+        </div>
+      </div>
+
+      <button className="flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
+        <img src="/images/more_icon.svg" alt="more icon" />
+      </button>
+    </div>
+  );
+};
+type TakeActionNowButtonProps = { handleTakeAction: () => void };
+
+const TakeActionNowButton = ({
+  handleTakeAction,
+}: TakeActionNowButtonProps) => {
+  return (
+    <button
+      onClick={handleTakeAction}
+      aria-label="Preview Item"
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
+    >
+      <img
+        src="/images/security_icon.svg"
+        alt="security icon"
+        className="h-4 w-4"
+      />
+      <span className="label-lg whitespace-nowrap text-primary-600">
+        Take Action Now
+      </span>
+    </button>
   );
 };
 

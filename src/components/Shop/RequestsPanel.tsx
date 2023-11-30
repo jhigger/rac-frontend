@@ -46,23 +46,25 @@ const RequestOrderForm = () => {
     <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       {step}
       {isFirstStep && (
-        <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-          <BackButton />
-          <SaveAsDraftButton />
-          <ProceedButton next={next} />
-        </div>
+        <>
+          <div className="hidden gap-[10px] md:flex [&>*]:w-max">
+            <BackButton />
+            <SaveAsDraftButton />
+            <ProceedButton next={next} />
+          </div>
+          <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
+            <div className="col-span-1 w-full">
+              <BackButton />
+            </div>
+            <div className="col-span-1">
+              <ProceedButton next={next} />
+            </div>
+            <div className="col-span-full">
+              <SaveAsDraftButton />
+            </div>
+          </div>
+        </>
       )}
-      <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
-        <div className="col-span-1 w-full">
-          <BackButton />
-        </div>
-        <div className="col-span-1">
-          <ProceedButton next={next} />
-        </div>
-        <div className="col-span-full">
-          <SaveAsDraftButton />
-        </div>
-      </div>
       <NeedHelpFAB />
     </div>
   );
@@ -92,7 +94,7 @@ const RequestOrderStep2 = () => {
           <span className="headline-md font-bold">R78667</span>
         </div>
       </SectionContentLayout>
-      <div className="flex gap-[10px] rounded-[20px] bg-primary-600 px-[14px] py-[10px]">
+      <div className="flex flex-col-reverse gap-[10px] rounded-[20px] bg-primary-600 px-[14px] py-[10px] md:flex-row">
         <img
           src="/images/drone_flying_with_package.png"
           alt="drone flying with package"
@@ -121,6 +123,7 @@ const RequestOrderStep2 = () => {
                 tally with the ones we verify from store.
               </span>
             </li>
+            <hr className="block w-full border-gray-500 md:hidden" />
             <li className="flex items-center gap-[26px]">
               <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
                 2
@@ -130,6 +133,7 @@ const RequestOrderStep2 = () => {
                 procurement cost only to place an order.
               </span>
             </li>
+            <hr className="block w-full border-gray-500 md:hidden" />
             <li className="flex items-center gap-[26px]">
               <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
                 3
@@ -141,6 +145,7 @@ const RequestOrderStep2 = () => {
                 warehouse You selected.
               </span>
             </li>
+            <hr className="block w-full border-gray-500 md:hidden" />
             <li className="flex items-center gap-[26px]">
               <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
                 4

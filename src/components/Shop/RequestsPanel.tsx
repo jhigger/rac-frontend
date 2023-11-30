@@ -535,7 +535,7 @@ const ItemPreview = () => {
               </div>
               <div className="">
                 <div className="flex justify-between">
-                  <div className="flex flex-col gap-[5px]">
+                  <div className="flex flex-col gap-[5px] justify-end">
                     <span className="label-lg">Total:</span>
                     <span className="title-lg">₦28,000.00</span>
                   </div>

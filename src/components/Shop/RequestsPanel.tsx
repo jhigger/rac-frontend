@@ -261,7 +261,7 @@ const ItemDetailsSection = () => {
               <h4 className="title-md md:title-lg text-gray-700">
                 Item - <span className="text-primary-600">#1</span>
               </h4>
-              <div className="hidden sm:block">
+              <div className="hidden md:block">
                 <PreviewItemButton />
               </div>
               <div className="flex flex-grow justify-end">

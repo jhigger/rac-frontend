@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import {
   bottomNavItems,
   topNavItems,
@@ -31,7 +32,11 @@ export const NavItem = ({ navItem }: NavItemProps) => {
 export const TopNav = () => {
   return (
     <div className="flex flex-col gap-[16px]">
-      <NavItem navItem={{ src: "/images/nav/home_icon.svg", title: "Home" }} />
+      <Link href="/">
+        <NavItem
+          navItem={{ src: "/images/nav/home_icon.svg", title: "Home" }}
+        />
+      </Link>
       <div>
         {topNavItems.map((navItem) => {
           return <NavItem key={navItem.title} navItem={navItem} />;

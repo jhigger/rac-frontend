@@ -758,7 +758,7 @@ const FilterButton = () => {
       className="btn relative flex h-14 w-14 flex-row items-center justify-center gap-x-[12px] rounded-[20px] bg-brand p-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 sm:p-4 md:w-full"
     >
       <img src="/images/filter_icon.svg" alt="filter icon" />
-      <span className="label-lg hidden text-neutral-100 lg:block">
+      <span className="label-lg hidden text-neutral-100 [@media(min-width:1000px)]:block">
         Filter View
       </span>
       <div className="label-sm absolute right-0 top-0 flex h-[16px] min-w-[16px] items-center justify-center rounded-full border-2 border-white bg-error-600 p-1 text-[8px] text-white">

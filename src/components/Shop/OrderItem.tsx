@@ -6,7 +6,7 @@ type OrderItemProps = { order: OrderItemType };
 const OrderItem = ({ order }: OrderItemProps) => {
   return (
     <div className="flex w-full flex-col gap-[17px] rounded-[20px] bg-white p-[20px]">
-      <OrderItemHeader state={order.state} action="responded" />
+      <OrderItemHeader orderStatus={order.orderStatus} action="responded" />
       <OrderItemImages images={order.images} />
       <div className="label-lg flex items-center gap-[20px] py-[10px] text-neutral-900">
         <span className="font-bold">Order Request Date:</span>
@@ -16,19 +16,22 @@ const OrderItem = ({ order }: OrderItemProps) => {
   );
 };
 
-type OrderItemHeaderProps = Pick<OrderItemType, "state"> & {
-  action: OrderItemType["state"];
+type OrderItemHeaderProps = OrderStatusProps & {
+  action: OrderItemType["orderStatus"];
 };
 
-export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
+export const OrderItemHeader = ({
+  orderStatus: status,
+  action,
+}: OrderItemHeaderProps) => {
   return (
     <>
       <div className="flex items-center">
         <div className="flex items-center gap-[15px]">
           <RequestId id="OD78667" />
           <div className="hidden items-center gap-[10px] md:flex">
-            <OrderState state={state} />
-            {state === action && <TakeActionNowButton />}
+            <OrderStatus orderStatus={status} />
+            {status === action && <TakeActionNowButton />}
           </div>
         </div>
         <div className="flex flex-grow justify-end">
@@ -38,8 +41,8 @@ export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
 
       {/* for mobile screen */}
       <div className="flex items-center justify-between md:hidden">
-        <OrderState state={state} />
-        {state === "responded" && <TakeActionNowButton />}
+        <OrderStatus orderStatus={status} />
+        {status === "responded" && <TakeActionNowButton />}
       </div>
     </>
   );
@@ -108,19 +111,19 @@ const MoreButton = () => {
   );
 };
 
-type OrderStateProps = Pick<OrderItemType, "state">;
+type OrderStatusProps = Pick<OrderItemType, "orderStatus">;
 
-const OrderState = ({ state }: OrderStateProps) => {
+const OrderStatus = ({ orderStatus: status }: OrderStatusProps) => {
   return (
     <div className="flex w-full items-center gap-[5px]">
-      {state === "responded" && <RespondedState />}
-      {state === "processed" && <ProcessedState />}
-      {state === "not responded to" && <UnprocessedState />}
+      {status === "responded" && <RespondedStatus />}
+      {status === "processed" && <ProcessedStatus />}
+      {status === "not responded to" && <UnprocessedStatus />}
     </div>
   );
 };
 
-export const UnprocessedState = () => {
+export const UnprocessedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
       <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
@@ -132,7 +135,7 @@ export const UnprocessedState = () => {
   );
 };
 
-export const ProcessedState = () => {
+export const ProcessedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
       <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
@@ -142,7 +145,7 @@ export const ProcessedState = () => {
   );
 };
 
-export const RespondedState = () => {
+export const RespondedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
       <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>

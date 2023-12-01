@@ -64,7 +64,10 @@ const UnprocessedOrder = ({ order }: UnprocessedOrderProps) => {
   return (
     <div className="flex gap-[10px]">
       <div className="flex w-full flex-col gap-[27px] rounded-[20px] bg-white p-[20px]">
-        <OrderItemHeader state={order.state} action={"not responded to"} />
+        <OrderItemHeader
+          orderStatus={order.orderStatus}
+          action={"not responded to"}
+        />
         <OrderItemImages images={order.images} />
         <div className="grid grid-cols-1 gap-[15px] md:grid-cols-2">
           <div className="col-span-1 flex flex-col gap-[15px]">

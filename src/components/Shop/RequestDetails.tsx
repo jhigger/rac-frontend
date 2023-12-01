@@ -9,7 +9,7 @@ import {
   SectionHeader,
   TooltipButton,
 } from "../Forms/RequestOrderForm";
-import { RequestId, RespondedState } from "./OrderItem";
+import { RequestId, RespondedStatus } from "./OrderItem";
 
 const RequestDetails = () => {
   const { orderItems, handleRequestAction } = useTabsContext();
@@ -332,7 +332,7 @@ const OrderInformation = () => {
                 <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
                   <span className="body-md">Shop for me status:</span>
                   <span className="title-lg text-neutral-900">
-                    <RespondedState />
+                    <RespondedStatus />
                   </span>
                 </div>
                 <ProceedToCheckoutButton />

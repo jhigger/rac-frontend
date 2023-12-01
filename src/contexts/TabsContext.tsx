@@ -50,11 +50,20 @@ export const tabs: AppBarTabType[] = [
   { id: "draft", title: "Draft", content: <DraftPanel /> },
 ];
 
-const STATES = ["responded", "processed", "not responded to"] as const;
+const ORDER_STATUS = ["responded", "processed", "not responded to"] as const;
+const SHIPPING_STATUS = [
+  "not started",
+  "ready for shipping",
+  "cleared",
+  "processing",
+  "in transit",
+] as const;
+
 export type OrderItemType = {
   id: string;
-  state: (typeof STATES)[number];
   images: string[];
+  orderStatus: (typeof ORDER_STATUS)[number];
+  shippingStatus: (typeof SHIPPING_STATUS)[number];
 };
 
 const images = Array(6)
@@ -64,9 +73,36 @@ const images = Array(6)
   });
 
 const orders: OrderItemType[] = [
-  { id: "order1", state: "processed", images },
-  { id: "order2", state: "responded", images },
-  { id: "order3", state: "not responded to", images },
+  {
+    id: "order1",
+    orderStatus: "processed",
+    shippingStatus: "not started",
+    images,
+  },
+  {
+    id: "order2",
+    orderStatus: "responded",
+    shippingStatus: "ready for shipping",
+    images,
+  },
+  {
+    id: "order3",
+    orderStatus: "not responded to",
+    shippingStatus: "cleared",
+    images,
+  },
+  {
+    id: "order3",
+    orderStatus: "not responded to",
+    shippingStatus: "processing",
+    images,
+  },
+  {
+    id: "order3",
+    orderStatus: "not responded to",
+    shippingStatus: "in transit",
+    images,
+  },
 ];
 
 const TabsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -91,7 +127,7 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleOrders = () => {
     const unprocessedOrders = orders.filter((order) => {
-      return order.state === "not responded to";
+      return order.orderStatus === "not responded to";
     });
     setOrderItems(unprocessedOrders);
   };

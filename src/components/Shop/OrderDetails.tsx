@@ -7,7 +7,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "../Forms/RequestOrderForm";
-import { RequestId, UnprocessedState } from "./OrderItem";
+import { RequestId, UnprocessedStatus } from "./OrderItem";
 import { BillingDetails, Item, PackageOrigin } from "./RequestDetails";
 
 const OrderDetails = () => {
@@ -63,7 +63,7 @@ const OrderInformation = () => {
                 <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
                   <span className="body-md">Shop for me status:</span>
                   <span className="title-lg text-neutral-900">
-                    <UnprocessedState />
+                    <UnprocessedStatus />
                   </span>
                 </div>
               </div>

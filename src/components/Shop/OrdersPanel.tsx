@@ -7,6 +7,7 @@ import { OrderItemHeader, OrderItemImages } from "./OrderItem";
 import RequestOrderButton from "./RequestOrderButton";
 import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
+import OrderDetails from "./OrderDetails";
 
 const OrdersPanel = () => {
   const { orderItems, orderActionClicked, requestOrderClicked } =
@@ -22,7 +23,11 @@ const OrdersPanel = () => {
   }
 
   if (orderActionClicked) {
-    return <TabContentLayout>ACTION CLICKED</TabContentLayout>;
+    return (
+      <TabContentLayout>
+        <OrderDetails />
+      </TabContentLayout>
+    );
   }
 
   if (orderItems) {

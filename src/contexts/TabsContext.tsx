@@ -127,8 +127,8 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
 
   // testing purposes
   useEffect(() => {
-    // handleRequests();
-    // handleRequestAction(true);
+    handleRequests();
+    handleOrderAction(true);
   }, [activeTab]);
 
   const value: TabsContextType = {

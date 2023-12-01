@@ -120,7 +120,7 @@ const OrderState = ({ state }: OrderStateProps) => {
   );
 };
 
-const UnprocessedState = () => {
+export const UnprocessedState = () => {
   return (
     <div className="flex items-center gap-[10px]">
       <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
@@ -132,7 +132,7 @@ const UnprocessedState = () => {
   );
 };
 
-const ProcessedState = () => {
+export const ProcessedState = () => {
   return (
     <div className="flex items-center gap-[10px]">
       <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>

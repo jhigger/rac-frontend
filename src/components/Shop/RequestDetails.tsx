@@ -60,7 +60,7 @@ const ProceedButton = ({ onClick }: ProceedButtonProps) => {
   );
 };
 
-const BillingDetails = () => {
+export const BillingDetails = () => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -116,7 +116,7 @@ type ItemProps = {
   index: number;
 };
 
-const Item = ({ index }: ItemProps) => {
+export const Item = ({ index }: ItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -264,7 +264,7 @@ const LabelWithTooltip = ({ label }: LabelWithTooltipProps) => {
   );
 };
 
-const PackageOrigin = () => {
+export const PackageOrigin = () => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -300,7 +300,7 @@ const PackageOrigin = () => {
 
 type HighlightedInfoProps = { text: string };
 
-const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
+export const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
   return (
     <div className="flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[14px] py-[10px]">
       <p className="label-lg text-gray-700">{text}</p>

@@ -61,6 +61,11 @@ const SHIPPING_STATUS = [
   "processing",
   "in transit",
 ] as const;
+const SHOP_FOR_ME_STATUS = [
+  "purchase not started",
+  "purchase in progress",
+  "purchase completed",
+] as const;
 
 export type OrderItemType = {
   images: string[];
@@ -69,7 +74,7 @@ export type OrderItemType = {
   orderDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
-  shopForMeStatus: string;
+  shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
   shopForMeCost: string;
   shippingCost: string;
 };

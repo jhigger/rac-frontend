@@ -103,7 +103,7 @@ export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
   );
 };
 
-const MoreButton = () => {
+export const MoreButton = () => {
   return (
     <button className="flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
       <img src="/images/more_icon.svg" alt="more icon" />

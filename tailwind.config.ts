@@ -12,6 +12,7 @@ export default {
     extend: {
       colors: {
         brand: "#060C2C",
+        "brand-orange": "#DF5000",
         primary: {
           10: "#FFFBFE",
           50: "#F6EDFF",

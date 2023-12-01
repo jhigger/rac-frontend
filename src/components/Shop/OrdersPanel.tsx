@@ -1,13 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
+import { type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { useTabsContext, type OrderItemType } from "~/contexts/TabsContext";
+import { orders } from "~/fake data";
 import RequestOrderForm from "../Forms/RequestOrderForm";
 import NeedHelpFAB from "../NeedHelpFAB";
-import { OrderItemHeader, OrderItemImages } from "./OrderItem";
+import OrderDetails from "./OrderDetails";
+import { MoreButton } from "./OrderItem";
 import RequestOrderButton from "./RequestOrderButton";
 import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
-import OrderDetails from "./OrderDetails";
 
 const OrdersPanel = () => {
   const { orderItems, orderActionClicked, requestOrderClicked } =
@@ -34,11 +36,7 @@ const OrdersPanel = () => {
     return (
       <TabContentLayout>
         <SearchBar />
-        <div className="flex flex-col gap-[20px] sm:w-max">
-          {orderItems.map((order) => {
-            return <UnprocessedOrder key={order.id} order={order} />;
-          })}
-        </div>
+        <OrdersTable orderItems={orderItems} />
         <NeedHelpFAB />
       </TabContentLayout>
     );
@@ -58,111 +56,317 @@ const OrdersPanel = () => {
   );
 };
 
-type UnprocessedOrderProps = { order: OrderItemType };
+type OrdersTableUnprocessedOrderProps = { orderItems: OrderItemType[] };
 
-const UnprocessedOrder = ({ order }: UnprocessedOrderProps) => {
+const OrdersTable = ({}: OrdersTableUnprocessedOrderProps) => {
   return (
-    <div className="flex gap-[10px]">
-      <div className="flex w-full flex-col gap-[27px] rounded-[20px] bg-white p-[20px]">
-        <OrderItemHeader
-          orderStatus={order.orderStatus}
-          action={"not responded to"}
-        />
-        <OrderItemImages images={order.images} />
-        <div className="grid grid-cols-1 gap-[15px] md:grid-cols-2">
-          <div className="col-span-1 flex flex-col gap-[15px]">
-            <div className="label-lg grid grid-cols-2 gap-[20px] text-neutral-900">
-              <span className="font-bold">Order Request Date:</span>
-              <span className="text-secondary-600">23rd Jan 2023</span>
-            </div>
-            <div className="label-lg grid grid-cols-2 gap-[20px] text-neutral-900">
-              <span className="font-bold">Shop for me status:</span>
-              <span className="text-secondary-600">Purchase In Progress</span>
-            </div>
-          </div>
-          <div className="col-span-1 flex flex-col gap-[15px]">
-            <div className="label-lg grid grid-cols-2 gap-[20px] text-neutral-900">
-              <span className="font-bold">Shop For Me Cost:</span>
-              <span className="flex items-center gap-[10px] text-secondary-600">
+    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
+      <div className="flex flex-col gap-[20px]">
+        <div className="overflow-x-scroll ">
+          <table className="relative w-full min-w-max table-auto text-left">
+            <TableHead />
+            <TableBody />
+          </table>
+        </div>
+      </div>
+      <TableFooter />
+    </div>
+  );
+};
+
+type TableHeadType = { title: string; sortIcon: boolean };
+
+const TableHead = () => {
+  const tableHeads: TableHeadType[] = [
+    { title: "Package(s) Image", sortIcon: false },
+    { title: "Order ID", sortIcon: true },
+    { title: "Order Status", sortIcon: false },
+    { title: "Order Date", sortIcon: true },
+    { title: "Tracking ID", sortIcon: true },
+    { title: "Shipping Status", sortIcon: false },
+    { title: "Shop For Me Status", sortIcon: false },
+    { title: "Shop For Me Cost", sortIcon: true },
+    { title: "Shipping Cost", sortIcon: true },
+  ];
+
+  return (
+    <thead className="sticky top-0 z-10 flex gap-[20px] bg-white px-[20px] py-[14px]">
+      {tableHeads.map(({ title, sortIcon }) => {
+        return (
+          <tr key={title} className="flex-grow">
+            <th className="flex max-w-[150px] gap-[20px] border-0 p-0">
+              <span className="label-lg whitespace-nowrap">{title}</span>
+              {sortIcon && (
+                <img
+                  src="/images/arrow_swap_icon.svg"
+                  alt="arrow swap icon"
+                  className="self-end"
+                />
+              )}
+            </th>
+          </tr>
+        );
+      })}
+      <tr>
+        <th className="flex border-0 p-0">
+          <span className="label-lg">Action</span>
+        </th>
+      </tr>
+    </thead>
+  );
+};
+
+const shippingStatuses = [
+  "not started",
+  "ready for shipping",
+  "in transit",
+  "processing",
+  "cleared",
+] as const;
+
+const TableBody = () => {
+  return (
+    <tbody className="flex flex-col border-y-[0.5px] border-gray-500 [&>tr]:border-b-[0.5px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
+      {orders.map(
+        ({
+          images,
+          orderId,
+          orderStatus,
+          orderDate,
+          shippingCost,
+          shippingStatus,
+          shopForMeCost,
+          shopForMeStatus,
+          trackingId,
+        }) => {
+          return (
+            <tr
+              key={trackingId}
+              className="flex items-center justify-between gap-[20px] bg-gray-10 px-[20px] py-[40px]"
+            >
+              <td className="w-full max-w-[130px] border-0 p-0">
+                <div className="grid max-h-[150px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-[5px]">
+                  {images.length === 1 && (
+                    <div className="col-span-full row-span-full overflow-hidden rounded-[10px]">
+                      <img src={images[0]} alt="package image" />
+                    </div>
+                  )}
+                  {images.length === 2 && (
+                    <>
+                      <div className="col-span-full row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[0]} alt="package image" />
+                      </div>
+                      <div className="col-span-full row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[1]} alt="package image" />
+                      </div>
+                    </>
+                  )}
+                  {images.length === 3 && (
+                    <>
+                      <div className="col-span-2 row-span-2 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[0]} alt="package image" />
+                      </div>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[1]} alt="package image" />
+                      </div>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[2]} alt="package image" />
+                      </div>
+                    </>
+                  )}
+                  {images.length === 4 && (
+                    <>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[0]} alt="package image" />
+                      </div>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[1]} alt="package image" />
+                      </div>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[2]} alt="package image" />
+                      </div>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[3]} alt="package image" />
+                      </div>
+                    </>
+                  )}
+                  {images.length >= 5 && (
+                    <>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[0]} alt="package image" />
+                      </div>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[1]} alt="package image" />
+                      </div>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <img src={images[2]} alt="package image" />
+                      </div>
+                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+                        <div className="flex w-max items-center gap-[10px] rounded-[10px] bg-surface-100 p-[10px]">
+                          {images.length >= 5 && (
+                            <>
+                              <div className="label-lg hidden items-center p-[10px] text-secondary-600 sm:flex">{`${
+                                images.length - 4
+                              }+`}</div>
+                              {/* for mobile screen */}
+                              <div className="label-lg flex items-center p-[10px] text-secondary-600 sm:hidden">{`${
+                                images.length - 1
+                              }+`}</div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </td>
+              <td className="w-full max-w-[100px] border-0 p-0">
+                <p className="title-md whitespace-nowrap">{orderId}</p>
+              </td>
+              <td className="w-full max-w-[90px] border-0 p-0">
+                <p className="title-md whitespace-nowrap">{orderStatus}</p>
+              </td>
+              <td className="w-full max-w-[130px] border-0 p-0">
+                <p className="label-lg whitespace-nowrap text-neutral-900">
+                  {orderDate}
+                </p>
+              </td>
+              <td className="w-full max-w-[90px] border-0 p-0">
+                <p className="title-md text-primary-900">{trackingId}</p>
+              </td>
+              <td className="title-sm w-full max-w-[150px] border-0 p-0">
+                <ShippingStatus status={shippingStatus} />
+              </td>
+              <td className="w-full max-w-[150px] border-0 p-0">
+                <p className="title-md whitespace-nowrap">{shopForMeStatus}</p>
+              </td>
+              <td className="flex w-full max-w-[130px] gap-[5px] border-0 p-0">
                 <img
                   src="/images/tick_square_bold_icon.svg"
                   alt="tick square bold icon"
                 />
-                <span>$48.00</span>
-              </span>
-            </div>
-            <div className="label-lg grid grid-cols-2 gap-[20px] text-neutral-900">
-              <span className="font-bold">Shop For Me Cost:</span>
-              <span className="flex items-center gap-[10px] text-secondary-600">
+                <p className="title-md">{shopForMeCost}</p>
+              </td>
+              <td className="flex w-full max-w-[130px] gap-[5px] border-0 p-0">
                 <img src="/images/more_bold_icon.svg" alt="more bold icon" />
-                <span>$48.00</span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div className="flex w-max flex-col gap-[17px] rounded-[20px] bg-white p-[20px]">
-        <div className="headline-sm flex w-max items-center gap-[5px] text-neutral-900">
-          <button
-            aria-label="tracking"
-            className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
-          >
-            <img src="/images/tracking_icon_purple.svg" alt="tracking icon" />
-          </button>
-          <span>Tracking ID:</span>
-          <span className="font-bold">SH78667</span>
-        </div>
-        <div className="flex h-[164px] rounded-[20px] bg-primary-900 px-[20px] py-[10px] text-white">
-          <hr className="h-[65px] border-r border-solid border-white" />
-          <div className="flex flex-col">
-            <div className="flex flex-col gap-[1px] pl-[10px]">
-              <span className="title-md font-bold">Origin:</span>
-              <span className="label-lg">Nigeria</span>
-            </div>
+                <p className="title-md">{shippingCost}</p>
+              </td>
+              <td className="border-0 p-0">
+                <MoreButton />
+              </td>
+            </tr>
+          );
+        },
+      )}
+    </tbody>
+  );
+};
+
+type ShippingStatusProps = { status: (typeof shippingStatuses)[number] };
+
+const ShippingStatus = ({ status }: ShippingStatusProps) => {
+  const capitalizedWords = status
+    .split(" ")
+    .map((word) => {
+      return word.slice(0, 1).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+
+  const onClick = () => {
+    return;
+  };
+
+  if (status === "not started") {
+    return (
+      <div className="rounded-[10px] bg-gray-200 px-[10px] py-[5px] text-center text-gray-700">
+        {capitalizedWords}
+      </div>
+    );
+  }
+
+  if (status === "ready for shipping") {
+    return (
+      <button
+        onClick={onClick}
+        aria-label={capitalizedWords}
+        className="btn bg-brand-orange relative w-full items-center rounded-[10px] px-[10px] py-[5px] text-center text-white"
+      >
+        {capitalizedWords}
+      </button>
+    );
+  }
+
+  if (status === "in transit") {
+    return (
+      <div className="rounded-[10px] bg-primary-600 px-[10px] py-[5px] text-center text-white">
+        {capitalizedWords}
+      </div>
+    );
+  }
+
+  if (status === "processing") {
+    return (
+      <div className="rounded-[10px] bg-gray-500 px-[10px] py-[5px] text-center text-white">
+        {capitalizedWords}
+      </div>
+    );
+  }
+
+  if (status === "cleared") {
+    return (
+      <div className="rounded-[10px] bg-primary-900 px-[10px] py-[5px] text-center text-white">
+        {capitalizedWords}
+      </div>
+    );
+  }
+};
+
+const TableFooter = () => {
+  return (
+    <div className="body-lg flex items-center gap-[20px] px-[20px] py-[10px]">
+      <span>Items per page:</span>
+      <div className="w-max">
+        <SelectNumber />
+      </div>
+      <div className="flex gap-[20px]">
+        <span>1-10 of 12</span>
+        <div className="flex gap-[10px]">
+          <button className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
             <img
-              src="/images/in_transit_image.svg"
-              alt="in transit image"
-              className="-my-2"
+              src="/images/arrow_square_disabled_icon.svg"
+              alt="arrow square icon"
             />
-            <div className="flex flex-col gap-[1px] self-end pr-[10px]">
-              <span className="title-md font-bold">Origin:</span>
-              <span className="label-lg">USA</span>
-            </div>
-          </div>
-          <hr className="h-[65px] self-end border-r border-solid border-secondary-600" />
-        </div>
-        <div className="flex justify-between">
-          <div className="flex w-full items-center gap-[5px]">
-            <div className="h-[12px] w-[12px] rounded-full border-4 border-primary-900 bg-white"></div>
-            <span className="label-lg font-bold text-primary-600">
-              Arrived Destination
-            </span>
-          </div>
-          <span className="w-max">
-            <ClearPackageButton />
-          </span>
+          </button>
+          <button className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
+            <img src="/images/arrow_square_icon.svg" alt="arrow square  icon" />
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-const ClearPackageButton = () => {
+type SelectNumberProps = {
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
+};
+
+const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
   return (
-    <button
-      aria-label="Clear Package"
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
-    >
-      <img
-        src="/images/clipboard_tick_icon.svg"
-        alt="security icon"
-        className="h-4 w-4"
-      />
-      <span className="label-lg whitespace-nowrap text-primary-600">
-        Clear Package
-      </span>
-    </button>
+    <div className="relative z-0 w-full">
+      <select
+        name="pageNumber"
+        id="pageNumber"
+        value={value}
+        onChange={onChange}
+        className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 pr-[60px] leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
+      >
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+      </select>
+    </div>
   );
 };
 

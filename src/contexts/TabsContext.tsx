@@ -92,13 +92,13 @@ const orders: OrderItemType[] = [
     images,
   },
   {
-    id: "order3",
+    id: "order4",
     orderStatus: "not responded to",
     shippingStatus: "processing",
     images,
   },
   {
-    id: "order3",
+    id: "order5",
     orderStatus: "not responded to",
     shippingStatus: "in transit",
     images,

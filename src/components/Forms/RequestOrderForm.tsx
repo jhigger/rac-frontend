@@ -476,7 +476,7 @@ type ItemPreviewProps = PreviewItemButtonProps;
 
 const ItemPreview = ({ index }: ItemPreviewProps) => {
   const id = `preview-item-${index}`;
-  const dataClose = `#preview-item-${index}`;
+  const dataClose = `#${id}`;
 
   return (
     <div

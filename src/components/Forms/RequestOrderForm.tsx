@@ -487,7 +487,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
         data-close={dataClose}
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
-      <div className="fixed z-50 flex h-max w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+      <div className="z-50 flex h-max w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Item Preview" />
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2">
           <div className="col-span-1 flex flex-col gap-[30px] text-2xl font-normal text-gray-900">

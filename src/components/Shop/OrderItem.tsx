@@ -118,7 +118,7 @@ const OrderStatus = ({ orderStatus: status }: OrderStatusProps) => {
     <div className="flex w-full items-center gap-[5px]">
       {status === "responded" && <RespondedStatus />}
       {status === "processed" && <ProcessedStatus />}
-      {status === "not responded to" && <UnprocessedStatus />}
+      {status === "not responded" && <UnprocessedStatus />}
     </div>
   );
 };
@@ -128,9 +128,7 @@ export const UnprocessedStatus = () => {
     <div className="flex items-center gap-[10px]">
       <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
 
-      <span className="label-lg font-bold text-primary-600">
-        Not Responded to
-      </span>
+      <span className="label-lg font-bold text-primary-600">Not Responded</span>
     </div>
   );
 };

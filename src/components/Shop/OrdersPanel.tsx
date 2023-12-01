@@ -1,15 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { type ChangeEventHandler } from "react";
+import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { useTabsContext, type OrderItemType } from "~/contexts/TabsContext";
 import { orders } from "~/fake data";
-import RequestOrderForm from "../Forms/RequestOrderForm";
+import RequestOrderForm, { RequestFormHeader } from "../Forms/RequestOrderForm";
 import NeedHelpFAB from "../NeedHelpFAB";
 import OrderDetails from "./OrderDetails";
-import { MoreButton } from "./OrderItem";
+import { LabelId, MoreButton } from "./OrderItem";
 import RequestOrderButton from "./RequestOrderButton";
 import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
+import tailmater from "~/js/tailmater";
 
 const OrdersPanel = () => {
   const { orderItems, orderActionClicked, requestOrderClicked } =
@@ -115,14 +116,6 @@ const TableHead = () => {
     </thead>
   );
 };
-
-const shippingStatuses = [
-  "not started",
-  "ready for shipping",
-  "in transit",
-  "processing",
-  "cleared",
-] as const;
 
 const TableBody = () => {
   return (
@@ -235,7 +228,10 @@ const TableBody = () => {
                 <p className="title-md text-primary-900">{trackingId}</p>
               </td>
               <td className="title-sm w-full max-w-[150px] border-0 p-0">
-                <ShippingStatus status={shippingStatus} />
+                <ShippingStatus
+                  id={orderId}
+                  status={shippingStatus as ShippingStatusProps["status"]}
+                />
               </td>
               <td className="w-full max-w-[150px] border-0 p-0">
                 <p className="title-md whitespace-nowrap">{shopForMeStatus}</p>
@@ -263,9 +259,12 @@ const TableBody = () => {
   );
 };
 
-type ShippingStatusProps = { status: (typeof shippingStatuses)[number] };
+type ShippingStatusProps = {
+  id: string;
+  status: OrderItemType["shippingStatus"];
+};
 
-const ShippingStatus = ({ status }: ShippingStatusProps) => {
+const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
   const capitalizedWords = status
     .split(" ")
     .map((word) => {
@@ -273,53 +272,282 @@ const ShippingStatus = ({ status }: ShippingStatusProps) => {
     })
     .join(" ");
 
-  const onClick = () => {
-    return;
+  useEffect(() => {
+    tailmater();
+  }, []);
+
+  const modalId = `shipping-status-modal-${id}`;
+  const dataTarget = `#${modalId}`;
+
+  return (
+    <>
+      {status === "not started" && (
+        <button
+          data-type="dialogs"
+          data-target={dataTarget}
+          aria-label={capitalizedWords}
+          className="btn relative w-full rounded-[10px] bg-gray-200 px-[10px] py-[5px] text-center text-gray-700"
+        >
+          {capitalizedWords}
+        </button>
+      )}
+      {(status === "ready for shipping" ||
+        status === "arrived destination") && (
+        <button
+          data-type="dialogs"
+          data-target={dataTarget}
+          aria-label={capitalizedWords}
+          className="btn bg-brand-orange relative w-full rounded-[10px] px-[10px] py-[5px] text-center text-white"
+        >
+          {capitalizedWords}
+        </button>
+      )}
+      {status === "in transit" && (
+        <button
+          data-type="dialogs"
+          data-target={dataTarget}
+          aria-label={capitalizedWords}
+          className="btn relative w-full rounded-[10px] bg-primary-600 px-[10px] py-[5px] text-center text-white"
+        >
+          {capitalizedWords}
+        </button>
+      )}
+      {status === "processing" && (
+        <button
+          data-type="dialogs"
+          data-target={dataTarget}
+          aria-label={capitalizedWords}
+          className="btn relative w-full rounded-[10px] bg-gray-500 px-[10px] py-[5px] text-center text-white"
+        >
+          {capitalizedWords}
+        </button>
+      )}
+      {(status === "cleared" || status === "delivered") && (
+        <button
+          data-type="dialogs"
+          data-target={dataTarget}
+          aria-label={capitalizedWords}
+          className="btn relative w-full rounded-[10px] bg-primary-900 px-[10px] py-[5px] text-center text-white"
+        >
+          {capitalizedWords}
+        </button>
+      )}
+      <ShippingStatusModal {...{ modalId, status }} />
+    </>
+  );
+};
+
+type ShippingStatusModalProps = {
+  modalId: string;
+  status: ShippingStatusProps["status"];
+};
+
+const excluded = [
+  "not started",
+  "cancelled",
+  "cleared",
+  "arrived destination",
+  "delivered",
+];
+
+const EXCLUDED_TYPE = [...excluded] as const;
+
+type SomeStatusType = Exclude<
+  ShippingStatusProps["status"],
+  (typeof EXCLUDED_TYPE)[number]
+>;
+
+const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
+  const dataClose = `#${modalId}`;
+
+  const content = {
+    cancelled:
+      "Kindly note that the shipping for your package has been cancelled.",
+    "not started":
+      "The purchase of the item(s) in your package has not started or under process. We will notify you your package is ready for shipping.",
+    "ready for shipping":
+      "Your package is ready to be shipped, kindly proceed to initiate shipping for your package.",
+    processing:
+      "Your shipment is under processing, would you like to track it?",
+    "in transit": "Your package is in transit, would you like to track it?",
+    "arrived destination":
+      "Your package has arrived its destination, you are required to clear it now before you can pick it up.",
   };
 
-  if (status === "not started") {
-    return (
-      <div className="rounded-[10px] bg-gray-200 px-[10px] py-[5px] text-center text-gray-700">
-        {capitalizedWords}
-      </div>
-    );
-  }
+  const statusToImageMap = {
+    "ready for shipping": "/images/shipping status modal/roadmap1_image.svg",
+    processing: "/images/shipping status modal/roadmap1_image.svg",
+    "in transit": "/images/shipping status modal/roadmap2_image.svg",
+    "arrived destination": "/images/shipping status modal/roadmap3_image.svg",
+  };
 
-  if (status === "ready for shipping") {
-    return (
-      <button
-        onClick={onClick}
-        aria-label={capitalizedWords}
-        className="btn bg-brand-orange relative w-full items-center rounded-[10px] px-[10px] py-[5px] text-center text-white"
-      >
-        {capitalizedWords}
-      </button>
-    );
-  }
+  const imagePath = statusToImageMap[status as SomeStatusType];
 
-  if (status === "in transit") {
-    return (
-      <div className="rounded-[10px] bg-primary-600 px-[10px] py-[5px] text-center text-white">
-        {capitalizedWords}
-      </div>
-    );
-  }
+  return (
+    <div
+      id={modalId}
+      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+    >
+      <div
+        data-close={dataClose}
+        className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
+      ></div>
+      <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+        <RequestFormHeader title="Shipping Status" />
 
-  if (status === "processing") {
-    return (
-      <div className="rounded-[10px] bg-gray-500 px-[10px] py-[5px] text-center text-white">
-        {capitalizedWords}
-      </div>
-    );
-  }
+        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] bg-white p-[20px]">
+          <LabelId label="Order ID:" id="OD78667" />
+          <img
+            src="/images/shipping status modal/order_tracking_icon.svg"
+            alt="order tracking icon"
+          />
+          <LabelId label="Order ID:" id="OD78667" />
+        </div>
 
-  if (status === "cleared") {
-    return (
-      <div className="rounded-[10px] bg-primary-900 px-[10px] py-[5px] text-center text-white">
-        {capitalizedWords}
+        {!excluded.includes(status) && (
+          <div className="flex h-[164px] rounded-[20px] bg-primary-900 px-[20px] py-[10px] text-white">
+            <hr className="h-[65px] border-r border-solid border-white" />
+            <div className="flex flex-col">
+              <div className="flex flex-col gap-[1px] pl-[10px]">
+                <span className="title-md font-bold">Origin:</span>
+                <span className="label-lg">Nigeria</span>
+              </div>
+              {imagePath && (
+                <img
+                  src={imagePath}
+                  alt={`roadmap ${status} image`}
+                  className="-my-2"
+                />
+              )}
+              <div className="flex flex-col gap-[1px] self-end pr-[10px]">
+                <span className="title-md font-bold">Origin:</span>
+                <span className="label-lg">USA</span>
+              </div>
+            </div>
+            <hr className="h-[65px] self-end border-r border-solid border-secondary-600" />
+          </div>
+        )}
+
+        {status === "cleared" && (
+          <CongratulationImage text="Your package has been delivered." />
+        )}
+
+        <p className="title-lg text-neutral-900">
+          {content[status as SomeStatusType]}
+        </p>
+
+        <div className="flex flex-row items-end justify-end">
+          <div className="w-max whitespace-nowrap">
+            {["cancelled", "not started", "cleared", "delivered"].includes(
+              status,
+            ) && <CloseButton dataClose={dataClose} />}
+            {status === "ready for shipping" && (
+              <div className="flex gap-[8px]">
+                <CancelButton dataClose={dataClose} />
+                <InitiateShippingButton />
+              </div>
+            )}
+            {(status === "processing" || status === "in transit") && (
+              <div className="flex gap-[8px]">
+                <CancelButton dataClose={dataClose} />
+                <TrackButton />
+              </div>
+            )}
+            {status === "arrived destination" && (
+              <div className="flex gap-[8px]">
+                <CancelButton dataClose={dataClose} />
+                <ClearPackageButton />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
+};
+
+type CongratulationImageProps = { text: string };
+
+const CongratulationImage = ({ text }: CongratulationImageProps) => {
+  return (
+    <div className="flex flex-col-reverse gap-[10px] rounded-[20px] bg-primary-600 px-[14px] py-[10px] md:flex-row">
+      <img
+        src="/images/drone_flying_with_package.png"
+        alt="drone flying with package"
+        className="w-1/2"
+      />
+      <div className="flex flex-col justify-center gap-[10px] text-white">
+        <span className="headline-md font-bold">Congratulations!</span>
+        <span className="headline-md">{text}</span>
+      </div>
+    </div>
+  );
+};
+
+const ClearPackageButton = () => {
+  return (
+    <button className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6">
+      <img
+        src="/images/shipping status modal/clipboard_tick_bold_icon.svg"
+        alt="clipboard tick bold icon"
+      />
+      <span className="label-lg text-white">Clear Package</span>
+    </button>
+  );
+};
+
+const TrackButton = () => {
+  return (
+    <button className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6">
+      <img
+        src="/images/shipping status modal/track_icon.svg"
+        alt="track icon"
+      />
+      <span className="label-lg text-white">Track</span>
+    </button>
+  );
+};
+
+const InitiateShippingButton = () => {
+  return (
+    <button className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6">
+      <img
+        src="/images/shipping status modal/ship_bold_icon.svg"
+        alt="ship bold icon"
+      />
+      <span className="label-lg text-white">Initiate Shipping</span>
+    </button>
+  );
+};
+
+type CloseButtonProps = { dataClose: string };
+
+const CloseButton = ({ dataClose }: CloseButtonProps) => {
+  return (
+    <button
+      aria-label="Back"
+      data-close={dataClose}
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
+      <img
+        src="/images/shipping status modal/close_icon.svg"
+        alt="close icon"
+      />
+      <span className="label-lg text-white">close</span>
+    </button>
+  );
+};
+
+const CancelButton = ({ dataClose }: CloseButtonProps) => {
+  return (
+    <button
+      aria-label="Back"
+      data-close={dataClose}
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-transparent px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600 md:px-6"
+    >
+      <span className="label-lg">Cancel</span>
+    </button>
+  );
 };
 
 const TableFooter = () => {

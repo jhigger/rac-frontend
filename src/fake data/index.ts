@@ -25,7 +25,7 @@ export const orders: OrderItemType[] = [
   {
     images: images(2),
     orderId: "OD08752",
-    orderStatus: "processed",
+    orderStatus: "not responded",
     orderDate: "22-03-2023 13:05",
     trackingId: "SH08752",
     shippingStatus: "not started",
@@ -36,7 +36,7 @@ export const orders: OrderItemType[] = [
   {
     images: images(3),
     orderId: "OD08753",
-    orderStatus: "processed",
+    orderStatus: "responded",
     orderDate: "22-03-2023 13:05",
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
@@ -58,7 +58,7 @@ export const orders: OrderItemType[] = [
   {
     images: images(5),
     orderId: "OD08755",
-    orderStatus: "processed",
+    orderStatus: "not responded",
     orderDate: "22-03-2023 13:05",
     trackingId: "SH08755",
     shippingStatus: "processing",
@@ -69,7 +69,7 @@ export const orders: OrderItemType[] = [
   {
     images: images(6),
     orderId: "OD08756",
-    orderStatus: "processed",
+    orderStatus: "responded",
     orderDate: "22-03-2023 13:05",
     trackingId: "SH08756",
     shippingStatus: "cleared",

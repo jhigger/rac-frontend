@@ -3,12 +3,6 @@ import { useTabsContext } from "~/contexts/TabsContext";
 import SearchInput from "../Forms/Inputs/SearchInput";
 
 const SearchBar = () => {
-  const { handleRequestOrder } = useTabsContext();
-
-  const handleNewOrder = () => {
-    handleRequestOrder(true);
-  };
-
   return (
     <>
       <div className="mb-[59px] hidden gap-[20px] sm:flex">
@@ -23,7 +17,7 @@ const SearchBar = () => {
         </div>
         <div className="flex flex-grow justify-end">
           <div className="w-max">
-            <RequestNewOrderButton onClick={handleNewOrder} />
+            <RequestNewOrderButton />
           </div>
         </div>
       </div>
@@ -40,7 +34,7 @@ const SearchBar = () => {
             <FilterButton />
           </div>
           <div className="w-full">
-            <RequestNewOrderButton onClick={handleNewOrder} />
+            <RequestNewOrderButton />
           </div>
         </div>
       </div>
@@ -65,12 +59,16 @@ const FilterButton = () => {
   );
 };
 
-type RequestNewOrderButton = { onClick: () => void };
+const RequestNewOrderButton = () => {
+  const { handleRequestOrder } = useTabsContext();
 
-const RequestNewOrderButton = ({ onClick }: RequestNewOrderButton) => {
+  const handleNewOrder = () => {
+    handleRequestOrder(true);
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleNewOrder}
       aria-label="Filter"
       className="btn relative flex h-14 w-full flex-row items-center justify-center gap-[9px] rounded-[20px] bg-brand px-[8px] py-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 md:gap-x-[12px] md:p-4"
     >

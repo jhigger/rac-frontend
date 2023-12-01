@@ -669,7 +669,7 @@ const SaveAsDraftButton = () => {
 
 type ProceedButtonProps = { next: () => void };
 
-const ProceedButton = ({ next }: ProceedButtonProps) => {
+export const ProceedButton = ({ next }: ProceedButtonProps) => {
   return (
     <button
       onClick={next}

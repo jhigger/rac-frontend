@@ -9,10 +9,17 @@ import {
   SectionHeader,
   TooltipButton,
 } from "../Forms/RequestOrderForm";
+import OrderCheckout from "./OrderCheckout";
 import { RequestId, RespondedStatus } from "./OrderItem";
+import TabContentLayout from "./TabContentLayout";
 
 const RequestDetails = () => {
-  const { orderItems, handleRequestAction } = useTabsContext();
+  const {
+    orderItems,
+    handleRequestAction,
+    requestCheckoutClicked,
+    handleCheckoutAction,
+  } = useTabsContext();
 
   if (!orderItems) return;
 
@@ -21,14 +28,22 @@ const RequestDetails = () => {
   };
 
   const handleProceed = () => {
-    return;
+    handleCheckoutAction(true);
   };
+
+  if (requestCheckoutClicked) {
+    return (
+      <TabContentLayout>
+        <OrderCheckout />
+      </TabContentLayout>
+    );
+  }
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
       <RequestId id="R78667" />
-      <OrderInformation />
+      <OrderInformation onClick={handleProceed} />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
@@ -328,7 +343,7 @@ export const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
   );
 };
 
-const OrderInformation = () => {
+const OrderInformation = ({ onClick }: ProceedButtonProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -355,7 +370,7 @@ const OrderInformation = () => {
                     <RespondedStatus />
                   </span>
                 </div>
-                <ProceedToCheckoutButton />
+                <ProceedToCheckoutButton onClick={onClick} />
               </div>
             </div>
           )}

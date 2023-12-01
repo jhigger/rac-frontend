@@ -165,7 +165,6 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleCheckoutAction = (value: boolean) => {
-    resetAllClicked();
     setRequestCheckoutClicked(value);
   };
 

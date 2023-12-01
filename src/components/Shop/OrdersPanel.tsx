@@ -297,59 +297,29 @@ const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
   const modalId = `shipping-status-modal-${id}`;
   const dataTarget = `#${modalId}`;
 
+  const buttonStyles = {
+    "not started": "bg-gray-200 text-gray-700",
+    "ready for shipping": "bg-brand-orange text-white",
+    "arrived destination": "bg-brand-orange text-white",
+    "in transit": "bg-primary-600 text-white",
+    processing: "bg-gray-500 text-white",
+    cleared: "bg-primary-900 text-white",
+    delivered: "bg-primary-900 text-white",
+    cancelled: "bg-error-600 text-white",
+  };
+
+  const buttonStyle = buttonStyles[status];
+
   return (
     <>
-      {status === "not started" && (
-        <button
-          data-type="dialogs"
-          data-target={dataTarget}
-          aria-label={capitalizedWords}
-          className="btn relative w-full rounded-[10px] bg-gray-200 px-[10px] py-[5px] text-center text-gray-700"
-        >
-          {capitalizedWords}
-        </button>
-      )}
-      {(status === "ready for shipping" ||
-        status === "arrived destination") && (
-        <button
-          data-type="dialogs"
-          data-target={dataTarget}
-          aria-label={capitalizedWords}
-          className="btn bg-brand-orange relative w-full rounded-[10px] px-[10px] py-[5px] text-center text-white"
-        >
-          {capitalizedWords}
-        </button>
-      )}
-      {status === "in transit" && (
-        <button
-          data-type="dialogs"
-          data-target={dataTarget}
-          aria-label={capitalizedWords}
-          className="btn relative w-full rounded-[10px] bg-primary-600 px-[10px] py-[5px] text-center text-white"
-        >
-          {capitalizedWords}
-        </button>
-      )}
-      {status === "processing" && (
-        <button
-          data-type="dialogs"
-          data-target={dataTarget}
-          aria-label={capitalizedWords}
-          className="btn relative w-full rounded-[10px] bg-gray-500 px-[10px] py-[5px] text-center text-white"
-        >
-          {capitalizedWords}
-        </button>
-      )}
-      {(status === "cleared" || status === "delivered") && (
-        <button
-          data-type="dialogs"
-          data-target={dataTarget}
-          aria-label={capitalizedWords}
-          className="btn relative w-full rounded-[10px] bg-primary-900 px-[10px] py-[5px] text-center text-white"
-        >
-          {capitalizedWords}
-        </button>
-      )}
+      <button
+        data-type="dialogs"
+        data-target={dataTarget}
+        aria-label={capitalizedWords}
+        className={`btn relative w-full rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
+      >
+        {capitalizedWords}
+      </button>
       <ShippingStatusModal {...{ modalId, status }} />
     </>
   );

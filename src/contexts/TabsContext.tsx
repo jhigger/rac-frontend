@@ -142,10 +142,10 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequestOrder = (value: boolean) => {
-    if (!tabsRef.current[1]) return;
-    tabsRef.current[1].click();
-    resetAllClicked();
-    handleTabChange("requests");
+    // if (!tabsRef.current[1]) return;
+    // tabsRef.current[1].click();
+    // resetAllClicked();
+    // handleTabChange("requests");
     setRequestOrderClicked(value);
   };
 

@@ -13,18 +13,18 @@ const RequestsPanel = () => {
   const { requestedOrders, requestOrderClicked, requestActionClicked } =
     useTabsContext();
 
-  if (requestActionClicked) {
-    return (
-      <TabContentLayout>
-        <RequestDetails />
-      </TabContentLayout>
-    );
-  }
-
   if (requestOrderClicked) {
     return (
       <TabContentLayout>
         <RequestOrderForm />
+      </TabContentLayout>
+    );
+  }
+
+  if (requestActionClicked) {
+    return (
+      <TabContentLayout>
+        <RequestDetails />
       </TabContentLayout>
     );
   }

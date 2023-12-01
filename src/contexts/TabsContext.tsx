@@ -53,7 +53,7 @@ export const tabs: AppBarTabType[] = [
   { id: "draft", title: "Draft", content: <DraftPanel /> },
 ];
 
-const ORDER_STATUS = ["responded", "processed", "not responded to"] as const;
+const ORDER_STATUS = ["responded", "processed", "not responded"] as const;
 const SHIPPING_STATUS = [
   "ready for shipping",
   "not started",
@@ -105,7 +105,7 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleOrders = () => {
     const unprocessedOrders = orders.filter((order) => {
-      return order.orderStatus === "not responded to";
+      return order.orderStatus === "not responded";
     });
     setOrderItems(unprocessedOrders);
   };

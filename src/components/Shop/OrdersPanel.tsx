@@ -350,11 +350,11 @@ const excluded = [
   "delivered",
 ];
 
-const EXCLUDED_TYPE = [...excluded] as const;
+const EXCLUDED_CONST = [...excluded] as const;
 
 type SomeStatusType = Exclude<
   ShippingStatusProps["status"],
-  (typeof EXCLUDED_TYPE)[number]
+  (typeof EXCLUDED_CONST)[number]
 >;
 
 const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {

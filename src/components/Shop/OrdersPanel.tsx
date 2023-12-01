@@ -92,6 +92,16 @@ const TableHead = () => {
 
   return (
     <thead className="sticky top-0 z-10 flex gap-[20px] bg-white px-[20px] py-[14px]">
+      <tr className="flex-grow">
+        <th className="flex border-0 p-0">
+          <input
+            type="checkbox"
+            name="check-all"
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={undefined}
+          />
+        </th>
+      </tr>
       {tableHeads.map(({ title, sortIcon }) => {
         return (
           <tr key={title} className="flex-grow">
@@ -137,6 +147,14 @@ const TableBody = () => {
               key={trackingId}
               className="flex items-center justify-between gap-[20px] bg-gray-10 px-[20px] py-[40px]"
             >
+              <td className="w-max border-0 p-0">
+                <input
+                  type="checkbox"
+                  name={`check-${orderId}`}
+                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+                  checked={undefined}
+                />
+              </td>
               <td className="w-full max-w-[130px] border-0 p-0">
                 <div className="grid max-h-[150px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-[5px]">
                   {images.length === 1 && (

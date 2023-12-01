@@ -5,7 +5,7 @@ import AppBarTabs from "./AppBarTabs";
 
 const TopAppBar = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col sticky top-0 z-50">
       <div className="flex w-full items-center justify-between gap-1.5 bg-white px-[20px] pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
         <div className="md:hidden">
           <button

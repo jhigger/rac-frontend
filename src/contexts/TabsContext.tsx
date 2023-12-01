@@ -17,15 +17,17 @@ export type TabsContextType = {
   orderItems: OrderItemType[] | null;
   requestedOrders: OrderItemType[] | null;
   requestActionClicked: boolean;
+  requestCheckoutClicked: boolean;
   requestOrderClicked: boolean;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
-  handleTabChange: (tab: tabIdType) => void;
+  handleCheckoutAction: (value: boolean) => void;
   handleOrderAction: (value: boolean) => void;
   handleOrders: () => void;
   handleRequests: () => void;
   handleRequestAction: (value: boolean) => void;
   handleRequestOrder: (value: boolean) => void;
+  handleTabChange: (tab: tabIdType) => void;
 };
 
 export const TabsContext = createContext<TabsContextType>(
@@ -116,6 +118,7 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
   const [requestOrderClicked, setRequestOrderClicked] = useState(false);
   const [orderActionClicked, setOrderActionClicked] = useState(false);
   const [requestActionClicked, setRequestActionClicked] = useState(false);
+  const [requestCheckoutClicked, setRequestCheckoutClicked] = useState(false);
 
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
@@ -161,10 +164,15 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
     setRequestActionClicked(value);
   };
 
+  const handleCheckoutAction = (value: boolean) => {
+    resetAllClicked();
+    setRequestCheckoutClicked(value);
+  };
+
   // testing purposes
   useEffect(() => {
     handleRequests();
-    handleOrderAction(true);
+    handleRequestAction(true);
   }, [activeTab]);
 
   const value: TabsContextType = {
@@ -172,16 +180,18 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
     orderActionClicked,
     orderItems,
     requestActionClicked,
+    requestCheckoutClicked,
     requestedOrders,
     requestOrderClicked,
     tabs,
     tabsRef,
-    handleTabChange,
+    handleCheckoutAction,
     handleOrderAction,
     handleOrders,
     handleRequestAction,
     handleRequests,
     handleRequestOrder,
+    handleTabChange,
   };
 
   return <TabsContext.Provider value={value}>{children}</TabsContext.Provider>;

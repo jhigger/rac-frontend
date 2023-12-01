@@ -35,7 +35,7 @@ const RequestsPanel = () => {
         <SearchBar />
         <div className="flex flex-col gap-[20px] sm:w-max">
           {requestedOrders.map((order) => {
-            return <OrderItem key={order.id} order={order} />;
+            return <OrderItem key={order.orderId} order={order} />;
           })}
         </div>
         <NeedHelpFAB />

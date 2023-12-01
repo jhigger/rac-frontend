@@ -10,6 +10,7 @@ import {
 import DraftPanel from "~/components/Shop/DraftPanel";
 import OrdersPanel from "~/components/Shop/OrdersPanel";
 import RequestsPanel from "~/components/Shop/RequestsPanel";
+import { orders } from "~/fake data";
 
 export type TabsContextType = {
   activeTab: tabIdType;
@@ -62,50 +63,16 @@ const SHIPPING_STATUS = [
 ] as const;
 
 export type OrderItemType = {
-  id: string;
   images: string[];
+  orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
+  orderDate: string;
+  trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
+  shopForMeStatus: string;
+  shopForMeCost: string;
+  shippingCost: string;
 };
-
-const images = Array(6)
-  .fill(null)
-  .map((_, i) => {
-    return `https://placehold.co/500x500/cac4d0/1d192b?text=Image ${i}`;
-  });
-
-const orders: OrderItemType[] = [
-  {
-    id: "order1",
-    orderStatus: "processed",
-    shippingStatus: "not started",
-    images,
-  },
-  {
-    id: "order2",
-    orderStatus: "responded",
-    shippingStatus: "ready for shipping",
-    images,
-  },
-  {
-    id: "order3",
-    orderStatus: "not responded to",
-    shippingStatus: "cleared",
-    images,
-  },
-  {
-    id: "order4",
-    orderStatus: "not responded to",
-    shippingStatus: "processing",
-    images,
-  },
-  {
-    id: "order5",
-    orderStatus: "not responded to",
-    shippingStatus: "in transit",
-    images,
-  },
-];
 
 const TabsContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState<tabIdType>(

@@ -63,7 +63,7 @@ const CheckoutStep1 = () => {
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
       {orderItems.map((item, i) => {
-        return <Item key={item.id} index={i} />;
+        return <Item key={item.orderId} index={i} />;
       })}
     </div>
   );

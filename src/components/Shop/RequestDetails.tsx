@@ -193,33 +193,38 @@ export const Item = ({ index }: ItemProps) => {
                 <span className="title-lg text-neutral-900">5 inches</span>
               </div>
             </div>
-            <div className="flex items-center gap-[10px]">
-              <span className="title-lg text-primary-900">
-                Item Related Costs
-              </span>
-              <hr className="block flex-grow border-dashed border-primary-900" />
-              <div className="flex items-center gap-[20px]">
+            <div className="flex flex-col gap-[10px] md:flex-row md:items-center">
+              <div className="flex flex-grow items-center gap-[10px]">
+                <span className="title-md md:title-lg text-primary-900">
+                  Item Related Costs
+                </span>
+                <hr className="block flex-grow border-dashed border-primary-900" />
+              </div>
+
+              <div className="block md:hidden">
+                <HighlightedInfo
+                  text="These costs could have been changed/updated by our staffs if they
+            observed differences between the details you provided and the ones
+            we verified from the store."
+                />
+              </div>
+
+              <div className="flex flex-col items-center gap-[10px] md:flex-row md:gap-[20px]">
                 <span className="body-md">
                   Default Currency: <span className="title-sm">USD</span>
                 </span>
-
-                <button
-                  aria-label="change currency"
-                  className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-400 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600 md:px-6"
-                >
-                  <img
-                    src="/images/change_currency_dark_icon.svg"
-                    alt="change currency icon"
-                  />
-                  <span className="label-lg">Change Currency</span>
-                </button>
+                <div className="w-full">
+                  <ChangeCurrencyButton />
+                </div>
               </div>
             </div>
-            <HighlightedInfo
-              text="These costs could have been changed/updated by our staffs if they
+            <div className="hidden md:block">
+              <HighlightedInfo
+                text="These costs could have been changed/updated by our staffs if they
             observed differences between the details you provided and the ones
             we verified from the store."
-            />
+              />
+            </div>
             <div className="flex w-max flex-col gap-[15px]">
               <div className="label-lg grid grid-cols-1 gap-[20px] md:grid-cols-2">
                 <span className="body-md text-primary-600">
@@ -250,6 +255,21 @@ export const Item = ({ index }: ItemProps) => {
         )}
       </div>
     </SectionContentLayout>
+  );
+};
+
+const ChangeCurrencyButton = () => {
+  return (
+    <button
+      aria-label="change currency"
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-400 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600 md:px-6"
+    >
+      <img
+        src="/images/change_currency_dark_icon.svg"
+        alt="change currency icon"
+      />
+      <span className="label-lg">Change Currency</span>
+    </button>
   );
 };
 

@@ -55,11 +55,14 @@ export const tabs: AppBarTabType[] = [
 
 const ORDER_STATUS = ["responded", "processed", "not responded to"] as const;
 const SHIPPING_STATUS = [
-  "not started",
   "ready for shipping",
-  "cleared",
+  "not started",
   "processing",
+  "cancelled",
   "in transit",
+  "arrived destination",
+  "cleared",
+  "delivered",
 ] as const;
 const SHOP_FOR_ME_STATUS = [
   "purchase not started",

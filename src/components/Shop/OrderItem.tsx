@@ -28,7 +28,7 @@ export const OrderItemHeader = ({
     <>
       <div className="flex items-center">
         <div className="flex items-center gap-[15px]">
-          <RequestId id="OD78667" />
+          <LabelId label="Request ID:" id="OD78667" />
           <div className="hidden items-center gap-[10px] md:flex">
             <OrderStatus orderStatus={status} />
             {status === action && <TakeActionNowButton />}
@@ -48,12 +48,12 @@ export const OrderItemHeader = ({
   );
 };
 
-type OrderIdProps = { id: string };
+type LabelIdProps = { label: string; id: string };
 
-export const RequestId = ({ id }: OrderIdProps) => {
+export const LabelId = ({ label, id }: LabelIdProps) => {
   return (
     <div className="headline-sm flex items-center gap-[5px] text-neutral-900">
-      <span>Request ID:</span>
+      <span>{label}</span>
       <span className="font-bold">{id}</span>
     </div>
   );

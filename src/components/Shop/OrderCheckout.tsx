@@ -10,7 +10,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "../Forms/RequestOrderForm";
-import { RequestId } from "./OrderItem";
+import { LabelId } from "./OrderItem";
 import { HighlightedInfo, Item } from "./RequestDetails";
 
 type stepsContentType = { title: string; content: JSX.Element };
@@ -42,7 +42,7 @@ const OrderCheckout = () => {
         length={steps.length}
         title={currentTitle}
       />
-      <RequestId id="R78667" />
+      <LabelId label="Request ID:" id="R78667" />
       {step}
       <div className="flex w-max gap-[10px]">
         {isFirstStep && <BackButton onClick={handleBack} />}

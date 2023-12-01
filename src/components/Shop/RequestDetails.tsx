@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useTabsContext } from "~/contexts/TabsContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../Forms/AccordionButton";
 import {
@@ -8,8 +9,7 @@ import {
   SectionHeader,
   TooltipButton,
 } from "../Forms/RequestOrderForm";
-import { OrderId, RespondedState } from "./OrderItem";
-import { useTabsContext } from "~/contexts/TabsContext";
+import { RequestId, RespondedState } from "./OrderItem";
 
 const RequestDetails = () => {
   const { orderItems, handleRequestAction } = useTabsContext();
@@ -27,7 +27,7 @@ const RequestDetails = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
-      <OrderId id="R78667" />
+      <RequestId id="R78667" />
       <OrderInformation />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />

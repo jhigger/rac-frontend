@@ -7,7 +7,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "../Forms/RequestOrderForm";
-import { OrderId, UnprocessedState } from "./OrderItem";
+import { RequestId, UnprocessedState } from "./OrderItem";
 import { BillingDetails, Item, PackageOrigin } from "./RequestDetails";
 
 const OrderDetails = () => {
@@ -22,7 +22,7 @@ const OrderDetails = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
-      <OrderId id="R78667" />
+      <RequestId id="R78667" />
       <OrderInformation />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />

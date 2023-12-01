@@ -25,7 +25,7 @@ export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
     <>
       <div className="flex items-center">
         <div className="flex items-center gap-[15px]">
-          <OrderId id="OD78667" />
+          <RequestId id="OD78667" />
           <div className="hidden items-center gap-[10px] md:flex">
             <OrderState state={state} />
             {state === action && <TakeActionNowButton />}
@@ -47,10 +47,10 @@ export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
 
 type OrderIdProps = { id: string };
 
-export const OrderId = ({ id }: OrderIdProps) => {
+export const RequestId = ({ id }: OrderIdProps) => {
   return (
     <div className="headline-sm flex items-center gap-[5px] text-neutral-900">
-      <span>Order ID:</span>
+      <span>Request ID:</span>
       <span className="font-bold">{id}</span>
     </div>
   );

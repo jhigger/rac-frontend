@@ -2,14 +2,11 @@
 import { useTabsContext } from "~/contexts/TabsContext";
 
 const RequestOrderButton = () => {
-  const { tabsRef, handleTabChange, handleRequestOrder } = useTabsContext();
+  const { handleRequestOrder } = useTabsContext();
 
   return (
     <button
       onClick={() => {
-        if (!tabsRef.current[1]) return;
-        tabsRef.current[1].click();
-        handleTabChange("requests");
         handleRequestOrder(true);
       }}
       aria-label="Request new order"

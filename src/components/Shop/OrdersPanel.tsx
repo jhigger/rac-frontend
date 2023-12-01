@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
 import { useTabsContext, type OrderItemType } from "~/contexts/TabsContext";
+import RequestOrderForm from "../Forms/RequestOrderForm";
 import NeedHelpFAB from "../NeedHelpFAB";
 import { OrderItemHeader, OrderItemImages } from "./OrderItem";
 import RequestOrderButton from "./RequestOrderButton";
@@ -8,7 +9,17 @@ import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
 
 const OrdersPanel = () => {
-  const { orderItems, orderActionClicked } = useTabsContext();
+  const { orderItems, orderActionClicked, requestOrderClicked } =
+    useTabsContext();
+
+  // request order in search bar
+  if (requestOrderClicked) {
+    return (
+      <TabContentLayout>
+        <RequestOrderForm />
+      </TabContentLayout>
+    );
+  }
 
   if (orderActionClicked) {
     return <TabContentLayout>ACTION CLICKED</TabContentLayout>;

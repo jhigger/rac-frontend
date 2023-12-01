@@ -37,14 +37,14 @@ const RequestOrderForm = () => {
       {isFirstStep && (
         <>
           <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-            <BackButton handleBack={handleBack} />
+            <BackButton onClick={handleBack} />
             <SaveAsDraftButton />
             <ProceedButton next={next} />
           </div>
           {/* for mobile screen */}
           <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
             <div className="col-span-1 w-full">
-              <BackButton handleBack={handleBack} />
+              <BackButton onClick={handleBack} />
             </div>
             <div className="col-span-1">
               <ProceedButton next={next} />
@@ -168,7 +168,7 @@ const RequestOrderStep2 = () => {
 
 type RequestFormHeaderProps = { title: string };
 
-const RequestFormHeader = ({ title }: RequestFormHeaderProps) => {
+export const RequestFormHeader = ({ title }: RequestFormHeaderProps) => {
   return (
     <div className="rounded-[20px] border-[1px] border-dashed border-primary-600 px-[30px] py-[20px] text-primary-600">
       <h2 className="headline-md">{title}</h2>
@@ -192,7 +192,7 @@ const ImportantNotice = () => {
 
 type SectionHeaderProps = { title: string; hr?: boolean };
 
-const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
+export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
   return (
     <div className="flex items-start gap-[10px]">
       <img
@@ -233,7 +233,7 @@ const SelectWarehouseOriginSection = () => {
   );
 };
 
-const TooltipButton = () => {
+export const TooltipButton = () => {
   return (
     <button className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
       <img src="/images/tooltip_icon.svg" alt="tooltip icon" />
@@ -396,7 +396,9 @@ const ItemDetailsSection = ({
 
 type SectionContentLayoutProps = { children: ReactNode };
 
-const SectionContentLayout = ({ children }: SectionContentLayoutProps) => {
+export const SectionContentLayout = ({
+  children,
+}: SectionContentLayoutProps) => {
   return (
     <div className="flex w-full items-center gap-[20px] rounded-[20px] border-[1px] border-gray-200 px-[24px] py-[20px] md:px-[34px]">
       {children}
@@ -617,13 +619,13 @@ const AddButton = ({ title, onClick }: AddButtonProps) => {
   );
 };
 
-type BackButtonProps = { handleBack: () => void };
+type BackButtonProps = { onClick: () => void };
 
-const BackButton = ({ handleBack }: BackButtonProps) => {
+export const BackButton = ({ onClick }: BackButtonProps) => {
   return (
     <button
-      onClick={handleBack}
-      aria-label="Preview Item"
+      onClick={onClick}
+      aria-label="Back"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <img src="/images/arrow_left_bold_icon.svg" alt="arrow left bold icon" />

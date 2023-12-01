@@ -5,6 +5,7 @@ import {
   useState,
   type MutableRefObject,
   type ReactNode,
+  useEffect,
 } from "react";
 import DraftPanel from "~/components/Shop/DraftPanel";
 import OrdersPanel from "~/components/Shop/OrdersPanel";
@@ -120,6 +121,12 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
     resetAllClicked();
     setRequestActionClicked(value);
   };
+
+  // testing purposes
+  useEffect(() => {
+    // handleRequests();
+    // handleRequestAction(true);
+  }, [activeTab]);
 
   const value: TabsContextType = {
     activeTab,

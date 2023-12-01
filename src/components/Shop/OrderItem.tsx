@@ -25,10 +25,7 @@ export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
     <>
       <div className="flex items-center">
         <div className="flex items-center gap-[15px]">
-          <div className="headline-sm flex items-center gap-[5px] text-neutral-900">
-            <span>Order ID:</span>
-            <span className="font-bold">OD78667</span>
-          </div>
+          <OrderId id="OD78667" />
           <div className="hidden items-center gap-[10px] md:flex">
             <OrderState state={state} />
             {state === action && <TakeActionNowButton />}
@@ -45,6 +42,17 @@ export const OrderItemHeader = ({ state, action }: OrderItemHeaderProps) => {
         {state === "responded" && <TakeActionNowButton />}
       </div>
     </>
+  );
+};
+
+type OrderIdProps = { id: string };
+
+export const OrderId = ({ id }: OrderIdProps) => {
+  return (
+    <div className="headline-sm flex items-center gap-[5px] text-neutral-900">
+      <span>Order ID:</span>
+      <span className="font-bold">{id}</span>
+    </div>
   );
 };
 
@@ -105,29 +113,41 @@ type OrderStateProps = Pick<OrderItemType, "state">;
 const OrderState = ({ state }: OrderStateProps) => {
   return (
     <div className="flex w-full items-center gap-[5px]">
-      {state === "responded" && (
-        <>
-          <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
+      {state === "responded" && <RespondedState />}
+      {state === "processed" && <ProcessedState />}
+      {state === "not responded to" && <UnprocessedState />}
+    </div>
+  );
+};
 
-          <span className="label-lg font-bold text-primary-600">Responded</span>
-        </>
-      )}
-      {state === "processed" && (
-        <>
-          <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
+const UnprocessedState = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
 
-          <span className="label-lg font-bold text-primary-600">Processed</span>
-        </>
-      )}
-      {state === "not responded to" && (
-        <>
-          <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
+      <span className="label-lg font-bold text-primary-600">
+        Not Responded to
+      </span>
+    </div>
+  );
+};
 
-          <span className="label-lg font-bold text-primary-600">
-            Not Responded to
-          </span>
-        </>
-      )}
+const ProcessedState = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
+
+      <span className="label-lg font-bold text-primary-600">Processed</span>
+    </div>
+  );
+};
+
+export const RespondedState = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
+
+      <span className="label-lg font-bold text-primary-600">Responded</span>
     </div>
   );
 };

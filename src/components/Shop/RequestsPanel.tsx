@@ -7,13 +7,18 @@ import OrderItem from "./OrderItem";
 import RequestOrderButton from "./RequestOrderButton";
 import SearchBar from "./SearchBar";
 import TabContentLayout from "./TabContentLayout";
+import RequestDetails from "./RequestDetails";
 
 const RequestsPanel = () => {
   const { requestedOrders, requestOrderClicked, requestActionClicked } =
     useTabsContext();
 
   if (requestActionClicked) {
-    return <TabContentLayout>ACTION CLICKED</TabContentLayout>;
+    return (
+      <TabContentLayout>
+        <RequestDetails />
+      </TabContentLayout>
+    );
   }
 
   if (requestOrderClicked) {

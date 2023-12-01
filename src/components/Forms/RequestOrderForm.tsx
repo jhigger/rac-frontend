@@ -72,13 +72,24 @@ const RequestOrderStep1 = () => {
     setItems((prev) => [...prev, item]);
   };
 
+  const handleRemoveItem = (index: number) => {
+    setItems(items.filter((_, i) => i !== index));
+  };
+
   return (
     <>
       <RequestFormHeader title="Requesting For New Shop For Me Service" />
       <ImportantNotice />
       <SelectWarehouseOriginSection />
       {items.map((_, i) => {
-        return <ItemDetailsSection key={i} index={i} expanded />;
+        return (
+          <ItemDetailsSection
+            key={i}
+            index={i}
+            handleRemoveItem={handleRemoveItem}
+            expanded
+          />
+        );
       })}
       <div className="w-max">
         <AddButton title="Add Item" onClick={() => handleAddItem("")} />
@@ -244,11 +255,13 @@ export const TooltipButton = () => {
 type ItemDetailsSectionProps = {
   index: number;
   expanded?: boolean;
+  handleRemoveItem: (index: number) => void;
 };
 
 const ItemDetailsSection = ({
   index,
   expanded = false,
+  handleRemoveItem,
 }: ItemDetailsSectionProps) => {
   const { open, toggle } = useAccordion(expanded);
   const [filename, setFilename] = useState("");
@@ -381,12 +394,12 @@ const ItemDetailsSection = ({
 
             <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 p-[10px] md:hidden">
               <PreviewItemButton index={index} />
-              <DeleteItemButton />
+              <DeleteItemButton onClick={() => handleRemoveItem(index)} />
             </div>
           </div>
         </SectionContentLayout>
         <div className="hidden md:block">
-          <DeleteButtonIcon />
+          <DeleteButtonIcon onClick={() => handleRemoveItem(index)} />
         </div>
       </div>
       <ItemPreview index={index} />
@@ -405,10 +418,13 @@ export const SectionContentLayout = ({
     </div>
   );
 };
-
-const DeleteButtonIcon = () => {
+type DeleteButtonIconProps = {
+  onClick: () => void;
+};
+const DeleteButtonIcon = ({ onClick }: DeleteButtonIconProps) => {
   return (
     <button
+      onClick={onClick}
       aria-label="Delete"
       className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
     >
@@ -417,9 +433,14 @@ const DeleteButtonIcon = () => {
   );
 };
 
-const DeleteItemButton = () => {
+type DeleteItemButtonProps = {
+  onClick: () => void;
+};
+
+const DeleteItemButton = ({ onClick }: DeleteItemButtonProps) => {
   return (
     <button
+      onClick={onClick}
       aria-label="Delete Item"
       className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-error-600 md:px-6"
     >

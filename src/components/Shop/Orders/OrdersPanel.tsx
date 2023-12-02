@@ -80,14 +80,9 @@ export type TableHeadType = { title: string; sortIcon: boolean };
 
 const tableHeads: TableHeadType[] = [
   { title: "Package(s) Image", sortIcon: false },
-  { title: "Order ID", sortIcon: true },
-  { title: "Order Status", sortIcon: false },
-  { title: "Order Date", sortIcon: true },
-  { title: "Tracking ID", sortIcon: true },
-  { title: "Shipping Status", sortIcon: false },
-  { title: "Shop For Me Status", sortIcon: false },
-  { title: "Shop For Me Cost", sortIcon: true },
-  { title: "Shipping Cost", sortIcon: true },
+  { title: "Request ID", sortIcon: true },
+  { title: "Request Status", sortIcon: false },
+  { title: "Request Date", sortIcon: true },
 ];
 
 export const TableHead = () => {

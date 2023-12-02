@@ -512,54 +512,8 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
             </div>
           </div>
           <div className="col-span-1 flex flex-col gap-[10px] text-sm leading-5 tracking-[0.25px]">
-            <div className="flex flex-col gap-[10px] overflow-y-auto rounded-[10px] bg-surface-500 px-[20px] py-[20px] md:max-h-[250px] md:gap-[20px] md:px-[24px] ">
-              <div className="flex flex-col gap-[10px] md:flex-row md:justify-between">
-                <div className="flex flex-col px-[14px]">
-                  <label className="body-md text-neutral-700">
-                    Item Color:
-                  </label>
-                  <span
-                    id="item-name"
-                    className="title-md md:title-lg text-neutral-900"
-                  >
-                    Amstel white
-                  </span>
-                </div>
-                <div className="flex flex-col px-[14px]">
-                  <label className="body-md text-neutral-700">
-                    Item Quantity:
-                  </label>
-                  <span
-                    id="item-name"
-                    className="title-md md:title-lg text-neutral-900"
-                  >
-                    2
-                  </span>
-                </div>
-              </div>
+            <ItemPreviewDetails />
 
-              <div className="flex flex-col px-[14px]">
-                <label className="body-md text-neutral-700">
-                  Country Of Purchase:
-                </label>
-                <span
-                  id="item-name"
-                  className="title-md md:title-lg text-neutral-900"
-                >
-                  United States (Houston - warehouse)
-                </span>
-              </div>
-
-              <div className="flex flex-col px-[14px]">
-                <label className="body-md text-neutral-700">Item Link:</label>
-                <span
-                  id="item-name"
-                  className="title-md md:title-lg text-error-600 underline"
-                >
-                  https://a.co/d/gNEGYFM
-                </span>
-              </div>
-            </div>
             <div className="flex flex-col gap-[20px] rounded-[10px] bg-secondary-600 px-[24px] py-[20px] text-primary-10">
               <span className="title-lg">Shop For Me Costs</span>
               <div className="flex flex-col gap-[10px]">
@@ -593,6 +547,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
                   </div>
                 </div>
               </div>
+              I
             </div>
           </div>
         </div>
@@ -612,6 +567,105 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const ItemPreviewDetails = () => {
+  return (
+    <div className="flex flex-col gap-[10px] overflow-y-auto rounded-[10px] bg-surface-500 px-[20px] py-[20px] md:max-h-[250px] md:gap-[20px] md:px-[24px] ">
+      <div className="flex flex-col gap-[10px] md:flex-row md:justify-between">
+        <div className="flex flex-col px-[14px]">
+          <label className="body-md text-neutral-700">Item Color:</label>
+          <span
+            id="item-name"
+            className="title-md md:title-lg text-neutral-900"
+          >
+            Amstel white
+          </span>
+        </div>
+        <div className="flex flex-col px-[14px]">
+          <label className="body-md text-neutral-700">Item Quantity:</label>
+          <span
+            id="item-name"
+            className="title-md md:title-lg text-neutral-900"
+          >
+            2
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">Country Of Purchase:</label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          United States (Houston - warehouse)
+        </span>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">Item Link:</label>
+        <span
+          id="item-name"
+          className="title-md md:title-lg text-error-600 underline"
+        >
+          https://a.co/d/gNEGYFM
+        </span>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">
+          Cost of item from Store:
+        </label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          $567.00
+        </span>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">Store</label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          Amamzon
+        </span>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">Length:</label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          76in
+        </span>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">Width:</label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          89in
+        </span>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">Height:</label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          89in
+        </span>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">
+          Total Shipping Cost to your Warehouse & Sales Tax:
+        </label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          $456.00
+        </span>
+      </div>
+
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">
+          Additional Item Description:
+        </label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          $456.00
+        </span>
       </div>
     </div>
   );

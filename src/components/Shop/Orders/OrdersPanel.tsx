@@ -599,7 +599,7 @@ const InitiateShippingButton = () => {
 
 type CloseButtonProps = { dataClose: string };
 
-const CloseButton = ({ dataClose }: CloseButtonProps) => {
+export const CloseButton = ({ dataClose }: CloseButtonProps) => {
   return (
     <button
       aria-label="Back"
@@ -615,7 +615,7 @@ const CloseButton = ({ dataClose }: CloseButtonProps) => {
   );
 };
 
-const CancelButton = ({ dataClose }: CloseButtonProps) => {
+export const CancelButton = ({ dataClose }: CloseButtonProps) => {
   return (
     <button
       aria-label="Back"

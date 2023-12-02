@@ -48,10 +48,10 @@ const RequestOrderForm = () => {
           </div>
           {/* for mobile screen */}
           <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
-            <div className="col-span-1 w-full">
+            <div className="col-span-full [@media(min-width:320px)]:col-span-1">
               <BackButton onClick={handleBack} />
             </div>
-            <div className="col-span-1">
+            <div className="col-span-full [@media(min-width:320px)]:col-span-1">
               <ProceedButton next={next} />
             </div>
             <div className="col-span-full">

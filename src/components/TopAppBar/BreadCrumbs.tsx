@@ -7,7 +7,7 @@ const BreadCrumbs = () => {
   const { activeTab, activeAction } = useShopContext();
 
   return (
-    <div className="flex gap-4">
+    <div className="items-center justify-center flex w-full gap-[10px] md:gap-4">
       <img
         src="/images/nav/home_icon.svg"
         alt="home icon"
@@ -19,7 +19,7 @@ const BreadCrumbs = () => {
       </span>
       <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
       <span className="title-sm text-secondary-600">{activeTab}</span>
-      {activeAction && (
+      {activeAction !== "request new order" && (
         <>
           <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
           <span className="title-sm text-secondary-600">{activeAction}</span>

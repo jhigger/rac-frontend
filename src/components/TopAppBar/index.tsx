@@ -58,7 +58,7 @@ const TopAppBarHeader = () => {
   const { activeNav } = useNavContext();
 
   return (
-    <h1 className="headline-md text-center text-brand md:text-left">
+    <h1 className="title-lg md:headline-md text-center text-brand md:text-left">
       {activeNav}
     </h1>
   );

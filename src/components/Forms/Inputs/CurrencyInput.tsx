@@ -12,8 +12,13 @@ const CurrencyInput = ({ id, label, value, onChange }: CurrencyInputProps) => {
   return (
     <div className="relative flex w-full flex-col">
       <div className="relative z-0">
-        <div className="absolute left-2 top-2 z-10 flex items-center justify-center rounded-[6.25rem] bg-primary-100 p-[8px]">
-          <img src="/images/dollar_square_icon.svg" alt="menu icon" />
+        <div className="absolute left-2 top-2 z-10">
+          <button
+            className="btn relative flex items-center justify-center rounded-[6.25rem] bg-primary-100 p-[8px]"
+            type="button"
+          >
+            <img src="/images/dollar_square_icon.svg" alt="menu icon" />
+          </button>
         </div>
 
         <input

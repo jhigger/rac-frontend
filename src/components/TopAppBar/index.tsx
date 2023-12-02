@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useNavContext } from "~/contexts/NavigationContext";
-import { useShopContext } from "~/contexts/ShopContext";
 import AppBarTabs from "./AppBarTabs";
+import BreadCrumbs from "./BreadCrumbs";
 
 const TopAppBar = () => {
   return (
@@ -18,7 +18,7 @@ const TopAppBar = () => {
         </div>
         <div className="hidden flex-col gap-[10px] md:flex">
           <TopAppBarHeader />
-          <TopAppBarBreadCrumbs />
+          <BreadCrumbs />
         </div>
 
         <div className="flex flex-row items-center justify-end">
@@ -44,7 +44,7 @@ const TopAppBar = () => {
       {/* mobile version */}
       <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
         <TopAppBarHeader />
-        <TopAppBarBreadCrumbs />
+        <BreadCrumbs />
       </div>
       {/* tabs */}
       <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
@@ -61,33 +61,6 @@ const TopAppBarHeader = () => {
     <h1 className="headline-md text-center text-brand md:text-left">
       {activeNav}
     </h1>
-  );
-};
-
-const TopAppBarBreadCrumbs = () => {
-  const { activeNav } = useNavContext();
-  const { activeTab, activeAction } = useShopContext();
-
-  return (
-    <div className="flex gap-4">
-      <img
-        src="/images/nav/home_icon.svg"
-        alt="home icon"
-        className="h-[19px] w-[19px]"
-      />
-      <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
-      <span className="title-sm text-secondary-600">
-        {activeNav.toLowerCase()}
-      </span>
-      <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
-      <span className="title-sm text-secondary-600">{activeTab}</span>
-      {activeAction && (
-        <>
-          <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
-          <span className="title-sm text-secondary-600">{activeAction}</span>
-        </>
-      )}
-    </div>
   );
 };
 

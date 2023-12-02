@@ -9,16 +9,14 @@ import {
   SectionHeader,
   TooltipButton,
 } from "../../Forms/RequestOrderForm";
-import OrderCheckout from "../Orders/OrderCheckout";
 import { LabelId, RespondedStatus } from "../Orders/OrderItem";
-import TabContentLayout from "../TabContentLayout";
 
 const RequestDetails = () => {
   const {
     orderItems,
-    handleRequestAction,
-    requestCheckoutClicked,
+    handleActiveAction,
     handleCheckoutAction,
+    handleRequestAction,
   } = useShopContext();
 
   if (!orderItems) return;
@@ -29,15 +27,8 @@ const RequestDetails = () => {
 
   const handleProceed = () => {
     handleCheckoutAction(true);
+    handleActiveAction("checkout");
   };
-
-  if (requestCheckoutClicked) {
-    return (
-      <TabContentLayout>
-        <OrderCheckout />
-      </TabContentLayout>
-    );
-  }
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">

@@ -1,4 +1,7 @@
-import { type OrderItemType } from "~/contexts/ShopContext";
+import {
+  type OrderItemType,
+  type RequestItemType,
+} from "~/contexts/ShopContext";
 
 const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image";
 
@@ -98,5 +101,44 @@ export const orders: OrderItemType[] = [
     shopForMeStatus: "purchase completed",
     shopForMeCost: "$107.76",
     shippingCost: "$107.76",
+  },
+];
+
+export const requests: RequestItemType[] = [
+  {
+    images: images(1),
+    requestId: "OD08751",
+    requestStatus: "not responded",
+    requestDate: "22-03-2023 13:05",
+  },
+  {
+    images: images(2),
+    requestId: "OD08752",
+    requestStatus: "responded",
+    requestDate: "22-03-2023 13:05",
+  },
+  {
+    images: images(3),
+    requestId: "OD08753",
+    requestStatus: "not responded",
+    requestDate: "22-03-2023 13:05",
+  },
+  {
+    images: images(4),
+    requestId: "OD08754",
+    requestStatus: "responded",
+    requestDate: "22-03-2023 13:05",
+  },
+  {
+    images: images(5),
+    requestId: "OD08755",
+    requestStatus: "not responded",
+    requestDate: "22-03-2023 13:05",
+  },
+  {
+    images: images(6),
+    requestId: "OD08756",
+    requestStatus: "responded",
+    requestDate: "22-03-2023 13:05",
   },
 ];

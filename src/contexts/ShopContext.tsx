@@ -10,14 +10,14 @@ import {
 import DraftPanel from "~/components/Shop/Drafts/DraftPanel";
 import OrdersPanel from "~/components/Shop/Orders/OrdersPanel";
 import RequestsPanel from "~/components/Shop/Requests/RequestsPanel";
-import { orders } from "~/fake data";
+import { orders, requests } from "~/fake data";
 
 export type ShopContextType = {
   activeAction: string;
-  activeTab: tabIdType;
+  activeTab: TabIdType;
   orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
-  requestedOrders: OrderItemType[] | null;
+  requestedOrders: RequestItemType[] | null;
   requestActionClicked: boolean;
   requestCheckoutClicked: boolean;
   requestOrderClicked: boolean;
@@ -30,7 +30,7 @@ export type ShopContextType = {
   handleRequests: () => void;
   handleRequestAction: (value: boolean) => void;
   handleRequestOrder: (value: boolean) => void;
-  handleTabChange: (tab: tabIdType) => void;
+  handleTabChange: (tab: TabIdType) => void;
 };
 
 export const ShopContext = createContext<ShopContextType>(
@@ -41,10 +41,10 @@ export const useShopContext = () => useContext(ShopContext);
 
 const tabIds = ["orders", "requests", "draft"] as const;
 
-type tabIdType = (typeof tabIds)[number];
+type TabIdType = (typeof tabIds)[number];
 
 type AppBarTabType = {
-  id: tabIdType;
+  id: TabIdType;
   title: string;
   content: JSX.Element;
 };
@@ -84,13 +84,20 @@ export type OrderItemType = {
   shippingCost: string;
 };
 
+const REQUEST_STATUS = ["responded", "not responded"] as const;
+
+export type RequestItemType = {
+  images: string[];
+  requestId: string;
+  requestStatus: (typeof REQUEST_STATUS)[number];
+  requestDate: string;
+};
+
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
-  const [activeTab, setActiveTab] = useState<tabIdType>(
-    tabs[0]?.id ?? "orders",
-  );
+  const [activeTab, setActiveTab] = useState<TabIdType>("orders");
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
   const [requestedOrders, setRequestedOrders] = useState<
-    OrderItemType[] | null
+    RequestItemType[] | null
   >(null);
   const [requestOrderClicked, setRequestOrderClicked] = useState(false);
   const [orderActionClicked, setOrderActionClicked] = useState(false);
@@ -117,7 +124,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleRequests = () => {
     handleOrders();
-    setRequestedOrders(orders);
+    setRequestedOrders(requests);
     resetAllClicked();
   };
 
@@ -129,7 +136,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     setRequestOrderClicked(value);
   };
 
-  const handleTabChange = (tab: tabIdType) => {
+  const handleTabChange = (tab: TabIdType) => {
     setActiveTab(tab);
     resetAllClicked();
   };

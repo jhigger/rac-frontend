@@ -35,7 +35,7 @@ const FileInput = ({ id, label, value, onChange }: FileInputProps) => {
         {label}
       </label>
       <div className="btn-segmented inline-flex w-full flex-row items-center">
-        <div className="segmented-item active btn-outline relative inline-flex h-10 w-1/2 flex-row items-center justify-center gap-x-2 !rounded-l-[4px] border border-gray-500 py-2.5 [&.active]:bg-secondary-100">
+        <div className="segmented-item active btn-outline relative inline-flex h-10 w-1/2 flex-row items-center justify-center gap-x-2 !rounded-l-[4px] border border-gray-500 bg-primary-100 py-2.5 [&.active]:bg-secondary-100">
           <input
             type="file"
             aria-label={label}

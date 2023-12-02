@@ -1,4 +1,4 @@
-import { useTabsContext } from "~/contexts/TabsContext";
+import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
 import {
@@ -11,7 +11,7 @@ import { LabelId, UnprocessedStatus } from "../Orders/OrderItem";
 import { BillingDetails, Item, PackageOrigin } from "./RequestDetails";
 
 const OrderDetails = () => {
-  const { orderItems, handleRequestAction } = useTabsContext();
+  const { orderItems, handleRequestAction } = useShopContext();
 
   if (!orderItems) return;
 

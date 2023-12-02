@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
-import { useTabsContext } from "~/contexts/TabsContext";
+import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
@@ -20,7 +20,7 @@ const RequestOrderForm = () => {
   ]);
 
   const { handleTabChange, handleRequests, handleRequestOrder } =
-    useTabsContext();
+    useShopContext();
 
   const handleFinish = () => {
     handleRequests();

@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { useTabsContext } from "~/contexts/TabsContext";
+import { useShopContext } from "~/contexts/ShopContext";
 
 const RequestOrderButton = () => {
-  const { handleRequestOrder } = useTabsContext();
+  const { handleRequestOrder } = useShopContext();
 
   return (
     <button

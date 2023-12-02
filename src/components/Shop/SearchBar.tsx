@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useTabsContext } from "~/contexts/TabsContext";
+import { useShopContext } from "~/contexts/ShopContext";
 import SearchInput from "../Forms/Inputs/SearchInput";
 
 const SearchBar = () => {
@@ -60,7 +60,7 @@ const FilterButton = () => {
 };
 
 const RequestNewOrderButton = () => {
-  const { handleRequestOrder } = useTabsContext();
+  const { handleRequestOrder } = useShopContext();
 
   const handleNewOrder = () => {
     handleRequestOrder(true);

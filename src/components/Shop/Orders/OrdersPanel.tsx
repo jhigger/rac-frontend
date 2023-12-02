@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
-import { useTabsContext, type OrderItemType } from "~/contexts/TabsContext";
+import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
 import { orders } from "~/fake data";
 import RequestOrderForm, {
   RequestFormHeader,
@@ -17,7 +17,7 @@ import tailmater from "~/js/tailmater";
 
 const OrdersPanel = () => {
   const { orderItems, orderActionClicked, requestOrderClicked } =
-    useTabsContext();
+    useShopContext();
 
   // request order in search bar
   if (requestOrderClicked) {

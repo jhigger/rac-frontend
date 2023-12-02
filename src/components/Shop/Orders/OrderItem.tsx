@@ -1,4 +1,4 @@
-import { useTabsContext, type OrderItemType } from "~/contexts/TabsContext";
+import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
 /* eslint-disable @next/next/no-img-element */
 
 type OrderItemProps = { order: OrderItemType };
@@ -155,7 +155,7 @@ export const RespondedStatus = () => {
 
 const TakeActionNowButton = () => {
   const { activeTab, handleOrderAction, handleRequestAction } =
-    useTabsContext();
+    useShopContext();
 
   const onClick = {
     orders: () => handleOrderAction(true),

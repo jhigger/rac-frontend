@@ -12,7 +12,7 @@ import OrdersPanel from "~/components/Shop/Orders/OrdersPanel";
 import RequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { orders } from "~/fake data";
 
-export type TabsContextType = {
+export type ShopContextType = {
   activeTab: tabIdType;
   orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
@@ -31,11 +31,11 @@ export type TabsContextType = {
   handleTabChange: (tab: tabIdType) => void;
 };
 
-export const TabsContext = createContext<TabsContextType>(
-  {} as TabsContextType,
+export const ShopContext = createContext<ShopContextType>(
+  {} as ShopContextType,
 );
 
-export const useTabsContext = () => useContext(TabsContext);
+export const useShopContext = () => useContext(ShopContext);
 
 const tabIds = ["orders", "requests", "draft"] as const;
 
@@ -82,7 +82,7 @@ export type OrderItemType = {
   shippingCost: string;
 };
 
-const TabsContextProvider = ({ children }: { children: ReactNode }) => {
+const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState<tabIdType>(
     tabs[0]?.id ?? "orders",
   );
@@ -149,7 +149,7 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
     // handleRequestAction(true);
   }, [activeTab]);
 
-  const value: TabsContextType = {
+  const value: ShopContextType = {
     activeTab,
     orderActionClicked,
     orderItems,
@@ -168,7 +168,7 @@ const TabsContextProvider = ({ children }: { children: ReactNode }) => {
     handleTabChange,
   };
 
-  return <TabsContext.Provider value={value}>{children}</TabsContext.Provider>;
+  return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 };
 
-export default TabsContextProvider;
+export default ShopContextProvider;

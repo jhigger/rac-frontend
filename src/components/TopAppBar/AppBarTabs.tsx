@@ -1,7 +1,7 @@
-import { tabs, useTabsContext } from "~/contexts/TabsContext";
+import { tabs, useShopContext } from "~/contexts/ShopContext";
 
 const AppBarTabs = () => {
-  const { activeTab, tabsRef, handleTabChange } = useTabsContext();
+  const { activeTab, tabsRef, handleTabChange } = useShopContext();
 
   return (
     <>

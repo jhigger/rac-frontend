@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
-import { useTabsContext } from "~/contexts/TabsContext";
+import { useShopContext } from "~/contexts/ShopContext";
 import RequestOrderForm from "../../Forms/RequestOrderForm";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import OrderItem from "../Orders/OrderItem";
@@ -11,7 +11,7 @@ import RequestDetails from "./RequestDetails";
 
 const RequestsPanel = () => {
   const { requestedOrders, requestOrderClicked, requestActionClicked } =
-    useTabsContext();
+    useShopContext();
 
   if (requestOrderClicked) {
     return (

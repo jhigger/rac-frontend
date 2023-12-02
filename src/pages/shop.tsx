@@ -5,11 +5,11 @@ import Welcome from "~/components/Navigation/Welcome";
 import TopAppBar from "~/components/TopAppBar";
 import TabContentPanels from "~/components/TopAppBar/TabContentPanels";
 import NavContextProvider from "~/contexts/NavigationContext";
-import TabsContextProvider from "~/contexts/TabsContext";
+import ShopContextProvider from "~/contexts/ShopContext";
 
 const shop = () => {
   return (
-    <TabsContextProvider>
+    <ShopContextProvider>
       <NavContextProvider>
         <div className="relative flex min-h-screen bg-neutral-50">
           <nav className="fixed hidden h-full min-h-screen w-[266px] flex-col overflow-y-auto bg-brand py-[40px] md:flex">
@@ -36,7 +36,7 @@ const shop = () => {
           </main>
         </div>
       </NavContextProvider>
-    </TabsContextProvider>
+    </ShopContextProvider>
   );
 };
 

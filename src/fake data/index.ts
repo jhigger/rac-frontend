@@ -1,4 +1,4 @@
-import { type OrderItemType } from "~/contexts/TabsContext";
+import { type OrderItemType } from "~/contexts/ShopContext";
 
 const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image";
 

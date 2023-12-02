@@ -1,7 +1,7 @@
-import { tabs, useTabsContext } from "~/contexts/TabsContext";
+import { tabs, useShopContext } from "~/contexts/ShopContext";
 
 const TabContentPanels = () => {
-  const { activeTab } = useTabsContext();
+  const { activeTab } = useShopContext();
 
   return (
     <div className="flex flex-col">

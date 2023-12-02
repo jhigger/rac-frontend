@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useTabsContext } from "~/contexts/TabsContext";
+import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import AccordionButton from "../../Forms/AccordionButton";
@@ -16,7 +16,7 @@ import { HighlightedInfo, Item } from "../Requests/RequestDetails";
 type stepsContentType = { title: string; content: JSX.Element };
 
 const OrderCheckout = () => {
-  const { orderItems, handleRequestAction } = useTabsContext();
+  const { orderItems, handleRequestAction } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package confirmation", content: <CheckoutStep1 /> },
     { title: "Billing Address", content: <div>Billing Address</div> },
@@ -54,7 +54,7 @@ const OrderCheckout = () => {
 };
 
 const CheckoutStep1 = () => {
-  const { orderItems } = useTabsContext();
+  const { orderItems } = useShopContext();
 
   if (!orderItems) return;
 

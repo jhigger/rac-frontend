@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { useTabsContext } from "./TabsContext";
+import { useShopContext } from "./ShopContext";
 
 export type NavContextType = {
   activeNav: string;
@@ -28,7 +28,7 @@ export const bottomNavItems: NavItemType[] = [
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeNav, setActiveNav] = useState("Shop for me");
-  const { tabs, tabsRef, handleTabChange } = useTabsContext();
+  const { tabs, tabsRef, handleTabChange } = useShopContext();
 
   const handleActiveNavChange = (title: string) => {
     setActiveNav(title);

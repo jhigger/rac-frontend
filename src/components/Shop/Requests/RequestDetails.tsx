@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useTabsContext } from "~/contexts/TabsContext";
+import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
 import {
@@ -19,7 +19,7 @@ const RequestDetails = () => {
     handleRequestAction,
     requestCheckoutClicked,
     handleCheckoutAction,
-  } = useTabsContext();
+  } = useShopContext();
 
   if (!orderItems) return;
 

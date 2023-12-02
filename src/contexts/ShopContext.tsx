@@ -1,11 +1,11 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useRef,
   useState,
   type MutableRefObject,
   type ReactNode,
-  useEffect,
 } from "react";
 import DraftPanel from "~/components/Shop/Drafts/DraftPanel";
 import OrdersPanel from "~/components/Shop/Orders/OrdersPanel";
@@ -100,16 +100,16 @@ export type RequestItemType = {
 };
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
+  const [activeAction, setActiveAction] = useState<ActionType | null>(null);
   const [activeTab, setActiveTab] = useState<TabIdType>("orders");
+  const [orderActionClicked, setOrderActionClicked] = useState(false);
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
+  const [requestActionClicked, setRequestActionClicked] = useState(false);
+  const [requestCheckoutClicked, setRequestCheckoutClicked] = useState(false);
   const [requestedOrders, setRequestedOrders] = useState<
     RequestItemType[] | null
   >(null);
   const [requestOrderClicked, setRequestOrderClicked] = useState(false);
-  const [orderActionClicked, setOrderActionClicked] = useState(false);
-  const [requestActionClicked, setRequestActionClicked] = useState(false);
-  const [requestCheckoutClicked, setRequestCheckoutClicked] = useState(false);
-  const [activeAction, setActiveAction] = useState<ActionType | null>(null);
 
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
@@ -117,22 +117,29 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     setActiveAction(action);
   };
 
-  const resetAllClicked = () => {
-    setActiveAction(null);
-    setOrderActionClicked(false);
-    setRequestActionClicked(false);
-    setRequestCheckoutClicked(false);
-    setRequestOrderClicked(false);
+  const handleCheckoutAction = (value: boolean) => {
+    resetAllClicked();
+    setRequestCheckoutClicked(value);
   };
 
   const handleOrders = () => {
     setOrderItems(orders);
   };
 
+  const handleOrderAction = (value: boolean) => {
+    resetAllClicked();
+    setOrderActionClicked(value);
+  };
+
   const handleRequests = () => {
     handleOrders();
     setRequestedOrders(requests);
     resetAllClicked();
+  };
+
+  const handleRequestAction = (value: boolean) => {
+    resetAllClicked();
+    setRequestActionClicked(value);
   };
 
   const handleRequestOrder = (value: boolean) => {
@@ -148,25 +155,18 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     resetAllClicked();
   };
 
-  const handleOrderAction = (value: boolean) => {
-    resetAllClicked();
-    setOrderActionClicked(value);
-  };
-
-  const handleRequestAction = (value: boolean) => {
-    resetAllClicked();
-    setRequestActionClicked(value);
-  };
-
-  const handleCheckoutAction = (value: boolean) => {
-    resetAllClicked();
-    setRequestCheckoutClicked(value);
+  const resetAllClicked = () => {
+    setActiveAction(null);
+    setOrderActionClicked(false);
+    setRequestActionClicked(false);
+    setRequestCheckoutClicked(false);
+    setRequestOrderClicked(false);
   };
 
   // testing purposes
   useEffect(() => {
     handleRequests();
-    // handleRequestAction(true);
+    handleOrders();
   }, [activeTab]);
 
   const value: ShopContextType = {

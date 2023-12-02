@@ -20,12 +20,17 @@ import {
 import { LabelId } from "../Orders/OrderItem";
 import { HighlightedInfo, Item } from "./RequestDetails";
 import { useEffect } from "react";
+import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
 
 type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
-  const { orderItems, handleRequestAction, handlePayNowAction } =
-    useShopContext();
+  const {
+    orderItems,
+    handleRequestAction,
+    handlePayNowAction,
+    handleTabChange,
+  } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {
@@ -36,7 +41,7 @@ const RequestCheckout = () => {
     { title: "Success", content: <Success /> },
   ];
   const stepsContent = steps.map((step) => step.content);
-  const { step, currentStepIndex, next, isFirstStep, back } =
+  const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
     useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
 
@@ -44,6 +49,10 @@ const RequestCheckout = () => {
 
   const handleBack = () => {
     handleRequestAction(false);
+  };
+
+  const handleFinish = () => {
+    handleTabChange("requests");
   };
 
   useEffect(() => {
@@ -58,7 +67,12 @@ const RequestCheckout = () => {
         length={steps.length}
         title={currentTitle}
       />
-      <LabelId label="Request ID:" id="R78667" />
+      {!isLastStep && <LabelId label="Request ID:" id="R78667" />}
+      {isLastStep && (
+        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
+          <OrderTrackingId />
+        </div>
+      )}
       {step}
       <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
         {isFirstStep && (
@@ -66,13 +80,18 @@ const RequestCheckout = () => {
             <BackButton onClick={handleBack} />
           </div>
         )}
-        {!isFirstStep && (
+        {!isFirstStep && !isLastStep && (
           <div className="w-full md:max-w-[210px]">
             <BackButton onClick={back} />
           </div>
         )}
         {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
         {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
+        {currentStepIndex === 3 && (
+          <div className="w-[200px]">
+            <NextButton text="Done" next={handleFinish} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -628,7 +647,77 @@ const PackageTableHead = ({ th }: PackageTableHeadProps) => {
 };
 
 const Success = () => {
-  return <>Success</>;
+  return (
+    <div className="flex flex-col gap-[30px]">
+      <CongratulationImage text="You have just successfully placed a shop for me order by paying for your shop for me cost." />
+      <SuccessImportantNotice />
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="Track your package" />
+        <SectionContentLayout>
+          <div className="flex flex-col gap-[10px]">
+            <h3 className="title-lg font-bold text-neutral-900">
+              Here are more information on how to track
+            </h3>
+            <ul className="flex flex-col gap-[14px]">
+              <li className="flex items-center gap-[26px]">
+                <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
+                  1
+                </span>
+                <span className="title-lg text-neutral-900">
+                  You can start tracking your package in the next 24 hrs using
+                  the Tracking ID above or{" "}
+                  <a href="#" target="_blank" rel="noopener noreferrer">
+                    <span className="inline-flex items-center gap-[5px] font-bold text-primary-600">
+                      this link
+                      <img
+                        src="/images/export_circle_icon.svg"
+                        alt="export circle icon"
+                      />
+                    </span>
+                  </a>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </SectionContentLayout>
+      </div>
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="And lastly..." />
+        <div className="flex flex-col gap-[10px] px-[34px] py-[10px]">
+          <p className="body-md">
+            We have sent you details about your Order to your email address
+            <span className="text-primary-900">rexofforex@gmail.com</span>
+          </p>
+          <div className="max-w-[150px]">
+            <button
+              aria-label="View Receipt"
+              className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+            >
+              <img src="/images/receipt_icon.svg" alt="receipt icon" />
+              <span className="body-lg whitespace-nowrap text-primary-600">
+                View Receipt
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SuccessImportantNotice = () => {
+  return (
+    <div className="flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[28px] py-[20px]">
+      <span className="title-lg font-bold text-primary-900">
+        IMPORTANT NOTICE:
+      </span>
+      <p className="title-lg text-gray-700">
+        You will make payment for your shipping once it arrives our office in
+        Nigeria (your selected <b>&quot;Destination&quot;</b>) before you can
+        clear it.
+      </p>
+    </div>
+  );
 };
 
 const PackageOrigin = () => {

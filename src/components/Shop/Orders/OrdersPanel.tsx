@@ -3,10 +3,7 @@ import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
 import tailmater from "~/js/tailmater";
-import RequestOrderForm, {
-  RequestFormHeader,
-  SectionHeader,
-} from "../../Forms/RequestOrderForm";
+import { RequestFormHeader, SectionHeader } from "../../Forms/RequestOrderForm";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import RequestOrderButton from "../Requests/RequestOrderButton";
 import SearchBar from "../SearchBar";
@@ -15,17 +12,7 @@ import OrderDetails from "./OrderDetails";
 import { LabelId, MoreButton } from "./OrderItem";
 
 const OrdersPanel = () => {
-  const { orderItems, orderActionClicked, requestOrderClicked } =
-    useShopContext();
-
-  // request order in search bar
-  if (requestOrderClicked) {
-    return (
-      <TabContentLayout>
-        <RequestOrderForm />
-      </TabContentLayout>
-    );
-  }
+  const { orderItems, orderActionClicked } = useShopContext();
 
   if (orderActionClicked) {
     return (
@@ -88,10 +75,6 @@ const tableHeads: TableHeadType[] = [
   { title: "Shop For Me Status", sortIcon: false },
   { title: "Shop For Me Cost", sortIcon: true },
   { title: "Shipping Cost", sortIcon: true },
-  // { title: "Package(s) Image", sortIcon: false },
-  // { title: "Request ID", sortIcon: true },
-  // { title: "Request Status", sortIcon: false },
-  // { title: "Request Date", sortIcon: true },
 ];
 
 type TableHeadProps = { th: TableHeadType[] };

@@ -589,17 +589,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
                     <span className="body-md">
                       Default Currency: <span className="title-sm">USD</span>
                     </span>
-
-                    <button
-                      aria-label="change currency"
-                      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-400 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-100 md:px-6"
-                    >
-                      <img
-                        src="/images/change_currency_icon.svg"
-                        alt="change currency icon"
-                      />
-                      <span className="label-lg">Change Currency</span>
-                    </button>
+                    <ChangeCurrencyButton />
                   </div>
                 </div>
               </div>
@@ -624,6 +614,18 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
         </div>
       </div>
     </div>
+  );
+};
+
+export const ChangeCurrencyButton = () => {
+  return (
+    <button
+      aria-label="change currency"
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-400 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-100 md:px-6"
+    >
+      <img src="/images/change_currency_icon.svg" alt="change currency icon" />
+      <span className="label-lg">Change Currency</span>
+    </button>
   );
 };
 

@@ -7,8 +7,12 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "../../Forms/RequestOrderForm";
-import { LabelId, UnprocessedStatus } from "../Orders/OrderItem";
-import { BillingDetails, Item, PackageOrigin } from "./RequestDetails";
+import { LabelId, UnprocessedStatus } from "./OrderItem";
+import {
+  BillingDetails,
+  Item,
+  PackageOrigin,
+} from "../Requests/RequestDetails";
 
 const OrderDetails = () => {
   const { orderItems, handleRequestAction } = useShopContext();

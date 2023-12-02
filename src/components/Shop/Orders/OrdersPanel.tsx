@@ -8,7 +8,7 @@ import RequestOrderForm, {
   SectionHeader,
 } from "../../Forms/RequestOrderForm";
 import NeedHelpFAB from "../../NeedHelpFAB";
-import OrderDetails from "../Requests/OrderDetails";
+import OrderDetails from "./OrderDetails";
 import { LabelId, MoreButton } from "./OrderItem";
 import RequestOrderButton from "../Requests/RequestOrderButton";
 import SearchBar from "../SearchBar";

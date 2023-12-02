@@ -3,7 +3,10 @@ import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { useTabsContext, type OrderItemType } from "~/contexts/TabsContext";
 import { orders } from "~/fake data";
-import RequestOrderForm, { RequestFormHeader } from "../Forms/RequestOrderForm";
+import RequestOrderForm, {
+  RequestFormHeader,
+  SectionHeader,
+} from "../Forms/RequestOrderForm";
 import NeedHelpFAB from "../NeedHelpFAB";
 import OrderDetails from "./OrderDetails";
 import { LabelId, MoreButton } from "./OrderItem";
@@ -371,6 +374,9 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
 
   const imagePath = statusToImageMap[status as SomeStatusType];
 
+  const maxWidth =
+    status === "cleared" ? "max-w-[1000px] mt-60" : "max-w-[700px]";
+
   return (
     <div
       id={modalId}
@@ -380,10 +386,12 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
         data-close={dataClose}
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
-      <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+      <div
+        className={`z-50 flex h-max w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px] ${maxWidth}`}
+      >
         <RequestFormHeader title="Shipping Status" />
 
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] bg-white p-[20px]">
+        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
           <LabelId label="Order ID:" id="OD78667" />
           <img
             src="/images/shipping status modal/order_tracking_icon.svg"
@@ -416,8 +424,79 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
           </div>
         )}
 
-        {status === "cleared" && (
+        {status === "delivered" && (
           <CongratulationImage text="Your package has been delivered." />
+        )}
+        {status === "cleared" && (
+          <>
+            <CongratulationImage text="you can now pick up your package from our office in Nigeria (your selected “Destination”)" />
+
+            <div className="flex w-full flex-col gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
+              <span className="title-lg text-gray-700">
+                Our office address to pick up your package
+              </span>
+              <div className="flex flex-col gap-[5px]">
+                <span className="body-md text-gray-700">Pick up Address:</span>
+                <span className="title-lg text-gray-900">
+                  No, 1osolo way, ikeja road, behind scaint merry
+                </span>
+              </div>
+              <div className="flex gap-[20px]">
+                <div className="flex flex-col gap-[5px] text-neutral-900">
+                  <span className="body-md text-gray-700">Country:</span>
+                  <span className="title-lg text-gray-900">Nigeria</span>
+                </div>
+                <div className="flex flex-col gap-[5px] text-neutral-900">
+                  <span className="body-md text-gray-700">State:</span>
+                  <span className="title-lg text-gray-900">Lagos</span>
+                </div>
+                <div className="flex flex-col gap-[5px] text-neutral-900">
+                  <span className="body-md text-gray-700">City:</span>
+                  <span className="title-lg text-gray-900">Ajao</span>
+                </div>
+                <div className="flex flex-col gap-[5px] text-neutral-900">
+                  <span className="body-md text-gray-700">
+                    Zip/postal Code:
+                  </span>
+                  <span className="title-lg text-gray-900">98765</span>
+                </div>
+              </div>
+            </div>
+            <SectionHeader title="What next?" />
+            <div className="flex w-full flex-col gap-[20px] rounded-[20px] border border-gray-200 px-[14px] py-[20px]">
+              <span className="title-lg pl-[14px] font-bold text-neutral-700">
+                Here is how to pick your package up from our office
+              </span>
+              <div className="flex items-center gap-[10px]">
+                <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">
+                  1
+                </span>
+                <span className="title-lg text-gray-900">
+                  When you come to pick up your package from our office, you
+                  will provide us the <b>Order ID</b> to ensure that we give you
+                  the package that rightly belongs to you.
+                </span>
+              </div>
+              <div className="flex items-center gap-[10px]">
+                <span className="title-lg rounded-[20px] bg-secondary-900 p-[10px] text-white">
+                  2
+                </span>
+                <span className="title-lg text-gray-900">
+                  If you won&apos;t be able to come pick up your package up from
+                  our office, you can request for a doorstep delivery from us{" "}
+                  <a href="#" target="_blank" rel="noopener noreferrer">
+                    <span className="inline-flex items-center gap-[5px] text-primary-600">
+                      here
+                      <img
+                        src="/images/export_circle_icon.svg"
+                        alt="export circle icon"
+                      />
+                    </span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </>
         )}
 
         <p className="title-lg text-neutral-900">

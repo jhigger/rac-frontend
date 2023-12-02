@@ -1,13 +1,13 @@
 import { useTabsContext } from "~/contexts/TabsContext";
 import useAccordion from "~/hooks/useAccordion";
-import AccordionButton from "../Forms/AccordionButton";
+import AccordionButton from "../../Forms/AccordionButton";
 import {
   BackButton,
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,
-} from "../Forms/RequestOrderForm";
-import { LabelId, UnprocessedStatus } from "./OrderItem";
+} from "../../Forms/RequestOrderForm";
+import { LabelId, UnprocessedStatus } from "../Orders/OrderItem";
 import { BillingDetails, Item, PackageOrigin } from "./RequestDetails";
 
 const OrderDetails = () => {

@@ -6,13 +6,13 @@ import { orders } from "~/fake data";
 import RequestOrderForm, {
   RequestFormHeader,
   SectionHeader,
-} from "../Forms/RequestOrderForm";
-import NeedHelpFAB from "../NeedHelpFAB";
-import OrderDetails from "./OrderDetails";
+} from "../../Forms/RequestOrderForm";
+import NeedHelpFAB from "../../NeedHelpFAB";
+import OrderDetails from "../Requests/OrderDetails";
 import { LabelId, MoreButton } from "./OrderItem";
-import RequestOrderButton from "./RequestOrderButton";
-import SearchBar from "./SearchBar";
-import TabContentLayout from "./TabContentLayout";
+import RequestOrderButton from "../Requests/RequestOrderButton";
+import SearchBar from "../SearchBar";
+import TabContentLayout from "../TabContentLayout";
 import tailmater from "~/js/tailmater";
 
 const OrdersPanel = () => {

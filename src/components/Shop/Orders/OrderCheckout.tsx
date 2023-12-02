@@ -2,16 +2,16 @@
 import { useTabsContext } from "~/contexts/TabsContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
-import AccordionButton from "../Forms/AccordionButton";
+import AccordionButton from "../../Forms/AccordionButton";
 import {
   BackButton,
   ProceedButton,
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,
-} from "../Forms/RequestOrderForm";
+} from "../../Forms/RequestOrderForm";
 import { LabelId } from "./OrderItem";
-import { HighlightedInfo, Item } from "./RequestDetails";
+import { HighlightedInfo, Item } from "../Requests/RequestDetails";
 
 type stepsContentType = { title: string; content: JSX.Element };
 

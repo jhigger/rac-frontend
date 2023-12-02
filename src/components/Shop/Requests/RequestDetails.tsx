@@ -1,17 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { useTabsContext } from "~/contexts/TabsContext";
 import useAccordion from "~/hooks/useAccordion";
-import AccordionButton from "../Forms/AccordionButton";
+import AccordionButton from "../../Forms/AccordionButton";
 import {
   BackButton,
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
-} from "../Forms/RequestOrderForm";
-import OrderCheckout from "./OrderCheckout";
-import { LabelId, RespondedStatus } from "./OrderItem";
-import TabContentLayout from "./TabContentLayout";
+} from "../../Forms/RequestOrderForm";
+import OrderCheckout from "../Orders/OrderCheckout";
+import { LabelId, RespondedStatus } from "../Orders/OrderItem";
+import TabContentLayout from "../TabContentLayout";
 
 const RequestDetails = () => {
   const {

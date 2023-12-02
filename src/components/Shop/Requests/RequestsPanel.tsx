@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
 import { useTabsContext } from "~/contexts/TabsContext";
-import RequestOrderForm from "../Forms/RequestOrderForm";
-import NeedHelpFAB from "../NeedHelpFAB";
-import OrderItem from "./OrderItem";
+import RequestOrderForm from "../../Forms/RequestOrderForm";
+import NeedHelpFAB from "../../NeedHelpFAB";
+import OrderItem from "../Orders/OrderItem";
 import RequestOrderButton from "./RequestOrderButton";
-import SearchBar from "./SearchBar";
-import TabContentLayout from "./TabContentLayout";
+import SearchBar from "../SearchBar";
+import TabContentLayout from "../TabContentLayout";
 import RequestDetails from "./RequestDetails";
 
 const RequestsPanel = () => {

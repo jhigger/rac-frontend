@@ -7,9 +7,9 @@ import {
   type ReactNode,
   useEffect,
 } from "react";
-import DraftPanel from "~/components/Shop/DraftPanel";
-import OrdersPanel from "~/components/Shop/OrdersPanel";
-import RequestsPanel from "~/components/Shop/RequestsPanel";
+import DraftPanel from "~/components/Shop/Drafts/DraftPanel";
+import OrdersPanel from "~/components/Shop/Orders/OrdersPanel";
+import RequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { orders } from "~/fake data";
 
 export type TabsContextType = {

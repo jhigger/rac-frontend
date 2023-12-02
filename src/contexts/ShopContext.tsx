@@ -13,7 +13,7 @@ import RequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { orders, requests } from "~/fake data";
 
 export type ShopContextType = {
-  activeAction: string;
+  activeAction: ActionType | null;
   activeTab: TabIdType;
   orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
@@ -24,7 +24,7 @@ export type ShopContextType = {
   requestOrderClicked: boolean;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
-  handleActiveAction: (action: string) => void;
+  handleActiveAction: (action: ActionType) => void;
   handleCheckoutAction: (value: boolean) => void;
   handleOrderAction: (value: boolean) => void;
   handleOrders: () => void;
@@ -40,6 +40,7 @@ export const ShopContext = createContext<ShopContextType>(
 
 export const useShopContext = () => useContext(ShopContext);
 
+// todo: rename to TAB_IDS
 const tabIds = ["orders", "requests", "draft"] as const;
 
 type TabIdType = (typeof tabIds)[number];
@@ -55,6 +56,10 @@ export const tabs: AppBarTabType[] = [
   { id: "requests", title: "Requests", content: <RequestsPanel /> },
   { id: "draft", title: "Draft", content: <DraftPanel /> },
 ];
+
+const ACTION_CONST = ["proceed to checkout", "order details"] as const;
+
+type ActionType = (typeof ACTION_CONST)[number];
 
 const ORDER_STATUS = ["responded", "processed", "not responded"] as const;
 const SHIPPING_STATUS = [
@@ -104,16 +109,16 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [orderActionClicked, setOrderActionClicked] = useState(false);
   const [requestActionClicked, setRequestActionClicked] = useState(false);
   const [requestCheckoutClicked, setRequestCheckoutClicked] = useState(false);
-  const [activeAction, setActiveAction] = useState("");
+  const [activeAction, setActiveAction] = useState<ActionType | null>(null);
 
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
-  const handleActiveAction = (action: string) => {
+  const handleActiveAction = (action: ActionType) => {
     setActiveAction(action);
   };
 
   const resetAllClicked = () => {
-    setActiveAction("");
+    setActiveAction(null);
     setOrderActionClicked(false);
     setRequestActionClicked(false);
     setRequestCheckoutClicked(false);

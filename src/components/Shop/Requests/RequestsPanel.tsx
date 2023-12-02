@@ -238,7 +238,7 @@ const ProceedToCheckoutButton = ({
 
   const onClick = () => {
     handleCheckoutAction(true);
-    handleActiveAction("checkout");
+    handleActiveAction("proceed to checkout");
   };
 
   return (

@@ -54,15 +54,15 @@ const RequestCheckout = () => {
 };
 
 const CheckoutStep1 = () => {
-  const { requestedOrders } = useShopContext();
+  const { requestItems } = useShopContext();
 
-  if (!requestedOrders) return;
+  if (!requestItems) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {requestedOrders.map((item, i) => {
+      {requestItems.map((item, i) => {
         return <Item key={item.requestId} index={i} />;
       })}
     </div>

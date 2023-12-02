@@ -17,8 +17,7 @@ export type ShopContextType = {
   activeTab: TabIdType;
   orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
-  // todo:  rename
-  requestedOrders: RequestItemType[] | null;
+  requestItems: RequestItemType[] | null;
   requestActionClicked: boolean;
   requestCheckoutClicked: boolean;
   requestOrderClicked: boolean;
@@ -106,9 +105,9 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
   const [requestActionClicked, setRequestActionClicked] = useState(false);
   const [requestCheckoutClicked, setRequestCheckoutClicked] = useState(false);
-  const [requestedOrders, setRequestedOrders] = useState<
-    RequestItemType[] | null
-  >(null);
+  const [requestItems, setRequestItems] = useState<RequestItemType[] | null>(
+    null,
+  );
   const [requestOrderClicked, setRequestOrderClicked] = useState(false);
 
   const tabsRef = useRef<HTMLButtonElement[]>([]);
@@ -133,7 +132,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleRequests = () => {
     handleOrders();
-    setRequestedOrders(requests);
+    setRequestItems(requests);
     resetAllClicked();
   };
 
@@ -176,7 +175,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     orderItems,
     requestActionClicked,
     requestCheckoutClicked,
-    requestedOrders,
+    requestItems,
     requestOrderClicked,
     tabs,
     tabsRef,

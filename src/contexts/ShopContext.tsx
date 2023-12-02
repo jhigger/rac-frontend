@@ -17,6 +17,7 @@ export type ShopContextType = {
   activeTab: TabIdType;
   orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
+  // todo:  rename
   requestedOrders: RequestItemType[] | null;
   requestActionClicked: boolean;
   requestCheckoutClicked: boolean;

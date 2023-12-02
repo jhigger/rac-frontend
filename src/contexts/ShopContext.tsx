@@ -58,7 +58,7 @@ export const tabs: AppBarTabType[] = [
 const ACTION_CONST = [
   "proceed to checkout",
   "order details",
-  "new order",
+  "request new order",
 ] as const;
 
 type ActionType = (typeof ACTION_CONST)[number];
@@ -147,7 +147,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const handleRequestOrder = (value: boolean) => {
     if (!tabsRef.current[1]) return;
     tabsRef.current[1].click();
-    setActiveAction("new order");
+    setActiveAction("request new order");
     setActiveTab("requests");
     setRequestOrderClicked(value);
   };

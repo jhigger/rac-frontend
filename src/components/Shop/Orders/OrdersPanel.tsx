@@ -391,12 +391,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
         <RequestFormHeader title="Shipping Status" />
 
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
-          <LabelId label="Order ID:" id="OD78667" />
-          <img
-            src="/images/shipping status modal/order_tracking_icon.svg"
-            alt="order tracking icon"
-          />
-          <LabelId label="Tracking ID:" id="SH78667" />
+          <OrderTrackingId />
         </div>
 
         {!excluded.includes(status) && (
@@ -532,9 +527,22 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
   );
 };
 
+export const OrderTrackingId = () => {
+  return (
+    <>
+      <LabelId label="Order ID:" id="OD78667" />
+      <img
+        src="/images/shipping status modal/order_tracking_icon.svg"
+        alt="order tracking icon"
+      />
+      <LabelId label="Tracking ID:" id="SH78667" />
+    </>
+  );
+};
+
 type CongratulationImageProps = { text: string };
 
-const CongratulationImage = ({ text }: CongratulationImageProps) => {
+export const CongratulationImage = ({ text }: CongratulationImageProps) => {
   return (
     <div className="flex flex-col-reverse gap-[10px] rounded-[20px] bg-primary-600 px-[14px] py-[10px] md:flex-row">
       <img

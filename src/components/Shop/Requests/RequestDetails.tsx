@@ -27,7 +27,7 @@ const RequestDetails = () => {
 
   const handleProceed = () => {
     handleCheckoutAction(true);
-    handleActiveAction("checkout");
+    handleActiveAction("proceed to checkout");
   };
 
   return (

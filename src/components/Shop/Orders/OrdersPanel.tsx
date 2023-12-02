@@ -149,7 +149,7 @@ const TableBody = () => {
         }) => {
           return (
             <tr
-              key={trackingId}
+              key={orderId}
               className="flex items-center justify-between gap-[20px] bg-gray-10 px-[20px] py-[40px]"
             >
               <td className="w-max border-0 p-0">
@@ -307,7 +307,7 @@ const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
     tailmater();
   }, []);
 
-  const modalId = `shipping-status-modal-${id}`;
+  const modalId = `order-status-modal-${id}`;
   const dataTarget = `#${modalId}`;
 
   const buttonStyles = {

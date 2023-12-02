@@ -25,8 +25,11 @@ type stepsContentType = { title: string; content: JSX.Element };
 const RequestCheckout = () => {
   const { orderItems, handleRequestAction } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
-    { title: "Package confirmation", content: <PackageConfirmation /> },
-    { title: "Billing Address", content: <BillingAddressStep /> },
+    { title: "Package Confirmation", content: <PackageConfirmation /> },
+    {
+      title: "Shipping & Billing Details Confirmation",
+      content: <BillingAddress />,
+    },
     { title: "Place Order", content: <PlaceOrder /> },
     { title: "Success", content: <Success /> },
   ];
@@ -76,28 +79,58 @@ const PackageConfirmation = () => {
   );
 };
 
-const BillingAddressStep = () => {
+const BillingAddress = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <SectionHeader title="Provide your billing address" hr />
-      <BillingAddress title="Your Default Address" disabledInputs />
-      <BillingAddress title="Custom Billing Address" expanded />
+      <DefaultBillingAddress />
+      <CustomBillingAddress />
     </div>
   );
 };
 
-type BillingAddressProps = {
-  title: string;
-  expanded?: boolean;
-  disabledInputs?: boolean;
+const DefaultBillingAddress = () => {
+  const { open, toggle } = useAccordion(true);
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[20px] py-[10px]">
+        <div className="col-span-full flex items-center gap-[30px]">
+          <input
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
+            name="radio"
+            type="radio"
+            value="male"
+            aria-label="Custom Billing Address"
+          />
+          <h4 className="title-md md:title-lg text-gray-700">
+            Default Billing Address
+          </h4>
+          <div className="flex flex-grow justify-end">
+            <AccordionButton {...{ open, toggle }} />
+          </div>
+        </div>
+
+        {open && (
+          <div className="flex w-full flex-col gap-[1px]">
+            <span className="title-md font-medium text-neutral-900">
+              Mr Rex Offor
+            </span>
+            <span className="body-lg text-neutral-700">+234 8080006321</span>
+            <span className="body-lg text-neutral-700">rexoffor@gmail.com</span>
+            <span className="body-lg text-neutral-700">
+              29b Osolo Way Opposite Polaris Bank Ajao Estate, ikeja, Lagos
+              State, USA, 075348
+            </span>
+          </div>
+        )}
+      </div>
+    </SectionContentLayout>
+  );
 };
 
-const BillingAddress = ({
-  title,
-  expanded = false,
-  disabledInputs,
-}: BillingAddressProps) => {
-  const { open, toggle } = useAccordion(expanded);
+const CustomBillingAddress = () => {
+  const { open, toggle } = useAccordion(true);
 
   return (
     <SectionContentLayout>
@@ -107,43 +140,36 @@ const BillingAddress = ({
             className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
             name="radio"
             type="radio"
-            value="male"
+            value="female"
             aria-label="Custom Billing Address"
           />
-          <h4 className="title-md md:title-lg text-gray-700">{title}</h4>
+          <h4 className="title-md md:title-lg text-gray-700">
+            Custom Billing Address
+          </h4>
           <div className="flex flex-grow justify-end">
             <AccordionButton {...{ open, toggle }} />
           </div>
         </div>
 
         {open && (
-          <div className="grid w-full grid-cols-1 gap-[30px] md:grid-cols-12">
-            <div className="col-span-full grid grid-cols-1 gap-[10px] md:grid-cols-2">
+          <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
               <div className="col-span-1">
-                <TextInput
-                  id={"firstName"}
-                  label={"First Name"}
-                  disabled={disabledInputs}
-                />
+                <TextInput id={"firstName"} label={"First Name"} />
               </div>
 
               <div className="col-span-1">
-                <TextInput
-                  id={"lastName"}
-                  label={"Last Name"}
-                  disabled={disabledInputs}
-                />
+                <TextInput id={"lastName"} label={"Last Name"} />
               </div>
             </div>
 
-            <div className="col-span-full grid grid-cols-1 gap-[10px] md:grid-cols-12">
-              <div className="col-span-5">
+            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+              <div className="col-span-full md:col-span-5">
                 <EmailInput />
               </div>
-              <div className="col-span-3">
+              <div className="col-span-full md:col-span-3">
                 <SelectCountryPhoneCode
                   value=""
-                  disabled={disabledInputs}
                   onChange={() => {
                     return;
                   }}
@@ -151,12 +177,11 @@ const BillingAddress = ({
                   // onChange={(e) => updateFields({ state: e.target.value })}
                 />
               </div>
-              <div className="col-span-4">
+              <div className="col-span-full md:col-span-4">
                 <TextInput
                   id="phone-number"
                   label="Phone Number"
                   type="tel"
-                  disabled={disabledInputs}
                   value=""
                   onChange={() => {
                     return;
@@ -173,7 +198,6 @@ const BillingAddress = ({
               <TextInput
                 id={"street-address"}
                 label={"Street Address"}
-                disabled={disabledInputs}
                 // value={streetAddress}
                 // onChange={(e) =>
                 //   updateFields({ streetAddress: e.target.value })
@@ -181,10 +205,9 @@ const BillingAddress = ({
               />
             </div>
 
-            <div className="col-span-full grid grid-cols-1 gap-[10px] md:grid-cols-12">
+            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
               <div className="col-span-4">
                 <SelectCountry
-                  disabled={disabledInputs}
                   value=""
                   updateFields={() => {
                     return;
@@ -195,7 +218,6 @@ const BillingAddress = ({
               <div className="col-span-4">
                 <SelectState
                   country=""
-                  disabled={disabledInputs}
                   value=""
                   updateFields={() => {
                     return;
@@ -209,7 +231,6 @@ const BillingAddress = ({
                 <SelectCity
                   country=""
                   state=""
-                  disabled={disabledInputs}
                   value=""
                   updateFields={() => {
                     return;
@@ -223,11 +244,7 @@ const BillingAddress = ({
             </div>
 
             <div className="col-span-full">
-              <TextInput
-                id={"zipPostalCode"}
-                label={"Zip Postal Code"}
-                disabled={disabledInputs}
-              />
+              <TextInput id={"zipPostalCode"} label={"Zip Postal Code"} />
             </div>
           </div>
         )}
@@ -282,67 +299,135 @@ type StepIndexProps = { currentIndex: number; length: number; title: string };
 
 const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
   return (
-    <div className="flex gap-[39px]">
-      {Array(length)
-        .fill(null)
-        .map((_, i) => {
-          if (currentIndex + 1 === length && i === currentIndex) {
-            return (
-              <div
-                key={`checkout-step-${i}`}
-                className="flex items-center gap-[10px]"
-              >
-                <img
-                  src="/images/tick_circle_bold_icon.svg"
-                  alt="tick circle bold icon.svg"
-                  className="title-lg h-full rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white"
-                />
-                <span className="headline-md">{title}</span>
-              </div>
-            );
-          }
-          if (i + 1 === length) {
-            return (
-              <div
-                key={`checkout-step-${i}`}
-                className="flex items-center gap-[10px] rounded-[20px] bg-gray-500 px-[10px] py-[12px]"
-              >
-                <img
-                  src="/images/tick_circle_bold_icon.svg"
-                  alt="tick circle bold icon.svg"
-                />
-              </div>
-            );
-          }
+    <>
+      <div className="hidden gap-[39px] md:flex">
+        {Array(length)
+          .fill(null)
+          .map((_, i) => {
+            if (currentIndex + 1 === length && i === currentIndex) {
+              return (
+                <div
+                  key={`checkout-step-${i}`}
+                  className="flex items-center gap-[10px]"
+                >
+                  <img
+                    src="/images/tick_circle_bold_icon.svg"
+                    alt="tick circle bold icon.svg"
+                    className="title-lg h-full rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white"
+                  />
+                  <span className="headline-md">{title}</span>
+                </div>
+              );
+            }
 
-          if (i === currentIndex) {
-            return (
-              <div
-                key={`checkout-step-${i}`}
-                className="flex items-center gap-[10px]"
-              >
-                <span className="title-lg rounded-[20px] bg-primary-900 p-[10px] text-white">
-                  {currentIndex + 1}
-                </span>
-                <span className="headline-md">{title}</span>
-              </div>
-            );
-          }
+            if (i + 1 === length) {
+              return (
+                <div
+                  key={`checkout-step-${i}`}
+                  className="flex items-center gap-[10px] rounded-[20px] bg-gray-500 px-[10px] py-[12px]"
+                >
+                  <img
+                    src="/images/tick_circle_bold_icon.svg"
+                    alt="tick circle bold icon.svg"
+                  />
+                </div>
+              );
+            }
 
-          if (i !== currentIndex) {
-            return (
-              <div
-                key={`checkout-step-${i}`}
-                className="flex items-center gap-[10px]"
-              >
-                <span className="title-lg rounded-[20px] bg-gray-500 p-[10px] text-white">
-                  {i + 1}
-                </span>
-              </div>
-            );
-          }
-        })}
-    </div>
+            if (i === currentIndex) {
+              return (
+                <div
+                  key={`checkout-step-${i}`}
+                  className="flex items-center gap-[10px]"
+                >
+                  <span className="title-lg rounded-[20px] bg-primary-900 p-[10px] text-white">
+                    {currentIndex + 1}
+                  </span>
+                  <span className="headline-md">{title}</span>
+                </div>
+              );
+            }
+
+            if (i !== currentIndex) {
+              return (
+                <div
+                  key={`checkout-step-${i}`}
+                  className="flex items-center gap-[10px]"
+                >
+                  <span className="title-lg rounded-[20px] bg-gray-500 p-[10px] text-white">
+                    {i + 1}
+                  </span>
+                </div>
+              );
+            }
+          })}
+      </div>
+
+      {/* for mobile screen */}
+      <div className="flex flex-col gap-[10px] md:hidden">
+        <div className="flex justify-between">
+          {Array(length)
+            .fill(null)
+            .map((_, i) => {
+              if (currentIndex + 1 === length && i === currentIndex) {
+                return (
+                  <div
+                    key={`checkout-step-${i}`}
+                    className="flex items-center gap-[10px]"
+                  >
+                    <img
+                      src="/images/tick_circle_bold_icon.svg"
+                      alt="tick circle bold icon.svg"
+                      className="title-lg h-full rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white"
+                    />
+                  </div>
+                );
+              }
+
+              if (i + 1 === length) {
+                return (
+                  <div
+                    key={`checkout-step-${i}`}
+                    className="flex items-center gap-[10px] rounded-[20px] bg-gray-500 px-[10px] py-[12px]"
+                  >
+                    <img
+                      src="/images/tick_circle_bold_icon.svg"
+                      alt="tick circle bold icon.svg"
+                    />
+                  </div>
+                );
+              }
+
+              if (i === currentIndex) {
+                return (
+                  <div
+                    key={`checkout-step-${i}`}
+                    className="flex items-center gap-[10px]"
+                  >
+                    <span className="title-lg rounded-[20px] bg-primary-900 p-[10px] text-white">
+                      {currentIndex + 1}
+                    </span>
+                  </div>
+                );
+              }
+
+              if (i !== currentIndex) {
+                return (
+                  <div
+                    key={`checkout-step-${i}`}
+                    className="flex items-center gap-[10px]"
+                  >
+                    <span className="title-lg rounded-[20px] bg-gray-500 p-[10px] text-white">
+                      {i + 1}
+                    </span>
+                  </div>
+                );
+              }
+            })}
+        </div>
+        <span className="title-lg">{title}</span>
+      </div>
+    </>
   );
 };
 

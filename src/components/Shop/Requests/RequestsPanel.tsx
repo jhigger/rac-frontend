@@ -24,9 +24,9 @@ import RequestOrderButton from "./RequestOrderButton";
 
 const RequestsPanel = () => {
   const {
+    requestOrderClicked,
     requestCheckoutClicked,
     requestItems,
-    requestOrderClicked,
     requestActionClicked,
   } = useShopContext();
 

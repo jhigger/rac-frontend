@@ -413,7 +413,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
             src="/images/shipping status modal/order_tracking_icon.svg"
             alt="order tracking icon"
           />
-          <LabelId label="Order ID:" id="OD78667" />
+          <LabelId label="Tracking ID:" id="SH78667" />
         </div>
 
         {!excluded.includes(status) && (

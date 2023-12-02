@@ -13,6 +13,7 @@ import RequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { orders } from "~/fake data";
 
 export type ShopContextType = {
+  activeAction: string;
   activeTab: tabIdType;
   orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
@@ -22,6 +23,7 @@ export type ShopContextType = {
   requestOrderClicked: boolean;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
+  handleActiveAction: (action: string) => void;
   handleCheckoutAction: (value: boolean) => void;
   handleOrderAction: (value: boolean) => void;
   handleOrders: () => void;
@@ -94,13 +96,19 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [orderActionClicked, setOrderActionClicked] = useState(false);
   const [requestActionClicked, setRequestActionClicked] = useState(false);
   const [requestCheckoutClicked, setRequestCheckoutClicked] = useState(false);
+  const [activeAction, setActiveAction] = useState("");
 
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
+  const handleActiveAction = (action: string) => {
+    setActiveAction(action);
+  };
+
   const resetAllClicked = () => {
-    setRequestOrderClicked(false);
+    setActiveAction("");
     setOrderActionClicked(false);
     setRequestActionClicked(false);
+    setRequestOrderClicked(false);
   };
 
   const handleOrders = () => {
@@ -150,6 +158,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   }, [activeTab]);
 
   const value: ShopContextType = {
+    activeAction,
     activeTab,
     orderActionClicked,
     orderItems,
@@ -159,6 +168,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     requestOrderClicked,
     tabs,
     tabsRef,
+    handleActiveAction,
     handleCheckoutAction,
     handleOrderAction,
     handleOrders,

@@ -154,12 +154,19 @@ export const RespondedStatus = () => {
 };
 
 const TakeActionNowButton = () => {
-  const { activeTab, handleOrderAction, handleRequestAction } =
-    useShopContext();
+  const {
+    activeTab,
+    handleActiveAction,
+    handleOrderAction,
+    handleRequestAction,
+  } = useShopContext();
 
   const onClick = {
     orders: () => handleOrderAction(true),
-    requests: () => handleRequestAction(true),
+    requests: () => {
+      handleRequestAction(true);
+      handleActiveAction("order details");
+    },
     draft: () => null,
   };
 

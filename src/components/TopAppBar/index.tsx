@@ -66,7 +66,7 @@ const TopAppBarHeader = () => {
 
 const TopAppBarBreadCrumbs = () => {
   const { activeNav } = useNavContext();
-  const { activeTab } = useShopContext();
+  const { activeTab, activeAction } = useShopContext();
 
   return (
     <div className="flex gap-4">
@@ -81,6 +81,12 @@ const TopAppBarBreadCrumbs = () => {
       </span>
       <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
       <span className="title-sm text-secondary-600">{activeTab}</span>
+      {activeAction && (
+        <>
+          <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
+          <span className="title-sm text-secondary-600">{activeAction}</span>
+        </>
+      )}
     </div>
   );
 };

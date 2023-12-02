@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { type ChangeEventHandler } from "react";
+import { useRef, type ChangeEventHandler } from "react";
 
 type CurrencyInputProps = {
   id: string;
@@ -9,6 +9,13 @@ type CurrencyInputProps = {
 };
 
 const CurrencyInput = ({ id, label, value, onChange }: CurrencyInputProps) => {
+  const ref = useRef<HTMLInputElement>(null);
+
+  const handleFocusInput = () => {
+    if (!ref.current) return;
+    ref.current.focus();
+  };
+
   return (
     <div className="relative flex w-full flex-col">
       <div className="relative z-0">
@@ -22,6 +29,7 @@ const CurrencyInput = ({ id, label, value, onChange }: CurrencyInputProps) => {
         </div>
 
         <input
+          ref={ref}
           type="number"
           step="0.01"
           aria-label={label}
@@ -33,7 +41,10 @@ const CurrencyInput = ({ id, label, value, onChange }: CurrencyInputProps) => {
           onChange={onChange}
         />
 
-        <label className="absolute left-14 top-4 z-10 max-w-[170px] origin-[0] -translate-y-7 scale-75 transform overflow-hidden whitespace-nowrap bg-neutral-10 px-1 tracking-[.03125em] text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-invalid:text-error-600 peer-focus:left-4 peer-focus:w-max peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:overflow-visible peer-focus:bg-neutral-10 peer-focus:text-primary-600 min-[500px]:max-w-[500px] sm:w-max">
+        <label
+          onClick={handleFocusInput}
+          className="absolute left-14 top-4 z-10 max-w-[170px] origin-[0] -translate-y-7 scale-75 transform overflow-hidden whitespace-nowrap bg-neutral-10 px-1 tracking-[.03125em] text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-invalid:text-error-600 peer-focus:left-4 peer-focus:w-max peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:overflow-visible peer-focus:bg-neutral-10 peer-focus:text-primary-600 min-[500px]:max-w-[500px] sm:w-max"
+        >
           {label}
         </label>
       </div>

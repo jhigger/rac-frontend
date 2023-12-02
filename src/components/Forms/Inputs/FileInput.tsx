@@ -17,6 +17,15 @@ const FileInput = ({ id, label, value, onChange }: FileInputProps) => {
     }
   }
 
+  const shortenFileName = (filename: string | undefined, length: number) => {
+    return (
+      filename &&
+      `${filename.slice(0, length)}...${filename.slice(
+        filename.length - length,
+      )}`
+    );
+  };
+
   return (
     <div className="relative flex w-full flex-col">
       <label
@@ -41,7 +50,12 @@ const FileInput = ({ id, label, value, onChange }: FileInputProps) => {
           </div>
         </div>
         <div className="segmented-item label-lg relative inline-flex h-10 w-1/2 flex-row items-center justify-center gap-x-2 border border-gray-500 py-2.5 text-neutral-900">
-          {filename ?? "No file chosen"}
+          <div className="sm:hidden">
+            {shortenFileName(filename, 5) ?? "No file chosen"}
+          </div>
+          <div className="hidden sm:block">
+            {shortenFileName(filename, 10) ?? "No file chosen"}
+          </div>
         </div>
       </div>
       <div className="hidden px-4 pt-1 text-xs tracking-[0.4px]">

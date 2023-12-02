@@ -3,6 +3,7 @@ import { type ChangeEventHandler, type HTMLInputTypeAttribute } from "react";
 type TextInputProps = {
   id: string;
   label: string;
+  disabled?: boolean;
   type?: HTMLInputTypeAttribute;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
@@ -11,6 +12,7 @@ type TextInputProps = {
 const TextInput = ({
   id,
   label,
+  disabled,
   type = "text",
   value,
   onChange,
@@ -24,6 +26,7 @@ const TextInput = ({
         id={id}
         className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
         placeholder=" "
+        disabled={disabled}
         value={value}
         onChange={onChange}
       />

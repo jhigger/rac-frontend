@@ -79,16 +79,23 @@ const AddressForm = ({
 };
 
 type SelectStateProps = {
+  disabled?: boolean;
   country: string;
   value: string;
   updateFields: (update: Partial<FormData>) => void;
 };
 
-const SelectState = ({ country, value, updateFields }: SelectStateProps) => {
+export const SelectState = ({
+  disabled,
+  country,
+  value,
+  updateFields,
+}: SelectStateProps) => {
   return (
     <SelectInput
       id="state"
       label="State"
+      disabled={disabled}
       value={value}
       onChange={(e) => updateFields({ state: e.target.value })}
       options={
@@ -110,13 +117,15 @@ const SelectState = ({ country, value, updateFields }: SelectStateProps) => {
 };
 
 type SelectCityProps = {
+  disabled?: boolean;
   country: string;
   state: string;
   value: string;
   updateFields: (update: Partial<FormData>) => void;
 };
 
-const SelectCity = ({
+export const SelectCity = ({
+  disabled,
   country,
   state,
   value,
@@ -126,6 +135,7 @@ const SelectCity = ({
     <SelectInput
       id="city"
       label="City"
+      disabled={disabled}
       value={value}
       onChange={(e) => updateFields({ city: e.target.value })}
       options={

@@ -78,15 +78,21 @@ const AccountForm = ({
 };
 
 type SelectCountryProps = {
+  disabled?: boolean;
   value: string;
   updateFields: (update: Partial<FormData>) => void;
 };
 
-export const SelectCountry = ({ value, updateFields }: SelectCountryProps) => {
+export const SelectCountry = ({
+  disabled,
+  value,
+  updateFields,
+}: SelectCountryProps) => {
   return (
     <SelectInput
       id="country"
       label="Country"
+      disabled={disabled}
       value={value}
       onChange={(e) => updateFields?.({ country: e.target.value })}
       options={
@@ -108,11 +114,13 @@ export const SelectCountry = ({ value, updateFields }: SelectCountryProps) => {
 };
 
 type SelectCountryPhoneCodeProps = {
+  disabled?: boolean;
   value: string;
   onChange: (update: ChangeEvent<HTMLSelectElement>) => void;
 };
 
 export const SelectCountryPhoneCode = ({
+  disabled,
   value,
   onChange,
 }: SelectCountryPhoneCodeProps) => {
@@ -120,6 +128,7 @@ export const SelectCountryPhoneCode = ({
     <SelectInput
       id="country-code"
       label="Country Code"
+      disabled={disabled}
       value={value}
       onChange={onChange}
       options={

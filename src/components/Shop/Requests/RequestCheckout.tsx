@@ -1,7 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
+import {
+  SelectCountry,
+  SelectCountryPhoneCode,
+} from "~/components/Forms/AccountForm";
+import { SelectCity, SelectState } from "~/components/Forms/AddressForm";
+import TextInput from "~/components/Forms/Inputs/TextInput";
 import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import { EmailInput } from "~/pages/login";
 import AccordionButton from "../../Forms/AccordionButton";
 import {
   BackButton,
@@ -18,10 +25,10 @@ type stepsContentType = { title: string; content: JSX.Element };
 const RequestCheckout = () => {
   const { orderItems, handleRequestAction } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
-    { title: "Package confirmation", content: <CheckoutStep1 /> },
-    { title: "Billing Address", content: <div>Billing Address</div> },
-    { title: "Place Order", content: <div>Place Order</div> },
-    { title: "Success", content: <div>Success</div> },
+    { title: "Package confirmation", content: <PackageConfirmation /> },
+    { title: "Billing Address", content: <BillingAddressStep /> },
+    { title: "Place Order", content: <PlaceOrder /> },
+    { title: "Success", content: <Success /> },
   ];
   const stepsContent = steps.map((step) => step.content);
   const { step, currentStepIndex, next, isFirstStep, back } =
@@ -53,7 +60,7 @@ const RequestCheckout = () => {
   );
 };
 
-const CheckoutStep1 = () => {
+const PackageConfirmation = () => {
   const { requestItems } = useShopContext();
 
   if (!requestItems) return;
@@ -67,6 +74,174 @@ const CheckoutStep1 = () => {
       })}
     </div>
   );
+};
+
+const BillingAddressStep = () => {
+  return (
+    <div className="flex flex-col gap-[10px]">
+      <SectionHeader title="Provide your billing address" hr />
+      <BillingAddress title="Your Default Address" disabledInputs />
+      <BillingAddress title="Custom Billing Address" expanded />
+    </div>
+  );
+};
+
+type BillingAddressProps = {
+  title: string;
+  expanded?: boolean;
+  disabledInputs?: boolean;
+};
+
+const BillingAddress = ({
+  title,
+  expanded = false,
+  disabledInputs,
+}: BillingAddressProps) => {
+  const { open, toggle } = useAccordion(expanded);
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[40px] py-[10px]">
+        <div className="col-span-full flex items-center gap-[30px]">
+          <input
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
+            name="radio"
+            type="radio"
+            value="male"
+            aria-label="Custom Billing Address"
+          />
+          <h4 className="title-md md:title-lg text-gray-700">{title}</h4>
+          <div className="flex flex-grow justify-end">
+            <AccordionButton {...{ open, toggle }} />
+          </div>
+        </div>
+
+        {open && (
+          <div className="grid w-full grid-cols-1 gap-[30px] md:grid-cols-12">
+            <div className="col-span-full grid grid-cols-1 gap-[10px] md:grid-cols-2">
+              <div className="col-span-1">
+                <TextInput
+                  id={"firstName"}
+                  label={"First Name"}
+                  disabled={disabledInputs}
+                />
+              </div>
+
+              <div className="col-span-1">
+                <TextInput
+                  id={"lastName"}
+                  label={"Last Name"}
+                  disabled={disabledInputs}
+                />
+              </div>
+            </div>
+
+            <div className="col-span-full grid grid-cols-1 gap-[10px] md:grid-cols-12">
+              <div className="col-span-5">
+                <EmailInput />
+              </div>
+              <div className="col-span-3">
+                <SelectCountryPhoneCode
+                  value=""
+                  disabled={disabledInputs}
+                  onChange={() => {
+                    return;
+                  }}
+                  // value={countryCode}
+                  // onChange={(e) => updateFields({ state: e.target.value })}
+                />
+              </div>
+              <div className="col-span-4">
+                <TextInput
+                  id="phone-number"
+                  label="Phone Number"
+                  type="tel"
+                  disabled={disabledInputs}
+                  value=""
+                  onChange={() => {
+                    return;
+                  }}
+                  // value={phoneNumber}
+                  // onChange={(e) =>
+                  //   updateFields({ phoneNumber: e.target.value })
+                  // }
+                />
+              </div>
+            </div>
+
+            <div className="col-span-full">
+              <TextInput
+                id={"street-address"}
+                label={"Street Address"}
+                disabled={disabledInputs}
+                // value={streetAddress}
+                // onChange={(e) =>
+                //   updateFields({ streetAddress: e.target.value })
+                // }
+              />
+            </div>
+
+            <div className="col-span-full grid grid-cols-1 gap-[10px] md:grid-cols-12">
+              <div className="col-span-4">
+                <SelectCountry
+                  disabled={disabledInputs}
+                  value=""
+                  updateFields={() => {
+                    return;
+                  }}
+                  // value={country} updateFields={updateFields}
+                />
+              </div>
+              <div className="col-span-4">
+                <SelectState
+                  country=""
+                  disabled={disabledInputs}
+                  value=""
+                  updateFields={() => {
+                    return;
+                  }}
+                  // country={country}
+                  // value={state}
+                  // updateFields={updateFields}
+                />
+              </div>
+              <div className="col-span-4">
+                <SelectCity
+                  country=""
+                  state=""
+                  disabled={disabledInputs}
+                  value=""
+                  updateFields={() => {
+                    return;
+                  }}
+                  // country={country}
+                  // state={state}
+                  // value={city}
+                  // updateFields={updateFields}
+                />
+              </div>
+            </div>
+
+            <div className="col-span-full">
+              <TextInput
+                id={"zipPostalCode"}
+                label={"Zip Postal Code"}
+                disabled={disabledInputs}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </SectionContentLayout>
+  );
+};
+
+const PlaceOrder = () => {
+  return <>Place Order</>;
+};
+
+const Success = () => {
+  return <>Success</>;
 };
 
 const PackageOrigin = () => {

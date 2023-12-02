@@ -39,10 +39,9 @@ export const ShopContext = createContext<ShopContextType>(
 
 export const useShopContext = () => useContext(ShopContext);
 
-// todo: rename to TAB_IDS
-const tabIds = ["orders", "requests", "draft"] as const;
+const TAB_IDS = ["orders", "requests", "draft"] as const;
 
-type TabIdType = (typeof tabIds)[number];
+type TabIdType = (typeof TAB_IDS)[number];
 
 type AppBarTabType = {
   id: TabIdType;

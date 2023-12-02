@@ -19,11 +19,13 @@ import {
 } from "../../Forms/RequestOrderForm";
 import { LabelId } from "../Orders/OrderItem";
 import { HighlightedInfo, Item } from "./RequestDetails";
+import { useEffect } from "react";
 
 type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
-  const { orderItems, handleRequestAction } = useShopContext();
+  const { orderItems, handleRequestAction, handlePayNowAction } =
+    useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {
@@ -43,6 +45,10 @@ const RequestCheckout = () => {
   const handleBack = () => {
     handleRequestAction(false);
   };
+
+  useEffect(() => {
+    handlePayNowAction({ action: next });
+  }, []);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -427,23 +433,21 @@ const CostsSummary = () => {
           </div>
         </div>
         <div className="w-[168px]">
-          <PayNowButton
-            onClick={() => {
-              return;
-            }}
-          />
+          <PayNowButton />
         </div>
       </div>
     </div>
   );
 };
 
-type PayButtonProps = { onClick: () => void };
+const PayNowButton = () => {
+  const { payNowAction } = useShopContext();
 
-const PayNowButton = ({ onClick }: PayButtonProps) => {
+  if (!payNowAction) return;
+
   return (
     <button
-      onClick={onClick}
+      onClick={payNowAction.action}
       aria-label="Pay Now"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
@@ -533,11 +537,11 @@ const Totals = () => {
         <td className="body-md text-gray-700">
           Total Shipping to Origin Warehouse Cost:
         </td>
-        <span className="title-lg text-neutral-900">$0.00</span>
+        <td className="title-lg text-neutral-900">$0.00</td>
       </tr>
       <tr className="col-span-1 row-span-1 flex flex-col gap-[5px]">
         <td className="title-lg text-gray-700">Total Shop For Me Cost:</td>
-        <span className="title-lg text-neutral-900">$0.00</span>
+        <td className="title-lg text-neutral-900">$0.00</td>
       </tr>
     </tfoot>
   );
@@ -563,17 +567,23 @@ const PackageTableBody = () => {
       {Array<typeof fakeData>(2)
         .fill(fakeData)
         .map(
-          ({
-            image,
-            name,
-            url,
-            costFromStore,
-            urgenPurchase,
-            quantity,
-            totalValue,
-          }) => {
+          (
+            {
+              image,
+              name,
+              url,
+              costFromStore,
+              urgenPurchase,
+              quantity,
+              totalValue,
+            },
+            i,
+          ) => {
             return (
-              <tr className="label-lg grid grid-cols-8 items-center font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]">
+              <tr
+                key={i}
+                className="label-lg grid grid-cols-8 items-center font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
+              >
                 <td className="col-span-2 flex gap-[10px]">
                   <div className="w-[62px] overflow-hidden rounded-[10px]">
                     <img src={image} alt="item image" />

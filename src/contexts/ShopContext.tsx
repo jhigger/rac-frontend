@@ -17,6 +17,7 @@ export type ShopContextType = {
   activeTab: TabIdType;
   orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
+  payNowAction: { action: () => void } | null;
   requestItems: RequestItemType[] | null;
   requestActionClicked: boolean;
   requestCheckoutClicked: boolean;
@@ -27,6 +28,7 @@ export type ShopContextType = {
   handleCheckoutAction: (value: boolean) => void;
   handleOrderAction: (value: boolean) => void;
   handleOrders: () => void;
+  handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
   handleRequests: () => void;
   handleRequestAction: (value: boolean) => void;
   handleRequestOrder: (value: boolean) => void;
@@ -106,6 +108,8 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState<TabIdType>("orders");
   const [orderActionClicked, setOrderActionClicked] = useState(false);
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
+  const [payNowAction, setPayNowAction] =
+    useState<ShopContextType["payNowAction"]>(null);
   const [requestActionClicked, setRequestActionClicked] = useState(false);
   const [requestCheckoutClicked, setRequestCheckoutClicked] = useState(false);
   const [requestItems, setRequestItems] = useState<RequestItemType[] | null>(
@@ -131,6 +135,10 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const handleOrderAction = (value: boolean) => {
     resetAllClicked();
     setOrderActionClicked(value);
+  };
+
+  const handlePayNowAction = (action: ShopContextType["payNowAction"]) => {
+    setPayNowAction(action);
   };
 
   const handleRequests = () => {
@@ -176,6 +184,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     activeTab,
     orderActionClicked,
     orderItems,
+    payNowAction,
     requestActionClicked,
     requestCheckoutClicked,
     requestItems,
@@ -186,6 +195,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     handleCheckoutAction,
     handleOrderAction,
     handleOrders,
+    handlePayNowAction,
     handleRequestAction,
     handleRequests,
     handleRequestOrder,

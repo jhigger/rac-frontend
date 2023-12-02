@@ -2,18 +2,17 @@
 import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
-import { orders } from "~/fake data";
+import tailmater from "~/js/tailmater";
 import RequestOrderForm, {
   RequestFormHeader,
   SectionHeader,
 } from "../../Forms/RequestOrderForm";
 import NeedHelpFAB from "../../NeedHelpFAB";
-import OrderDetails from "./OrderDetails";
-import { LabelId, MoreButton } from "./OrderItem";
 import RequestOrderButton from "../Requests/RequestOrderButton";
 import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
-import tailmater from "~/js/tailmater";
+import OrderDetails from "./OrderDetails";
+import { LabelId, MoreButton } from "./OrderItem";
 
 const OrdersPanel = () => {
   const { orderItems, orderActionClicked, requestOrderClicked } =
@@ -40,11 +39,12 @@ const OrdersPanel = () => {
     return (
       <TabContentLayout>
         <SearchBar />
-        <OrdersTable orderItems={orderItems} />
+        <OrdersTable />
         <NeedHelpFAB />
       </TabContentLayout>
     );
   }
+
   return (
     <TabContentLayout>
       <div className="flex w-full flex-grow flex-col items-center justify-center gap-[30px]">
@@ -60,9 +60,7 @@ const OrdersPanel = () => {
   );
 };
 
-type OrdersTableUnprocessedOrderProps = { orderItems: OrderItemType[] };
-
-const OrdersTable = ({}: OrdersTableUnprocessedOrderProps) => {
+const OrdersTable = () => {
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
       <div className="flex flex-col gap-[20px]">
@@ -78,21 +76,21 @@ const OrdersTable = ({}: OrdersTableUnprocessedOrderProps) => {
   );
 };
 
-type TableHeadType = { title: string; sortIcon: boolean };
+export type TableHeadType = { title: string; sortIcon: boolean };
 
-const TableHead = () => {
-  const tableHeads: TableHeadType[] = [
-    { title: "Package(s) Image", sortIcon: false },
-    { title: "Order ID", sortIcon: true },
-    { title: "Order Status", sortIcon: false },
-    { title: "Order Date", sortIcon: true },
-    { title: "Tracking ID", sortIcon: true },
-    { title: "Shipping Status", sortIcon: false },
-    { title: "Shop For Me Status", sortIcon: false },
-    { title: "Shop For Me Cost", sortIcon: true },
-    { title: "Shipping Cost", sortIcon: true },
-  ];
+const tableHeads: TableHeadType[] = [
+  { title: "Package(s) Image", sortIcon: false },
+  { title: "Order ID", sortIcon: true },
+  { title: "Order Status", sortIcon: false },
+  { title: "Order Date", sortIcon: true },
+  { title: "Tracking ID", sortIcon: true },
+  { title: "Shipping Status", sortIcon: false },
+  { title: "Shop For Me Status", sortIcon: false },
+  { title: "Shop For Me Cost", sortIcon: true },
+  { title: "Shipping Cost", sortIcon: true },
+];
 
+export const TableHead = () => {
   return (
     <thead className="sticky top-0 z-10 flex gap-[20px] bg-white px-[20px] py-[14px]">
       <tr className="flex-grow">
@@ -131,9 +129,13 @@ const TableHead = () => {
 };
 
 const TableBody = () => {
+  const { orderItems } = useShopContext();
+
+  if (!orderItems) return;
+
   return (
     <tbody className="flex flex-col border-y-[0.5px] border-gray-500 [&>tr]:border-b-[0.5px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
-      {orders.map(
+      {orderItems.map(
         ({
           images,
           orderId,
@@ -158,82 +160,7 @@ const TableBody = () => {
                   checked={undefined}
                 />
               </td>
-              <td className="w-full max-w-[130px] border-0 p-0">
-                <div className="grid max-h-[150px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-[5px]">
-                  {images.length === 1 && (
-                    <div className="col-span-full row-span-full overflow-hidden rounded-[10px]">
-                      <img src={images[0]} alt="package image" />
-                    </div>
-                  )}
-                  {images.length === 2 && (
-                    <>
-                      <div className="col-span-full row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[0]} alt="package image" />
-                      </div>
-                      <div className="col-span-full row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[1]} alt="package image" />
-                      </div>
-                    </>
-                  )}
-                  {images.length === 3 && (
-                    <>
-                      <div className="col-span-2 row-span-2 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[0]} alt="package image" />
-                      </div>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[1]} alt="package image" />
-                      </div>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[2]} alt="package image" />
-                      </div>
-                    </>
-                  )}
-                  {images.length === 4 && (
-                    <>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[0]} alt="package image" />
-                      </div>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[1]} alt="package image" />
-                      </div>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[2]} alt="package image" />
-                      </div>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[3]} alt="package image" />
-                      </div>
-                    </>
-                  )}
-                  {images.length >= 5 && (
-                    <>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[0]} alt="package image" />
-                      </div>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[1]} alt="package image" />
-                      </div>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <img src={images[2]} alt="package image" />
-                      </div>
-                      <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-                        <div className="flex w-max items-center gap-[10px] rounded-[10px] bg-surface-100 p-[10px]">
-                          {images.length >= 5 && (
-                            <>
-                              <div className="label-lg hidden items-center p-[10px] text-secondary-600 sm:flex">{`${
-                                images.length - 4
-                              }+`}</div>
-                              {/* for mobile screen */}
-                              <div className="label-lg flex items-center p-[10px] text-secondary-600 sm:hidden">{`${
-                                images.length - 1
-                              }+`}</div>
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </td>
+              <ImageColumn images={images} />
               <td className="w-full max-w-[100px] border-0 p-0">
                 <p className="title-md whitespace-nowrap">{orderId}</p>
               </td>
@@ -277,6 +204,89 @@ const TableBody = () => {
         },
       )}
     </tbody>
+  );
+};
+
+type ImageColumnProps = { images: string[] };
+
+export const ImageColumn = ({ images }: ImageColumnProps) => {
+  return (
+    <td className="w-full max-w-[130px] border-0 p-0">
+      <div className="grid max-h-[150px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-[5px]">
+        {images.length === 1 && (
+          <div className="col-span-full row-span-full overflow-hidden rounded-[10px]">
+            <img src={images[0]} alt="package image" />
+          </div>
+        )}
+        {images.length === 2 && (
+          <>
+            <div className="col-span-full row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[0]} alt="package image" />
+            </div>
+            <div className="col-span-full row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[1]} alt="package image" />
+            </div>
+          </>
+        )}
+        {images.length === 3 && (
+          <>
+            <div className="col-span-2 row-span-2 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[0]} alt="package image" />
+            </div>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[1]} alt="package image" />
+            </div>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[2]} alt="package image" />
+            </div>
+          </>
+        )}
+        {images.length === 4 && (
+          <>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[0]} alt="package image" />
+            </div>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[1]} alt="package image" />
+            </div>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[2]} alt="package image" />
+            </div>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[3]} alt="package image" />
+            </div>
+          </>
+        )}
+        {images.length >= 5 && (
+          <>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[0]} alt="package image" />
+            </div>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[1]} alt="package image" />
+            </div>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <img src={images[2]} alt="package image" />
+            </div>
+            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+              <div className="flex w-max items-center gap-[10px] rounded-[10px] bg-surface-100 p-[10px]">
+                {images.length >= 5 && (
+                  <>
+                    <div className="label-lg hidden items-center p-[10px] text-secondary-600 sm:flex">{`${
+                      images.length - 4
+                    }+`}</div>
+                    {/* for mobile screen */}
+                    <div className="label-lg flex items-center p-[10px] text-secondary-600 sm:hidden">{`${
+                      images.length - 1
+                    }+`}</div>
+                  </>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </td>
   );
 };
 
@@ -617,7 +627,7 @@ const CancelButton = ({ dataClose }: CloseButtonProps) => {
   );
 };
 
-const TableFooter = () => {
+export const TableFooter = () => {
   return (
     <div className="body-lg flex items-center gap-[20px] px-[20px] py-[10px]">
       <span>Items per page:</span>

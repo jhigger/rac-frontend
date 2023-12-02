@@ -112,10 +112,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleOrders = () => {
-    const unprocessedOrders = orders.filter((order) => {
-      return order.orderStatus === "not responded";
-    });
-    setOrderItems(unprocessedOrders);
+    setOrderItems(orders);
   };
 
   const handleRequests = () => {

@@ -66,7 +66,7 @@ const OrdersTable = () => {
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
-            <TableHead />
+            <TableHead th={tableHeads} />
             <TableBody />
           </table>
         </div>
@@ -80,12 +80,23 @@ export type TableHeadType = { title: string; sortIcon: boolean };
 
 const tableHeads: TableHeadType[] = [
   { title: "Package(s) Image", sortIcon: false },
-  { title: "Request ID", sortIcon: true },
-  { title: "Request Status", sortIcon: false },
-  { title: "Request Date", sortIcon: true },
+  { title: "Order ID", sortIcon: true },
+  { title: "Order Status", sortIcon: false },
+  { title: "Order Date", sortIcon: true },
+  { title: "Tracking ID", sortIcon: true },
+  { title: "Shipping Status", sortIcon: false },
+  { title: "Shop For Me Status", sortIcon: false },
+  { title: "Shop For Me Cost", sortIcon: true },
+  { title: "Shipping Cost", sortIcon: true },
+  // { title: "Package(s) Image", sortIcon: false },
+  // { title: "Request ID", sortIcon: true },
+  // { title: "Request Status", sortIcon: false },
+  // { title: "Request Date", sortIcon: true },
 ];
 
-export const TableHead = () => {
+type TableHeadProps = { th: TableHeadType[] };
+
+export const TableHead = ({ th }: TableHeadProps) => {
   return (
     <thead className="sticky top-0 z-10 flex gap-[20px] bg-white px-[20px] py-[14px]">
       <tr className="flex-grow">
@@ -98,7 +109,7 @@ export const TableHead = () => {
           />
         </th>
       </tr>
-      {tableHeads.map(({ title, sortIcon }) => {
+      {th.map(({ title, sortIcon }) => {
         return (
           <tr key={title} className="flex-grow">
             <th className="flex max-w-[150px] gap-[20px] border-0 p-0">

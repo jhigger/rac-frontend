@@ -1,25 +1,26 @@
 /* eslint-disable @next/next/no-img-element */
+import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
-import { type RequestItemType, useShopContext } from "~/contexts/ShopContext";
+import { useShopContext, type RequestItemType } from "~/contexts/ShopContext";
+import tailmater from "~/js/tailmater";
 import RequestOrderForm, {
   RequestFormHeader,
 } from "../../Forms/RequestOrderForm";
 import NeedHelpFAB from "../../NeedHelpFAB";
+import { LabelId, MoreButton } from "../Orders/OrderItem";
 import {
   CancelButton,
   CloseButton,
   ImageColumn,
   TableFooter,
   TableHead,
+  type TableHeadType,
 } from "../Orders/OrdersPanel";
 import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
+import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderButton from "./RequestOrderButton";
-import { LabelId, MoreButton } from "../Orders/OrderItem";
-import { useEffect } from "react";
-import tailmater from "~/js/tailmater";
-import RequestCheckout from "./RequestCheckout";
 
 const RequestsPanel = () => {
   const {
@@ -84,7 +85,7 @@ const RequestsTable = () => {
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
-            <TableHead />
+            <TableHead th={tableHeads} />
             <TableBody />
           </table>
         </div>
@@ -93,6 +94,13 @@ const RequestsTable = () => {
     </div>
   );
 };
+
+const tableHeads: TableHeadType[] = [
+  { title: "Package(s) Image", sortIcon: false },
+  { title: "Request ID", sortIcon: true },
+  { title: "Request Status", sortIcon: false },
+  { title: "Request Date", sortIcon: true },
+];
 
 export const TableBody = () => {
   const { requestItems } = useShopContext();

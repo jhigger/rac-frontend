@@ -10,12 +10,12 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "../../Forms/RequestOrderForm";
-import { LabelId } from "./OrderItem";
-import { HighlightedInfo, Item } from "../Requests/RequestDetails";
+import { LabelId } from "../Orders/OrderItem";
+import { HighlightedInfo, Item } from "./RequestDetails";
 
 type stepsContentType = { title: string; content: JSX.Element };
 
-const OrderCheckout = () => {
+const RequestCheckout = () => {
   const { orderItems, handleRequestAction } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package confirmation", content: <CheckoutStep1 /> },
@@ -54,16 +54,16 @@ const OrderCheckout = () => {
 };
 
 const CheckoutStep1 = () => {
-  const { orderItems } = useShopContext();
+  const { requestedOrders } = useShopContext();
 
-  if (!orderItems) return;
+  if (!requestedOrders) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderItems.map((item, i) => {
-        return <Item key={item.orderId} index={i} />;
+      {requestedOrders.map((item, i) => {
+        return <Item key={item.requestId} index={i} />;
       })}
     </div>
   );
@@ -171,4 +171,4 @@ const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
   );
 };
 
-export default OrderCheckout;
+export default RequestCheckout;

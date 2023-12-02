@@ -116,6 +116,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     setActiveAction("");
     setOrderActionClicked(false);
     setRequestActionClicked(false);
+    setRequestCheckoutClicked(false);
     setRequestOrderClicked(false);
   };
 

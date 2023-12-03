@@ -100,9 +100,9 @@ type TableHeadProps = { th: TableHeadType[] };
 
 export const TableHead = ({ th }: TableHeadProps) => {
   return (
-    <thead className="sticky top-0 z-10 flex gap-[20px] bg-white px-[20px] py-[14px]">
-      <tr className="flex-grow">
-        <th className="flex border-0 p-0">
+    <thead className="title-sm grid-cols-11 sticky top-0 z-10 grid gap-[20px] p-[20px] font-medium text-neutral-900">
+      <tr className="col-span-1 w-max">
+        <th className="border-0 p-0">
           <input
             type="checkbox"
             name="check-all"
@@ -111,11 +111,12 @@ export const TableHead = ({ th }: TableHeadProps) => {
           />
         </th>
       </tr>
+
       {th.map(({ title, sortIcon }) => {
         return (
-          <tr key={title} className="flex-grow">
-            <th className="flex max-w-[150px] gap-[20px] border-0 p-0">
-              <span className="label-lg whitespace-nowrap">{title}</span>
+          <tr key={title} className="col-span-1">
+            <th className="flex items-center gap-[20px] whitespace-nowrap border-0 p-0">
+              {title}
               {sortIcon && (
                 <img
                   src="/images/arrow_swap_icon.svg"
@@ -127,10 +128,9 @@ export const TableHead = ({ th }: TableHeadProps) => {
           </tr>
         );
       })}
-      <tr>
-        <th className="flex border-0 p-0">
-          <span className="label-lg">Action</span>
-        </th>
+
+      <tr className="col-span-1">
+        <th className="border-0 p-0">Action</th>
       </tr>
     </thead>
   );
@@ -158,9 +158,9 @@ const TableBody = () => {
           return (
             <tr
               key={orderId}
-              className="flex items-center justify-between gap-[20px] bg-gray-10 px-[20px] py-[40px]"
+              className="grid grid-cols-11 items-center gap-[20px] bg-gray-10 px-[20px] py-[40px]"
             >
-              <td className="w-max border-0 p-0">
+              <td className="col-span-1 w-max border-0 p-0">
                 <input
                   type="checkbox"
                   name={`check-${orderId}`}
@@ -168,38 +168,40 @@ const TableBody = () => {
                   checked={undefined}
                 />
               </td>
-              <ImageColumn images={images} />
-              <td className="w-full max-w-[100px] border-0 p-0">
+              <td className="border-0 p-0">
+                <ImageColumn images={images} />
+              </td>
+              <td className="border-0 p-0">
                 <p className="title-md whitespace-nowrap">{orderId}</p>
               </td>
-              <td className="w-full max-w-[90px] border-0 p-0">
+              <td className="border-0 p-0">
                 <p className="title-md whitespace-nowrap">{orderStatus}</p>
               </td>
-              <td className="w-full max-w-[130px] border-0 p-0">
+              <td className="border-0 p-0">
                 <p className="label-lg whitespace-nowrap text-neutral-900">
                   {orderDate}
                 </p>
               </td>
-              <td className="w-full max-w-[90px] border-0 p-0">
+              <td className="border-0 p-0">
                 <p className="title-md text-primary-900">{trackingId}</p>
               </td>
-              <td className="title-sm w-full max-w-[150px] border-0 p-0">
+              <td className="title-sm w-full border-0 p-0">
                 <ShippingStatus
                   id={orderId}
                   status={shippingStatus as ShippingStatusProps["status"]}
                 />
               </td>
-              <td className="w-full max-w-[150px] border-0 p-0">
+              <td className="border-0 p-0">
                 <p className="title-md whitespace-nowrap">{shopForMeStatus}</p>
               </td>
-              <td className="flex w-full max-w-[130px] gap-[5px] border-0 p-0">
+              <td className="flex gap-[5px] border-0 p-0">
                 <img
                   src="/images/tick_square_bold_icon.svg"
                   alt="tick square bold icon"
                 />
                 <p className="title-md">{shopForMeCost}</p>
               </td>
-              <td className="flex w-full max-w-[130px] gap-[5px] border-0 p-0">
+              <td className="flex gap-[5px] border-0 p-0">
                 <img src="/images/more_bold_icon.svg" alt="more bold icon" />
 
                 <p className="title-md">{shippingCost}</p>
@@ -219,7 +221,7 @@ type ImageColumnProps = { images: string[] };
 
 export const ImageColumn = ({ images }: ImageColumnProps) => {
   return (
-    <td className="w-full max-w-[130px] border-0 p-0">
+    <div className="w-full max-w-[130px] border-0 p-0">
       <div className="grid max-h-[150px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-[5px]">
         {images.length === 1 && (
           <div className="col-span-full row-span-full overflow-hidden rounded-[10px]">
@@ -294,7 +296,7 @@ export const ImageColumn = ({ images }: ImageColumnProps) => {
           </>
         )}
       </div>
-    </td>
+    </div>
   );
 };
 
@@ -401,7 +403,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
     <div
       id={modalId}
       className={
-        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center  justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
       }
     >
       <div

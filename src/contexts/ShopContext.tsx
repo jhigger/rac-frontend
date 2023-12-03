@@ -41,7 +41,7 @@ export const ShopContext = createContext<ShopContextType>(
 
 export const useShopContext = () => useContext(ShopContext);
 
-const TAB_IDS = ["orders", "requests", "draft"] as const;
+const TAB_IDS = ["orders", "requests", "drafts"] as const;
 
 type TabIdType = (typeof TAB_IDS)[number];
 
@@ -54,7 +54,7 @@ type AppBarTabType = {
 export const tabs: AppBarTabType[] = [
   { id: "orders", title: "Orders", content: <OrdersPanel /> },
   { id: "requests", title: "Requests", content: <RequestsPanel /> },
-  { id: "draft", title: "Draft", content: <DraftPanel /> },
+  { id: "drafts", title: "Drafts", content: <DraftPanel /> },
 ];
 
 const ACTION_CONST = [

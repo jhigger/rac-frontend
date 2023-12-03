@@ -9,12 +9,21 @@ import RequestOrderButton from "../RequestOrderButton";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
 import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
+import ClearPackage from "./ClearPackage";
 import InitiateShipping from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 import { LabelId, MoreButton } from "./OrderItem";
 
 const OrdersPanel = () => {
   const { orderItems, orderActionClicked, activeAction } = useShopContext();
+
+  if (activeAction === "clear package") {
+    return (
+      <TabContentLayout>
+        <ClearPackage />
+      </TabContentLayout>
+    );
+  }
 
   if (activeAction === "initiate shipping") {
     return (

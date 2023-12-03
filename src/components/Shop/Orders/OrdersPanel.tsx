@@ -395,7 +395,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
   const maxWidth =
     status === "cleared" ? "max-w-[1000px] mt-60" : "max-w-[700px]";
 
-  const marginTop = status === "cleared" && "mt-[300px]";
+  const marginTop = status === "cleared" && "mt-[400px] md:mt-[300px]";
 
   return (
     <div

@@ -120,54 +120,54 @@ const OrderItem = ({ index }: OrderItemProps) => {
 const OrderItemDetails = () => {
   return (
     <div className="grid w-max grid-cols-4 gap-[15px]">
-      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
         <span className="body-md max-w-[100px]">Store:</span>
         <span className="title-lg text-neutral-900">Amazon</span>
       </div>
 
-      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
         <span className="body-md max-w-[100px]">Urgent Purchase:</span>
         <span className="title-lg text-neutral-900">No</span>
       </div>
 
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-full">
         <span className="body-md max-w-[100px]">Item URL:</span>
         <span className="title-lg text-neutral-900">
           htttp/jjnkkukja.jhgyjayjdjjhcjc
         </span>
       </div>
 
-      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
         <span className="body-md max-w-[100px]">Item Name:</span>
         <span className="title-lg text-neutral-900">Designer Bags</span>
       </div>
 
-      <div className="col-span-1 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
         <span className="body-md max-w-[100px]">Item Cost from Store:</span>
         <span className="title-lg text-neutral-900">$45.00</span>
       </div>
 
-      <div className="col-span-1 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
         <span className="body-md max-w-[100px]">Quantity:</span>
         <span className="title-lg text-neutral-900">4</span>
       </div>
 
-      <div className="col-span-1 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700 md:col-span-1">
         <span className="body-md max-w-[100px]">Weight:</span>
         <span className="title-lg text-neutral-900">67kg</span>
       </div>
 
-      <div className="col-span-1 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700 md:col-span-1">
         <span className="body-md max-w-[100px]">Height:</span>
         <span className="title-lg text-neutral-900">5 inches</span>
       </div>
 
-      <div className="col-span-1 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700 md:col-span-1">
         <span className="body-md max-w-[100px]">Length:</span>
         <span className="title-lg text-neutral-900">5 inches</span>
       </div>
 
-      <div className="col-span-1 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700 md:col-span-1">
         <span className="body-md max-w-[100px]">Width:</span>
         <span className="title-lg text-neutral-900">5 inches</span>
       </div>
@@ -190,12 +190,12 @@ const OrderItemDetails = () => {
         </span>
       </div>
 
-      <div className="col-span-1 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
         <span className="body-md max-w-[100px]">Color:</span>
         <span className="title-lg text-neutral-900">Blue</span>
       </div>
 
-      <div className="col-span-1 flex flex-col gap-[20px] text-gray-700">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
         <span className="body-md max-w-[100px]">Stripes:</span>
         <span className="title-lg text-neutral-900">5 inches</span>
       </div>

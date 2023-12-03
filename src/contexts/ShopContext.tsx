@@ -156,15 +156,21 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequestOrder = (value: boolean) => {
-    if (!tabsRef.current[1]) return;
-    tabsRef.current[1].click();
-    setActiveAction("request new order");
-    setActiveTab("requests");
+    handleActiveAction("request new order");
+    handleTabChange("requests");
     setRequestOrderClicked(value);
   };
 
-  const handleTabChange = (tab: TabIdType) => {
-    setActiveTab(tab);
+  const handleTabChange = (tabId: TabIdType) => {
+    let clickedTabIndex = 0;
+    tabs.forEach((tab, i) => {
+      if (tab.id === tabId) {
+        clickedTabIndex = i;
+      }
+    });
+    if (!tabsRef.current[clickedTabIndex]) return;
+    tabsRef.current[clickedTabIndex]?.click();
+    setActiveTab(tabId);
     resetAllClicked();
   };
 

@@ -4,16 +4,16 @@ import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
-import NeedHelpFAB from "../NeedHelpFAB";
-import { CancelButton } from "../Shop/Orders/OrdersPanel";
-import { type ModalCloseType } from "../Shop/Requests/RequestsPanel";
-import AccordionButton from "./AccordionButton";
-import CurrencyInput from "./Inputs/CurrencyInput";
-import FileInput from "./Inputs/FileInput";
-import QuantityInput from "./Inputs/QuantityInput";
-import SelectInput from "./Inputs/SelectInput";
-import TextAreaInput from "./Inputs/TextAreaInput";
-import TextInput from "./Inputs/TextInput";
+import NeedHelpFAB from "../../NeedHelpFAB";
+import { CancelButton } from "../Orders/OrdersPanel";
+import { type ModalCloseType } from "./RequestsPanel";
+import AccordionButton from "../../Forms/AccordionButton";
+import CurrencyInput from "../../Forms/Inputs/CurrencyInput";
+import FileInput from "../../Forms/Inputs/FileInput";
+import QuantityInput from "../../Forms/Inputs/QuantityInput";
+import SelectInput from "../../Forms/Inputs/SelectInput";
+import TextAreaInput from "../../Forms/Inputs/TextAreaInput";
+import TextInput from "../../Forms/Inputs/TextInput";
 
 const RequestOrderForm = () => {
   const { step, next, isFirstStep, isLastStep } = useMultiStepForm([

@@ -8,7 +8,7 @@ import {
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
-} from "../../Forms/RequestOrderForm";
+} from "./RequestOrder";
 import { LabelId, RespondedStatus } from "../Orders/OrderItem";
 
 const RequestDetails = () => {

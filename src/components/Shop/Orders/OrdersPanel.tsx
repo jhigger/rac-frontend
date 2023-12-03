@@ -3,7 +3,7 @@ import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
 import tailmater from "~/js/tailmater";
-import { RequestFormHeader, SectionHeader } from "../../Forms/RequestOrderForm";
+import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import RequestOrderButton from "../RequestOrderButton";
 import { type ModalCloseType } from "../Requests/RequestsPanel";

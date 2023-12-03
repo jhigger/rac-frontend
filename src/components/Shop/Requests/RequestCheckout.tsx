@@ -17,7 +17,7 @@ import {
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,
-} from "../../Forms/RequestOrderForm";
+} from "./RequestOrder";
 import { LabelId } from "../Orders/OrderItem";
 import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
 import { Item, PackageOrigin } from "./RequestDetails";

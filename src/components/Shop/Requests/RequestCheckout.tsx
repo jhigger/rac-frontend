@@ -310,25 +310,10 @@ const CustomBillingAddress = () => {
 };
 
 const PlaceOrder = () => {
-  const th = [
-    "Item",
-    "Item URL",
-    "Item Cost from Store",
-    "Urgent Purchase",
-    "Quantity of items",
-    "Total value of item",
-  ];
-
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details" />
-      <div className="overflow-x-scroll ">
-        <table className="relative w-full max-w-[972px] table-auto text-left">
-          <PackageTableHead th={th} />
-          <PackageTableBody />
-          <Totals />
-        </table>
-      </div>
+      <PackageTable />
       <SectionHeader title="Payment Methods" />
       <div className="pl-[14px]">
         <SubSectionTitle title="Select the Payment Method You Wish to Use" />
@@ -359,6 +344,27 @@ const PlaceOrder = () => {
           <CostsSummary />
         </div>
       </div>
+    </div>
+  );
+};
+
+export const PackageTable = () => {
+  const th = [
+    "Item",
+    "Item URL",
+    "Item Cost from Store",
+    "Urgent Purchase",
+    "Quantity of items",
+    "Total value of item",
+  ];
+
+  return (
+    <div className="overflow-x-scroll ">
+      <table className="relative w-full max-w-[972px] table-auto text-left">
+        <PackageTableHead th={th} />
+        <PackageTableBody />
+        <Totals />
+      </table>
     </div>
   );
 };

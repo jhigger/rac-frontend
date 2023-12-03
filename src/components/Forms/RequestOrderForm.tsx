@@ -485,7 +485,7 @@ const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
             .map((_, i) => {
               return (
                 <div key={i} className="flex flex-col gap-[30px]">
-                  {i === 1 && <hr className="mt-[20px]" />}
+                  {i !== 0 && <hr className="mt-[20px]" />}
                   <TextInput
                     id="propertyLabel"
                     label="Property Label"

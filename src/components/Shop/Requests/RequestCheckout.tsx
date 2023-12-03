@@ -369,7 +369,7 @@ export const PackageTable = () => {
   );
 };
 
-const ImportantNotice = () => {
+export const ImportantNotice = () => {
   return (
     <div className="flex flex-col gap-[30px] rounded-[20px] bg-error-200 px-[28px] py-[20px]">
       <span className="label-lg text-primary-900">IMPORTANT NOTICE:</span>

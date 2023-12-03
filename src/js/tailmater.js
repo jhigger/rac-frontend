@@ -232,6 +232,7 @@ export default function () {
         const clickTarget = DialogClickEvent.currentTarget;
         const DialogId = clickTarget.getAttribute("data-target");
         const activeDialog = document.querySelector(DialogId);
+        if (!activeDialog) return;
         activeDialog.classList.add("show");
         body.style.overflow = "hidden";
       }
@@ -239,6 +240,7 @@ export default function () {
         const closeTarget = DialogCloseEvent.currentTarget;
         const DialogId = closeTarget.getAttribute("data-close");
         const activeDialog = document.querySelector(DialogId);
+        if (!activeDialog.classList) return;
         activeDialog.classList.remove("show");
         body.style.overflow = "auto";
       }

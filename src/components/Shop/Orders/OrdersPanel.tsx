@@ -72,8 +72,8 @@ const OrdersTable = () => {
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
-            <TableHead th={tableHeads} />
-            <TableBody />
+            <OrderTableHead th={tableHeads} />
+            <OrderTableBody />
           </table>
         </div>
       </div>
@@ -96,11 +96,11 @@ const tableHeads: TableHeadType[] = [
   { title: "Shipping Cost", sortIcon: true },
 ];
 
-type TableHeadProps = { th: TableHeadType[] };
+type OrderTableHeadProps = { th: TableHeadType[] };
 
-export const TableHead = ({ th }: TableHeadProps) => {
+const OrderTableHead = ({ th }: OrderTableHeadProps) => {
   return (
-    <thead className="title-sm grid-cols-11 sticky top-0 z-10 grid gap-[20px] p-[20px] font-medium text-neutral-900">
+    <thead className="title-sm sticky top-0 z-10 grid grid-cols-11 gap-[20px] p-[20px] font-medium text-neutral-900">
       <tr className="col-span-1 w-max">
         <th className="border-0 p-0">
           <input
@@ -136,13 +136,13 @@ export const TableHead = ({ th }: TableHeadProps) => {
   );
 };
 
-const TableBody = () => {
+const OrderTableBody = () => {
   const { orderItems } = useShopContext();
 
   if (!orderItems) return;
 
   return (
-    <tbody className="flex flex-col border-y-[0.5px] border-gray-500 [&>tr]:border-b-[0.5px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
+    <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {orderItems.map(
         ({
           images,
@@ -160,7 +160,7 @@ const TableBody = () => {
               key={orderId}
               className="grid grid-cols-11 items-center gap-[20px] bg-gray-10 px-[20px] py-[40px]"
             >
-              <td className="col-span-1 w-max border-0 p-0">
+              <td className="border-0 p-0">
                 <input
                   type="checkbox"
                   name={`check-${orderId}`}

@@ -185,7 +185,7 @@ const OrderTableBody = () => {
               <td className="border-0 p-0">
                 <p className="title-md text-primary-900">{trackingId}</p>
               </td>
-              <td className="title-sm w-full border-0 p-0">
+              <td className="title-sm max-w-[150px] border-0 p-0">
                 <ShippingStatus
                   id={orderId}
                   status={shippingStatus as ShippingStatusProps["status"]}

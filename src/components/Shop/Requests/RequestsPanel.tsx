@@ -168,7 +168,7 @@ const RequestTableBody = () => {
             <td className="border-0 p-0">
               <p className="title-md whitespace-nowrap">{requestId}</p>
             </td>
-            <td className="border-0 p-0">
+            <td className="max-w-[150px] border-0 p-0">
               <RequestStatus id={requestId} status={requestStatus} />
             </td>
             <td className="border-0 p-0">

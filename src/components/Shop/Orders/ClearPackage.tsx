@@ -9,6 +9,7 @@ import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
+  AndLastly,
   NextButton,
   PackageTable,
   StepIndex,
@@ -22,7 +23,11 @@ import {
   ShipmentCostsSummary,
   ShippingMethod,
 } from "./InitiateShipping";
-import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
+import {
+  CongratulationImage,
+  OrderTrackingId,
+  PickUpInstructions,
+} from "./OrdersPanel";
 
 const ClearPackage = () => {
   const {
@@ -163,21 +168,21 @@ const DestinationAddressDetails = () => {
       </div>
       <div className="grid w-max grid-cols-4 gap-[15px]">
         <div className="col-span-full flex flex-col gap-[20px] md:col-span-2">
-          <span className="body-md max-w-[139px] text-primary-600">
+          <span className="body-md max-w-[100px] text-primary-600">
             First Name:
           </span>
           <span className="title-lg text-primary-900">Malibu</span>
         </div>
 
         <div className="col-span-full flex flex-col gap-[20px] md:col-span-2">
-          <span className="body-md max-w-[139px] text-primary-600">
+          <span className="body-md max-w-[100px] text-primary-600">
             Last Name:
           </span>
           <span className="title-lg text-primary-900">SHedrack</span>
         </div>
 
         <div className="col-span-full flex flex-col gap-[20px]">
-          <span className="body-md w-[139px] text-primary-600 ">
+          <span className="body-md w-[100px] text-primary-600 ">
             Street Address:
           </span>
           <span className="title-lg text-primary-900">
@@ -185,25 +190,25 @@ const DestinationAddressDetails = () => {
           </span>
         </div>
 
-        <div className="col-span-full flex flex-col gap-[20px] md:col-span-1">
-          <span className="body-md max-w-[139px] text-primary-600">
+        <div className="col-span-full flex flex-col justify-between md:col-span-1">
+          <span className="body-md max-w-[100px] text-primary-600">
             Country:
           </span>
           <span className="title-lg text-primary-900">Nigeria</span>
         </div>
 
-        <div className="col-span-full flex flex-col gap-[20px] md:col-span-1">
-          <span className="body-md max-w-[139px] text-primary-600">State:</span>
+        <div className="col-span-full flex flex-col justify-between md:col-span-1">
+          <span className="body-md max-w-[100px] text-primary-600">State:</span>
           <span className="title-lg text-primary-900">Lagos</span>
         </div>
 
-        <div className="col-span-full flex flex-col gap-[20px] md:col-span-1">
-          <span className="body-md max-w-[139px] text-primary-600">City:</span>
+        <div className="col-span-full flex flex-col justify-between md:col-span-1">
+          <span className="body-md max-w-[100px] text-primary-600">City:</span>
           <span className="title-lg text-primary-900">Ikeja</span>
         </div>
 
-        <div className="col-span-full flex flex-col gap-[20px] md:col-span-1">
-          <span className="body-md max-w-[139px] text-primary-600">
+        <div className="col-span-full flex flex-col justify-between md:col-span-1">
+          <span className="body-md max-w-[100px] text-primary-600">
             Zip/postal Code:
           </span>
           <span className="title-lg text-primary-900">98765</span>
@@ -231,7 +236,70 @@ const ClearPackageStep = () => {
 };
 
 const Success = () => {
-  return <>Success</>;
+  return (
+    <div className="flex flex-col gap-[30px]">
+      <PickUpAddress />
+      <SectionHeader title="How to pick up" />
+      <PickUpInstructions />
+      <AndLastly />
+    </div>
+  );
+};
+
+const PickUpAddress = () => {
+  const { open, toggle } = useAccordion(true);
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[30px]">
+        <div className="flex w-full items-center justify-between">
+          <h4 className="title-md md:title-lg text-gray-700">
+            Our office address to pick up your package
+          </h4>
+          <AccordionButton {...{ open, toggle }} />
+        </div>
+
+        {open && (
+          <div className="grid w-max grid-cols-4 gap-[15px]">
+            <div className="col-span-full flex flex-col justify-between">
+              <span className="body-md w-[100px] text-gray-700">
+                Pick up Address:
+              </span>
+              <span className="title-lg text-neutral-900">
+                No, 1osolo way, ikeja road, behind scaint merry
+              </span>
+            </div>
+
+            <div className="col-span-full flex flex-col justify-between md:col-span-1">
+              <span className="body-md max-w-[100px] text-gray-700">
+                Country:
+              </span>
+              <span className="title-lg text-neutral-900">Nigeria</span>
+            </div>
+
+            <div className="col-span-full flex flex-col justify-between md:col-span-1">
+              <span className="body-md max-w-[100px] text-gray-700">
+                State:
+              </span>
+              <span className="title-lg text-neutral-900">Lagos</span>
+            </div>
+
+            <div className="col-span-full flex flex-col justify-between md:col-span-1">
+              <span className="body-md max-w-[100px] text-gray-700">City:</span>
+              <span className="title-lg text-neutral-900">Ikeja</span>
+            </div>
+
+            <div className="col-span-full flex flex-col justify-between md:col-span-1">
+              <span className="body-md max-w-[100px] text-gray-700">
+                Zip/postal Code:
+              </span>
+              <span className="title-lg text-neutral-900">98765</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </SectionContentLayout>
+  );
 };
 
 export default ClearPackage;

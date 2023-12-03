@@ -235,7 +235,10 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
     </div>
   );
 };
-type ProceedToCheckoutButtonProps = { dataClose: string };
+
+export type ModalCloseType = { dataClose: string };
+
+type ProceedToCheckoutButtonProps = ModalCloseType;
 
 const ProceedToCheckoutButton = ({
   dataClose,

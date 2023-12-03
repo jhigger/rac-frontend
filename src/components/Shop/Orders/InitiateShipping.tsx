@@ -13,6 +13,7 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   Cost,
+  ImportantNotice,
   NextButton,
   PackageTable,
   StepIndex,
@@ -49,16 +50,29 @@ const InitiateShipping = () => {
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      <CongratulationImage text="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
+      {!isLastStep && (
+        <CongratulationImage text="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
+      )}
       <StepIndex
         currentIndex={currentStepIndex}
         length={steps.length}
         title={currentTitle}
       />
 
-      <div className="flex w-full items-center gap-[10px] rounded-[20px]">
-        <OrderTrackingId />
-      </div>
+      {!isLastStep && (
+        <div className="flex w-full items-center gap-[10px] rounded-[20px]">
+          <OrderTrackingId />
+        </div>
+      )}
+      {isLastStep && (
+        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
+          <OrderTrackingId />
+        </div>
+      )}
+
+      {isLastStep && (
+        <CongratulationImage text="You have just successfully iInitiated shipment of your items" />
+      )}
       {step}
       <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
         {isFirstStep && (
@@ -113,6 +127,11 @@ const InitiateShipping = () => {
               all terms and policies
             </a>
           </span>
+        </div>
+      )}
+      {currentStepIndex === 3 && (
+        <div className="w-[200px]">
+          <NextButton text="Done" next={handleFinish} />
         </div>
       )}
     </div>
@@ -298,7 +317,7 @@ const BillingAddress = () => {
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Provide your billing address" hr />
         <div className="flex flex-col items-center gap-[30px] md:pl-[34px]">
-          <ImportantNotice />
+          <ShippingImportantNotice />
           <DestinationShippingAddress />
         </div>
       </div>
@@ -396,7 +415,7 @@ const DestinationShippingAddress = () => {
   );
 };
 
-const ImportantNotice = () => {
+const ShippingImportantNotice = () => {
   return (
     <div className="flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[28px] py-[20px]">
       <span className="label-lg text-primary-900">IMPORTANT NOTICE:</span>
@@ -580,7 +599,42 @@ const ShippingMethod = ({
 };
 
 const Success = () => {
-  return <></>;
+  return (
+    <div className="flex flex-col gap-[20px]">
+      <ImportantNotice />
+
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="Track your package" />
+        <SectionContentLayout>
+          <div className="flex flex-col gap-[10px]">
+            <h3 className="title-lg font-bold text-neutral-900">
+              Here are more information on how to track
+            </h3>
+            <ul className="flex flex-col gap-[14px]">
+              <li className="flex items-center gap-[26px]">
+                <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
+                  1
+                </span>
+                <span className="title-lg text-neutral-900">
+                  You can start tracking your package in the next 24 hrs using
+                  the Tracking ID above or{" "}
+                  <a href="#" target="_blank" rel="noopener noreferrer">
+                    <span className="inline-flex items-center gap-[5px] font-bold text-primary-600">
+                      this link
+                      <img
+                        src="/images/export_circle_icon.svg"
+                        alt="export circle icon"
+                      />
+                    </span>
+                  </a>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </SectionContentLayout>
+      </div>
+    </div>
+  );
 };
 
 export default InitiateShipping;

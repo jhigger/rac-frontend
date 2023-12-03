@@ -62,6 +62,8 @@ const ACTION_CONST = [
   "order details",
   "request new order",
   "initiate shipping",
+  "clear package",
+  "track",
 ] as const;
 
 type ActionType = (typeof ACTION_CONST)[number];

@@ -6,11 +6,12 @@ import tailmater from "~/js/tailmater";
 import { RequestFormHeader, SectionHeader } from "../../Forms/RequestOrderForm";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import RequestOrderButton from "../Requests/RequestOrderButton";
+import { type ModalCloseType } from "../Requests/RequestsPanel";
 import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
+import InitiateShipping from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 import { LabelId, MoreButton } from "./OrderItem";
-import InitiateShipping from "./InitiateShipping";
 
 const OrdersPanel = () => {
   const { orderItems, orderActionClicked, activeAction } = useShopContext();
@@ -305,7 +306,7 @@ const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
     tailmater();
   }, []);
 
-  const modalId = `order-status-modal-${id}`;
+  const modalId = `shipping-status-modal-${id}`;
   const dataTarget = `#${modalId}`;
 
   const buttonStyles = {
@@ -514,19 +515,19 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
             {status === "ready for shipping" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
-                <InitiateShippingButton />
+                <InitiateShippingButton dataClose={dataClose} />
               </div>
             )}
             {(status === "processing" || status === "in transit") && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
-                <TrackButton />
+                <TrackButton dataClose={dataClose} />
               </div>
             )}
             {status === "arrived destination" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
-                <ClearPackageButton />
+                <ClearPackageButton dataClose={dataClose} />
               </div>
             )}
           </div>
@@ -567,9 +568,21 @@ export const CongratulationImage = ({ text }: CongratulationImageProps) => {
   );
 };
 
-const ClearPackageButton = () => {
+type ClearPackageButtonProps = ModalCloseType;
+
+const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
+  const { handleActiveAction } = useShopContext();
+
+  const onClick = () => {
+    handleActiveAction("clear package");
+  };
+
   return (
-    <button className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6">
+    <button
+      data-close={dataClose}
+      onClick={onClick}
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
       <img
         src="/images/shipping status modal/clipboard_tick_bold_icon.svg"
         alt="clipboard tick bold icon"
@@ -579,9 +592,20 @@ const ClearPackageButton = () => {
   );
 };
 
-const TrackButton = () => {
+type TrackButtonProps = ModalCloseType;
+
+const TrackButton = ({ dataClose }: TrackButtonProps) => {
+  const { handleActiveAction } = useShopContext();
+
+  const onClick = () => {
+    handleActiveAction("track");
+  };
   return (
-    <button className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6">
+    <button
+      data-close={dataClose}
+      onClick={onClick}
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
       <img
         src="/images/shipping status modal/track_icon.svg"
         alt="track icon"
@@ -591,7 +615,9 @@ const TrackButton = () => {
   );
 };
 
-const InitiateShippingButton = () => {
+type InitiateShippingButtonProps = ModalCloseType;
+
+const InitiateShippingButton = ({ dataClose }: InitiateShippingButtonProps) => {
   const { handleActiveAction } = useShopContext();
 
   const onClick = () => {
@@ -600,6 +626,7 @@ const InitiateShippingButton = () => {
 
   return (
     <button
+      data-close={dataClose}
       onClick={onClick}
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >

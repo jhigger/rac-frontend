@@ -28,7 +28,7 @@ const InitiateShipping = () => {
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {
       title: "Shipping & Billing Address",
-      content: <BillingAddress />,
+      content: <BillingAddressStep />,
     },
     { title: "Initiate Shipping", content: <InitiateShippingStep /> },
     { title: "Success", content: <Success /> },
@@ -155,7 +155,7 @@ const InitiateShippingButton = ({ onClick }: InitiateShippingButtonProps) => {
   );
 };
 
-const PackageConfirmation = () => {
+export const PackageConfirmation = () => {
   const { orderItems } = useShopContext();
 
   if (!orderItems) return;
@@ -309,9 +309,7 @@ const PackageOrigin = () => {
   );
 };
 
-const BillingAddress = () => {
-  const { open, toggle } = useAccordion(true);
-
+const BillingAddressStep = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
@@ -321,78 +319,85 @@ const BillingAddress = () => {
           <DestinationShippingAddress />
         </div>
       </div>
+
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Confirm your Billing Information" />
-        <SectionContentLayout>
-          <div className="flex w-full flex-col gap-[20px] py-[10px]">
-            <div className="flex w-full items-center gap-[30px]">
-              <h4 className="title-md md:title-lg text-gray-700">
-                Default Billing Address
-              </h4>
-              <div className="flex flex-grow justify-end">
-                <AccordionButton {...{ open, toggle }} />
-              </div>
-            </div>
-
-            {open && (
-              <div className="grid grid-cols-4 gap-[20px]">
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-                  <span className="body-md max-w-[100px]">First Name:</span>
-                  <span className="title-lg text-neutral-900">Malibu</span>
-                </div>
-
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-                  <span className="body-md max-w-[100px]">Last Name:</span>
-                  <span className="title-lg text-neutral-900">SHedrack</span>
-                </div>
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-                  <span className="body-md max-w-[100px]">Contact Number:</span>
-                  <span className="title-lg text-neutral-900">
-                    +234 803 456 7845
-                  </span>
-                </div>
-
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-                  <span className="body-md max-w-[100px]">Email:</span>
-                  <span className="title-lg text-neutral-900">
-                    Malibushdrack@gmail.com
-                  </span>
-                </div>
-
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-                  <span className="body-md max-w-[100px]">Country:</span>
-                  <span className="title-lg text-neutral-900">Turkey</span>
-                </div>
-
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-                  <span className="body-md max-w-[100px]">State:</span>
-                  <span className="title-lg text-neutral-900">Istanbul</span>
-                </div>
-
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-                  <span className="body-md max-w-[100px]">City:</span>
-                  <span className="title-lg text-neutral-900">Cyprusic</span>
-                </div>
-
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-                  <span className="body-md max-w-[100px]">
-                    Zip/postal Code:
-                  </span>
-                  <span className="title-lg text-neutral-900">98765</span>
-                </div>
-
-                <div className="col-span-full flex flex-col gap-[20px] text-gray-700">
-                  <span className="body-md max-w-[100px]">Address:</span>
-                  <span className="title-lg text-neutral-900">
-                    No, 1osolo way, ikeja road, behind scaint merry
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        </SectionContentLayout>
+        <BillingAddress />
       </div>
     </div>
+  );
+};
+
+export const BillingAddress = () => {
+  const { open, toggle } = useAccordion(true);
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[20px] py-[10px]">
+        <div className="flex w-full items-center gap-[30px]">
+          <h4 className="title-md md:title-lg text-gray-700">
+            Default Billing Address
+          </h4>
+          <div className="flex flex-grow justify-end">
+            <AccordionButton {...{ open, toggle }} />
+          </div>
+        </div>
+
+        {open && (
+          <div className="grid grid-cols-4 gap-[20px]">
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
+              <span className="body-md max-w-[100px]">First Name:</span>
+              <span className="title-lg text-neutral-900">Malibu</span>
+            </div>
+
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
+              <span className="body-md max-w-[100px]">Last Name:</span>
+              <span className="title-lg text-neutral-900">SHedrack</span>
+            </div>
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
+              <span className="body-md max-w-[100px]">Contact Number:</span>
+              <span className="title-lg text-neutral-900">
+                +234 803 456 7845
+              </span>
+            </div>
+
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
+              <span className="body-md max-w-[100px]">Email:</span>
+              <span className="title-lg text-neutral-900">
+                Malibushdrack@gmail.com
+              </span>
+            </div>
+
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
+              <span className="body-md max-w-[100px]">Country:</span>
+              <span className="title-lg text-neutral-900">Turkey</span>
+            </div>
+
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
+              <span className="body-md max-w-[100px]">State:</span>
+              <span className="title-lg text-neutral-900">Istanbul</span>
+            </div>
+
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
+              <span className="body-md max-w-[100px]">City:</span>
+              <span className="title-lg text-neutral-900">Cyprusic</span>
+            </div>
+
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
+              <span className="body-md max-w-[100px]">Zip/postal Code:</span>
+              <span className="title-lg text-neutral-900">98765</span>
+            </div>
+
+            <div className="col-span-full flex flex-col gap-[20px] text-gray-700">
+              <span className="body-md max-w-[100px]">Address:</span>
+              <span className="title-lg text-neutral-900">
+                No, 1osolo way, ikeja road, behind scaint merry
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    </SectionContentLayout>
   );
 };
 

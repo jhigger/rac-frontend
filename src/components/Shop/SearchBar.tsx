@@ -60,10 +60,10 @@ const FilterButton = () => {
 };
 
 const RequestNewOrderButton = () => {
-  const { handleRequestOrder } = useShopContext();
+  const { handleActiveAction } = useShopContext();
 
   const handleNewOrder = () => {
-    handleRequestOrder(true);
+    handleActiveAction("request new order");
   };
 
   return (

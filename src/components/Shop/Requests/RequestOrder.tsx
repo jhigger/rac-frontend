@@ -21,12 +21,8 @@ const RequestOrderForm = () => {
     <RequestOrderStep2 />,
   ]);
 
-  const {
-    handleTabChange,
-    handleRequests,
-    handleRequestOrder,
-    handleActiveAction,
-  } = useShopContext();
+  const { handleTabChange, handleRequests, handleActiveAction } =
+    useShopContext();
 
   const handleFinish = () => {
     handleRequests();
@@ -34,7 +30,6 @@ const RequestOrderForm = () => {
   };
 
   const handleBack = () => {
-    handleRequestOrder(false);
     handleActiveAction(null);
   };
 

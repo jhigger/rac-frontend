@@ -11,6 +11,9 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { EmailInput } from "~/pages/login";
 import AccordionButton from "../../Forms/AccordionButton";
+import { LabelId } from "../Orders";
+import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
+import { Item, PackageOrigin } from "./RequestDetails";
 import {
   BackButton,
   ChangeCurrencyButton,
@@ -18,16 +21,13 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "./RequestOrder";
-import { LabelId } from "../Orders/OrderItem";
-import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
-import { Item, PackageOrigin } from "./RequestDetails";
 
 export type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
   const {
     orderItems,
-    handleRequestAction,
+    handleActiveAction,
     handlePayNowAction,
     handleTabChange,
   } = useShopContext();
@@ -48,7 +48,7 @@ const RequestCheckout = () => {
   if (!orderItems) return;
 
   const handleBack = () => {
-    handleRequestAction(false);
+    handleActiveAction(null);
   };
 
   const handleFinish = () => {

@@ -9,24 +9,18 @@ import {
   SectionHeader,
   TooltipButton,
 } from "./RequestOrder";
-import { LabelId, RespondedStatus } from "../Orders/OrderItem";
+import { LabelId, RespondedStatus } from "../Orders";
 
 const RequestDetails = () => {
-  const {
-    orderItems,
-    handleActiveAction,
-    handleCheckoutAction,
-    handleRequestAction,
-  } = useShopContext();
+  const { orderItems, handleActiveAction } = useShopContext();
 
   if (!orderItems) return;
 
   const handleBack = () => {
-    handleRequestAction(false);
+    handleActiveAction(null);
   };
 
   const handleProceed = () => {
-    handleCheckoutAction(true);
     handleActiveAction("proceed to checkout");
   };
 

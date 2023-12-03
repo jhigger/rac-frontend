@@ -33,9 +33,9 @@ import {
 const ClearPackage = () => {
   const {
     orderItems,
-    handleRequestAction,
-    handleTabChange,
+    handleActiveAction,
     handlePayNowAction,
+    handleTabChange,
   } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
@@ -54,7 +54,7 @@ const ClearPackage = () => {
   if (!orderItems) return;
 
   const handleBack = () => {
-    handleRequestAction(false);
+    handleActiveAction(null);
   };
 
   const handleFinish = () => {

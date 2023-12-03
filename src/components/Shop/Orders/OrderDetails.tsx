@@ -7,7 +7,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "../Requests/RequestOrder";
-import { LabelId, UnprocessedStatus } from "./OrderItem";
+import { LabelId, UnprocessedStatus } from ".";
 import {
   BillingDetails,
   Item,
@@ -15,12 +15,12 @@ import {
 } from "../Requests/RequestDetails";
 
 const OrderDetails = () => {
-  const { orderItems, handleRequestAction } = useShopContext();
+  const { orderItems, handleActiveAction } = useShopContext();
 
   if (!orderItems) return;
 
   const handleBack = () => {
-    handleRequestAction(false);
+    handleActiveAction(null);
   };
 
   return (

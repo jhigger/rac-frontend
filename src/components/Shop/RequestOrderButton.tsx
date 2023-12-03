@@ -2,13 +2,15 @@
 import { useShopContext } from "~/contexts/ShopContext";
 
 const RequestOrderButton = () => {
-  const { handleRequestOrder } = useShopContext();
+  const { handleActiveAction } = useShopContext();
+
+  const onClick = () => {
+    handleActiveAction("request new order");
+  };
 
   return (
     <button
-      onClick={() => {
-        handleRequestOrder(true);
-      }}
+      onClick={onClick}
       aria-label="Request new order"
       className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >

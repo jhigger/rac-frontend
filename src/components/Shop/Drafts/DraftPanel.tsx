@@ -2,7 +2,7 @@
 import Balancer from "react-wrap-balancer";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { useShopContext } from "~/contexts/ShopContext";
-import { MoreButton } from "../Orders/OrderItem";
+import { MoreButton } from "../Orders";
 import { TableFooter, type TableHeadType } from "../Orders/OrdersPanel";
 import RequestOrderButton from "../RequestOrderButton";
 import SearchBar from "../SearchBar";

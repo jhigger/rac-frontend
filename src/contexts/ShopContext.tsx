@@ -15,23 +15,15 @@ import { orders, requests } from "~/fake data";
 export type ShopContextType = {
   activeAction: ActionType | null;
   activeTab: TabIdType;
-  orderActionClicked: boolean;
   orderItems: OrderItemType[] | null;
   payNowAction: { action: () => void } | null;
   requestItems: RequestItemType[] | null;
-  requestActionClicked: boolean;
-  requestCheckoutClicked: boolean;
-  requestOrderClicked: boolean;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
   handleActiveAction: (action: ActionType | null) => void;
-  handleCheckoutAction: (value: boolean) => void;
-  handleOrderAction: (value: boolean) => void;
   handleOrders: () => void;
   handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
   handleRequests: () => void;
-  handleRequestAction: (value: boolean) => void;
-  handleRequestOrder: (value: boolean) => void;
   handleTabChange: (tab: TabIdType) => void;
 };
 
@@ -60,6 +52,7 @@ export const tabs: AppBarTabType[] = [
 const ACTION_CONST = [
   "proceed to checkout",
   "order details",
+  "request details",
   "request new order",
   "initiate shipping",
   "clear package",
@@ -109,16 +102,12 @@ export type RequestItemType = {
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
   const [activeTab, setActiveTab] = useState<TabIdType>("orders");
-  const [orderActionClicked, setOrderActionClicked] = useState(false);
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
   const [payNowAction, setPayNowAction] =
     useState<ShopContextType["payNowAction"]>(null);
-  const [requestActionClicked, setRequestActionClicked] = useState(false);
-  const [requestCheckoutClicked, setRequestCheckoutClicked] = useState(false);
   const [requestItems, setRequestItems] = useState<RequestItemType[] | null>(
     null,
   );
-  const [requestOrderClicked, setRequestOrderClicked] = useState(false);
 
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
@@ -126,18 +115,8 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     setActiveAction(action);
   };
 
-  const handleCheckoutAction = (value: boolean) => {
-    resetAllClicked();
-    setRequestCheckoutClicked(value);
-  };
-
   const handleOrders = () => {
     setOrderItems(orders);
-  };
-
-  const handleOrderAction = (value: boolean) => {
-    resetAllClicked();
-    setOrderActionClicked(value);
   };
 
   const handlePayNowAction = (action: ShopContextType["payNowAction"]) => {
@@ -147,18 +126,6 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const handleRequests = () => {
     handleOrders();
     setRequestItems(requests);
-    resetAllClicked();
-  };
-
-  const handleRequestAction = (value: boolean) => {
-    resetAllClicked();
-    setRequestActionClicked(value);
-  };
-
-  const handleRequestOrder = (value: boolean) => {
-    handleActiveAction("request new order");
-    handleTabChange("requests");
-    setRequestOrderClicked(value);
   };
 
   const handleTabChange = (tabId: TabIdType) => {
@@ -171,15 +138,6 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     if (!tabsRef.current[clickedTabIndex]) return;
     tabsRef.current[clickedTabIndex]?.click();
     setActiveTab(tabId);
-    resetAllClicked();
-  };
-
-  const resetAllClicked = () => {
-    setActiveAction(null);
-    setOrderActionClicked(false);
-    setRequestActionClicked(false);
-    setRequestCheckoutClicked(false);
-    setRequestOrderClicked(false);
   };
 
   // testing purposes
@@ -191,23 +149,15 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const value: ShopContextType = {
     activeAction,
     activeTab,
-    orderActionClicked,
     orderItems,
     payNowAction,
-    requestActionClicked,
-    requestCheckoutClicked,
     requestItems,
-    requestOrderClicked,
     tabs,
     tabsRef,
     handleActiveAction,
-    handleCheckoutAction,
-    handleOrderAction,
     handleOrders,
     handlePayNowAction,
-    handleRequestAction,
     handleRequests,
-    handleRequestOrder,
     handleTabChange,
   };
 

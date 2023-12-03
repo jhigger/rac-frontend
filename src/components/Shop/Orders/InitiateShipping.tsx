@@ -24,7 +24,7 @@ import {
 import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
 
 const InitiateShipping = () => {
-  const { orderItems, handleRequestAction, handleTabChange } = useShopContext();
+  const { orderItems, handleActiveAction, handleTabChange } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {
@@ -42,7 +42,7 @@ const InitiateShipping = () => {
   if (!orderItems) return;
 
   const handleBack = () => {
-    handleRequestAction(false);
+    handleActiveAction(null);
   };
 
   const handleFinish = () => {

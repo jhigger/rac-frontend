@@ -5,7 +5,7 @@ import { useShopContext, type RequestItemType } from "~/contexts/ShopContext";
 import tailmater from "~/js/tailmater";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
 import NeedHelpFAB from "../../NeedHelpFAB";
-import { LabelId, MoreButton } from "../Orders/OrderItem";
+import { LabelId, MoreButton } from "../Orders";
 import {
   CancelButton,
   CloseButton,
@@ -20,14 +20,9 @@ import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 
 const RequestsPanel = () => {
-  const {
-    requestOrderClicked,
-    requestCheckoutClicked,
-    requestItems,
-    requestActionClicked,
-  } = useShopContext();
+  const { activeAction, requestItems } = useShopContext();
 
-  if (requestOrderClicked) {
+  if (activeAction === "request new order") {
     return (
       <TabContentLayout>
         <RequestOrderForm />
@@ -35,7 +30,7 @@ const RequestsPanel = () => {
     );
   }
 
-  if (requestActionClicked) {
+  if (activeAction === "request details") {
     return (
       <TabContentLayout>
         <RequestDetails />
@@ -43,7 +38,7 @@ const RequestsPanel = () => {
     );
   }
 
-  if (requestCheckoutClicked) {
+  if (activeAction === "proceed to checkout") {
     return (
       <TabContentLayout>
         <RequestCheckout />
@@ -282,10 +277,9 @@ type ProceedToCheckoutButtonProps = ModalCloseType;
 const ProceedToCheckoutButton = ({
   dataClose,
 }: ProceedToCheckoutButtonProps) => {
-  const { handleActiveAction, handleCheckoutAction } = useShopContext();
+  const { handleActiveAction } = useShopContext();
 
   const onClick = () => {
-    handleCheckoutAction(true);
     handleActiveAction("proceed to checkout");
   };
 

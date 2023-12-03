@@ -12,10 +12,10 @@ import TabContentLayout from "../TabContentLayout";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
-import { LabelId, MoreButton } from "./OrderItem";
+import { LabelId, MoreButton } from ".";
 
 const OrdersPanel = () => {
-  const { orderItems, orderActionClicked, activeAction } = useShopContext();
+  const { orderItems, activeAction } = useShopContext();
 
   if (activeAction === "clear package") {
     return (
@@ -33,7 +33,7 @@ const OrdersPanel = () => {
     );
   }
 
-  if (orderActionClicked) {
+  if (activeAction === "order details") {
     return (
       <TabContentLayout>
         <OrderDetails />

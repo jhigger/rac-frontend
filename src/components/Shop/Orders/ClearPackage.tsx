@@ -1,22 +1,36 @@
+import { useEffect } from "react";
+import AccordionButton from "~/components/Forms/AccordionButton";
 import {
   BackButton,
   SectionContentLayout,
+  SectionHeader,
 } from "~/components/Forms/RequestOrderForm";
 import { useShopContext } from "~/contexts/ShopContext";
+import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   NextButton,
+  PackageTable,
   StepIndex,
+  SubSectionTitle,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
-import { BillingAddress, PackageConfirmation } from "./InitiateShipping";
-import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
-import useAccordion from "~/hooks/useAccordion";
-import AccordionButton from "~/components/Forms/AccordionButton";
 import { HighlightedInfo } from "../Requests/RequestDetails";
+import {
+  BillingAddress,
+  PackageConfirmation,
+  ShipmentCostsSummary,
+  ShippingMethod,
+} from "./InitiateShipping";
+import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
 
 const ClearPackage = () => {
-  const { orderItems, handleRequestAction, handleTabChange } = useShopContext();
+  const {
+    orderItems,
+    handleRequestAction,
+    handleTabChange,
+    handlePayNowAction,
+  } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {
@@ -40,6 +54,10 @@ const ClearPackage = () => {
   const handleFinish = () => {
     handleTabChange("orders");
   };
+
+  useEffect(() => {
+    handlePayNowAction({ action: next });
+  }, []);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -66,20 +84,24 @@ const ClearPackage = () => {
       {isLastStep && (
         <CongratulationImage text='You can now pick up your package from our office in Nigeria (your selected "Destination")' />
       )}
+
       {step}
-      <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
-        {isFirstStep && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={handleBack} />
-          </div>
-        )}
-        {!isFirstStep && currentStepIndex <= 1 && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={back} />
-          </div>
-        )}
-        {currentStepIndex <= 2 && <NextButton text="Proceed" next={next} />}
-      </div>
+
+      {currentStepIndex <= 1 && (
+        <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
+          {isFirstStep && (
+            <div className="w-full md:max-w-[210px]">
+              <BackButton onClick={handleBack} />
+            </div>
+          )}
+          {!isFirstStep && currentStepIndex <= 1 && (
+            <div className="w-full md:max-w-[210px]">
+              <BackButton onClick={back} />
+            </div>
+          )}
+          <NextButton text="Proceed" next={next} />
+        </div>
+      )}
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
           <NextButton text="Done" next={handleFinish} />
@@ -192,7 +214,20 @@ const DestinationAddressDetails = () => {
 };
 
 const ClearPackageStep = () => {
-  return <>Clear Package</>;
+  return (
+    <div className="flex flex-col gap-[20px]">
+      <SectionHeader title="Package details Summary" />
+      <PackageTable />
+      <SectionHeader title="Shipping Methods" />
+      <div className="pl-[14px]">
+        <SubSectionTitle title="Select the Payment Method You Wish to Use" />
+      </div>
+      <ShippingMethod checked disabled expanded />
+
+      <SectionHeader title="Shipment costs" />
+      <ShipmentCostsSummary payButton />
+    </div>
+  );
 };
 
 const Success = () => {

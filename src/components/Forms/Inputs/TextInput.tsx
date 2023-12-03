@@ -1,7 +1,9 @@
 import {
-  useRef,
+  forwardRef,
   type ChangeEventHandler,
+  type FocusEventHandler,
   type HTMLInputTypeAttribute,
+  type Ref,
 } from "react";
 
 type TextInputProps = {
@@ -12,24 +14,13 @@ type TextInputProps = {
   type?: HTMLInputTypeAttribute;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-const TextInput = ({
-  id,
-  label,
-  bg = "bg-neutral-10",
-  disabled,
-  type = "text",
-  value,
-  onChange,
-}: TextInputProps) => {
-  const ref = useRef<HTMLInputElement>(null);
-
-  const handleFocusInput = () => {
-    if (!ref.current) return;
-    ref.current.focus();
-  };
-
+const TextInput = (
+  { id, label, bg = "bg-neutral-10", type = "text", ...props }: TextInputProps,
+  ref: Ref<HTMLInputElement>,
+) => {
   return (
     <div className="relative flex w-full flex-col">
       <input
@@ -40,13 +31,11 @@ const TextInput = ({
         id={id}
         className={`peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 px-4 py-2 leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0 ${bg}`}
         placeholder=" "
-        disabled={disabled}
-        value={value}
-        onChange={onChange}
+        {...props}
       />
 
       <label
-        onClick={handleFocusInput}
+        htmlFor={id}
         className={`absolute left-4 top-4 z-10 origin-[0] -translate-y-7 scale-75 transform px-1 tracking-[.03125em] text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-invalid:text-error-600 peer-focus:left-4 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:px-1 peer-focus:text-primary-600 ${
           bg && `peer-focus:${bg}`
         } ${bg}`}
@@ -60,4 +49,4 @@ const TextInput = ({
   );
 };
 
-export default TextInput;
+export default forwardRef(TextInput);

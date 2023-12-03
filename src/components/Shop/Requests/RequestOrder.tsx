@@ -844,9 +844,16 @@ export const BackButton = ({ onClick }: BackButtonProps) => {
 };
 
 const SaveAsDraftButton = () => {
+  const { handleTabChange } = useShopContext();
+
+  const onClick = () => {
+    handleTabChange("drafts");
+  };
+
   return (
     <button
-      aria-label="Back"
+      onClick={onClick}
+      aria-label="Save as Draft"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-secondary-100 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <img src="/images/save_as_draft_icon.svg" alt="save as draft icon" />

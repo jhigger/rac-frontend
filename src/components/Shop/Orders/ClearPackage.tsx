@@ -12,6 +12,7 @@ import {
   AndLastly,
   NextButton,
   PackageTable,
+  PaymentMethods,
   StepIndex,
   SubSectionTitle,
   type stepsContentType,
@@ -223,11 +224,15 @@ const ClearPackageStep = () => {
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
       <PackageTable />
+
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">
-        <SubSectionTitle title="Select the Payment Method You Wish to Use" />
+        <SubSectionTitle title="Shipping Method Used" />
       </div>
       <ShippingMethod checked disabled expanded />
+
+      <SectionHeader title="Payment Methods" />
+      <PaymentMethods />
 
       <SectionHeader title="Shipment costs" />
       <ShipmentCostsSummary payButton />

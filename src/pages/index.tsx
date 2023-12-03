@@ -1,5 +1,8 @@
+"use client";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Logo from "~/components/Logo";
+import { useAuthContext } from "~/contexts/AuthContext";
 
 type route = { href: string; title: string };
 const routes: route[] = [
@@ -9,6 +12,14 @@ const routes: route[] = [
 ];
 
 export default function Home() {
+  const { user } = useAuthContext();
+  const router = useRouter();
+
+  if (!user) {
+    router.replace("/login").catch((e) => console.log(e));
+    return null;
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-brand">
       <div className="container flex flex-col items-center justify-center px-14 py-16">

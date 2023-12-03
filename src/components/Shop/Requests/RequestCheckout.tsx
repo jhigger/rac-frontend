@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useEffect } from "react";
 import {
   SelectCountry,
   SelectCountryPhoneCode,
@@ -18,9 +19,8 @@ import {
   SectionHeader,
 } from "../../Forms/RequestOrderForm";
 import { LabelId } from "../Orders/OrderItem";
-import { Item, PackageOrigin } from "./RequestDetails";
-import { useEffect } from "react";
 import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
+import { Item, PackageOrigin } from "./RequestDetails";
 
 export type stepsContentType = { title: string; content: JSX.Element };
 
@@ -467,7 +467,7 @@ const CostsSummary = () => {
   );
 };
 
-const PayNowButton = () => {
+export const PayNowButton = () => {
   const { payNowAction } = useShopContext();
 
   if (!payNowAction) return;

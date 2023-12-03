@@ -16,6 +16,7 @@ import {
   ImportantNotice,
   NextButton,
   PackageTable,
+  PayNowButton,
   StepIndex,
   SubSectionTitle,
   type stepsContentType,
@@ -457,7 +458,7 @@ const InitiateShippingStep = () => {
       <div className="pl-[14px]">
         <SubSectionTitle title="Select the Payment Method You Wish to Use" />
       </div>
-      <ShippingMethod title="Basic" checked disabled expanded />
+      <ShippingMethod checked disabled expanded />
 
       <SectionHeader title="Shipment costs" />
       <ShipmentCostsSummary />
@@ -465,7 +466,11 @@ const InitiateShippingStep = () => {
   );
 };
 
-const ShipmentCostsSummary = () => {
+type ShipmentCostsSummaryProps = { payButton?: boolean };
+
+export const ShipmentCostsSummary = ({
+  payButton = false,
+}: ShipmentCostsSummaryProps) => {
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -492,6 +497,11 @@ const ShipmentCostsSummary = () => {
             </span>
           </div>
         </div>
+        {payButton && (
+          <div className="w-[500px] self-center">
+            <PayNowButton />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -528,15 +538,13 @@ const Summary = () => {
 };
 
 type ShippingMethodProps = {
-  title: string;
   expanded?: boolean;
   checked?: boolean;
   disabled?: boolean;
   onChange?: () => void;
 };
 
-const ShippingMethod = ({
-  title,
+export const ShippingMethod = ({
   expanded = false,
   checked,
   disabled,
@@ -560,7 +568,7 @@ const ShippingMethod = ({
             checked={checked}
             onChange={onChange}
           />
-          <h4 className="title-md md:title-lg text-black">{title}</h4>
+          <h4 className="title-md md:title-lg text-black">Basic</h4>
           <div className="flex flex-grow justify-end">
             <AccordionButton {...{ open, toggle }} />
           </div>

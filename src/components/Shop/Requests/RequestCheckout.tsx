@@ -360,7 +360,7 @@ export const PackageTable = () => {
 
   return (
     <div className="overflow-x-scroll ">
-      <table className="relative w-full max-w-[972px] table-auto text-left">
+      <table className="relative w-full min-w-max table-auto text-left">
         <PackageTableHead th={th} />
         <PackageTableBody />
         <Totals />
@@ -385,51 +385,53 @@ const ImportantNotice = () => {
   );
 };
 
-const CostsSummary = () => {
-  const Cost = ({ title, value }: { title: string; value: string }) => {
-    return (
-      <div className="flex flex-col gap-[10px]">
-        <div className="label-lg flex items-center justify-between gap-[10px] font-medium">
-          <span>{title}</span>
-          <span>{value}</span>
-        </div>
-        <hr className="w-full border-gray-200" />
-      </div>
-    );
-  };
+type CostProps = { title: string; value: string };
 
-  const Summary = () => {
-    return (
-      <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[28px] py-[20px] text-white">
-        <span className="title-lg">Order Costs Summary</span>
-        <div className="flex flex-col gap-[10px]">
-          <Cost title="Total Urgent Purchase Cost:" value="$126.66" />
-          <Cost title="Total Cost of Items from Store:" value="$126.66" />
-          <Cost
-            title="Total Shipping to Origin Warehouse cost:"
-            value="$126.66"
-          />
-          <Cost title="Total Processing fee: " value="$126.66" />
-          <Cost title="VAT:" value="$126.66" />
-          <Cost title="Payment Method Surcharge:" value="$126.66" />
-          <Cost title="Discount:" value={`- ${"$126.66"}`} />
-          <div className="mt-[10px] flex items-end justify-between">
-            <div className="flex flex-col">
-              <span className="label-lg">Total:</span>
-              <span className="title-lg">$126.66</span>
-            </div>
-            <div className="flex flex-col items-center justify-center gap-[10px]">
-              <span className="body-md text-primary-100">
-                Default Currency: <b>USD</b>
-              </span>
-              <ChangeCurrencyButton />
-            </div>
+export const Cost = ({ title, value }: CostProps) => {
+  return (
+    <div className="flex flex-col gap-[10px]">
+      <div className="label-lg flex items-center justify-between gap-[10px] font-medium">
+        <span>{title}</span>
+        <span>{value}</span>
+      </div>
+      <hr className="w-full border-gray-200" />
+    </div>
+  );
+};
+
+const Summary = () => {
+  return (
+    <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[28px] py-[20px] text-white">
+      <span className="title-lg">Order Costs Summary</span>
+      <div className="flex flex-col gap-[10px]">
+        <Cost title="Total Urgent Purchase Cost:" value="$126.66" />
+        <Cost title="Total Cost of Items from Store:" value="$126.66" />
+        <Cost
+          title="Total Shipping to Origin Warehouse cost:"
+          value="$126.66"
+        />
+        <Cost title="Total Processing fee: " value="$126.66" />
+        <Cost title="VAT:" value="$126.66" />
+        <Cost title="Payment Method Surcharge:" value="$126.66" />
+        <Cost title="Discount:" value={`- ${"$126.66"}`} />
+        <div className="mt-[10px] flex items-end justify-between">
+          <div className="flex flex-col">
+            <span className="label-lg">Total:</span>
+            <span className="title-lg">$126.66</span>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-[10px]">
+            <span className="body-md text-primary-100">
+              Default Currency: <b>USD</b>
+            </span>
+            <ChangeCurrencyButton />
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
+const CostsSummary = () => {
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -530,7 +532,7 @@ const PaymentMethod = ({
 
 type SubSectionTitleProps = { title: string };
 
-const SubSectionTitle = ({ title }: SubSectionTitleProps) => {
+export const SubSectionTitle = ({ title }: SubSectionTitleProps) => {
   return <h4 className="title-md md:title-lg text-gray-700">{title}</h4>;
 };
 

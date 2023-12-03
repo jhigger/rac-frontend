@@ -689,24 +689,30 @@ const Success = () => {
           </div>
         </SectionContentLayout>
       </div>
-      <div className="flex flex-col gap-[10px]">
-        <SectionHeader title="And lastly..." />
-        <div className="flex flex-col gap-[10px] px-[34px] py-[10px]">
-          <p className="body-md">
-            We have sent you details about your Order to your email address
-            <span className="text-primary-900">rexofforex@gmail.com</span>
-          </p>
-          <div className="max-w-[150px]">
-            <button
-              aria-label="View Receipt"
-              className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-            >
-              <img src="/images/receipt_icon.svg" alt="receipt icon" />
-              <span className="body-lg whitespace-nowrap text-primary-600">
-                View Receipt
-              </span>
-            </button>
-          </div>
+      <AndLastly />
+    </div>
+  );
+};
+
+export const AndLastly = () => {
+  return (
+    <div className="flex flex-col gap-[10px]">
+      <SectionHeader title="And lastly..." />
+      <div className="flex flex-col gap-[10px] px-[34px] py-[10px]">
+        <p className="body-md">
+          We have sent you details about your Order to your email address
+          <span className="text-primary-900">rexofforex@gmail.com</span>
+        </p>
+        <div className="max-w-[150px]">
+          <button
+            aria-label="View Receipt"
+            className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+          >
+            <img src="/images/receipt_icon.svg" alt="receipt icon" />
+            <span className="body-lg whitespace-nowrap text-primary-600">
+              View Receipt
+            </span>
+          </button>
         </div>
       </div>
     </div>

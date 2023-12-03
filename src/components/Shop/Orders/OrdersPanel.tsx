@@ -476,39 +476,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
               </div>
             </div>
             <SectionHeader title="What next?" />
-            <div className="flex w-full flex-col gap-[20px] rounded-[20px] border border-gray-200 px-[14px] py-[20px]">
-              <span className="title-lg pl-[14px] font-bold text-neutral-700">
-                Here is how to pick your package up from our office
-              </span>
-              <div className="flex items-center gap-[10px]">
-                <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">
-                  1
-                </span>
-                <span className="title-lg text-gray-900">
-                  When you come to pick up your package from our office, you
-                  will provide us the <b>Order ID</b> to ensure that we give you
-                  the package that rightly belongs to you.
-                </span>
-              </div>
-              <div className="flex items-center gap-[10px]">
-                <span className="title-lg rounded-[20px] bg-secondary-900 p-[10px] text-white">
-                  2
-                </span>
-                <span className="title-lg text-gray-900">
-                  If you won&apos;t be able to come pick up your package up from
-                  our office, you can request for a doorstep delivery from us{" "}
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    <span className="inline-flex items-center gap-[5px] text-primary-600">
-                      here
-                      <img
-                        src="/images/export_circle_icon.svg"
-                        alt="export circle icon"
-                      />
-                    </span>
-                  </a>
-                </span>
-              </div>
-            </div>
+            <PickUpInstructions />
           </>
         )}
 
@@ -541,6 +509,44 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
             )}
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+export const PickUpInstructions = () => {
+  return (
+    <div className="flex w-full flex-col gap-[20px] rounded-[20px] border border-gray-200 px-[14px] py-[20px]">
+      <span className="title-lg pl-[14px] font-bold text-neutral-700">
+        Here is how to pick your package up from our office
+      </span>
+      <div className="flex items-center gap-[10px]">
+        <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">
+          1
+        </span>
+        <span className="title-lg text-gray-900">
+          When you come to pick up your package from our office, you will
+          provide us the <b>Order ID</b> to ensure that we give you the package
+          that rightly belongs to you.
+        </span>
+      </div>
+      <div className="flex items-center gap-[10px]">
+        <span className="title-lg rounded-[20px] bg-secondary-900 p-[10px] text-white">
+          2
+        </span>
+        <span className="title-lg text-gray-900">
+          If you won&apos;t be able to come pick up your package up from our
+          office, you can request for a doorstep delivery from us{" "}
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            <span className="inline-flex items-center gap-[5px] text-primary-600">
+              here
+              <img
+                src="/images/export_circle_icon.svg"
+                alt="export circle icon"
+              />
+            </span>
+          </a>
+        </span>
       </div>
     </div>
   );

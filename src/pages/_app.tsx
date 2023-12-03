@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 
 import "~/styles/globals.css";
 import "material-icons/iconfont/material-icons.css";
+import AuthContextProvider from "~/contexts/AuthContext";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -25,9 +26,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <title>RAC Logistics</title>
         <link rel="icon" href="/images/brand_icon.svg" />
       </Head>
-      <main className={roboto.className}>
-        <Component {...pageProps} />
-      </main>
+      <AuthContextProvider>
+        <main className={roboto.className}>
+          <Component {...pageProps} />
+        </main>
+      </AuthContextProvider>
     </>
   );
 };

@@ -551,7 +551,7 @@ const PreviewItemButton = ({ index }: PreviewItemButtonProps) => {
   const dataTarget = `#preview-item-${index}`;
 
   useEffect(() => {
-    tailmater();
+    tailmater(); // todo: fix bug
   }, []);
 
   return (

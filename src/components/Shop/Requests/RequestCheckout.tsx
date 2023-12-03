@@ -9,7 +9,6 @@ import TextInput from "~/components/Forms/Inputs/TextInput";
 import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
-import { EmailInput } from "~/pages/login";
 import AccordionButton from "../../Forms/AccordionButton";
 import { LabelId } from "../Orders";
 import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
@@ -221,7 +220,7 @@ const CustomBillingAddress = () => {
 
             <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
               <div className="col-span-full md:col-span-5">
-                <EmailInput />
+                <TextInput id="email" label="Email" type="email" />
               </div>
               <div className="col-span-full md:col-span-3">
                 <SelectCountryPhoneCode

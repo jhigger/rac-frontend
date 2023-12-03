@@ -1,6 +1,5 @@
 import { Country } from "country-state-city";
 import { type ChangeEvent } from "react";
-import { EmailInput } from "~/pages/login";
 import { type FormData } from "~/pages/register";
 import FormHeader from "./FormHeader";
 import PasswordInput from "./Inputs/PasswordInput";
@@ -39,7 +38,10 @@ const AccountForm = ({
           value={lastName}
           onChange={(e) => updateFields({ lastName: e.target.value })}
         />
-        <EmailInput
+        <TextInput
+          id="email"
+          label="Email"
+          type="email"
           value={email}
           onChange={(e) => updateFields({ email: e.target.value })}
         />

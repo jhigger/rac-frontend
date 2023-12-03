@@ -13,14 +13,13 @@ import {
   CloseButton,
   ImageColumn,
   TableFooter,
-  TableHead,
   type TableHeadType,
 } from "../Orders/OrdersPanel";
+import RequestOrderButton from "../RequestOrderButton";
 import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
-import RequestOrderButton from "../RequestOrderButton";
 
 const RequestsPanel = () => {
   const {
@@ -85,8 +84,8 @@ const RequestsTable = () => {
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
-            <TableHead th={tableHeads} />
-            <TableBody />
+            <RequestTableHead th={tableHeads} />
+            <RequestTableBody />
           </table>
         </div>
       </div>
@@ -102,20 +101,60 @@ const tableHeads: TableHeadType[] = [
   { title: "Request Date", sortIcon: true },
 ];
 
-const TableBody = () => {
+type RequestTableHeadProps = { th: TableHeadType[] };
+
+const RequestTableHead = ({ th }: RequestTableHeadProps) => {
+  return (
+    <thead className="title-sm sticky top-0 z-10 grid grid-cols-6 gap-[20px] p-[20px] font-medium text-neutral-900">
+      <tr className="col-span-1 w-max">
+        <th className="border-0 p-0">
+          <input
+            type="checkbox"
+            name="check-all"
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={undefined}
+          />
+        </th>
+      </tr>
+
+      {th.map(({ title, sortIcon }) => {
+        return (
+          <tr key={title} className="col-span-1">
+            <th className="flex items-center gap-[20px] whitespace-nowrap border-0 p-0">
+              {title}
+              {sortIcon && (
+                <img
+                  src="/images/arrow_swap_icon.svg"
+                  alt="arrow swap icon"
+                  className="self-end"
+                />
+              )}
+            </th>
+          </tr>
+        );
+      })}
+
+      <tr className="col-span-1">
+        <th className="border-0 p-0">Action</th>
+      </tr>
+    </thead>
+  );
+};
+
+const RequestTableBody = () => {
   const { requestItems } = useShopContext();
 
   if (!requestItems) return;
 
   return (
-    <tbody className="flex flex-col border-y-[0.5px] border-gray-500 [&>tr]:border-b-[0.5px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
+    <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {requestItems.map(({ images, requestId, requestStatus, requestDate }) => {
         return (
           <tr
             key={requestId}
-            className="flex items-center justify-between gap-[20px] bg-gray-10 px-[20px] py-[40px]"
+            className="grid grid-cols-6 items-center gap-[20px] bg-gray-10 px-[20px] py-[40px]"
           >
-            <td className="w-max border-0 p-0">
+            <td className="border-0 p-0">
               <input
                 type="checkbox"
                 name={`check-${requestId}`}
@@ -123,14 +162,16 @@ const TableBody = () => {
                 checked={undefined}
               />
             </td>
-            <ImageColumn images={images} />
-            <td className="w-full max-w-[100px] border-0 p-0">
+            <td className="border-0 p-0">
+              <ImageColumn images={images} />
+            </td>
+            <td className="border-0 p-0">
               <p className="title-md whitespace-nowrap">{requestId}</p>
             </td>
-            <td className="w-full max-w-[150px] border-0 p-0">
+            <td className="border-0 p-0">
               <RequestStatus id={requestId} status={requestStatus} />
             </td>
-            <td className="w-full max-w-[130px] border-0 p-0">
+            <td className="border-0 p-0">
               <p className="label-lg whitespace-nowrap text-neutral-900">
                 {requestDate}
               </p>

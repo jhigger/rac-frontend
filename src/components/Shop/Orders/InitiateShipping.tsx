@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import {
   BackButton,
@@ -13,15 +12,11 @@ import {
   StepIndex,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
+import { Item } from "../Requests/RequestDetails";
 import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
 
 const InitiateShipping = () => {
-  const {
-    orderItems,
-    handleRequestAction,
-    handlePayNowAction,
-    handleTabChange,
-  } = useShopContext();
+  const { orderItems, handleRequestAction, handleTabChange } = useShopContext();
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {
@@ -43,12 +38,8 @@ const InitiateShipping = () => {
   };
 
   const handleFinish = () => {
-    handleTabChange("requests");
+    handleTabChange("orders");
   };
-
-  useEffect(() => {
-    handlePayNowAction({ action: next });
-  }, []);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -94,6 +85,10 @@ const PackageConfirmation = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
+      <hr className="block w-full border-dashed border-primary-900" />
+      {orderItems.map((item, i) => {
+        return <Item key={item.orderId} index={i} />;
+      })}
     </div>
   );
 };

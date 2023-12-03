@@ -102,7 +102,7 @@ const tableHeads: TableHeadType[] = [
   { title: "Request Date", sortIcon: true },
 ];
 
-export const TableBody = () => {
+const TableBody = () => {
   const { requestItems } = useShopContext();
 
   if (!requestItems) return;

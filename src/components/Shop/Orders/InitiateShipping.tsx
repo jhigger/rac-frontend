@@ -454,9 +454,10 @@ const InitiateShippingStep = () => {
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
       <PackageTable />
+
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">
-        <SubSectionTitle title="Select the Payment Method You Wish to Use" />
+        <SubSectionTitle title="Shipping Method Used" />
       </div>
       <ShippingMethod checked disabled expanded />
 

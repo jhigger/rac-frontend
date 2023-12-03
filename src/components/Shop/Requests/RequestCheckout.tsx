@@ -318,22 +318,7 @@ const PlaceOrder = () => {
       <div className="pl-[14px]">
         <SubSectionTitle title="Select the Payment Method You Wish to Use" />
       </div>
-      <div className="flex flex-col gap-[10px] pb-[40px]">
-        <PaymentMethod
-          title="Credit/Debit Cards - Pay with Dollar/US Cards"
-          description="Valid for MasterCard and Visa Cards. Maximum allowed is $1,500"
-          checked
-          expanded
-        />
-        <PaymentMethod
-          title="Paystack - Pay with Naira Card"
-          description="Pay with Your Naira Card"
-          expanded
-        />
-        <PaymentMethod title="Pay At Bank in $ - Nigeria" />
-        <PaymentMethod title="Pay At Bank in Naira - Nigeria" />
-        <PaymentMethod title="Pay Via PayPal" />
-      </div>
+      <PaymentMethods />
       <div className="grid grid-cols-12 gap-[20px]">
         <div className="col-span-4 flex max-w-[300px] flex-col gap-[15px]">
           <SectionHeader title="Take Note" />
@@ -344,6 +329,27 @@ const PlaceOrder = () => {
           <CostsSummary />
         </div>
       </div>
+    </div>
+  );
+};
+
+export const PaymentMethods = () => {
+  return (
+    <div className="flex flex-col gap-[10px] pb-[40px]">
+      <PaymentMethod
+        title="Credit/Debit Cards - Pay with Dollar/US Cards"
+        description="Valid for MasterCard and Visa Cards. Maximum allowed is $1,500"
+        checked
+        expanded
+      />
+      <PaymentMethod
+        title="Paystack - Pay with Naira Card"
+        description="Pay with Your Naira Card"
+        expanded
+      />
+      <PaymentMethod title="Pay At Bank in $ - Nigeria" />
+      <PaymentMethod title="Pay At Bank in Naira - Nigeria" />
+      <PaymentMethod title="Pay Via PayPal" />
     </div>
   );
 };

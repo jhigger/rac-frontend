@@ -10,9 +10,18 @@ import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
 import OrderDetails from "./OrderDetails";
 import { LabelId, MoreButton } from "./OrderItem";
+import InitiateShipping from "./InitiateShipping";
 
 const OrdersPanel = () => {
-  const { orderItems, orderActionClicked } = useShopContext();
+  const { orderItems, orderActionClicked, activeAction } = useShopContext();
+
+  if (activeAction === "initiate shipping") {
+    return (
+      <TabContentLayout>
+        <InitiateShipping />
+      </TabContentLayout>
+    );
+  }
 
   if (orderActionClicked) {
     return (
@@ -583,8 +592,17 @@ const TrackButton = () => {
 };
 
 const InitiateShippingButton = () => {
+  const { handleActiveAction } = useShopContext();
+
+  const onClick = () => {
+    handleActiveAction("initiate shipping");
+  };
+
   return (
-    <button className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6">
+    <button
+      onClick={onClick}
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
       <img
         src="/images/shipping status modal/ship_bold_icon.svg"
         alt="ship bold icon"

@@ -61,6 +61,7 @@ const ACTION_CONST = [
   "proceed to checkout",
   "order details",
   "request new order",
+  "initiate shipping",
 ] as const;
 
 type ActionType = (typeof ACTION_CONST)[number];

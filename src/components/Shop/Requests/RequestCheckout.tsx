@@ -22,7 +22,7 @@ import { HighlightedInfo, Item } from "./RequestDetails";
 import { useEffect } from "react";
 import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
 
-type stepsContentType = { title: string; content: JSX.Element };
+export type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
   const {
@@ -99,7 +99,7 @@ const RequestCheckout = () => {
 
 type NextButtonProps = { text: string; next: () => void };
 
-const NextButton = ({ text, next }: NextButtonProps) => {
+export const NextButton = ({ text, next }: NextButtonProps) => {
   return (
     <button
       onClick={next}
@@ -756,7 +756,7 @@ const PackageOrigin = () => {
 
 type StepIndexProps = { currentIndex: number; length: number; title: string };
 
-const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
+export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
   return (
     <>
       <div className="hidden gap-[39px] md:flex">

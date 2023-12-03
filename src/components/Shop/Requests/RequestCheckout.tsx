@@ -18,7 +18,7 @@ import {
   SectionHeader,
 } from "../../Forms/RequestOrderForm";
 import { LabelId } from "../Orders/OrderItem";
-import { HighlightedInfo, Item } from "./RequestDetails";
+import { Item, PackageOrigin } from "./RequestDetails";
 import { useEffect } from "react";
 import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
 
@@ -717,40 +717,6 @@ const SuccessImportantNotice = () => {
         clear it.
       </p>
     </div>
-  );
-};
-
-const PackageOrigin = () => {
-  const { open, toggle } = useAccordion(true);
-
-  return (
-    <>
-      <SectionHeader title="Confirm that the items below are the items in your package" />
-      <SectionContentLayout>
-        <div className="flex w-full flex-col gap-[30px]">
-          <div className="flex w-full items-center justify-between">
-            <h4 className="title-md md:title-lg text-gray-700">
-              Package Origin
-            </h4>
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-          {open && (
-            <>
-              <HighlightedInfo
-                text="Your Items will be delivered here after we help you purchase your them
-        and they will be shipped from here to our pickup office in Nigeria"
-              />
-              <div className="label-lg title-lg flex items-center gap-[20px] text-neutral-900">
-                <span className="body-md">Country of Purchase:</span>
-                <span className="title-lg text-neutral-900">
-                  United States (Houston - warehouse)
-                </span>
-              </div>
-            </>
-          )}
-        </div>
-      </SectionContentLayout>
-    </>
   );
 };
 

@@ -435,8 +435,26 @@ type AddPropertiesModalProps = { modalId: string };
 
 const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
   const dataClose = `#${modalId}`;
-
   const maxWidth = "max-w-[456px]";
+
+  const [addMore, setAddMore] = useState(0);
+
+  const handleAddMore = () => {
+    setAddMore((prev) => ++prev);
+  };
+
+  const AddMoreProperties = () => {
+    return (
+      <button
+        onClick={handleAddMore}
+        aria-label="title}"
+        className="btn relative flex h-[40px] w-max flex-row items-center justify-center gap-x-2 whitespace-nowrap rounded-[20px] px-[16px] py-2.5 text-sm font-medium tracking-[.00714em]"
+      >
+        <img src="/images/add_more_icon.svg" alt="add more icon" />
+        <span className="body-lg text-primary-600">Add more properties</span>
+      </button>
+    );
+  };
 
   return (
     <div
@@ -454,24 +472,40 @@ const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
       >
         <div className="flex flex-col gap-[16px]">
           <span className="headline-sm">Add properties</span>
-          <span className="body-sm">
+          <span className="body-md">
             You want more properties for the products to be procured, give it a
             label (name of the property) like size, color, e.t.c, and optionally
             the description of the property.
           </span>
         </div>
 
-        <div className="![&>*]:bg-transparent">
-          <TextInput
-            id="propertyLabel"
-            label="Property Label"
-            bg="bg-surface-300"
-          />
+        <div className="flex flex-col gap-[10px]">
+          {Array(addMore)
+            .fill(null)
+            .map((_, i) => {
+              return (
+                <div key={i} className="flex flex-col gap-[30px]">
+                  {i === 1 && <hr className="mt-[20px]" />}
+                  <TextInput
+                    id="propertyLabel"
+                    label="Property Label"
+                    bg="bg-surface-300"
+                  />
+                  <TextAreaInput
+                    id="propertyDescription"
+                    label="Property Description"
+                    bg="bg-surface-300"
+                  />
+                </div>
+              );
+            })}
+
+          <AddMoreProperties />
         </div>
 
         <div className="flex flex-row items-end justify-end">
           <div className="flex gap-[8px]">
-            <CancelButton dataClose={dataClose} />
+            <CancelButton dataClose={dataClose} onClick={() => setAddMore(0)} />
             <AddPropertyButton dataClose={dataClose} />
           </div>
         </div>

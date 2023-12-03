@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
-import RequestOrderButton from "../Requests/RequestOrderButton";
+import RequestOrderButton from "../RequestOrderButton";
 import TabContentLayout from "../TabContentLayout";
 
 const DraftPanel = () => {

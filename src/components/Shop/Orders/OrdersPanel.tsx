@@ -5,7 +5,7 @@ import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
 import tailmater from "~/js/tailmater";
 import { RequestFormHeader, SectionHeader } from "../../Forms/RequestOrderForm";
 import NeedHelpFAB from "../../NeedHelpFAB";
-import RequestOrderButton from "../Requests/RequestOrderButton";
+import RequestOrderButton from "../RequestOrderButton";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
 import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";

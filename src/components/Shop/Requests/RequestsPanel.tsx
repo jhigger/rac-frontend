@@ -20,7 +20,7 @@ import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
-import RequestOrderButton from "./RequestOrderButton";
+import RequestOrderButton from "../RequestOrderButton";
 
 const RequestsPanel = () => {
   const {

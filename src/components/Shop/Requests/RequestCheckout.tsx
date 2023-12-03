@@ -590,7 +590,7 @@ const PackageTableBody = () => {
     name: "SteelSeries Rival 5 Gaming Laptop with PrismSync RGB...",
     url: "htttp/jjnkkukja.jhgyja...",
     costFromStore: "$88.99",
-    urgenPurchase: "$88.99",
+    urgentPurchase: "$88.99",
     quantity: "3",
     totalValue: "$112.49",
   };
@@ -606,7 +606,7 @@ const PackageTableBody = () => {
               name,
               url,
               costFromStore,
-              urgenPurchase,
+              urgentPurchase,
               quantity,
               totalValue,
             },
@@ -631,7 +631,7 @@ const PackageTableBody = () => {
                   </a>
                 </td>
                 <td className="col-span-1">{costFromStore}</td>
-                <td className="col-span-1">{urgenPurchase}9</td>
+                <td className="col-span-1">{urgentPurchase}9</td>
                 <td className="col-span-1">{quantity}</td>
                 <td className="col-span-1">{totalValue}</td>
               </tr>

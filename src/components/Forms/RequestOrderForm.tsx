@@ -5,6 +5,8 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
 import NeedHelpFAB from "../NeedHelpFAB";
+import { CancelButton } from "../Shop/Orders/OrdersPanel";
+import { type ModalCloseType } from "../Shop/Requests/RequestsPanel";
 import AccordionButton from "./AccordionButton";
 import CurrencyInput from "./Inputs/CurrencyInput";
 import FileInput from "./Inputs/FileInput";
@@ -97,7 +99,12 @@ const RequestOrderStep1 = () => {
         );
       })}
       <div className="w-max">
-        <AddButton title="Add Item" onClick={() => handleAddItem("")} />
+        <AddButton
+          title="Add Item"
+          onClick={() => {
+            handleAddItem("");
+          }}
+        />
       </div>
     </>
   );
@@ -389,9 +396,7 @@ const ItemDetailsSection = ({
                     <div className="w-full md:w-[230px]">
                       <TextInput id={"itemColor"} label={"Item Color"} />
                     </div>
-                    <div className="w-full md:w-max">
-                      <AddButton title="Add properties" />
-                    </div>
+                    <AddCustomPropertyButton id={`${index + 1}`} />
                   </div>
                 </div>
               </div>
@@ -409,6 +414,91 @@ const ItemDetailsSection = ({
       </div>
       <ItemPreview index={index} />
     </div>
+  );
+};
+
+type AddCustomPropertyButtonProps = { id: string };
+
+const AddCustomPropertyButton = ({ id }: AddCustomPropertyButtonProps) => {
+  const modalId = `request-order-item-${id}`;
+  const dataTarget = `#${modalId}`;
+
+  return (
+    <div className="w-full md:w-max">
+      <AddButton title="Add properties" dataTarget={dataTarget} />
+      <AddPropertiesModal modalId={modalId} />
+    </div>
+  );
+};
+
+type AddPropertiesModalProps = { modalId: string };
+
+const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
+  const dataClose = `#${modalId}`;
+
+  const maxWidth = "max-w-[456px]";
+
+  return (
+    <div
+      id={modalId}
+      className={
+        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+      }
+    >
+      <div
+        data-close={dataClose}
+        className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
+      ></div>
+      <div
+        className={`z-50 flex h-max w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px] ${maxWidth}`}
+      >
+        <div className="flex flex-col gap-[16px]">
+          <span className="headline-sm">Add properties</span>
+          <span className="body-sm">
+            You want more properties for the products to be procured, give it a
+            label (name of the property) like size, color, e.t.c, and optionally
+            the description of the property.
+          </span>
+        </div>
+
+        <div className="![&>*]:bg-transparent">
+          <TextInput
+            id="propertyLabel"
+            label="Property Label"
+            bg="bg-surface-300"
+          />
+        </div>
+
+        <div className="flex flex-row items-end justify-end">
+          <div className="flex gap-[8px]">
+            <CancelButton dataClose={dataClose} />
+            <AddPropertyButton dataClose={dataClose} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type AddPropertyButtonProps = ModalCloseType;
+
+const AddPropertyButton = ({ dataClose }: AddPropertyButtonProps) => {
+  const onClick = () => {
+    return;
+  };
+
+  return (
+    <button
+      data-close={dataClose}
+      onClick={onClick}
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
+      <img
+        src="/images/arrow_right_bold_icon.svg"
+        alt="arrow right bold icon"
+      />
+      <span className="body-lg text-white">Proceed</span>
+    </button>
   );
 };
 
@@ -685,13 +775,16 @@ export const ChangeCurrencyButton = () => {
 
 type AddButtonProps = {
   title: string;
+  dataTarget?: string;
   onClick?: () => void;
 };
 
-const AddButton = ({ title, onClick }: AddButtonProps) => {
+const AddButton = ({ title, dataTarget, onClick }: AddButtonProps) => {
   return (
     <button
       onClick={onClick}
+      data-type="dialogs"
+      data-target={dataTarget}
       aria-label={title}
       className="btn relative flex h-14 w-full flex-row items-center justify-center gap-x-2 rounded-[20px] bg-gray-700 px-8 py-2.5 text-sm font-medium tracking-[.00714em] text-white"
     >

@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import AccordionButton from "~/components/Forms/AccordionButton";
+import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import {
   BackButton,
+  ChangeCurrencyButton,
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
@@ -10,12 +12,14 @@ import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
+  Cost,
   NextButton,
+  PackageTable,
   StepIndex,
+  SubSectionTitle,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
 import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
-import SelectInput from "~/components/Forms/Inputs/SelectInput";
 
 const InitiateShipping = () => {
   const { orderItems, handleRequestAction, handleTabChange } = useShopContext();
@@ -62,20 +66,73 @@ const InitiateShipping = () => {
             <BackButton onClick={handleBack} />
           </div>
         )}
-        {!isFirstStep && !isLastStep && (
+        {!isFirstStep && currentStepIndex <= 1 && (
           <div className="w-full md:max-w-[210px]">
             <BackButton onClick={back} />
           </div>
         )}
         {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
         {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
-        {currentStepIndex === 3 && (
-          <div className="w-[200px]">
-            <NextButton text="Done" next={handleFinish} />
-          </div>
-        )}
       </div>
+      {currentStepIndex === 2 && (
+        <div className="flex w-full flex-col gap-[10px]">
+          <div className="flex w-full items-center rounded-[20px] border-[1px] border-gray-200">
+            <input
+              type="checkbox"
+              name="checked-demo"
+              className="m-[10px] h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+              checked
+              onChange={() => {
+                return;
+              }}
+            />
+            <span className="body-lg text-neutral-900">
+              I agree to pay for the shipment cost upon arrival/clearing for my
+              package
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-[10px] md:flex-row">
+            <div className="w-full md:max-w-[141px]">
+              <BackButton onClick={back} />
+            </div>
+            <div className="w-full md:max-w-[249px]">
+              <InitiateShippingButton onClick={next} />
+            </div>
+          </div>
+
+          <span className="body-md">
+            Upon clicking &quot;initiate shipping&quot;, I confirm I have read
+            and agreed to{" "}
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600"
+            >
+              all terms and policies
+            </a>
+          </span>
+        </div>
+      )}
     </div>
+  );
+};
+
+type InitiateShippingButtonProps = { onClick: () => void };
+
+const InitiateShippingButton = ({ onClick }: InitiateShippingButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className="btn relative flex h-full w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
+      <img
+        src="/images/shipping status modal/ship_bold_icon.svg"
+        alt="ship bold icon"
+      />
+      <span className="label-lg text-white">Initiate Shipping</span>
+    </button>
   );
 };
 
@@ -234,7 +291,7 @@ const PackageOrigin = () => {
 };
 
 const BillingAddress = () => {
-  const { open, toggle } = useAccordion(false);
+  const { open, toggle } = useAccordion(true);
 
   return (
     <div className="flex flex-col gap-[30px]">
@@ -368,7 +425,158 @@ const ImportantNotice = () => {
 };
 
 const InitiateShippingStep = () => {
-  return <></>;
+  return (
+    <div className="flex flex-col gap-[20px]">
+      <SectionHeader title="Package details Summary" />
+      <PackageTable />
+      <SectionHeader title="Shipping Methods" />
+      <div className="pl-[14px]">
+        <SubSectionTitle title="Select the Payment Method You Wish to Use" />
+      </div>
+      <ShippingMethod title="Basic" checked disabled expanded />
+
+      <SectionHeader title="Shipment costs" />
+      <ShipmentCostsSummary />
+    </div>
+  );
+};
+
+const ShipmentCostsSummary = () => {
+  return (
+    <div className="flex flex-col rounded-[20px] border border-primary-100">
+      <Summary />
+      <div className="flex flex-col justify-center gap-[20px] p-[20px]">
+        <div className="flex flex-col gap-[5px]">
+          <div className="flex items-center gap-[10px]">
+            <img src="/images/arrow_right_red_icon.svg" alt="arrow icon" />
+            <span className="label-md font-medium text-secondary-900">
+              The total you are paying now includes only the Shipping fees and
+              is to be paid upon clearing/arrival of your package
+            </span>
+          </div>
+          <div className="flex items-center gap-[10px]">
+            <img src="/images/arrow_right_purple_icon.svg" alt="arrow icon" />
+            <span className="label-md font-medium text-secondary-900">
+              Prices and subtotals are displayed including taxes
+            </span>
+          </div>
+          <div className="flex items-center gap-[10px]">
+            <img src="/images/arrow_right_purple_icon.svg" alt="arrow icon" />
+            <span className="label-md font-medium text-secondary-900">
+              Discounts are calculated based on prices and subtotals taken
+              without considering taxes
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Summary = () => {
+  return (
+    <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[28px] py-[20px] text-white">
+      <span className="title-lg">Shipping Costs Summary</span>
+      <div className="flex flex-col gap-[10px]">
+        <Cost title="Shipping Cost:" value="$126.66" />
+        <Cost title="Clearing, Port Handling:" value="$126.66" />
+        <Cost title="Other Charges:" value="$126.66" />
+        <Cost title="Storage Charge:" value="$126.66" />
+        <Cost title="Insurance:" value="$126.66" />
+        <Cost title="VAT:" value="$126.66" />
+        <Cost title="Payment Method Surcharge:" value="$126.66" />
+        <Cost title="Discount:" value={`- ${"$126.66"}`} />
+        <div className="mt-[10px] flex items-end justify-between">
+          <div className="flex flex-col">
+            <span className="label-lg">Total:</span>
+            <span className="title-lg">$126.66</span>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-[10px]">
+            <span className="body-md text-primary-100">
+              Default Currency: <b>USD</b>
+            </span>
+            <ChangeCurrencyButton />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type ShippingMethodProps = {
+  title: string;
+  expanded?: boolean;
+  checked?: boolean;
+  disabled?: boolean;
+  onChange?: () => void;
+};
+
+const ShippingMethod = ({
+  title,
+  expanded = false,
+  checked,
+  disabled,
+  onChange = () => {
+    return;
+  },
+}: ShippingMethodProps) => {
+  const { open, toggle } = useAccordion(expanded);
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[30px] py-[10px]">
+        <div className="col-span-full flex items-center gap-[30px]">
+          <input
+            disabled={disabled}
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
+            name="radio"
+            type="radio"
+            value="male"
+            aria-label="Custom Billing Address"
+            checked={checked}
+            onChange={onChange}
+          />
+          <h4 className="title-md md:title-lg text-black">{title}</h4>
+          <div className="flex flex-grow justify-end">
+            <AccordionButton {...{ open, toggle }} />
+          </div>
+        </div>
+
+        {open && (
+          <div className="flex flex-col gap-[10px] pl-[10px]">
+            <div className="label-lg grid w-max grid-cols-2 gap-[20px] font-medium text-neutral-900 ">
+              <span className="col-span-1 w-[160px]">Shipping Cost:</span>
+              <span className="col-span-1 w-[100px]">$126.66</span>
+              <span className="col-span-1 w-[160px]">
+                Clearing, Port Handling:
+              </span>
+              <span className="col-span-1 w-[100px]">$126.66</span>
+            </div>
+            <div className="body-md flex flex-col gap-[5px] text-gray-700">
+              <p>
+                This shipping method takes your package 5 working days to arrive
+                your destination from the 1st Wednesday after your payment, You
+                can call us on +234 700 700 6000 or +1 888 567 8765 or{" "}
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-600 underline"
+                >
+                  send us a dm
+                </a>{" "}
+                to get alternative shipping methods with different benefits.
+              </p>
+              <p>
+                The cost paid here covers clearing, documentation and delivery
+                to the destination.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </SectionContentLayout>
+  );
 };
 
 const Success = () => {

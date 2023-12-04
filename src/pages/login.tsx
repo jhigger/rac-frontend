@@ -1,4 +1,3 @@
-import axios from "axios";
 import Link from "next/link";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import FormHeader from "~/components/Forms/FormHeader";
@@ -15,14 +14,15 @@ type LoginInputs = {
 const login = () => {
   const { register, handleSubmit } = useForm<LoginInputs>();
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-    const reqOptions = {
-      url: "https://rac-backend.onrender.com/api/users/auth",
-      method: "POST",
-      data,
-    };
+    alert(JSON.stringify(data, null, 2));
+    // const reqOptions = {
+    //   url: "https://rac-backend.onrender.com/api/users/auth",
+    //   method: "POST",
+    //   data,
+    // };
 
-    const response = await axios.request(reqOptions);
-    console.log(response.data);
+    // const response = await axios.request(reqOptions);
+    // console.log(response.data);
   };
 
   return (

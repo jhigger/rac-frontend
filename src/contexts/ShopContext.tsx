@@ -138,6 +138,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     if (!tabsRef.current[clickedTabIndex]) return;
     tabsRef.current[clickedTabIndex]?.click();
     setActiveTab(tabId);
+    setActiveAction(null);
   };
 
   // testing purposes

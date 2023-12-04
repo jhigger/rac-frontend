@@ -6,7 +6,10 @@ import {
   type ReactNode,
 } from "react";
 
-export type AuthContextType = { user: UserType | null; handleUser: () => void };
+export type AuthContextType = {
+  user: UserType | null;
+  handleUser: (userData: UserType) => void;
+};
 
 export const AuthContext = createContext<AuthContextType>(
   {} as AuthContextType,
@@ -31,17 +34,7 @@ export type UserType = {
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
 
-  const handleUser = () => {
-    const userData = {
-      _id: "656bcb107c2bc6d6453efc71",
-      country: "Country A",
-      countryCode: "+1",
-      email: "john@example.com",
-      isAdmin: false,
-      firstName: "john",
-      lastName: "Doe",
-    };
-
+  const handleUser = (userData: UserType) => {
     setUser(userData);
   };
 

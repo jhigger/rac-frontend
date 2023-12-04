@@ -6,9 +6,9 @@ import {
   SelectCountryPhoneCode,
   type RegisterType,
 } from "./AccountForm";
-import FormHeader from "./FormHeader";
-import SelectInput from "./Inputs/SelectInput";
-import TextInput from "./Inputs/TextInput";
+import FormHeader from "../FormHeader";
+import SelectInput from "../Inputs/SelectInput";
+import TextInput from "../Inputs/TextInput";
 
 type AddressFormProps = {
   register: UseFormRegister<RegisterInputs>;

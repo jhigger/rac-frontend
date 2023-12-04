@@ -4,8 +4,11 @@ import { useForm } from "react-hook-form";
 import {
   SelectCountry,
   SelectCountryPhoneCode,
-} from "~/components/Forms/AccountForm";
-import { SelectCity, SelectState } from "~/components/Forms/AddressForm";
+} from "~/components/Forms/Register/AccountForm";
+import {
+  SelectCity,
+  SelectState,
+} from "~/components/Forms/Register/AddressForm";
 import TextInput from "~/components/Forms/Inputs/TextInput";
 import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";

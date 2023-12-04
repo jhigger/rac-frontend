@@ -1,10 +1,10 @@
 import { Country } from "country-state-city";
 import { type UseFormRegister } from "react-hook-form";
 import { type RegisterInputs } from "~/pages/register";
-import FormHeader from "./FormHeader";
-import PasswordInput from "./Inputs/PasswordInput";
-import SelectInput from "./Inputs/SelectInput";
-import TextInput from "./Inputs/TextInput";
+import FormHeader from "../FormHeader";
+import PasswordInput from "../Inputs/PasswordInput";
+import SelectInput from "../Inputs/SelectInput";
+import TextInput from "../Inputs/TextInput";
 
 type AccountFormProps = {
   register: UseFormRegister<RegisterInputs>;

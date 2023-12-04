@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
-import AccountForm from "~/components/Forms/AccountForm";
-import AddressForm from "~/components/Forms/AddressForm";
+import AccountForm from "~/components/Forms/Register/AccountForm";
+import AddressForm from "~/components/Forms/Register/AddressForm";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import useMultiStepForm from "~/hooks/useMultistepForm";

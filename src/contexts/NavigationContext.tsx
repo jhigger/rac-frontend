@@ -40,7 +40,6 @@ export const bottomNavItems: NavItemType[] = [
   { src: "/images/nav/get_a_quote_icon.svg", title: "Get a Quote" },
   { src: "/images/nav/help_icon.svg", title: "Help" },
   { src: "/images/nav/settings_icon.svg", title: "Settings" },
-  { src: "/images/top app bar/user_icon.svg", title: "Logout" },
 ];
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {

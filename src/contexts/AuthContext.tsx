@@ -9,6 +9,7 @@ import {
 export type AuthContextType = {
   user: UserType | null;
   handleUser: (userData: UserType) => void;
+  handleLogout: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -38,11 +39,15 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     setUser(userData);
   };
 
+  const handleLogout = () => {
+    setUser(null);
+  };
+
   useEffect(() => {
     return;
   }, []);
 
-  const value: AuthContextType = { user, handleUser };
+  const value: AuthContextType = { user, handleUser, handleLogout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

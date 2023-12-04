@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import { useAuthContext } from "~/contexts/AuthContext";
 import {
   bottomNavItems,
   topNavItems,
@@ -9,14 +10,21 @@ import {
 
 export type NavItemProps = {
   navItem: NavItemType;
+  onClick?: () => void;
 };
 
-export const NavItem = ({ navItem }: NavItemProps) => {
+export const NavItem = ({ navItem, onClick }: NavItemProps) => {
   const { activeNav, handleActiveNavChange } = useNavContext();
+
+  const handleClick = () => {
+    if (onClick) return onClick();
+
+    handleActiveNavChange(navItem.title);
+  };
 
   return (
     <button
-      onClick={() => handleActiveNavChange(navItem.title)}
+      onClick={handleClick}
       type="button"
       className={`flex w-full items-center bg-opacity-[8%] hover:bg-[url('/images/nav/nav_item_hover_bg.svg')] ${
         navItem.title === activeNav &&
@@ -50,6 +58,8 @@ export const TopNav = () => {
 };
 
 export const BottomNav = () => {
+  const { handleLogout } = useAuthContext();
+
   return (
     <div className="flex flex-1 flex-col justify-end pb-[44px]">
       <div className="px-[20px]">
@@ -58,6 +68,11 @@ export const BottomNav = () => {
       {bottomNavItems.map((navItem) => {
         return <NavItem key={navItem.title} navItem={navItem} />;
       })}
+      <NavItem
+        navItem={{ src: "/images/top app bar/user_icon.svg", title: "Logout" }}
+        onClick={handleLogout}
+      />
+      ;
     </div>
   );
 };

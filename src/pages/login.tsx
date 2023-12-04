@@ -14,48 +14,15 @@ type Inputs = {
 
 const login = () => {
   const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async () => {
-    // const reqOptions = {
-    //   url: "https://rac-backend.onrender.com/api/users/auth",
-    //   method: "POST",
-    //   header: {
-    //     Accept: "*/*",
-    //     "Content-Type": "application/x-www-form-urlencoded",
-    //     "Access-Control-Allow-Origin": "*",
-    //     "Access-Control-Allow-Headers":
-    //       "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-    //     "Access-Control-Allow-Methods": "POST",
-    //   },
-    //   data: {
-    //     email: "admin@example.com",
-    //     password: "mosekola",
-    //   },
-    // };
-
-    // const response = await axios.request(reqOptions);
-    // console.log(response.data);
-    const headersList = {
-      Accept: "*/*",
-      "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-      "Content-Type": "application/json",
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const reqOptions = {
+      url: "https://rac-backend.onrender.com/api/users/auth",
+      method: "POST",
+      data,
     };
 
-    const bodyContent = JSON.stringify({
-      email: "admin@example.com",
-      password: "mosekola",
-    });
-
-    const response = await fetch(
-      "https://rac-backend.onrender.com/api/users/auth",
-      {
-        method: "POST",
-        body: bodyContent,
-        headers: headersList,
-      },
-    );
-
-    const data = await response.text();
-    console.log(data);
+    const response = await axios.request(reqOptions);
+    console.log(response.data);
   };
 
   return (

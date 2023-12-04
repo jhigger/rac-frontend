@@ -293,12 +293,12 @@ const PlaceOrder = () => {
         <SubSectionTitle title="Select the Payment Method You Wish to Use" />
       </div>
       <PaymentMethods />
-      <div className="grid grid-cols-12 gap-[20px]">
-        <div className="col-span-4 flex max-w-[300px] flex-col gap-[15px]">
+      <div className="grid grid-cols-1 gap-[20px] md:grid-cols-12">
+        <div className="flex flex-col gap-[15px] md:col-span-4 md:max-w-[300px]">
           <SectionHeader title="Take Note" />
           <ImportantNotice />
         </div>
-        <div className="col-span-8 flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[15px] md:col-span-8">
           <SectionHeader title="Order costs" />
           <CostsSummary />
         </div>
@@ -394,12 +394,12 @@ const Summary = () => {
         <Cost title="VAT:" value="$126.66" />
         <Cost title="Payment Method Surcharge:" value="$126.66" />
         <Cost title="Discount:" value={`- ${"$126.66"}`} />
-        <div className="mt-[10px] flex items-end justify-between">
-          <div className="flex flex-col">
+        <div className="mt-[10px] flex flex-col items-start justify-between gap-[20px] md:flex-row md:items-end">
+          <div className="flex flex-col gap-[5px]">
             <span className="label-lg">Total:</span>
             <span className="title-lg">$126.66</span>
           </div>
-          <div className="flex flex-col items-center justify-center gap-[10px]">
+          <div className="flex flex-col items-start justify-center gap-[10px] md:items-center">
             <span className="body-md text-primary-100">
               Default Currency: <b>USD</b>
             </span>

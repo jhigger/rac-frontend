@@ -27,13 +27,10 @@ const LoginForm = () => {
     };
     handleUser(userData);
 
-    // const reqOptions = {
-    //   url: "https://rac-backend.onrender.com/api/users/auth",
-    //   method: "POST",
-    //   data,
-    // };
-
-    // const response = await axios.request(reqOptions);
+    // const response = await axios.post(
+    //   "https://rac-backend.onrender.com/api/users/auth",
+    //   { data },
+    // );
     // console.log(response.data);
   };
   return (

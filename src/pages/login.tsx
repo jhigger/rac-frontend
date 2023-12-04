@@ -7,14 +7,14 @@ import TextInput from "~/components/Forms/Inputs/TextInput";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 
-type Inputs = {
+type LoginInputs = {
   email: string;
   password: string;
 };
 
 const login = () => {
-  const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const { register, handleSubmit } = useForm<LoginInputs>();
+  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     const reqOptions = {
       url: "https://rac-backend.onrender.com/api/users/auth",
       method: "POST",

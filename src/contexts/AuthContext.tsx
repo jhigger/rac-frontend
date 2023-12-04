@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import {
   createContext,
   useContext,
@@ -46,11 +46,18 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (!user) {
-      return router.replace("/login");
+    const redirectTo = (path: string) => {
+      router.replace(path).catch((e) => console.log(e));
+    };
+
+    if (user) {
+      redirectTo("/shop");
+    } else if (router.asPath === "/register") {
+      redirectTo("/register");
+    } else {
+      redirectTo("/login");
     }
-    return router.push("/shop");
-  }, [user]);
+  }, [user, router.asPath]);
 
   const value: AuthContextType = { user, handleUser, handleLogout };
 

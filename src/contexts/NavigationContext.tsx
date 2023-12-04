@@ -3,14 +3,30 @@ import { useShopContext } from "./ShopContext";
 
 export type NavContextType = {
   activeNav: string;
-  handleActiveNavChange: (navItem: string) => void;
+  handleActiveNavChange: (navTitle: TitleType) => void;
 };
 
 export const NavContext = createContext<NavContextType>({} as NavContextType);
 
 export const useNavContext = () => useContext(NavContext);
 
-export type NavItemType = { src: string; title: string };
+const NAV_TITLES = [
+  "Home",
+  "Shop for me",
+  "Export",
+  "Import",
+  "Auto Import",
+  "Tracking",
+  "Billing",
+  "Get a Quote",
+  "Help",
+  "Settings",
+  "Logout",
+] as const;
+
+type TitleType = (typeof NAV_TITLES)[number];
+
+export type NavItemType = { src: string; title: TitleType };
 
 export const topNavItems: NavItemType[] = [
   { src: "/images/nav/shop_icon.svg", title: "Shop for me" },
@@ -28,11 +44,12 @@ export const bottomNavItems: NavItemType[] = [
 ];
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
-  const [activeNav, setActiveNav] = useState("Shop for me");
+  const [activeNav, setActiveNav] =
+    useState<NavItemType["title"]>("Shop for me");
   const { tabs, handleTabChange } = useShopContext();
 
-  const handleActiveNavChange = (title: string) => {
-    setActiveNav(title);
+  const handleActiveNavChange = (navTitle: TitleType) => {
+    setActiveNav(navTitle);
 
     if (tabs[0]) handleTabChange(tabs[0].id);
   };

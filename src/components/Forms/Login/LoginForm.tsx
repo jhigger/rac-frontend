@@ -34,10 +34,7 @@ const LoginForm = () => {
     //       password: "password",
     //     },
     //     headers: {
-    //       appID: 8,
-    //       version: "1.1.0",
-    //       empID: localStorage.getItem("empID"),
-    //       token: localStorage.getItem("accessToken"),
+    //       accept: "Accept: */*",
     //     },
     //   },
     // );

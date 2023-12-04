@@ -24,17 +24,16 @@ export const bottomNavItems: NavItemType[] = [
   { src: "/images/nav/get_a_quote_icon.svg", title: "Get a Quote" },
   { src: "/images/nav/help_icon.svg", title: "Help" },
   { src: "/images/nav/settings_icon.svg", title: "Settings" },
+  { src: "/images/top app bar/user_icon.svg", title: "Logout" },
 ];
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeNav, setActiveNav] = useState("Shop for me");
-  const { tabs, tabsRef, handleTabChange } = useShopContext();
+  const { tabs, handleTabChange } = useShopContext();
 
   const handleActiveNavChange = (title: string) => {
     setActiveNav(title);
 
-    if (!tabsRef.current[0]) return;
-    tabsRef.current[0].click();
     if (tabs[0]) handleTabChange(tabs[0].id);
   };
 

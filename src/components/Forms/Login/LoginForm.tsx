@@ -3,6 +3,7 @@ import { useAuthContext } from "~/contexts/AuthContext";
 import FormHeader from "../FormHeader";
 import PasswordInput from "../Inputs/PasswordInput";
 import TextInput from "../Inputs/TextInput";
+import { useRouter } from "next/navigation";
 
 type LoginInputs = {
   email: string;
@@ -10,6 +11,7 @@ type LoginInputs = {
 };
 
 const LoginForm = () => {
+  const router = useRouter();
   const { handleUser } = useAuthContext();
 
   const { register, handleSubmit } = useForm<LoginInputs>();
@@ -26,6 +28,7 @@ const LoginForm = () => {
       lastName: "Doe",
     };
     handleUser(userData);
+    router.push("/shop");
 
     // const reqOptions = {
     //   url: "https://rac-backend.onrender.com/api/users/auth",

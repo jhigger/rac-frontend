@@ -5,6 +5,7 @@ import AccountForm from "~/components/Forms/Register/AccountForm";
 import AddressForm from "~/components/Forms/Register/AddressForm";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
+import { useAuthContext } from "~/contexts/AuthContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
 export type RegisterInputs = {
@@ -38,6 +39,10 @@ const INITIAL_DATA: RegisterInputs = {
 };
 
 const register = () => {
+  const { user } = useAuthContext();
+
+  if (user) return null;
+
   const { register, handleSubmit, getValues } = useForm<RegisterInputs>({
     defaultValues: INITIAL_DATA,
   });

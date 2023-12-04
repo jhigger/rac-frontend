@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import {
   createContext,
   useContext,
@@ -33,6 +34,7 @@ export type UserType = {
 };
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+  const router = useRouter();
   const [user, setUser] = useState<UserType | null>(null);
 
   const handleUser = (userData: UserType) => {
@@ -44,8 +46,11 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    return;
-  }, []);
+    if (!user) {
+      return router.replace("/login");
+    }
+    return router.push("/shop");
+  }, [user]);
 
   const value: AuthContextType = { user, handleUser, handleLogout };
 

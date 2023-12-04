@@ -4,10 +4,15 @@ import SlideSheet from "~/components/Navigation/SlideSheet";
 import Welcome from "~/components/Navigation/Welcome";
 import TopAppBar from "~/components/TopAppBar";
 import TabContentPanels from "~/components/TopAppBar/TabContentPanels";
+import { useAuthContext } from "~/contexts/AuthContext";
 import NavContextProvider from "~/contexts/NavigationContext";
 import ShopContextProvider from "~/contexts/ShopContext";
 
 const shop = () => {
+  const { user } = useAuthContext();
+
+  if (!user) return null;
+
   return (
     <ShopContextProvider>
       <NavContextProvider>

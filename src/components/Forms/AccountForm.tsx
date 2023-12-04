@@ -60,7 +60,13 @@ const AccountForm = ({ register }: AccountFormProps) => {
   );
 };
 
-type SelectCountryProps = { register: UseFormRegister<RegisterInputs> };
+export type RegisterType =
+  | UseFormRegister<RegisterInputs>
+  | UseFormRegister<Partial<RegisterInputs>>;
+
+type SelectCountryProps = {
+  register: RegisterType;
+};
 
 export const SelectCountry = ({ register }: SelectCountryProps) => {
   return (
@@ -87,7 +93,7 @@ export const SelectCountry = ({ register }: SelectCountryProps) => {
 };
 
 type SelectCountryPhoneCodeProps = {
-  register: UseFormRegister<RegisterInputs>;
+  register: RegisterType;
 };
 
 export const SelectCountryPhoneCode = ({

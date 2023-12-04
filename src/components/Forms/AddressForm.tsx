@@ -1,7 +1,11 @@
 import { City, State } from "country-state-city";
 import { type UseFormGetValues, type UseFormRegister } from "react-hook-form";
 import { type RegisterInputs } from "~/pages/register";
-import { SelectCountry, SelectCountryPhoneCode } from "./AccountForm";
+import {
+  SelectCountry,
+  SelectCountryPhoneCode,
+  type RegisterType,
+} from "./AccountForm";
 import FormHeader from "./FormHeader";
 import SelectInput from "./Inputs/SelectInput";
 import TextInput from "./Inputs/TextInput";
@@ -63,7 +67,7 @@ const AddressForm = ({ register, getValues }: AddressFormProps) => {
 
 type SelectStateProps = {
   country: string;
-  register: UseFormRegister<RegisterInputs>;
+  register: RegisterType;
 };
 
 export const SelectState = ({ country, register }: SelectStateProps) => {
@@ -93,7 +97,7 @@ export const SelectState = ({ country, register }: SelectStateProps) => {
 type SelectCityProps = {
   state: string;
   country: string;
-  register: UseFormRegister<RegisterInputs>;
+  register: RegisterType;
 };
 
 export const SelectCity = ({ country, state, register }: SelectCityProps) => {

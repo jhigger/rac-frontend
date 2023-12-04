@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import {
   SelectCountry,
   SelectCountryPhoneCode,
@@ -9,6 +10,7 @@ import TextInput from "~/components/Forms/Inputs/TextInput";
 import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import { type RegisterInputs } from "~/pages/register";
 import AccordionButton from "../../Forms/AccordionButton";
 import { LabelId } from "../Orders";
 import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
@@ -186,6 +188,7 @@ const DefaultBillingAddress = () => {
 
 const CustomBillingAddress = () => {
   const { open, toggle } = useAccordion(true);
+  const { register, getValues } = useForm<Partial<RegisterInputs>>();
 
   return (
     <SectionContentLayout>
@@ -223,14 +226,7 @@ const CustomBillingAddress = () => {
                 <TextInput id="email" label="Email" type="email" />
               </div>
               <div className="col-span-full md:col-span-3">
-                <SelectCountryPhoneCode
-                  value=""
-                  onChange={() => {
-                    return;
-                  }}
-                  // value={countryCode}
-                  // onChange={(e) => updateFields({ state: e.target.value })}
-                />
+                <SelectCountryPhoneCode register={register} />
               </div>
               <div className="col-span-full md:col-span-4">
                 <TextInput
@@ -262,38 +258,19 @@ const CustomBillingAddress = () => {
 
             <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
               <div className="col-span-4">
-                <SelectCountry
-                  value=""
-                  onChange={() => {
-                    return;
-                  }}
-                  // value={country} updateFields={updateFields}
-                />
+                <SelectCountry register={register} />
               </div>
               <div className="col-span-4">
                 <SelectState
-                  country=""
-                  value=""
-                  updateFields={() => {
-                    return;
-                  }}
-                  // country={country}
-                  // value={state}
-                  // updateFields={updateFields}
+                  country={getValues("country") ?? ""}
+                  register={register}
                 />
               </div>
               <div className="col-span-4">
                 <SelectCity
-                  country=""
-                  state=""
-                  value=""
-                  updateFields={() => {
-                    return;
-                  }}
-                  // country={country}
-                  // state={state}
-                  // value={city}
-                  // updateFields={updateFields}
+                  country={getValues("country") ?? ""}
+                  state={getValues("state") ?? ""}
+                  register={register}
                 />
               </div>
             </div>

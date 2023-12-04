@@ -3,16 +3,16 @@ import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
 import tailmater from "~/js/tailmater";
-import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
+import { LabelId, MoreButton } from ".";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import RequestOrderButton from "../RequestOrderButton";
+import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
 import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
-import { LabelId, MoreButton } from ".";
 
 const OrdersPanel = () => {
   const { orderItems, activeAction } = useShopContext();

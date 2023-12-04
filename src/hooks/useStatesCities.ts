@@ -1,15 +1,23 @@
 import { City, State } from "country-state-city";
-import { watch } from "fs";
 import { useEffect, useMemo } from "react";
-import { type UseFormGetValues, type UseFormSetValue } from "react-hook-form";
+import {
+  type UseFormGetValues,
+  type UseFormSetValue,
+  type UseFormWatch,
+} from "react-hook-form";
 import { type RegisterInputs } from "~/pages/register";
 
 type UseStatesCitiesType = {
   getValues: UseFormGetValues<RegisterInputs>;
   setValue: UseFormSetValue<RegisterInputs>;
+  watch: UseFormWatch<RegisterInputs>;
 };
 
-const useStatesCities = ({ getValues, setValue }: UseStatesCitiesType) => {
+const useStatesCities = ({
+  getValues,
+  setValue,
+  watch,
+}: UseStatesCitiesType) => {
   const states = useMemo(
     () => State.getStatesOfCountry(getValues("country")),
     [watch("country")],

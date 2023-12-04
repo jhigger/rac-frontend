@@ -192,8 +192,8 @@ const DefaultBillingAddress = () => {
 
 const CustomBillingAddress = () => {
   const { open, toggle } = useAccordion(true);
-  const { register, getValues, setValue } = useForm<RegisterInputs>();
-  const { states, cities } = useStatesCities({ getValues, setValue });
+  const { register, getValues, setValue, watch } = useForm<RegisterInputs>();
+  const { states, cities } = useStatesCities({ getValues, setValue, watch });
 
   return (
     <SectionContentLayout>

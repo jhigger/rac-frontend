@@ -19,7 +19,7 @@ const AddressForm = ({
   setValue,
   watch,
 }: AddressFormProps) => {
-  const { cities, states } = useStatesCities({ getValues, setValue });
+  const { cities, states } = useStatesCities({ getValues, setValue, watch });
 
   return (
     <>

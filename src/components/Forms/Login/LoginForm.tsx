@@ -3,10 +3,55 @@ import { useAuthContext } from "~/contexts/AuthContext";
 import FormHeader from "../FormHeader";
 import PasswordInput from "../Inputs/PasswordInput";
 import TextInput from "../Inputs/TextInput";
+import axios from "axios";
 
 type LoginInputs = {
   email: string;
   password: string;
+};
+
+const test = async () => {
+  const headersList = {
+    Accept: "*/*",
+    "Content-Type": "application/json",
+  };
+
+  const bodyContent = JSON.stringify({
+    email: "email@gmail.com",
+    password: "password",
+  });
+
+  const reqOptions = {
+    url: "https://rac-backend.onrender.com/api/users/auth",
+    method: "POST",
+    headers: headersList,
+    data: bodyContent,
+    withCredentials: true,
+  };
+
+  const response = await axios.request(reqOptions);
+  console.log(response.headers);
+  console.log(response.data);
+
+  function getCookie(name: string) {
+    function escape(s: string) {
+      return s.replace(/([.*+?\^$(){}|\[\]\/\\])/g, "\\$1");
+    }
+    const match = document.cookie.match(
+      RegExp("(?:^|;\\s*)" + escape(name) + "=([^;]*)"),
+    );
+    return match ? match[1] : null;
+  }
+  console.log(getCookie("jwt"));
+
+  const profile = await axios.request({
+    url: "https://rac-backend.onrender.com/api/users/profile",
+    method: "GET",
+    headers: {
+      Accept: "*/*",
+    },
+  });
+  console.log(profile.data);
 };
 
 const LoginForm = () => {
@@ -25,20 +70,7 @@ const LoginForm = () => {
       lastName: "Doe",
     };
     handleUser(userData);
-
-    // const response = await axios.post(
-    //   "https://rac-backend.onrender.com/api/users/auth",
-    //   {
-    //     data: {
-    //       email: "email@gmail.com",
-    //       password: "password",
-    //     },
-    //     headers: {
-    //       accept: "Accept: */*",
-    //     },
-    //   },
-    // );
-    // console.log(response.data);
+    // await test()
   };
   return (
     <form

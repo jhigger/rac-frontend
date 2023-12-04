@@ -1,21 +1,29 @@
-import { City, State } from "country-state-city";
-import { type UseFormGetValues, type UseFormRegister } from "react-hook-form";
+import { City, State, type IState } from "country-state-city";
+import { useEffect, useState } from "react";
+import { type UseFormReturn } from "react-hook-form";
 import { type RegisterInputs } from "~/pages/register";
+import FormHeader from "../FormHeader";
+import SelectInput from "../Inputs/SelectInput";
+import TextInput from "../Inputs/TextInput";
 import {
   SelectCountry,
   SelectCountryPhoneCode,
   type RegisterType,
 } from "./AccountForm";
-import FormHeader from "../FormHeader";
-import SelectInput from "../Inputs/SelectInput";
-import TextInput from "../Inputs/TextInput";
 
-type AddressFormProps = {
-  register: UseFormRegister<RegisterInputs>;
-  getValues: UseFormGetValues<RegisterInputs>;
-};
+type AddressFormProps = Omit<UseFormReturn<RegisterInputs>, "handleSubmit">;
 
 const AddressForm = ({ register, getValues }: AddressFormProps) => {
+  const [states, setStates] = useState<IState[]>();
+
+  const handleStates = (country: string) => {
+    setStates(State.getStatesOfCountry(country));
+  };
+
+  useEffect(() => {
+    handleStates(getValues("country"));
+  }, [getValues("country")]);
+
   return (
     <>
       <FormHeader
@@ -30,8 +38,8 @@ const AddressForm = ({ register, getValues }: AddressFormProps) => {
         }
       />
       <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
-        <SelectCountry register={register} />
-        <SelectState country={getValues("country")} register={register} />
+        <SelectCountry register={register} handleStates={handleStates} />
+        {states && <SelectState states={states} register={register} />}
         <SelectCity
           country={getValues("country")}
           state={getValues("state")}
@@ -66,11 +74,11 @@ const AddressForm = ({ register, getValues }: AddressFormProps) => {
 };
 
 type SelectStateProps = {
-  country: string;
+  states: IState[];
   register: RegisterType;
 };
 
-export const SelectState = ({ country, register }: SelectStateProps) => {
+export const SelectState = ({ states, register }: SelectStateProps) => {
   return (
     <SelectInput
       id="state"
@@ -81,7 +89,7 @@ export const SelectState = ({ country, register }: SelectStateProps) => {
           <option value="" disabled hidden>
             Enter your state
           </option>
-          {State.getStatesOfCountry(country).map(({ name, isoCode }) => {
+          {states.map(({ name, isoCode }) => {
             return (
               <option key={`state-${name}`} value={isoCode}>
                 {name}

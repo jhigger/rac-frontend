@@ -42,13 +42,12 @@ const register = () => {
   const { user } = useAuthContext();
 
   if (user) return null;
-
-  const { register, handleSubmit, getValues } = useForm<RegisterInputs>({
+  const { handleSubmit, ...form } = useForm<RegisterInputs>({
     defaultValues: INITIAL_DATA,
   });
   const { step, next, isFirstStep, back, isLastStep } = useMultiStepForm([
-    <AccountForm register={register} />,
-    <AddressForm register={register} getValues={getValues} />,
+    <AccountForm {...form} />,
+    <AddressForm {...form} />,
   ]);
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     // const reqOptions = {

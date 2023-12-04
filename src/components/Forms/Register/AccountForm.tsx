@@ -1,4 +1,5 @@
 import { Country } from "country-state-city";
+import { type ChangeEvent } from "react";
 import { type UseFormRegister } from "react-hook-form";
 import { type RegisterInputs } from "~/pages/register";
 import FormHeader from "../FormHeader";
@@ -66,14 +67,21 @@ export type RegisterType =
 
 type SelectCountryProps = {
   register: RegisterType;
+  handleStates?: (country: string) => void;
 };
 
-export const SelectCountry = ({ register }: SelectCountryProps) => {
+export const SelectCountry = ({
+  register,
+  handleStates,
+}: SelectCountryProps) => {
   return (
     <SelectInput
       id="country"
       label="Country"
-      {...register("country")}
+      {...register("country", {
+        onChange: (e: ChangeEvent<HTMLSelectElement>) =>
+          handleStates?.(e.target.value),
+      })}
       options={
         <>
           <option value="" disabled hidden>

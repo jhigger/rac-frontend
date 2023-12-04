@@ -1,30 +1,30 @@
-import { type ChangeEventHandler } from "react";
+import {
+  forwardRef,
+  type ChangeEventHandler,
+  type FocusEventHandler,
+  type Ref,
+} from "react";
 
 type SelectInputProps = {
   id: string;
   label: string;
   options: JSX.Element;
-  disabled?: boolean;
   value?: string;
+  onBlur?: FocusEventHandler<HTMLSelectElement>;
   onChange?: ChangeEventHandler<HTMLSelectElement>;
 };
 
-const SelectInput = ({
-  id,
-  label,
-  options,
-  disabled,
-  value,
-  onChange,
-}: SelectInputProps) => {
+const SelectInput = (
+  { id, label, options, ...props }: SelectInputProps,
+  ref: Ref<HTMLSelectElement>,
+) => {
   return (
     <div className="relative z-0 w-full">
       <select
+        ref={ref}
         name={id}
         id={id}
-        disabled={disabled}
-        value={value}
-        onChange={onChange}
+        {...props}
         className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
       >
         {options}
@@ -36,4 +36,4 @@ const SelectInput = ({
   );
 };
 
-export default SelectInput;
+export default forwardRef(SelectInput);

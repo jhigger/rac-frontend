@@ -499,7 +499,7 @@ export const ShipmentCostsSummary = ({
           </div>
         </div>
         {payButton && (
-          <div className="w-[500px] self-center">
+          <div className="w-full md:max-w-[500px] self-center">
             <PayNowButton />
           </div>
         )}

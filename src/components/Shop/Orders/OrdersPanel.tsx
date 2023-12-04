@@ -431,7 +431,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
                 <img
                   src={imagePath}
                   alt={`roadmap ${status} image`}
-                  className="-my-2"
+                  className="my-4 md:-my-2"
                 />
               )}
               <div className="flex flex-col gap-[1px] self-end pr-[10px]">
@@ -560,14 +560,22 @@ export const PickUpInstructions = () => {
 
 export const OrderTrackingId = () => {
   return (
-    <>
-      <LabelId label="Order ID:" id="OD78667" />
+    <div className="flex w-full flex-col items-center justify-center gap-[10px] md:flex-row">
+      <div className="flex items-center gap-[10px]">
+        <LabelId label="Order ID:" id="OD78667" />
+        <img
+          src="/images/shipping status modal/order_tracking_icon.svg"
+          alt="order tracking icon"
+          className="w-min rotate-90"
+        />
+      </div>
       <img
         src="/images/shipping status modal/order_tracking_icon.svg"
         alt="order tracking icon"
+        className="hidden w-min md:block"
       />
       <LabelId label="Tracking ID:" id="SH78667" />
-    </>
+    </div>
   );
 };
 

@@ -39,7 +39,7 @@ const INITIAL_DATA: RegisterInputs = {
 };
 
 const register = () => {
-  const { user } = useAuthContext();
+  const { user, handleUser } = useAuthContext();
 
   if (user) return null;
   const { handleSubmit, ...form } = useForm<RegisterInputs>({
@@ -61,6 +61,17 @@ const register = () => {
 
     if (!isLastStep) return next();
     alert(JSON.stringify(data, null, 2));
+
+    const userData = {
+      _id: "656bcb107c2bc6d6453efc71",
+      country: "Country A",
+      countryCode: "+1",
+      email: "john@example.com",
+      isAdmin: false,
+      firstName: "john",
+      lastName: "Doe",
+    };
+    handleUser(userData);
   };
 
   return (

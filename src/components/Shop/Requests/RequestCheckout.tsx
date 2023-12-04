@@ -264,7 +264,7 @@ const CustomBillingAddress = () => {
               <div className="col-span-4">
                 <SelectCountry
                   value=""
-                  updateFields={() => {
+                  onChange={() => {
                     return;
                   }}
                   // value={country} updateFields={updateFields}

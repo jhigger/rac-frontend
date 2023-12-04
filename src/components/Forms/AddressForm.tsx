@@ -1,77 +1,60 @@
 import { City, State } from "country-state-city";
-import { type FormData } from "~/pages/register";
+import { type UseFormGetValues, type UseFormRegister } from "react-hook-form";
+import { type RegisterInputs } from "~/pages/register";
+import { SelectCountry, SelectCountryPhoneCode } from "./AccountForm";
 import FormHeader from "./FormHeader";
 import SelectInput from "./Inputs/SelectInput";
 import TextInput from "./Inputs/TextInput";
-import { SelectCountry, SelectCountryPhoneCode } from "./AccountForm";
 
-type AddressFormProps = FormData & {
-  updateFields: (update: Partial<FormData>) => void;
+type AddressFormProps = {
+  register: UseFormRegister<RegisterInputs>;
+  getValues: UseFormGetValues<RegisterInputs>;
 };
 
-const AddressForm = ({
-  firstName,
-  country,
-  state,
-  city,
-  streetAddress,
-  countryCode,
-  phoneNumber,
-  zipPostalCode,
-  updateFields,
-}: AddressFormProps) => {
+const AddressForm = ({ register, getValues }: AddressFormProps) => {
   return (
     <>
       <FormHeader
         title="Just one more step"
         body={
           <>
-            <span className="font-medium">{`Dear ${firstName}, `}</span>
+            <span className="font-medium">{`Dear ${getValues(
+              "firstName",
+            )}, `}</span>
             Provide us your contact address
           </>
         }
       />
       <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
-        <SelectCountry value={country} updateFields={updateFields} />
-        <SelectState
-          country={country}
-          value={state}
-          updateFields={updateFields}
-        />
+        <SelectCountry register={register} />
+        <SelectState country={getValues("country")} register={register} />
         <SelectCity
-          country={country}
-          state={state}
-          value={city}
-          updateFields={updateFields}
+          country={getValues("country")}
+          state={getValues("state")}
+          register={register}
         />
         <TextInput
-          id={"street-address"}
+          id={"streetAddress"}
           label={"Street Address"}
-          value={streetAddress}
-          onChange={(e) => updateFields({ streetAddress: e.target.value })}
+          {...register("streetAddress")}
         />
         <div className="grid grid-rows-2 gap-[30px] md:grid-cols-12 md:grid-rows-1 md:gap-[10px]">
           <div className="md col-span-full md:col-span-5">
-            <SelectCountryPhoneCode
-              value={countryCode}
-              onChange={(e) => updateFields({ state: e.target.value })}
-            />
+            <SelectCountryPhoneCode register={register} />
           </div>
           <div className="col-span-full md:col-span-7">
             <TextInput
-              id="phone-number"
+              id="phoneNumber"
               label="Phone Number"
               type="tel"
-              value={phoneNumber}
-              onChange={(e) => updateFields({ phoneNumber: e.target.value })}
+              {...register("phoneNumber")}
             />
           </div>
         </div>
         <TextInput
-          id={"zip-postal-code"}
+          id={"zipPostalCode"}
           label={"Zip/Postal Code"}
-          value={zipPostalCode}
-          onChange={(e) => updateFields({ zipPostalCode: e.target.value })}
+          {...register("zipPostalCode")}
         />
       </div>
     </>
@@ -79,25 +62,16 @@ const AddressForm = ({
 };
 
 type SelectStateProps = {
-  disabled?: boolean;
   country: string;
-  value: string;
-  updateFields: (update: Partial<FormData>) => void;
+  register: UseFormRegister<RegisterInputs>;
 };
 
-export const SelectState = ({
-  disabled,
-  country,
-  value,
-  updateFields,
-}: SelectStateProps) => {
+export const SelectState = ({ country, register }: SelectStateProps) => {
   return (
     <SelectInput
       id="state"
       label="State"
-      disabled={disabled}
-      value={value}
-      onChange={(e) => updateFields({ state: e.target.value })}
+      {...register("state")}
       options={
         <>
           <option value="" disabled hidden>
@@ -117,27 +91,17 @@ export const SelectState = ({
 };
 
 type SelectCityProps = {
-  disabled?: boolean;
-  country: string;
   state: string;
-  value: string;
-  updateFields: (update: Partial<FormData>) => void;
+  country: string;
+  register: UseFormRegister<RegisterInputs>;
 };
 
-export const SelectCity = ({
-  disabled,
-  country,
-  state,
-  value,
-  updateFields,
-}: SelectCityProps) => {
+export const SelectCity = ({ country, state, register }: SelectCityProps) => {
   return (
     <SelectInput
       id="city"
       label="City"
-      disabled={disabled}
-      value={value}
-      onChange={(e) => updateFields({ city: e.target.value })}
+      {...register("city")}
       options={
         <>
           <option value="" disabled hidden>

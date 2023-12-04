@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
 import AccountForm from "~/components/Forms/AccountForm";
 import AddressForm from "~/components/Forms/AddressForm";
@@ -7,7 +7,7 @@ import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
-export type FormData = {
+export type RegisterInputs = {
   country: string;
   firstName: string;
   lastName: string;
@@ -22,7 +22,7 @@ export type FormData = {
   zipPostalCode: string;
 };
 
-const INITIAL_DATA: FormData = {
+const INITIAL_DATA: RegisterInputs = {
   country: "",
   firstName: "",
   lastName: "",
@@ -38,23 +38,25 @@ const INITIAL_DATA: FormData = {
 };
 
 const register = () => {
-  const [formData, setFormData] = useState(INITIAL_DATA);
-
-  const updateFields = (update: Partial<FormData>) => {
-    setFormData((prev) => {
-      return { ...prev, ...update };
-    });
-  };
-
+  const { register, handleSubmit, getValues } = useForm<RegisterInputs>({
+    defaultValues: INITIAL_DATA,
+  });
   const { step, next, isFirstStep, back, isLastStep } = useMultiStepForm([
-    <AccountForm {...formData} updateFields={updateFields} />,
-    <AddressForm {...formData} updateFields={updateFields} />,
+    <AccountForm register={register} />,
+    <AddressForm register={register} getValues={getValues} />,
   ]);
+  const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
+    // const reqOptions = {
+    //   url: "https://rac-backend.onrender.com/api/users/auth",
+    //   method: "POST",
+    //   data,
+    // };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+    // const response = await axios.request(reqOptions);
+    // console.log(response.data);
+
     if (!isLastStep) return next();
-    alert(JSON.stringify(formData, null, 2));
+    alert(JSON.stringify(data, null, 2));
   };
 
   return (
@@ -63,7 +65,7 @@ const register = () => {
         <Logo />
 
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]"
         >
           {step}

@@ -1,76 +1,57 @@
 import { Country } from "country-state-city";
-import { type ChangeEvent } from "react";
-import { type FormData } from "~/pages/register";
+import { type UseFormRegister } from "react-hook-form";
+import { type RegisterInputs } from "~/pages/register";
 import FormHeader from "./FormHeader";
 import PasswordInput from "./Inputs/PasswordInput";
 import SelectInput from "./Inputs/SelectInput";
 import TextInput from "./Inputs/TextInput";
 
-type AccountFormProps = FormData & {
-  updateFields: (update: Partial<FormData>) => void;
+type AccountFormProps = {
+  register: UseFormRegister<RegisterInputs>;
 };
 
-const AccountForm = ({
-  country,
-  firstName,
-  lastName,
-  email,
-  password,
-  confirmPassword,
-  countryCode,
-  phoneNumber,
-  updateFields,
-}: AccountFormProps) => {
+const AccountForm = ({ register }: AccountFormProps) => {
   return (
     <>
       <FormHeader title="Create your account" />
       <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
-        <SelectCountry value={country} updateFields={updateFields} />
+        <SelectCountry register={register} />
         <TextInput
-          id={"first-name"}
+          id={"firstName"}
           label={"First Name"}
-          value={firstName}
-          onChange={(e) => updateFields({ firstName: e.target.value })}
+          {...register("firstName")}
         />
         <TextInput
-          id={"last-name"}
+          id={"lastName"}
           label={"Last Name"}
-          value={lastName}
-          onChange={(e) => updateFields({ lastName: e.target.value })}
+          {...register("lastName")}
         />
         <TextInput
           id="email"
           label="Email"
           type="email"
-          value={email}
-          onChange={(e) => updateFields({ email: e.target.value })}
+          {...register("email")}
         />
         <PasswordInput
           id="password"
           label="Password"
-          value={password}
-          onChange={(e) => updateFields({ password: e.target.value })}
+          {...register("password")}
         />
         <PasswordInput
-          id="confirm-password"
+          id="confirmPassword"
           label="Confirm Password"
-          value={confirmPassword}
-          onChange={(e) => updateFields({ confirmPassword: e.target.value })}
+          {...register("confirmPassword")}
         />
         <div className="grid grid-rows-2 gap-[30px] md:grid-cols-12 md:grid-rows-1 md:gap-[10px]">
           <div className="md col-span-full md:col-span-5">
-            <SelectCountryPhoneCode
-              value={countryCode}
-              onChange={(e) => updateFields({ countryCode: e.target.value })}
-            />
+            <SelectCountryPhoneCode register={register} />
           </div>
           <div className="col-span-full md:col-span-7">
             <TextInput
-              id="phone-number"
+              id="phoneNumber"
               label="Phone Number"
               type="tel"
-              value={phoneNumber}
-              onChange={(e) => updateFields({ phoneNumber: e.target.value })}
+              {...register("phoneNumber")}
             />
           </div>
         </div>
@@ -79,24 +60,14 @@ const AccountForm = ({
   );
 };
 
-type SelectCountryProps = {
-  disabled?: boolean;
-  value: string;
-  updateFields: (update: Partial<FormData>) => void;
-};
+type SelectCountryProps = { register: UseFormRegister<RegisterInputs> };
 
-export const SelectCountry = ({
-  disabled,
-  value,
-  updateFields,
-}: SelectCountryProps) => {
+export const SelectCountry = ({ register }: SelectCountryProps) => {
   return (
     <SelectInput
       id="country"
       label="Country"
-      disabled={disabled}
-      value={value}
-      onChange={(e) => updateFields?.({ country: e.target.value })}
+      {...register("country")}
       options={
         <>
           <option value="" disabled hidden>
@@ -116,23 +87,17 @@ export const SelectCountry = ({
 };
 
 type SelectCountryPhoneCodeProps = {
-  disabled?: boolean;
-  value: string;
-  onChange: (update: ChangeEvent<HTMLSelectElement>) => void;
+  register: UseFormRegister<RegisterInputs>;
 };
 
 export const SelectCountryPhoneCode = ({
-  disabled,
-  value,
-  onChange,
+  register,
 }: SelectCountryPhoneCodeProps) => {
   return (
     <SelectInput
-      id="country-code"
+      id="countryCode"
       label="Country Code"
-      disabled={disabled}
-      value={value}
-      onChange={onChange}
+      {...register("countryCode")}
       options={
         <>
           <option value="" disabled hidden>

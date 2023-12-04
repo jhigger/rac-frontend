@@ -28,14 +28,14 @@ const SearchInput = ({ id, label, value, onChange }: SearchInputProps) => {
         />
 
         <label
-          htmlFor="search_input"
+          htmlFor={id}
           className="absolute left-12 top-4 z-10 hidden w-max origin-[0] -translate-y-7 scale-75 transform whitespace-nowrap px-1 tracking-[.03125em] text-secondary-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-invalid:text-error-600 peer-focus:left-12 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:bg-neutral-50 peer-focus:px-1 peer-focus:text-primary-600 lg:block"
         >
           Search for users with any related keyword
         </label>
         {/* for mobile screen */}
         <label
-          htmlFor="search_input"
+          htmlFor={id}
           className="absolute left-12 top-4 z-10 block w-max origin-[0] -translate-y-7 scale-75 transform whitespace-nowrap px-1 tracking-[.03125em] text-secondary-600 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-invalid:text-error-600 peer-focus:left-12 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:bg-neutral-50 peer-focus:px-1 peer-focus:text-primary-600 lg:hidden"
         >
           Search

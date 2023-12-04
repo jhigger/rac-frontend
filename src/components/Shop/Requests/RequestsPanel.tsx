@@ -73,7 +73,7 @@ const RequestsPanel = () => {
 
 const RequestsTable = () => {
   return (
-    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
+    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[10px] md:p-[20px]">
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
@@ -98,7 +98,7 @@ type RequestTableHeadProps = { th: TableHeadType[] };
 
 const RequestTableHead = ({ th }: RequestTableHeadProps) => {
   return (
-    <thead className="title-sm sticky top-0 z-10 grid grid-cols-[50px_repeat(5,1fr)] gap-[20px] p-[20px] font-medium text-neutral-900">
+    <thead className="title-sm sticky top-0 z-10 grid grid-cols-[50px_repeat(5,1fr)] gap-[10px] p-[10px] font-medium text-neutral-900 md:gap-[20px] md:p-[20px]">
       <tr className="col-span-1 w-max">
         <th className="border-0 p-0">
           <input
@@ -145,7 +145,7 @@ const RequestTableBody = () => {
         return (
           <tr
             key={requestId}
-            className="grid grid-cols-[50px_repeat(5,1fr)] items-center gap-[20px] bg-gray-10 px-[20px] py-[20px]"
+            className="grid grid-cols-[50px_repeat(5,1fr)] items-center gap-[10px] bg-gray-10 p-[10px] md:gap-[20px] md:p-[20px]"
           >
             <td className="border-0 p-0">
               <input
@@ -159,9 +159,11 @@ const RequestTableBody = () => {
               <ImageColumn images={images} />
             </td>
             <td className="border-0 p-0">
-              <p className="title-md whitespace-nowrap">{requestId}</p>
+              <p className="label-lg md:title-md max-w-[100px] whitespace-nowrap">
+                {requestId}
+              </p>
             </td>
-            <td className="max-w-[150px] border-0 p-0">
+            <td className="border-0 p-0">
               <RequestStatus id={requestId} status={requestStatus} />
             </td>
             <td className="border-0 p-0">

@@ -2,9 +2,10 @@
 import { useShopContext } from "~/contexts/ShopContext";
 
 const RequestOrderButton = () => {
-  const { handleActiveAction } = useShopContext();
+  const { handleActiveAction, handleTabChange } = useShopContext();
 
   const onClick = () => {
+    handleTabChange("requests");
     handleActiveAction("request new order");
   };
 

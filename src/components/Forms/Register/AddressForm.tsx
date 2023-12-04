@@ -1,6 +1,6 @@
-import { City, State, type ICity, type IState } from "country-state-city";
-import { useEffect, useMemo } from "react";
+import { type ICity, type IState } from "country-state-city";
 import { type UseFormReturn } from "react-hook-form";
+import useStatesCities from "~/hooks/useStatesCities";
 import { type RegisterInputs } from "~/pages/register";
 import FormHeader from "../FormHeader";
 import SelectInput from "../Inputs/SelectInput";
@@ -19,18 +19,7 @@ const AddressForm = ({
   setValue,
   watch,
 }: AddressFormProps) => {
-  const states = useMemo(
-    () => State.getStatesOfCountry(getValues("country")),
-    [watch("country")],
-  );
-  const cities = useMemo(
-    () => City.getCitiesOfState(getValues("country"), getValues("state")),
-    [watch("country"), watch("state")],
-  );
-
-  useEffect(() => {
-    setValue("state", "");
-  }, [states]);
+  const { cities, states } = useStatesCities({ getValues, setValue });
 
   return (
     <>

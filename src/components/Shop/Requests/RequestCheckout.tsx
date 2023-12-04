@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import TextInput from "~/components/Forms/Inputs/TextInput";
 import {
   SelectCountry,
   SelectCountryPhoneCode,
@@ -9,10 +10,10 @@ import {
   SelectCity,
   SelectState,
 } from "~/components/Forms/Register/AddressForm";
-import TextInput from "~/components/Forms/Inputs/TextInput";
 import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import useStatesCities from "~/hooks/useStatesCities";
 import { type RegisterInputs } from "~/pages/register";
 import AccordionButton from "../../Forms/AccordionButton";
 import { LabelId } from "../Orders";
@@ -191,7 +192,8 @@ const DefaultBillingAddress = () => {
 
 const CustomBillingAddress = () => {
   const { open, toggle } = useAccordion(true);
-  const { register, getValues } = useForm<Partial<RegisterInputs>>();
+  const { register, getValues, setValue } = useForm<RegisterInputs>();
+  const { states, cities } = useStatesCities({ getValues, setValue });
 
   return (
     <SectionContentLayout>
@@ -264,17 +266,10 @@ const CustomBillingAddress = () => {
                 <SelectCountry register={register} />
               </div>
               <div className="col-span-4">
-                <SelectState
-                  country={getValues("country") ?? ""}
-                  register={register}
-                />
+                <SelectState states={states} register={register} />
               </div>
               <div className="col-span-4">
-                <SelectCity
-                  country={getValues("country") ?? ""}
-                  state={getValues("state") ?? ""}
-                  register={register}
-                />
+                <SelectCity cities={cities} register={register} />
               </div>
             </div>
 

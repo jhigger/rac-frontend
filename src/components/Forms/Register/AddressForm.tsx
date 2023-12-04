@@ -1,5 +1,5 @@
-import { City, State, type IState } from "country-state-city";
-import { useEffect, useMemo, useState } from "react";
+import { City, State, type ICity, type IState } from "country-state-city";
+import { useEffect, useMemo } from "react";
 import { type UseFormReturn } from "react-hook-form";
 import { type RegisterInputs } from "~/pages/register";
 import FormHeader from "../FormHeader";
@@ -13,35 +13,24 @@ import {
 
 type AddressFormProps = Omit<UseFormReturn<RegisterInputs>, "handleSubmit">;
 
-const AddressForm = ({ register, getValues }: AddressFormProps) => {
-  const [states, setStates] = useState<IState[]>();
-
-  const country = useMemo(() => getValues("country"), []);
-
-  const handleStates = (country: string) => {
-    setStates(State.getStatesOfCountry(country));
-  };
+const AddressForm = ({
+  register,
+  getValues,
+  setValue,
+  watch,
+}: AddressFormProps) => {
+  const states = useMemo(
+    () => State.getStatesOfCountry(getValues("country")),
+    [watch("country")],
+  );
+  const cities = useMemo(
+    () => City.getCitiesOfState(getValues("country"), getValues("state")),
+    [watch("country"), watch("state")],
+  );
 
   useEffect(() => {
-    if (country) handleStates(country);
-  }, [country]);
-
-  if (!states)
-    return (
-      <div className="relative flex flex-col items-center justify-center">
-        <svg className="circular-loader relative h-[100px] w-[100px]">
-          <circle
-            className="path stroke-primary-600"
-            cx="50"
-            cy="50"
-            r="20"
-            fill="none"
-            strokeWidth="5"
-            strokeMiterlimit="10"
-          ></circle>
-        </svg>
-      </div>
-    );
+    setValue("state", "");
+  }, [states]);
 
   return (
     <>
@@ -57,13 +46,11 @@ const AddressForm = ({ register, getValues }: AddressFormProps) => {
         }
       />
       <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
-        <SelectCountry register={register} handleStates={handleStates} />
-        {states && <SelectState states={states} register={register} />}
-        <SelectCity
-          country={getValues("country")}
-          state={getValues("state")}
-          register={register}
-        />
+        <SelectCountry register={register} />
+        {watch("country") && (
+          <SelectState states={states} register={register} />
+        )}
+        {watch("state") && <SelectCity cities={cities} register={register} />}
         <TextInput
           id={"streetAddress"}
           label={"Street Address"}
@@ -122,12 +109,11 @@ export const SelectState = ({ states, register }: SelectStateProps) => {
 };
 
 type SelectCityProps = {
-  state: string;
-  country: string;
+  cities: ICity[];
   register: RegisterType;
 };
 
-export const SelectCity = ({ country, state, register }: SelectCityProps) => {
+export const SelectCity = ({ cities, register }: SelectCityProps) => {
   return (
     <SelectInput
       id="city"
@@ -138,7 +124,7 @@ export const SelectCity = ({ country, state, register }: SelectCityProps) => {
           <option value="" disabled hidden>
             Enter your city
           </option>
-          {City.getCitiesOfState(country, state).map(({ name }) => {
+          {cities.map(({ name }) => {
             return (
               <option key={`city-${name}`} value={name}>
                 {name}

@@ -1,13 +1,13 @@
 import { type AppType } from "next/dist/shared/lib/utils";
 import { Roboto } from "next/font/google";
 import Head from "next/head";
-import { useEffect } from "react";
-import tailmater from "~/js/tailmater";
 import { useRouter } from "next/router";
-
-import "~/styles/globals.css";
-import "material-icons/iconfont/material-icons.css";
+import { useEffect } from "react";
 import AuthContextProvider from "~/contexts/AuthContext";
+import tailmater from "~/js/tailmater";
+
+import "material-icons/iconfont/material-icons.css";
+import "~/styles/globals.css";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],

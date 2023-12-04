@@ -1,6 +1,6 @@
-"use client";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import Logo from "~/components/Logo";
 import { useAuthContext } from "~/contexts/AuthContext";
 
@@ -15,10 +15,13 @@ export default function Home() {
   const { user } = useAuthContext();
   const router = useRouter();
 
-  if (!user) {
-    router.replace("/login").catch((e) => console.log(e));
-    return null;
-  }
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login");
+    }
+  }, []);
+
+  if (!user) return null;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-brand">

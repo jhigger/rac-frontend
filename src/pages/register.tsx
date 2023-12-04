@@ -53,6 +53,10 @@ const register = () => {
     // const reqOptions = {
     //   url: "https://rac-backend.onrender.com/api/users/auth",
     //   method: "POST",
+    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    //   // validateStatus: (status: any) => {
+    //   //   return (status >= 200 && status < 300) || status === 401;
+    //   // },
     //   data,
     // };
 

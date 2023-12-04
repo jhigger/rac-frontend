@@ -15,7 +15,6 @@ const LoginForm = () => {
   const { register, handleSubmit } = useForm<LoginInputs>();
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     alert(JSON.stringify(data, null, 2));
-
     const userData = {
       _id: "656bcb107c2bc6d6453efc71",
       country: "Country A",
@@ -29,7 +28,18 @@ const LoginForm = () => {
 
     // const response = await axios.post(
     //   "https://rac-backend.onrender.com/api/users/auth",
-    //   { data },
+    //   {
+    //     data: {
+    //       email: "email@gmail.com",
+    //       password: "password",
+    //     },
+    //     headers: {
+    //       appID: 8,
+    //       version: "1.1.0",
+    //       empID: localStorage.getItem("empID"),
+    //       token: localStorage.getItem("accessToken"),
+    //     },
+    //   },
     // );
     // console.log(response.data);
   };

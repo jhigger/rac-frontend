@@ -100,7 +100,7 @@ type OrderTableHeadProps = { th: TableHeadType[] };
 
 const OrderTableHead = ({ th }: OrderTableHeadProps) => {
   return (
-    <thead className="title-sm sticky top-0 z-10 grid grid-cols-11 gap-[20px] p-[20px] font-medium text-neutral-900">
+    <thead className="title-sm sticky top-0 z-10 grid grid-cols-[50px_repeat(10,1fr)] gap-[20px] p-[20px] font-medium text-neutral-900">
       <tr className="col-span-1 w-max">
         <th className="border-0 p-0">
           <input
@@ -158,7 +158,7 @@ const OrderTableBody = () => {
           return (
             <tr
               key={orderId}
-              className="grid grid-cols-11 items-center gap-[20px] bg-gray-10 px-[20px] py-[40px]"
+              className="grid grid-cols-[50px_repeat(10,1fr)] items-center gap-[20px] bg-gray-10 px-[20px] py-[20px]"
             >
               <td className="border-0 p-0">
                 <input

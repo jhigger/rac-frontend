@@ -563,7 +563,7 @@ export const OrderTrackingId = () => {
         <img
           src="/images/shipping status modal/order_tracking_icon.svg"
           alt="order tracking icon"
-          className="w-min rotate-90"
+          className="w-min rotate-90 md:hidden"
         />
       </div>
       <img

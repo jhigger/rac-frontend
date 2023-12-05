@@ -17,12 +17,14 @@ export type ShopContextType = {
   activeTab: TabIdType;
   orderItems: OrderItemType[] | null;
   payNowAction: { action: () => void } | null;
+  properties: PropertyType[] | null;
   requestItems: RequestItemType[] | null;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<HTMLButtonElement[]>;
   handleActiveAction: (action: ActionType | null) => void;
   handleOrders: () => void;
   handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
+  handleProperties: (p: PropertyType[] | null) => void;
   handleRequests: () => void;
   handleTabChange: (tab: TabIdType) => void;
 };
@@ -100,6 +102,8 @@ export type RequestItemType = {
   requestDate: string;
 };
 
+type PropertyType = { label: string; value: string | undefined };
+
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
   const [activeTab, setActiveTab] = useState<TabIdType>("orders");
@@ -109,6 +113,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [requestItems, setRequestItems] = useState<RequestItemType[] | null>(
     null,
   );
+  const [properties, setProperties] = useState<PropertyType[] | null>(null);
 
   const tabsRef = useRef<HTMLButtonElement[]>([]);
 
@@ -122,6 +127,10 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handlePayNowAction = (action: ShopContextType["payNowAction"]) => {
     setPayNowAction(action);
+  };
+
+  const handleProperties = (p: PropertyType[] | null) => {
+    setProperties(p);
   };
 
   const handleRequests = () => {
@@ -153,12 +162,14 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     activeTab,
     orderItems,
     payNowAction,
+    properties,
     requestItems,
     tabs,
     tabsRef,
     handleActiveAction,
     handleOrders,
     handlePayNowAction,
+    handleProperties,
     handleRequests,
     handleTabChange,
   };

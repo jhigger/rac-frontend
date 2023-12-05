@@ -74,13 +74,17 @@ const RequestsPanel = () => {
 };
 
 const RequestsTable = () => {
+  const { requestItems } = useShopContext();
+
+  if (!requestItems) return;
+
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[10px] md:p-[20px]">
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
             <RequestTableHead th={tableHeads} />
-            <RequestTableBody />
+            <RequestTableBody requestItems={requestItems} />
           </table>
         </div>
       </div>
@@ -98,7 +102,7 @@ const tableHeads: TableHeadType[] = [
 
 type RequestTableHeadProps = { th: TableHeadType[] };
 
-const RequestTableHead = ({ th }: RequestTableHeadProps) => {
+export const RequestTableHead = ({ th }: RequestTableHeadProps) => {
   return (
     <thead className="title-sm sticky top-0 z-10 grid grid-cols-[50px_repeat(5,1fr)] gap-[10px] p-[10px] font-medium text-neutral-900 md:gap-[20px] md:p-[20px]">
       <tr className="col-span-1 w-max">
@@ -136,11 +140,9 @@ const RequestTableHead = ({ th }: RequestTableHeadProps) => {
   );
 };
 
-const RequestTableBody = () => {
-  const { requestItems } = useShopContext();
+type RequestTableBodyProps = { requestItems: RequestItemType[] };
 
-  if (!requestItems) return;
-
+export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
   return (
     <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {requestItems.map(({ images, requestId, requestStatus, requestDate }) => {

@@ -94,6 +94,7 @@ export default function () {
     if (set_tabs != null) {
       function TabClicks(tabClickEvent) {
         const clickTarget = tabClickEvent.currentTarget;
+        if (!clickTarget.parentNode) return;
         const tabParent = tabClickEvent.currentTarget.parentNode.parentNode;
         const set_tabs = tabParent.querySelectorAll('[data-type="tabs"]');
         const tabIndicator = tabParent.querySelectorAll('[role="indicator"]');

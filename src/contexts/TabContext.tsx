@@ -1,8 +1,6 @@
-import { useRouter } from "next/router";
 import {
   createContext,
   useContext,
-  useEffect,
   useRef,
   useState,
   type MutableRefObject,
@@ -14,7 +12,7 @@ import ImportRequestsPanel from "~/components/Import/Requests/RequestsPanel";
 import ShopDraftsPanel from "~/components/Shop/Drafts/DraftsPanel";
 import ShopOrdersPanel from "~/components/Shop/Orders/OrdersPanel";
 import ShopRequestsPanel from "~/components/Shop/Requests/RequestsPanel";
-import { type NavTitleType } from "./NavigationContext";
+import { useNavContext, type NavTitleType } from "./NavigationContext";
 
 export type TabContextType = {
   activeAction: ActionType | null;
@@ -74,7 +72,8 @@ export const tabs: AppBarTabType[] = [
 ];
 
 const TabContextProvider = ({ children }: { children: ReactNode }) => {
-  const router = useRouter();
+  const { activeNav } = useNavContext();
+
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
   const [activeTab, setActiveTab] = useState<TabIdType>("orders");
   const tabsRef = useRef<HTMLButtonElement[]>([]);
@@ -85,12 +84,13 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleTabChange = (tabId: TabIdType) => {
     let clickedTabIndex = 0;
-    tabs.forEach((navTabs) => {
-      navTabs.tabs.forEach((tab, i) => {
-        if (tab.id === tabId) {
-          clickedTabIndex = i;
-        }
-      });
+    tabs.forEach(({ nav, tabs }) => {
+      if (nav === activeNav)
+        tabs.forEach((tab, i) => {
+          if (tab.id === tabId) {
+            clickedTabIndex = i;
+          }
+        });
     });
 
     if (!tabsRef.current[clickedTabIndex]) return;
@@ -102,10 +102,6 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const reset = () => {
     setActiveAction(null);
   };
-
-  useEffect(() => {
-    tabsRef.current = [];
-  }, [router.asPath]);
 
   const value: TabContextType = {
     activeAction,

@@ -10,10 +10,10 @@ const TabContentPanels = () => {
       {tabs.map(({ nav, tabs: navTabs }) => {
         if (nav !== activeNav) return false;
 
-        return navTabs.map(({ id, content }) => {
+        return navTabs.map(({ id, content }, i) => {
           return (
             <div
-              key={`${nav}-panel-${id}`}
+              key={`${nav}-panel-${i}`}
               id={`${nav}-tab-${id}`}
               role="tabpanel"
               className={`duration-400 hidden transition ease-in-out [&.active]:block ${

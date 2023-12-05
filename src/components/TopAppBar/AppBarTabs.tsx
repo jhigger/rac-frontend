@@ -57,7 +57,7 @@ const AppBarTabs = () => {
         ></div>
       </div>
       <div className="relative flex min-h-[calc(100vh-201px)] bg-neutral-50 md:min-h-[calc(100vh-170px)]">
-        <TabContentPanels />asdasdasd
+        <TabContentPanels />
       </div>
     </div>
   );

@@ -42,17 +42,31 @@ export const TopNav = () => {
     <div className="flex flex-col gap-[16px]">
       <Link href="/">
         <NavItem
-          navItem={{ src: "/images/nav/home_icon.svg", title: "Home" }}
+          navItem={{
+            src: "/images/nav/home_icon.svg",
+            title: "Home",
+            href: "/",
+          }}
         />
       </Link>
       <div>
         {topNavItems.map((navItem) => {
-          return <NavItem key={navItem.title} navItem={navItem} />;
+          return (
+            <Link href={navItem.href}>
+              <NavItem key={navItem.title} navItem={navItem} />
+            </Link>
+          );
         })}
       </div>
-      <NavItem
-        navItem={{ src: "/images/nav/billing_icon.svg", title: "Billing" }}
-      />
+      <Link href="/Billing">
+        <NavItem
+          navItem={{
+            src: "/images/nav/billing_icon.svg",
+            title: "Billing",
+            href: "/billing",
+          }}
+        />
+      </Link>
     </div>
   );
 };
@@ -66,10 +80,18 @@ export const BottomNav = () => {
         <hr className="w-full border-gray-700" />
       </div>
       {bottomNavItems.map((navItem) => {
-        return <NavItem key={navItem.title} navItem={navItem} />;
+        return (
+          <Link href={navItem.href}>
+            <NavItem key={navItem.title} navItem={navItem} />
+          </Link>
+        );
       })}
       <NavItem
-        navItem={{ src: "/images/top app bar/user_icon.svg", title: "Logout" }}
+        navItem={{
+          src: "/images/top app bar/user_icon.svg",
+          title: "Logout",
+          href: "/",
+        }}
         onClick={handleLogout}
       />
       ;

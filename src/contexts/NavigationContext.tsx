@@ -26,20 +26,36 @@ const NAV_TITLES = [
 
 type TitleType = (typeof NAV_TITLES)[number];
 
-export type NavItemType = { src: string; title: TitleType };
+export type NavItemType = { src: string; title: TitleType; href: string };
 
 export const topNavItems: NavItemType[] = [
-  { src: "/images/nav/shop_icon.svg", title: "Shop for me" },
-  { src: "/images/nav/export_icon.svg", title: "Export" },
-  { src: "/images/nav/import_icon.svg", title: "Import" },
-  { src: "/images/nav/auto_import_icon.svg", title: "Auto Import" },
-  { src: "/images/nav/tracking_icon.svg", title: "Tracking" },
+  { src: "/images/nav/shop_icon.svg", title: "Shop for me", href: "/shop" },
+  { src: "/images/nav/export_icon.svg", title: "Export", href: "/export" },
+  { src: "/images/nav/import_icon.svg", title: "Import", href: "/import" },
+  {
+    src: "/images/nav/auto_import_icon.svg",
+    title: "Auto Import",
+    href: "/auto-import",
+  },
+  {
+    src: "/images/nav/tracking_icon.svg",
+    title: "Tracking",
+    href: "/tracking",
+  },
 ];
 
 export const bottomNavItems: NavItemType[] = [
-  { src: "/images/nav/get_a_quote_icon.svg", title: "Get a Quote" },
-  { src: "/images/nav/help_icon.svg", title: "Help" },
-  { src: "/images/nav/settings_icon.svg", title: "Settings" },
+  {
+    src: "/images/nav/get_a_quote_icon.svg",
+    title: "Get a Quote",
+    href: "/quote",
+  },
+  { src: "/images/nav/help_icon.svg", title: "Help", href: "/help" },
+  {
+    src: "/images/nav/settings_icon.svg",
+    title: "Settings",
+    href: "/settings",
+  },
 ];
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {

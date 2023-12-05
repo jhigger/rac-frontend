@@ -8,6 +8,7 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from "react";
+import ImportDraftsPanel from "~/components/Import/Drafts/DraftsPanel";
 import ImportOrdersPanel from "~/components/Import/Orders/OrdersPanel";
 import ImportRequestsPanel from "~/components/Import/Requests/RequestsPanel";
 import ShopDraftsPanel from "~/components/Shop/Drafts/DraftsPanel";
@@ -67,7 +68,7 @@ export const tabs: AppBarTabType[] = [
     tabs: [
       { id: "orders", title: "Orders", content: <ImportOrdersPanel /> },
       { id: "requests", title: "Requests", content: <ImportRequestsPanel /> },
-      { id: "drafts", title: "Drafts", content: <>import drafts</> },
+      { id: "drafts", title: "Drafts", content: <ImportDraftsPanel /> },
     ],
   },
 ];

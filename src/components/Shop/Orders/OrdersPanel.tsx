@@ -11,7 +11,7 @@ import { type ModalCloseType } from "../Requests/RequestsPanel";
 import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
 import ClearPackage from "./ClearPackage";
-import InitiateShipping from "./InitiateShipping";
+import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const OrdersPanel = () => {
@@ -450,35 +450,20 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
           <>
             <CongratulationImage text="you can now pick up your package from our office in Nigeria (your selected “Destination”)" />
 
-            <div className="flex w-full flex-col gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
-              <span className="title-lg text-gray-700">
-                Our office address to pick up your package
-              </span>
-              <div className="flex flex-col gap-[5px]">
-                <span className="body-md text-gray-700">Pick up Address:</span>
-                <span className="title-lg text-gray-900">
-                  No, 1osolo way, ikeja road, behind scaint merry
-                </span>
-              </div>
-              <div className="flex gap-[20px]">
-                <div className="flex flex-col gap-[5px] text-neutral-900">
-                  <span className="body-md text-gray-700">Country:</span>
-                  <span className="title-lg text-gray-900">Nigeria</span>
-                </div>
-                <div className="flex flex-col gap-[5px] text-neutral-900">
-                  <span className="body-md text-gray-700">State:</span>
-                  <span className="title-lg text-gray-900">Lagos</span>
-                </div>
-                <div className="flex flex-col gap-[5px] text-neutral-900">
-                  <span className="body-md text-gray-700">City:</span>
-                  <span className="title-lg text-gray-900">Ajao</span>
-                </div>
-                <div className="flex flex-col gap-[5px] text-neutral-900">
-                  <span className="body-md text-gray-700">
-                    Zip/postal Code:
-                  </span>
-                  <span className="title-lg text-gray-900">98765</span>
-                </div>
+            <div className="rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
+              <div className="grid w-fit gap-[15px] md:grid-cols-4">
+                <DetailSection
+                  label="Pick up Address"
+                  value="No, 1osolo way, ikeja road, behind scaint merry"
+                />
+                <DetailSection label="Country" value="Nigeria" colSpan={1} />
+                <DetailSection label="State" value="Lagos" colSpan={1} />
+                <DetailSection label="City" value="Ikeja" colSpan={1} />
+                <DetailSection
+                  label="Zip/postal Code"
+                  value="98765"
+                  colSpan={1}
+                />
               </div>
             </div>
             <SectionHeader title="What next?" />

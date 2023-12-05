@@ -27,32 +27,37 @@ const test = async () => {
     method: "POST",
     headers: headersList,
     data: bodyContent,
-    withCredentials: true,
+    withCredentials: true, // <--- it errors when i put this but browser needs this to receive cookie jwt (json web token)
   };
+  // CORS error: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*'
+  // user needs jwt after login to use backend
+  // jwt is stored in cookie
+  // cookie is stored in browser
 
   const response = await axios.request(reqOptions);
-  console.log(response.headers);
   console.log(response.data);
 
-  function getCookie(name: string) {
-    function escape(s: string) {
-      return s.replace(/([.*+?\^$(){}|\[\]\/\\])/g, "\\$1");
-    }
-    const match = document.cookie.match(
-      RegExp("(?:^|;\\s*)" + escape(name) + "=([^;]*)"),
-    );
-    return match ? match[1] : null;
-  }
-  console.log(getCookie("jwt"));
+  // function getCookie(name: string) {
+  //   function escape(s: string) {
+  //     return s.replace(/([.*+?\^$(){}|\[\]\/\\])/g, "\\$1");
+  //   }
+  //   const match = document.cookie.match(
+  //     RegExp("(?:^|;\\s*)" + escape(name) + "=([^;]*)"),
+  //   );
+  //   return match ? match[1] : null;
+  // }
 
-  const profile = await axios.request({
-    url: "https://rac-backend.onrender.com/api/users/profile",
-    method: "GET",
-    headers: {
-      Accept: "*/*",
-    },
-  });
-  console.log(profile.data);
+  // console.log(getCookie("jwt"));
+
+  // const profile = await axios.request({
+  //   url: "https://rac-backend.onrender.com/api/users/profile",
+  //   method: "GET",
+  //   headers: {
+  //     Accept: "*/*",
+  //   },
+  //   withCredentials: true,
+  // });
+  // console.log(profile.data);
 };
 
 const LoginForm = () => {
@@ -63,15 +68,13 @@ const LoginForm = () => {
     alert(JSON.stringify(data, null, 2));
     const userData = {
       _id: "656bcb107c2bc6d6453efc71",
-      country: "Country A",
-      countryCode: "+1",
-      email: "john@example.com",
-      isAdmin: false,
       firstName: "john",
       lastName: "Doe",
+      email: "john@example.com",
+      isAdmin: false,
     };
     handleUser(userData);
-    // await test()
+    // await test();
   };
   return (
     <form

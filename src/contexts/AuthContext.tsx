@@ -25,12 +25,10 @@ export const useAuthContext = () => useContext(AuthContext);
 
 export type UserType = {
   _id: string;
-  country: string;
-  countryCode: string;
-  email: string;
   firstName: string;
-  isAdmin: boolean;
   lastName: string;
+  email: string;
+  isAdmin: boolean;
 };
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {

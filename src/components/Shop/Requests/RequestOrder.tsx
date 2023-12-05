@@ -66,7 +66,7 @@ const RequestOrderForm = () => {
         </>
       )}
       {isLastStep && (
-        <div className="w-1/3">
+        <div className="w-full md:w-[200px]">
           <DoneButton handleFinish={handleFinish} />
         </div>
       )}

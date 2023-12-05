@@ -7,7 +7,7 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from "react";
-import DraftPanel from "~/components/Shop/Drafts/DraftPanel";
+import DraftPanel from "~/components/Shop/Drafts/DraftsPanel";
 import OrdersPanel from "~/components/Shop/Orders/OrdersPanel";
 import RequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { orders, requests } from "~/fake data";
@@ -53,6 +53,7 @@ const ACTION_CONST = [
   "proceed to checkout",
   "order details",
   "request details",
+  "draft details",
   "request new order",
   "initiate shipping",
   "clear package",

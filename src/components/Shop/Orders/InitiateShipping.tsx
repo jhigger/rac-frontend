@@ -3,7 +3,6 @@ import AccordionButton from "~/components/Forms/AccordionButton";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import {
   BackButton,
-  ChangeCurrencyButton,
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
@@ -19,6 +18,7 @@ import {
   PayNowButton,
   StepIndex,
   SubSectionTitle,
+  TotalCost,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
 import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
@@ -196,7 +196,7 @@ const OrderItem = ({ index }: OrderItemProps) => {
 
 const OrderItemDetails = () => {
   return (
-    <div className="grid w-max grid-cols-4 gap-[15px]">
+    <div className="grid w-fit grid-cols-1 gap-[15px] md:grid-cols-4">
       <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
         <span className="body-md max-w-[100px]">Store:</span>
         <span className="title-lg text-neutral-900">Amazon</span>
@@ -207,9 +207,9 @@ const OrderItemDetails = () => {
         <span className="title-lg text-neutral-900">No</span>
       </div>
 
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-full">
+      <div className="col-span-full flex flex-col gap-[20px] text-gray-700">
         <span className="body-md max-w-[100px]">Item URL:</span>
-        <span className="title-lg text-neutral-900">
+        <span className="title-lg break-words text-neutral-900">
           htttp/jjnkkukja.jhgyjayjdjjhcjc
         </span>
       </div>
@@ -345,7 +345,7 @@ export const BillingAddress = () => {
         </div>
 
         {open && (
-          <div className="grid grid-cols-4 gap-[20px]">
+          <div className="grid w-fit grid-cols-4 gap-[20px]">
             <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
               <span className="body-md max-w-[100px]">First Name:</span>
               <span className="title-lg text-neutral-900">Malibu</span>
@@ -364,7 +364,7 @@ export const BillingAddress = () => {
 
             <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
               <span className="body-md max-w-[100px]">Email:</span>
-              <span className="title-lg text-neutral-900">
+              <span className="title-lg break-words text-neutral-900">
                 Malibushdrack@gmail.com
               </span>
             </div>
@@ -499,7 +499,7 @@ export const ShipmentCostsSummary = ({
           </div>
         </div>
         {payButton && (
-          <div className="w-full md:max-w-[500px] self-center">
+          <div className="w-full self-center md:max-w-[500px]">
             <PayNowButton />
           </div>
         )}
@@ -521,18 +521,7 @@ const Summary = () => {
         <Cost title="VAT:" value="$126.66" />
         <Cost title="Payment Method Surcharge:" value="$126.66" />
         <Cost title="Discount:" value={`- ${"$126.66"}`} />
-        <div className="mt-[10px] flex items-end justify-between">
-          <div className="flex flex-col">
-            <span className="label-lg">Total:</span>
-            <span className="title-lg">$126.66</span>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-[10px]">
-            <span className="body-md text-primary-100">
-              Default Currency: <b>USD</b>
-            </span>
-            <ChangeCurrencyButton />
-          </div>
-        </div>
+        <TotalCost />
       </div>
     </div>
   );

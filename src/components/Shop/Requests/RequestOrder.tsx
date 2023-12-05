@@ -14,6 +14,7 @@ import QuantityInput from "../../Forms/Inputs/QuantityInput";
 import SelectInput from "../../Forms/Inputs/SelectInput";
 import TextAreaInput from "../../Forms/Inputs/TextAreaInput";
 import TextInput from "../../Forms/Inputs/TextInput";
+import { TotalCost } from "./RequestCheckout";
 
 const RequestOrderForm = () => {
   const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
@@ -633,7 +634,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
           <div className="col-span-1 flex flex-col gap-[10px] text-sm leading-5 tracking-[0.25px]">
             <ItemPreviewDetails />
 
-            <div className="flex flex-col gap-[20px] rounded-[10px] bg-secondary-600 px-[24px] py-[20px] text-primary-10">
+            <div className="flex flex-col gap-[20px] rounded-[20px] bg-secondary-600 px-[24px] py-[20px] text-primary-10">
               <span className="title-lg">Shop For Me Costs</span>
               <div className="flex flex-col gap-[10px]">
                 <div className="label-lg flex justify-between">
@@ -652,21 +653,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
                 </div>
                 <hr className="bg-gray-200" />
               </div>
-              <div className="">
-                <div className="flex justify-between">
-                  <div className="flex flex-col justify-end gap-[5px]">
-                    <span className="label-lg">Total:</span>
-                    <span className="title-lg">₦28,000.00</span>
-                  </div>
-                  <div className="flex flex-col gap-[5px]">
-                    <span className="body-md">
-                      Default Currency: <span className="title-sm">USD</span>
-                    </span>
-                    <ChangeCurrencyButton />
-                  </div>
-                </div>
-              </div>
-              I
+              <TotalCost />
             </div>
           </div>
         </div>

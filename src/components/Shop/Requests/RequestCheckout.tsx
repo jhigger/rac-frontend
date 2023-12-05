@@ -394,18 +394,24 @@ const Summary = () => {
         <Cost title="VAT:" value="$126.66" />
         <Cost title="Payment Method Surcharge:" value="$126.66" />
         <Cost title="Discount:" value={`- ${"$126.66"}`} />
-        <div className="mt-[10px] flex flex-col items-start justify-between gap-[20px] md:flex-row md:items-end">
-          <div className="flex flex-col gap-[5px]">
-            <span className="label-lg">Total:</span>
-            <span className="title-lg">$126.66</span>
-          </div>
-          <div className="flex flex-col items-start justify-center gap-[10px] md:items-center">
-            <span className="body-md text-primary-100">
-              Default Currency: <b>USD</b>
-            </span>
-            <ChangeCurrencyButton />
-          </div>
-        </div>
+        <TotalCost />
+      </div>
+    </div>
+  );
+};
+
+export const TotalCost = () => {
+  return (
+    <div className="mt-[10px] flex flex-col items-start justify-between gap-[20px] md:flex-row md:items-end">
+      <div className="flex flex-col gap-[5px]">
+        <span className="label-lg">Total:</span>
+        <span className="title-lg">$126.66</span>
+      </div>
+      <div className="flex flex-col items-start justify-center gap-[10px] md:items-center">
+        <span className="body-md text-primary-100">
+          Default Currency: <b>USD</b>
+        </span>
+        <ChangeCurrencyButton />
       </div>
     </div>
   );

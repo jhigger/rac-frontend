@@ -167,7 +167,7 @@ const DestinationAddressDetails = () => {
 
         <hr className="mx-[10px] flex-grow border-dashed border-primary-900" />
       </div>
-      <div className="grid w-max grid-cols-4 gap-[15px]">
+      <div className="grid w-fit grid-cols-4 gap-[15px]">
         <div className="col-span-full flex flex-col gap-[20px] md:col-span-2">
           <span className="body-md max-w-[100px] text-primary-600">
             First Name:
@@ -265,7 +265,7 @@ const PickUpAddress = () => {
         </div>
 
         {open && (
-          <div className="grid w-max grid-cols-4 gap-[15px]">
+          <div className="grid w-fit grid-cols-4 gap-[15px]">
             <div className="col-span-full flex flex-col justify-between">
               <span className="body-md w-[100px] text-gray-700">
                 Pick up Address:

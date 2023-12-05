@@ -531,6 +531,15 @@ export const PickUpInstructions = () => {
           1
         </span>
         <span className="title-lg text-gray-900">
+          We will notify you once we confirm your payment, so you can come to
+          clear your package from our office.
+        </span>
+      </div>
+      <div className="flex items-center gap-[10px]">
+        <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">
+          2
+        </span>
+        <span className="title-lg text-gray-900">
           When you come to pick up your package from our office, you will
           provide us the <b>Order ID</b> to ensure that we give you the package
           that rightly belongs to you.
@@ -538,7 +547,7 @@ export const PickUpInstructions = () => {
       </div>
       <div className="flex items-center gap-[10px]">
         <span className="title-lg rounded-[20px] bg-secondary-900 p-[10px] text-white">
-          2
+          3
         </span>
         <span className="title-lg text-gray-900">
           If you won&apos;t be able to come pick up your package up from our

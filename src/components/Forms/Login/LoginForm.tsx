@@ -10,6 +10,7 @@ type LoginInputs = {
   password: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const test = async () => {
   const headersList = {
     Accept: "*/*",

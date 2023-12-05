@@ -52,13 +52,13 @@ export const TopNav = () => {
       <div>
         {topNavItems.map((navItem) => {
           return (
-            <Link href={navItem.href}>
-              <NavItem key={navItem.title} navItem={navItem} />
+            <Link key={navItem.href} href={navItem.href}>
+              <NavItem navItem={navItem} />
             </Link>
           );
         })}
       </div>
-      <Link href="/Billing">
+      <Link href="/billing">
         <NavItem
           navItem={{
             src: "/images/nav/billing_icon.svg",
@@ -81,8 +81,8 @@ export const BottomNav = () => {
       </div>
       {bottomNavItems.map((navItem) => {
         return (
-          <Link href={navItem.href}>
-            <NavItem key={navItem.title} navItem={navItem} />
+          <Link key={navItem.href} href={navItem.href}>
+            <NavItem navItem={navItem} />
           </Link>
         );
       })}

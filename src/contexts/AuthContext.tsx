@@ -45,19 +45,17 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
-  useEffect(() => {
-    const redirectTo = (path: string) => {
-      router.replace(path).catch((e) => console.log(e));
-    };
+  const redirectTo = (path: string) => {
+    router.replace(path).catch((e) => console.log(e));
+  };
 
+  useEffect(() => {
     if (user) {
       redirectTo("/shop");
-    } else if (router.asPath === "/register") {
-      return;
     } else {
       redirectTo("/login");
     }
-  }, [user, router.asPath]);
+  }, [user]);
 
   const value: AuthContextType = { user, handleUser, handleLogout };
 

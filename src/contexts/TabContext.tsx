@@ -6,9 +6,11 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from "react";
-import DraftsPanel from "~/components/Shop/Drafts/DraftsPanel";
-import OrdersPanel from "~/components/Shop/Orders/OrdersPanel";
-import RequestsPanel from "~/components/Shop/Requests/RequestsPanel";
+import ImportOrdersPanel from "~/components/Import/Orders/OrdersPanel";
+import ImportRequestsPanel from "~/components/Import/Requests/RequestsPanel";
+import ShopDraftsPanel from "~/components/Shop/Drafts/DraftsPanel";
+import ShopOrdersPanel from "~/components/Shop/Orders/OrdersPanel";
+import ShopRequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { type NavTitleType } from "./NavigationContext";
 
 export type TabContextType = {
@@ -53,16 +55,16 @@ export const tabs: AppBarTabType[] = [
   {
     nav: "Shop for me",
     tabs: [
-      { id: "orders", title: "Orders", content: <OrdersPanel /> },
-      { id: "requests", title: "Requests", content: <RequestsPanel /> },
-      { id: "drafts", title: "Drafts", content: <DraftsPanel /> },
+      { id: "orders", title: "Orders", content: <ShopOrdersPanel /> },
+      { id: "requests", title: "Requests", content: <ShopRequestsPanel /> },
+      { id: "drafts", title: "Drafts", content: <ShopDraftsPanel /> },
     ],
   },
   {
     nav: "Import",
     tabs: [
-      { id: "orders", title: "Orders", content: <>import orders</> },
-      { id: "requests", title: "Requests", content: <>import requests</> },
+      { id: "orders", title: "Orders", content: <ImportOrdersPanel /> },
+      { id: "requests", title: "Requests", content: <ImportRequestsPanel /> },
       { id: "drafts", title: "Drafts", content: <>import drafts</> },
     ],
   },
@@ -76,6 +78,7 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const handleActiveAction = (action: ActionType | null) => {
     setActiveAction(action);
   };
+
   const handleTabChange = (tabId: TabIdType) => {
     let clickedTabIndex = 0;
     tabs.forEach((navTabs) => {

@@ -2,31 +2,20 @@ import {
   createContext,
   useContext,
   useEffect,
-  useRef,
   useState,
-  type MutableRefObject,
   type ReactNode,
 } from "react";
-import DraftPanel from "~/components/Shop/Drafts/DraftsPanel";
-import OrdersPanel from "~/components/Shop/Orders/OrdersPanel";
-import RequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { orders, requests } from "~/fake data";
 
 export type ShopContextType = {
-  activeAction: ActionType | null;
-  activeTab: TabIdType;
   orderItems: OrderItemType[] | null;
   payNowAction: { action: () => void } | null;
   properties: PropertyType[] | null;
   requestItems: RequestItemType[] | null;
-  tabs: AppBarTabType[];
-  tabsRef: MutableRefObject<HTMLButtonElement[]>;
-  handleActiveAction: (action: ActionType | null) => void;
-  handleOrders: () => void;
   handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
+  handleOrders: () => void;
   handleProperties: (p: PropertyType[] | null) => void;
   handleRequests: () => void;
-  handleTabChange: (tab: TabIdType) => void;
 };
 
 export const ShopContext = createContext<ShopContextType>(
@@ -34,35 +23,6 @@ export const ShopContext = createContext<ShopContextType>(
 );
 
 export const useShopContext = () => useContext(ShopContext);
-
-const TAB_IDS = ["orders", "requests", "drafts"] as const;
-
-type TabIdType = (typeof TAB_IDS)[number];
-
-type AppBarTabType = {
-  id: TabIdType;
-  title: string;
-  content: JSX.Element;
-};
-
-export const tabs: AppBarTabType[] = [
-  { id: "orders", title: "Orders", content: <OrdersPanel /> },
-  { id: "requests", title: "Requests", content: <RequestsPanel /> },
-  { id: "drafts", title: "Drafts", content: <DraftPanel /> },
-];
-
-const ACTION_CONST = [
-  "proceed to checkout",
-  "order details",
-  "request details",
-  "draft details",
-  "request new order",
-  "initiate shipping",
-  "clear package",
-  "track",
-] as const;
-
-type ActionType = (typeof ACTION_CONST)[number];
 
 const ORDER_STATUS = ["responded", "processed", "not responded"] as const;
 const SHIPPING_STATUS = [
@@ -105,8 +65,6 @@ export type RequestItemType = {
 export type PropertyType = { label: string; value: string | undefined };
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
-  const [activeAction, setActiveAction] = useState<ActionType | null>(null);
-  const [activeTab, setActiveTab] = useState<TabIdType>("orders");
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
   const [payNowAction, setPayNowAction] =
     useState<ShopContextType["payNowAction"]>(null);
@@ -114,12 +72,6 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     null,
   );
   const [properties, setProperties] = useState<PropertyType[] | null>(null);
-
-  const tabsRef = useRef<HTMLButtonElement[]>([]);
-
-  const handleActiveAction = (action: ActionType | null) => {
-    setActiveAction(action);
-  };
 
   const handleOrders = () => {
     setOrderItems(orders);
@@ -138,24 +90,6 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     setRequestItems(requests);
   };
 
-  const handleTabChange = (tabId: TabIdType) => {
-    let clickedTabIndex = 0;
-    tabs.forEach((tab, i) => {
-      if (tab.id === tabId) {
-        clickedTabIndex = i;
-      }
-    });
-    if (!tabsRef.current[clickedTabIndex]) return;
-    tabsRef.current[clickedTabIndex]?.click();
-    setActiveTab(tabId);
-    reset();
-  };
-
-  const reset = () => {
-    setActiveAction(null);
-    setProperties(null);
-  };
-
   // testing purposes
   useEffect(() => {
     handleRequests();
@@ -163,20 +97,14 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const value: ShopContextType = {
-    activeAction,
-    activeTab,
     orderItems,
     payNowAction,
     properties,
     requestItems,
-    tabs,
-    tabsRef,
-    handleActiveAction,
     handleOrders,
     handlePayNowAction,
     handleProperties,
     handleRequests,
-    handleTabChange,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

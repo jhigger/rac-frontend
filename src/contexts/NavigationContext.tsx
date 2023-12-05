@@ -1,9 +1,15 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
-import { useShopContext } from "./ShopContext";
+import { useRouter } from "next/router";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 export type NavContextType = {
   activeNav: string;
-  handleActiveNavChange: (navTitle: TitleType) => void;
+  handleActiveNavChange: (navTitle: NavTitleType) => void;
 };
 
 export const NavContext = createContext<NavContextType>({} as NavContextType);
@@ -24,9 +30,9 @@ const NAV_TITLES = [
   "Logout",
 ] as const;
 
-type TitleType = (typeof NAV_TITLES)[number];
+export type NavTitleType = (typeof NAV_TITLES)[number];
 
-export type NavItemType = { src: string; title: TitleType; href: string };
+export type NavItemType = { src: string; title: NavTitleType; href: string };
 
 export const topNavItems: NavItemType[] = [
   { src: "/images/nav/shop_icon.svg", title: "Shop for me", href: "/shop" },
@@ -59,15 +65,31 @@ export const bottomNavItems: NavItemType[] = [
 ];
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
+  const router = useRouter();
+  const navItems = [...topNavItems, ...bottomNavItems];
+
   const [activeNav, setActiveNav] =
     useState<NavItemType["title"]>("Shop for me");
-  const { tabs, handleTabChange } = useShopContext();
 
-  const handleActiveNavChange = (navTitle: TitleType) => {
+  const handleActiveNavChange = (navTitle: NavTitleType) => {
     setActiveNav(navTitle);
-
-    if (tabs[0]) handleTabChange(tabs[0].id);
   };
+
+  const redirectTo = (path: string) => {
+    router.push(path).catch((e) => console.log(e));
+  };
+
+  useEffect(() => {
+    if (router.asPath === "/login") return;
+    if (router.asPath === "/register") return;
+    if (router.asPath === "/home") return redirectTo("/");
+
+    navItems.forEach((navItem) => {
+      if (router.asPath === navItem.href && activeNav !== navItem.title) {
+        setActiveNav(navItem.title);
+      }
+    });
+  }, [router.asPath]);
 
   const value: NavContextType = {
     activeNav,

@@ -11,6 +11,7 @@ import {
   SelectState,
 } from "~/components/Forms/Register/AddressForm";
 import { useShopContext } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
@@ -30,12 +31,9 @@ import {
 export type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
-  const {
-    orderItems,
-    handleActiveAction,
-    handlePayNowAction,
-    handleTabChange,
-  } = useShopContext();
+  const { orderItems, handlePayNowAction } = useShopContext();
+  const { handleActiveAction, handleTabChange } = useTabContext();
+
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {

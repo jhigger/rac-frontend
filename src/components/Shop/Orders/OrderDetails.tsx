@@ -1,21 +1,23 @@
 import { useShopContext } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
+import { LabelId, UnprocessedStatus } from ".";
 import AccordionButton from "../../Forms/AccordionButton";
+import {
+  BillingDetails,
+  Item,
+  PackageOrigin,
+} from "../Requests/RequestDetails";
 import {
   BackButton,
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,
 } from "../Requests/RequestOrder";
-import { LabelId, UnprocessedStatus } from ".";
-import {
-  BillingDetails,
-  Item,
-  PackageOrigin,
-} from "../Requests/RequestDetails";
 
 const OrderDetails = () => {
-  const { orderItems, handleActiveAction } = useShopContext();
+  const { orderItems } = useShopContext();
+  const { handleActiveAction } = useTabContext();
 
   if (!orderItems) return;
 

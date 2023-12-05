@@ -50,11 +50,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (user) {
-      redirectTo("/shop");
-    } else {
-      redirectTo("/login");
-    }
+    if (!user) redirectTo("/login");
+    else redirectTo("/shop");
   }, [user]);
 
   const value: AuthContextType = { user, handleUser, handleLogout };

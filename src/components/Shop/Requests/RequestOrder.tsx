@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 import {
+  Controller,
+  useFieldArray,
   useForm,
   type SubmitHandler,
-  useFieldArray,
-  Controller,
 } from "react-hook-form";
 import { useShopContext, type PropertyType } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
@@ -28,8 +29,8 @@ const RequestOrderForm = () => {
     <RequestOrderStep2 />,
   ]);
 
-  const { handleTabChange, handleRequests, handleActiveAction } =
-    useShopContext();
+  const { handleRequests } = useShopContext();
+  const { handleTabChange, handleActiveAction } = useTabContext();
 
   const handleFinish = () => {
     handleRequests();
@@ -890,7 +891,7 @@ export const BackButton = ({ onClick }: BackButtonProps) => {
 };
 
 const SaveAsDraftButton = () => {
-  const { handleTabChange } = useShopContext();
+  const { handleTabChange } = useTabContext();
 
   const onClick = () => {
     handleTabChange("drafts");

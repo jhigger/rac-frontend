@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useNavContext } from "~/contexts/NavigationContext";
-import { useShopContext } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 
 const BreadCrumbs = () => {
   const { activeNav } = useNavContext();
-  const { activeTab, activeAction } = useShopContext();
+  const { activeTab, activeAction } = useTabContext();
 
   return (
     <div className="flex w-full items-center justify-center gap-[10px] md:gap-4">

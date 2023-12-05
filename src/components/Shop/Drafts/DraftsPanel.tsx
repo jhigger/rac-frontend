@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { useShopContext } from "~/contexts/ShopContext";
 import { MoreButton } from "../Orders";
 import { TableFooter, type TableHeadType } from "../Orders/OrdersPanel";
 import RequestOrderButton from "../RequestOrderButton";
@@ -19,9 +18,7 @@ const fakeData = {
   totalValue: "$112.49",
 };
 
-const DraftPanel = () => {
-  const {} = useShopContext();
-
+const DraftsPanel = () => {
   if (fakeData) {
     return (
       <TabContentLayout>
@@ -159,4 +156,4 @@ const DraftTableBody = () => {
   );
 };
 
-export default DraftPanel;
+export default DraftsPanel;

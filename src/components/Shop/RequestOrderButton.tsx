@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { useShopContext } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 
 const RequestOrderButton = () => {
-  const { handleActiveAction, handleTabChange } = useShopContext();
+  const { handleActiveAction, handleTabChange } = useTabContext();
 
   const onClick = () => {
     handleTabChange("requests");

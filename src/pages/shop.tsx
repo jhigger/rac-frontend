@@ -5,8 +5,8 @@ import Welcome from "~/components/Navigation/Welcome";
 import TopAppBar from "~/components/TopAppBar";
 import TabContentPanels from "~/components/TopAppBar/TabContentPanels";
 import { useAuthContext } from "~/contexts/AuthContext";
-import NavContextProvider from "~/contexts/NavigationContext";
 import ShopContextProvider from "~/contexts/ShopContext";
+import TabContextProvider from "~/contexts/TabContext";
 
 const shop = () => {
   const { user } = useAuthContext();
@@ -14,8 +14,8 @@ const shop = () => {
   if (!user) return null;
 
   return (
-    <ShopContextProvider>
-      <NavContextProvider>
+    <TabContextProvider>
+      <ShopContextProvider>
         <div className="relative flex min-h-screen bg-neutral-50">
           <nav className="fixed hidden h-full min-h-screen w-[266px] flex-col overflow-y-auto bg-brand py-[40px] md:flex">
             <Welcome
@@ -40,8 +40,8 @@ const shop = () => {
             <TabContentPanels />
           </main>
         </div>
-      </NavContextProvider>
-    </ShopContextProvider>
+      </ShopContextProvider>
+    </TabContextProvider>
   );
 };
 

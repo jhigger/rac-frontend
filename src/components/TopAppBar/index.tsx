@@ -18,7 +18,6 @@ const TopAppBar = () => {
         </div>
         <div className="hidden flex-col gap-[10px] md:flex">
           <TopAppBarHeader />
-          <BreadCrumbs />
         </div>
 
         <div className="flex flex-row items-center justify-end">
@@ -44,7 +43,6 @@ const TopAppBar = () => {
       {/* mobile version */}
       <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
         <TopAppBarHeader />
-        <BreadCrumbs />
       </div>
       {/* tabs */}
       <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
@@ -58,9 +56,12 @@ const TopAppBarHeader = () => {
   const { activeNav } = useNavContext();
 
   return (
-    <h1 className="title-lg md:headline-md text-center text-brand md:text-left">
-      {activeNav}
-    </h1>
+    <>
+      <h1 className="title-lg md:headline-md text-center text-brand md:text-left">
+        {activeNav}
+      </h1>
+      <BreadCrumbs />
+    </>
   );
 };
 

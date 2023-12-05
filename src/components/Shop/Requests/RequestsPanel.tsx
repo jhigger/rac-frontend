@@ -2,8 +2,8 @@
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
 import { useShopContext, type RequestItemType } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
-import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import { LabelId, MoreButton } from "../Orders";
 import {
@@ -18,9 +18,11 @@ import SearchBar from "../SearchBar";
 import TabContentLayout from "../TabContentLayout";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
+import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
 
 const RequestsPanel = () => {
-  const { activeAction, requestItems } = useShopContext();
+  const { requestItems } = useShopContext();
+  const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
     return (
@@ -279,7 +281,7 @@ type ProceedToCheckoutButtonProps = ModalCloseType;
 const ProceedToCheckoutButton = ({
   dataClose,
 }: ProceedToCheckoutButtonProps) => {
-  const { handleActiveAction } = useShopContext();
+  const { handleActiveAction } = useTabContext();
 
   const onClick = () => {
     handleActiveAction("proceed to checkout");

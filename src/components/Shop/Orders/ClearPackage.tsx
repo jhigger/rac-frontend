@@ -6,6 +6,7 @@ import {
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
 import { useShopContext } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
@@ -32,12 +33,9 @@ import {
 } from "./OrdersPanel";
 
 const ClearPackage = () => {
-  const {
-    orderItems,
-    handleActiveAction,
-    handlePayNowAction,
-    handleTabChange,
-  } = useShopContext();
+  const { orderItems, handlePayNowAction } = useShopContext();
+  const { handleActiveAction, handleTabChange } = useTabContext();
+
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {

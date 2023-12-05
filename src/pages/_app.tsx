@@ -8,6 +8,7 @@ import tailmater from "~/js/tailmater";
 
 import "material-icons/iconfont/material-icons.css";
 import "~/styles/globals.css";
+import NavContextProvider from "~/contexts/NavigationContext";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -26,11 +27,13 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <title>RAC Logistics</title>
         <link rel="icon" href="/images/brand_icon.svg" />
       </Head>
-      <AuthContextProvider>
-        <main className={roboto.className}>
-          <Component {...pageProps} />
-        </main>
-      </AuthContextProvider>
+      <NavContextProvider>
+        <AuthContextProvider>
+          <main className={roboto.className}>
+            <Component {...pageProps} />
+          </main>
+        </AuthContextProvider>
+      </NavContextProvider>
     </>
   );
 };

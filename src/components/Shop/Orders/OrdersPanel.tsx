@@ -2,6 +2,7 @@
 import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import { LabelId, MoreButton } from ".";
 import NeedHelpFAB from "../../NeedHelpFAB";
@@ -15,7 +16,8 @@ import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const OrdersPanel = () => {
-  const { orderItems, activeAction } = useShopContext();
+  const { orderItems } = useShopContext();
+  const { activeAction } = useTabContext();
 
   if (activeAction === "clear package") {
     return (
@@ -597,7 +599,7 @@ export const CongratulationImage = ({ text }: CongratulationImageProps) => {
 type ClearPackageButtonProps = ModalCloseType;
 
 const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
-  const { handleActiveAction } = useShopContext();
+  const { handleActiveAction } = useTabContext();
 
   const onClick = () => {
     handleActiveAction("clear package");
@@ -621,7 +623,7 @@ const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
 type TrackButtonProps = ModalCloseType;
 
 const TrackButton = ({ dataClose }: TrackButtonProps) => {
-  const { handleActiveAction } = useShopContext();
+  const { handleActiveAction } = useTabContext();
 
   const onClick = () => {
     handleActiveAction("track");
@@ -644,7 +646,7 @@ const TrackButton = ({ dataClose }: TrackButtonProps) => {
 type InitiateShippingButtonProps = ModalCloseType;
 
 const InitiateShippingButton = ({ dataClose }: InitiateShippingButtonProps) => {
-  const { handleActiveAction } = useShopContext();
+  const { handleActiveAction } = useTabContext();
 
   const onClick = () => {
     handleActiveAction("initiate shipping");

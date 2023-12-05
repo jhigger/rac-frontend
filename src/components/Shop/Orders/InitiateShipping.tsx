@@ -8,6 +8,7 @@ import {
   TooltipButton,
 } from "~/components/Shop/Requests/RequestOrder";
 import { useShopContext } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
@@ -25,7 +26,9 @@ import {
 import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
 
 const InitiateShipping = () => {
-  const { orderItems, handleActiveAction, handleTabChange } = useShopContext();
+  const { orderItems } = useShopContext();
+  const { handleActiveAction, handleTabChange } = useTabContext();
+
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
     {

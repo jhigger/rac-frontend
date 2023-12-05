@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useShopContext } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
+import { LabelId, RespondedStatus } from "../Orders";
+import { type DetailSectionProps } from "../Orders/InitiateShipping";
 import {
   BackButton,
   RequestFormHeader,
@@ -9,11 +12,10 @@ import {
   SectionHeader,
   TooltipButton,
 } from "./RequestOrder";
-import { LabelId, RespondedStatus } from "../Orders";
-import { type DetailSectionProps } from "../Orders/InitiateShipping";
 
 const RequestDetails = () => {
-  const { orderItems, handleActiveAction } = useShopContext();
+  const { orderItems } = useShopContext();
+  const { handleActiveAction } = useTabContext();
 
   if (!orderItems) return;
 

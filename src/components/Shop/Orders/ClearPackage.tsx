@@ -19,7 +19,8 @@ import {
 } from "../Requests/RequestCheckout";
 import { HighlightedInfo } from "../Requests/RequestDetails";
 import {
-  BillingAddress,
+  DefaultBillingAddress,
+  DetailSection,
   PackageConfirmation,
   ShipmentCostsSummary,
   ShippingMethod,
@@ -62,13 +63,13 @@ const ClearPackage = () => {
   };
 
   useEffect(() => {
-    handlePayNowAction({ action: next });
+    handlePayNowAction({ action: next }); // todo: move to context
   }, []);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       {!isLastStep && (
-        <CongratulationImage text="Your Package has arrived at our Pickup Office in Nigeria. Proceed to clear it" />
+        <CongratulationImage text="Your package have arrived its destination. Proceed to clear it." />
       )}
       <StepIndex
         currentIndex={currentStepIndex}
@@ -121,7 +122,7 @@ const BillingDetailsConfirmation = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <DestinationShippingAddress />
-      <BillingAddress />
+      <DefaultBillingAddress />
     </div>
   );
 };
@@ -145,7 +146,7 @@ const DestinationShippingAddress = () => {
               <span className="body-md max-w-[100px] text-gray-700">
                 Destination:
               </span>
-              <span className="title-lg text-neutral-900">
+              <span className="title-md md:title-lg font-medium text-neutral-900">
                 Nigeria (Lagos - warehouse)
               </span>
             </div>
@@ -156,6 +157,25 @@ const DestinationShippingAddress = () => {
     </SectionContentLayout>
   );
 };
+
+type AddressDetail = {
+  label: string;
+  value: string;
+  colSpan?: number | "full";
+};
+
+const AddressDetail = ({ label, value, colSpan = "full" }: AddressDetail) => (
+  <div
+    className={`col-span-${colSpan} flex flex-col gap-[20px] ${
+      colSpan === "full" ? "md:col-span-2" : "justify-between"
+    }`}
+  >
+    <span className="body-md max-w-[100px] text-primary-600">{label}:</span>
+    <span className="title-md md:title-lg font-medium text-primary-900">
+      {value}
+    </span>
+  </div>
+);
 
 const DestinationAddressDetails = () => {
   return (
@@ -168,52 +188,16 @@ const DestinationAddressDetails = () => {
         <hr className="mx-[10px] flex-grow border-dashed border-primary-900" />
       </div>
       <div className="grid w-fit grid-cols-4 gap-[15px]">
-        <div className="col-span-full flex flex-col gap-[20px] md:col-span-2">
-          <span className="body-md max-w-[100px] text-primary-600">
-            First Name:
-          </span>
-          <span className="title-lg text-primary-900">Malibu</span>
-        </div>
-
-        <div className="col-span-full flex flex-col gap-[20px] md:col-span-2">
-          <span className="body-md max-w-[100px] text-primary-600">
-            Last Name:
-          </span>
-          <span className="title-lg text-primary-900">SHedrack</span>
-        </div>
-
-        <div className="col-span-full flex flex-col gap-[20px]">
-          <span className="body-md w-[100px] text-primary-600 ">
-            Street Address:
-          </span>
-          <span className="title-lg text-primary-900">
-            No, 1osolo way, ikeja road, behind scaint merry
-          </span>
-        </div>
-
-        <div className="col-span-full flex flex-col justify-between md:col-span-1">
-          <span className="body-md max-w-[100px] text-primary-600">
-            Country:
-          </span>
-          <span className="title-lg text-primary-900">Nigeria</span>
-        </div>
-
-        <div className="col-span-full flex flex-col justify-between md:col-span-1">
-          <span className="body-md max-w-[100px] text-primary-600">State:</span>
-          <span className="title-lg text-primary-900">Lagos</span>
-        </div>
-
-        <div className="col-span-full flex flex-col justify-between md:col-span-1">
-          <span className="body-md max-w-[100px] text-primary-600">City:</span>
-          <span className="title-lg text-primary-900">Ikeja</span>
-        </div>
-
-        <div className="col-span-full flex flex-col justify-between md:col-span-1">
-          <span className="body-md max-w-[100px] text-primary-600">
-            Zip/postal Code:
-          </span>
-          <span className="title-lg text-primary-900">98765</span>
-        </div>
+        <AddressDetail label="First Name" value="Malibu" />
+        <AddressDetail label="Last Name" value="SHedrack" />
+        <AddressDetail
+          label="Street Address"
+          value="No, 1osolo way, ikeja road, behind scaint merry"
+        />
+        <AddressDetail label="Country" value="Nigeria" />
+        <AddressDetail label="State" value="Lagos" />
+        <AddressDetail label="City" value="Ikeja" />
+        <AddressDetail label="Zip/postal Code" value="98765" />
       </div>
     </>
   );
@@ -266,40 +250,14 @@ const PickUpAddress = () => {
 
         {open && (
           <div className="grid w-fit grid-cols-4 gap-[15px]">
-            <div className="col-span-full flex flex-col justify-between">
-              <span className="body-md w-[100px] text-gray-700">
-                Pick up Address:
-              </span>
-              <span className="title-lg text-neutral-900">
-                No, 1osolo way, ikeja road, behind scaint merry
-              </span>
-            </div>
-
-            <div className="col-span-full flex flex-col justify-between md:col-span-1">
-              <span className="body-md max-w-[100px] text-gray-700">
-                Country:
-              </span>
-              <span className="title-lg text-neutral-900">Nigeria</span>
-            </div>
-
-            <div className="col-span-full flex flex-col justify-between md:col-span-1">
-              <span className="body-md max-w-[100px] text-gray-700">
-                State:
-              </span>
-              <span className="title-lg text-neutral-900">Lagos</span>
-            </div>
-
-            <div className="col-span-full flex flex-col justify-between md:col-span-1">
-              <span className="body-md max-w-[100px] text-gray-700">City:</span>
-              <span className="title-lg text-neutral-900">Ikeja</span>
-            </div>
-
-            <div className="col-span-full flex flex-col justify-between md:col-span-1">
-              <span className="body-md max-w-[100px] text-gray-700">
-                Zip/postal Code:
-              </span>
-              <span className="title-lg text-neutral-900">98765</span>
-            </div>
+            <DetailSection
+              label="Pick up Address"
+              value="No, 1osolo way, ikeja road, behind scaint merry"
+            />
+            <DetailSection label="Country" value="Nigeria" />
+            <DetailSection label="State" value="Lagos" />
+            <DetailSection label="City" value="Ikeja" />
+            <DetailSection label="Zip/postal Code" value="98765" />
           </div>
         )}
       </div>

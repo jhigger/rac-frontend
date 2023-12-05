@@ -6,7 +6,7 @@ const AccordionButton = ({ open, toggle }: AccordionButtonProps) => {
     <button
       aria-label={open ? "collapse" : "expand"}
       onClick={toggle}
-      className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
+      className="flex h-[24px] w-[24px] items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
     >
       {open ? (
         <img

@@ -523,49 +523,50 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
 export const PickUpInstructions = () => {
   return (
     <div className="flex w-full flex-col gap-[20px] rounded-[20px] border border-gray-200 px-[14px] py-[20px]">
-      <span className="title-lg pl-[14px] font-bold text-neutral-700">
+      <span className="title-md md:title-lg pl-[11px] font-medium text-neutral-700 md:pl-[14px] md:font-bold">
         Here is how to pick your package up from our office
       </span>
-      <div className="flex items-center gap-[10px]">
-        <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">
-          1
-        </span>
-        <span className="title-lg text-gray-900">
-          We will notify you once we confirm your payment, so you can come to
-          clear your package from our office.
-        </span>
-      </div>
-      <div className="flex items-center gap-[10px]">
-        <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">
-          2
-        </span>
-        <span className="title-lg text-gray-900">
-          When you come to pick up your package from our office, you will
-          provide us the <b>Order ID</b> to ensure that we give you the package
-          that rightly belongs to you.
-        </span>
-      </div>
-      <div className="flex items-center gap-[10px]">
-        <span className="title-lg rounded-[20px] bg-secondary-900 p-[10px] text-white">
-          3
-        </span>
-        <span className="title-lg text-gray-900">
-          If you won&apos;t be able to come pick up your package up from our
-          office, you can request for a doorstep delivery from us{" "}
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <span className="inline-flex items-center gap-[5px] text-primary-600">
-              here
-              <img
-                src="/images/export_circle_icon.svg"
-                alt="export circle icon"
-              />
-            </span>
-          </a>
-        </span>
-      </div>
+      <StepDescription
+        stepNumber="1"
+        description="We will notify you once we confirm your payment, so you can come to clear your package from our office."
+        backgroundColor="primary-600"
+      />
+      <hr className="w-full border-gray-500 md:hidden" />
+      <StepDescription
+        stepNumber="2"
+        description="When you come to pick up your package from our office, you will provide us the Order ID to ensure that we give you the package that rightly belongs to you."
+        backgroundColor="primary-600"
+      />
+      <hr className="w-full border-gray-500 md:hidden" />
+      <StepDescription
+        stepNumber="3"
+        description="If you won't be able to come pick up your package from our office, you can request for a doorstep delivery from us."
+        backgroundColor="secondary-900"
+      />
     </div>
   );
 };
+
+type StepDescriptionProps = {
+  stepNumber: string;
+  description: string;
+  backgroundColor: string;
+};
+
+const StepDescription = ({
+  stepNumber,
+  description,
+  backgroundColor,
+}: StepDescriptionProps) => (
+  <div className="flex items-center gap-[20px]">
+    <span
+      className={`title-lg rounded-[20px] bg-${backgroundColor} p-[10px] text-white`}
+    >
+      {stepNumber}
+    </span>
+    <span className="body-lg md:title-lg text-gray-900">{description}</span>
+  </div>
+);
 
 export const OrderTrackingId = () => {
   return (
@@ -592,15 +593,17 @@ type CongratulationImageProps = { text: string };
 
 export const CongratulationImage = ({ text }: CongratulationImageProps) => {
   return (
-    <div className="flex flex-col-reverse gap-[10px] rounded-[20px] bg-primary-600 px-[14px] py-[10px] md:flex-row">
+    <div className="flex flex-col-reverse gap-[10px] rounded-[20px] bg-primary-600 px-[21px] py-[15px] md:flex-row md:px-[14px] md:py-[10px]">
       <img
         src="/images/drone_flying_with_package.png"
         alt="drone flying with package"
-        className="w-1/2"
+        className="md:w-1/2"
       />
       <div className="flex flex-col justify-center gap-[10px] text-white">
-        <span className="headline-md font-bold">Congratulations!</span>
-        <span className="headline-md">{text}</span>
+        <span className="title-lg md:headline-md font-bold">
+          Congratulations!
+        </span>
+        <span className="title-lg md:headline-md">{text}</span>
       </div>
     </div>
   );

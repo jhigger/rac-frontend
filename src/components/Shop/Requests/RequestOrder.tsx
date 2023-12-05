@@ -220,7 +220,7 @@ export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
         className="w-[20px]"
       />
       <div className="flex w-full flex-col gap-[10px]">
-        <h3 className="label-lg text-secondary-900">{title}</h3>
+        <h3 className="label-lg text-secondary-900 font-medium">{title}</h3>
         {hr && <hr className="hidden w-full border-gray-500 md:block" />}
       </div>
     </div>

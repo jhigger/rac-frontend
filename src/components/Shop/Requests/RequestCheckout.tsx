@@ -309,7 +309,7 @@ const PlaceOrder = () => {
 
 export const PaymentMethods = () => {
   return (
-    <div className="flex flex-col gap-[10px] pb-[40px]">
+    <div className="flex flex-col gap-[10px] md:pb-[40px]">
       <PaymentMethod
         title="Credit/Debit Cards - Pay with Dollar/US Cards"
         description="Valid for MasterCard and Visa Cards. Maximum allowed is $1,500"
@@ -491,8 +491,8 @@ const PaymentMethod = ({
 
   return (
     <SectionContentLayout>
-      <div className="flex w-full flex-col gap-[30px] py-[10px]">
-        <div className="col-span-full flex items-center gap-[30px]">
+      <div className="flex w-full flex-col gap-[20px] py-[10px] md:gap-[30px]">
+        <div className="col-span-full flex items-center gap-[10px] md:gap-[30px]">
           <input
             className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
             name="radio"
@@ -502,7 +502,9 @@ const PaymentMethod = ({
             checked={checked}
             onChange={onChange}
           />
-          <h4 className="title-md md:title-lg text-black">{title}</h4>
+          <h4 className="title-md md:title-lg font-medium text-black">
+            {title}
+          </h4>
           <div className="flex flex-grow justify-end">
             <AccordionButton {...{ open, toggle }} />
           </div>
@@ -850,7 +852,7 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
               }
             })}
         </div>
-        <span className="title-lg">{title}</span>
+        <span className="title-lg md:title-lg">{title}</span>
       </div>
     </>
   );

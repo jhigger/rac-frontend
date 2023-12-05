@@ -183,7 +183,7 @@ const OrderItem = ({ index }: OrderItemProps) => {
     <SectionContentLayout>
       <div className="flex w-full flex-col gap-[30px]">
         <div className="flex w-full items-center justify-between">
-          <h4 className="title-md md:title-lg text-gray-700">
+          <h4 className="title-md md:title-lg font-medium text-gray-700">
             Item - <span className="text-primary-600">#{index + 1}</span>
           </h4>
           <AccordionButton {...{ open, toggle }} />
@@ -194,88 +194,65 @@ const OrderItem = ({ index }: OrderItemProps) => {
   );
 };
 
+type DetailSectionProps = {
+  label: string;
+  value: string;
+  colSpan?: number | "full";
+  image?: boolean;
+};
+
+export const DetailSection = ({
+  label,
+  value,
+  colSpan = "full",
+  image = false,
+}: DetailSectionProps) => (
+  <div
+    className={`col-span-${colSpan} flex flex-col gap-[20px] text-gray-700 md:col-span-${
+      colSpan === "full" ? 2 : 1
+    }`}
+  >
+    <span className="body-md max-w-[100px]">{label}:</span>
+    {image ? (
+      <span className="title-lg text-neutral-900">
+        <img
+          src={value}
+          alt=""
+          className="w-[220px] rounded-[20px] bg-center object-cover"
+        />
+      </span>
+    ) : (
+      <span className="title-md md:title-lg break-words font-medium text-neutral-900">
+        {value}
+      </span>
+    )}
+  </div>
+);
+
 const OrderItemDetails = () => {
   return (
-    <div className="grid w-fit grid-cols-1 gap-[15px] md:grid-cols-4">
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-        <span className="body-md max-w-[100px]">Store:</span>
-        <span className="title-lg text-neutral-900">Amazon</span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-        <span className="body-md max-w-[100px]">Urgent Purchase:</span>
-        <span className="title-lg text-neutral-900">No</span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700">
-        <span className="body-md max-w-[100px]">Item URL:</span>
-        <span className="title-lg break-words text-neutral-900">
-          htttp/jjnkkukja.jhgyjayjdjjhcjc
-        </span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-        <span className="body-md max-w-[100px]">Item Name:</span>
-        <span className="title-lg text-neutral-900">Designer Bags</span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-        <span className="body-md max-w-[100px]">Item Cost from Store:</span>
-        <span className="title-lg text-neutral-900">$45.00</span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-        <span className="body-md max-w-[100px]">Quantity:</span>
-        <span className="title-lg text-neutral-900">4</span>
-      </div>
-
-      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-        <span className="body-md max-w-[100px]">Weight:</span>
-        <span className="title-lg text-neutral-900">67kg</span>
-      </div>
-
-      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-        <span className="body-md max-w-[100px]">Height:</span>
-        <span className="title-lg text-neutral-900">5 inches</span>
-      </div>
-
-      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-        <span className="body-md max-w-[100px]">Length:</span>
-        <span className="title-lg text-neutral-900">5 inches</span>
-      </div>
-
-      <div className="col-span-2 flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-        <span className="body-md max-w-[100px]">Width:</span>
-        <span className="title-lg text-neutral-900">5 inches</span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700">
-        <span className="body-md max-w-[100px]">Product/Item Picture:</span>
-        <span className="title-lg text-neutral-900">
-          <img
-            src="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-            alt=""
-            className="w-[220px] rounded-[20px] bg-center object-cover"
-          />
-        </span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700">
-        <span className="body-md max-w-[100px]">Product Description:</span>
-        <span className="title-lg text-neutral-900">
-          Additonvnv ghss jgsjvsn
-        </span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-        <span className="body-md max-w-[100px]">Color:</span>
-        <span className="title-lg text-neutral-900">Blue</span>
-      </div>
-
-      <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-        <span className="body-md max-w-[100px]">Stripes:</span>
-        <span className="title-lg text-neutral-900">5 inches</span>
-      </div>
+    <div className="grid w-fit grid-cols-4 gap-[15px]">
+      <DetailSection label="Store" value="Amazon" />
+      <DetailSection label="Urgent Purchase" value="No" />
+      <DetailSection label="Item URL" value="htttp/jjnkkukja.jhgyjayjdjjhcjc" />
+      <DetailSection label="Item Name" value="Designer Bags" />
+      <DetailSection label="Item Cost from Store" value="$45.00" />
+      <DetailSection label="Quantity" value="4" />
+      <DetailSection label="Weight" value="67kg" colSpan={2} />
+      <DetailSection label="Height" value="5 inches" colSpan={2} />
+      <DetailSection label="Length" value="5 inches" colSpan={2} />
+      <DetailSection label="Width" value="5 inches" colSpan={2} />
+      <DetailSection
+        label="Product/Item Picture"
+        value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
+        image
+      />
+      <DetailSection
+        label="Product Description"
+        value="Additonvnv ghss jgsjvsn"
+      />
+      <DetailSection label="Color" value="Blue" />
+      <DetailSection label="Stripes" value="5 inches" />
     </div>
   );
 };
@@ -289,7 +266,7 @@ const PackageOrigin = () => {
       <SectionContentLayout>
         <div className="flex w-full flex-col gap-[30px]">
           <div className="flex w-full items-center justify-between">
-            <h4 className="title-md md:title-lg text-gray-700">
+            <h4 className="title-md md:title-lg font-medium text-gray-700">
               Package Origin
             </h4>
             <AccordionButton {...{ open, toggle }} />
@@ -299,7 +276,7 @@ const PackageOrigin = () => {
               <span className="body-md max-w-[100px] text-gray-700">
                 Country of Purchase:
               </span>
-              <span className="title-lg text-neutral-900">
+              <span className="title-md md:title-lg font-medium text-neutral-900">
                 United States (Houston - warehouse)
               </span>
             </div>
@@ -323,13 +300,13 @@ const BillingAddressStep = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Confirm your Billing Information" />
-        <BillingAddress />
+        <DefaultBillingAddress />
       </div>
     </div>
   );
 };
 
-export const BillingAddress = () => {
+export const DefaultBillingAddress = () => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -346,55 +323,18 @@ export const BillingAddress = () => {
 
         {open && (
           <div className="grid w-fit grid-cols-4 gap-[20px]">
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-              <span className="body-md max-w-[100px]">First Name:</span>
-              <span className="title-lg text-neutral-900">Malibu</span>
-            </div>
-
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-              <span className="body-md max-w-[100px]">Last Name:</span>
-              <span className="title-lg text-neutral-900">SHedrack</span>
-            </div>
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-              <span className="body-md max-w-[100px]">Contact Number:</span>
-              <span className="title-lg text-neutral-900">
-                +234 803 456 7845
-              </span>
-            </div>
-
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-2">
-              <span className="body-md max-w-[100px]">Email:</span>
-              <span className="title-lg break-words text-neutral-900">
-                Malibushdrack@gmail.com
-              </span>
-            </div>
-
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-              <span className="body-md max-w-[100px]">Country:</span>
-              <span className="title-lg text-neutral-900">Turkey</span>
-            </div>
-
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-              <span className="body-md max-w-[100px]">State:</span>
-              <span className="title-lg text-neutral-900">Istanbul</span>
-            </div>
-
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-              <span className="body-md max-w-[100px]">City:</span>
-              <span className="title-lg text-neutral-900">Cyprusic</span>
-            </div>
-
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700 md:col-span-1">
-              <span className="body-md max-w-[100px]">Zip/postal Code:</span>
-              <span className="title-lg text-neutral-900">98765</span>
-            </div>
-
-            <div className="col-span-full flex flex-col gap-[20px] text-gray-700">
-              <span className="body-md max-w-[100px]">Address:</span>
-              <span className="title-lg text-neutral-900">
-                No, 1osolo way, ikeja road, behind scaint merry
-              </span>
-            </div>
+            <DetailSection label="First Name" value="Malibu" />
+            <DetailSection label="Last Name" value="SHedrack" />
+            <DetailSection label="Contact Number" value="+234 803 456 7845" />
+            <DetailSection label="Email" value="Malibushdrack@gmail.com" />
+            <DetailSection label="Country" value="Turkey" />
+            <DetailSection label="State" value="Istanbul" />
+            <DetailSection label="City" value="Cyprusic" />
+            <DetailSection label="Zip/postal Code" value="98765" />
+            <DetailSection
+              label="Address"
+              value="No, 1osolo way, ikeja road, behind scaint merry"
+            />
           </div>
         )}
       </div>
@@ -548,16 +488,18 @@ export const ShippingMethod = ({
     <SectionContentLayout>
       <div className="flex w-full flex-col gap-[30px] py-[10px]">
         <div className="col-span-full flex items-center gap-[30px]">
-          <input
-            disabled={disabled}
-            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-            name="radio"
-            type="radio"
-            value="male"
-            aria-label="Custom Billing Address"
-            checked={checked}
-            onChange={onChange}
-          />
+          <fieldset id="shippingMethod">
+            <input
+              disabled={disabled}
+              className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
+              name="radio"
+              type="radio"
+              value="male"
+              aria-label="Custom Billing Address"
+              checked={checked}
+              onChange={onChange}
+            />
+          </fieldset>
           <h4 className="title-md md:title-lg text-black">Basic</h4>
           <div className="flex flex-grow justify-end">
             <AccordionButton {...{ open, toggle }} />
@@ -566,13 +508,11 @@ export const ShippingMethod = ({
 
         {open && (
           <div className="flex flex-col gap-[10px] pl-[10px]">
-            <div className="label-lg grid w-max grid-cols-2 gap-[20px] font-medium text-neutral-900 ">
-              <span className="col-span-1 w-[160px]">Shipping Cost:</span>
-              <span className="col-span-1 w-[100px]">$126.66</span>
-              <span className="col-span-1 w-[160px]">
-                Clearing, Port Handling:
-              </span>
-              <span className="col-span-1 w-[100px]">$126.66</span>
+            <div className="label-lg grid w-full grid-cols-2 gap-[20px] font-medium text-neutral-900 md:w-max ">
+              <span className="col-span-1">Shipping Cost:</span>
+              <span className="col-span-1 place-self-end">$126.66</span>
+              <span className="col-span-1">Clearing, Port Handling:</span>
+              <span className="col-span-1 place-self-end">$126.66</span>
             </div>
             <div className="body-md flex flex-col gap-[5px] text-gray-700">
               <p>

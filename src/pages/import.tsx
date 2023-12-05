@@ -14,7 +14,7 @@ const importPage = () => {
   return (
     <TabContextProvider>
       <ImportContextProvider>
-        <div className="relative flex min-h-screen bg-neutral-50">
+        <div className="relative flex">
           <nav className="fixed hidden h-full min-h-screen w-[266px] flex-col overflow-y-auto bg-brand py-[40px] md:flex">
             <Welcome
               {...{

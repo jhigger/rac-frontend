@@ -8,7 +8,7 @@ const TabContentPanels = () => {
   const { activeNav } = useNavContext();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       {navItems.map(({ href }) => {
         return tabs.map(({ tabs: navTabs, nav: navTitle }) => {
           if (router.asPath !== href) return null;

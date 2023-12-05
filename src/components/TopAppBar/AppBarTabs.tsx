@@ -25,7 +25,7 @@ const AppBarTabs = () => {
   }, [activeNav]);
 
   return (
-    <div className="tabs flex w-full flex-col">
+    <div className="tabs flex flex-col">
       <div className="relative flex flex-row items-center">
         {navItems.map(({ href }) => {
           return tabs.map(({ tabs: navTabs, nav: navTitle }) => {
@@ -56,7 +56,9 @@ const AppBarTabs = () => {
           className="absolute bottom-0 left-0 ml-[12%] h-0.5 w-[40px] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out sm:ml-[14%] md:ml-[40px]"
         ></div>
       </div>
-      <TabContentPanels />
+      <div className="relative flex min-h-screen bg-neutral-50">
+        <TabContentPanels />
+      </div>
     </div>
   );
 };

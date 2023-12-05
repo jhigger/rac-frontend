@@ -210,7 +210,7 @@ export const DetailSection = ({
 }: DetailSectionProps) => (
   <div
     className={`col-span-${colSpan} flex flex-col gap-[20px] text-gray-700 md:col-span-${
-      colSpan === "full" ? 2 : 1
+      colSpan === "full" ? "full" : 1
     }`}
   >
     <span className="body-md max-w-[100px]">{label}:</span>

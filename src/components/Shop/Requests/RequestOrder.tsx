@@ -1,12 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
-import { useShopContext } from "~/contexts/ShopContext";
+import {
+  useForm,
+  type SubmitHandler,
+  useFieldArray,
+  Controller,
+} from "react-hook-form";
+import { useShopContext, type PropertyType } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
-import NeedHelpFAB from "../../NeedHelpFAB";
-import { CancelButton } from "../Orders/OrdersPanel";
-import { type ModalCloseType } from "./RequestsPanel";
 import AccordionButton from "../../Forms/AccordionButton";
 import CurrencyInput from "../../Forms/Inputs/CurrencyInput";
 import FileInput from "../../Forms/Inputs/FileInput";
@@ -14,7 +17,10 @@ import QuantityInput from "../../Forms/Inputs/QuantityInput";
 import SelectInput from "../../Forms/Inputs/SelectInput";
 import TextAreaInput from "../../Forms/Inputs/TextAreaInput";
 import TextInput from "../../Forms/Inputs/TextInput";
+import NeedHelpFAB from "../../NeedHelpFAB";
+import { CancelButton } from "../Orders/OrdersPanel";
 import { TotalCost } from "./RequestCheckout";
+import { type ModalCloseType } from "./RequestsPanel";
 
 const RequestOrderForm = () => {
   const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
@@ -389,9 +395,7 @@ const ItemDetailsSection = ({
                     hr
                   />
                   <div className="flex flex-col flex-wrap items-center gap-[30px] px-[10px] md:flex-row md:pl-[34px]">
-                    <div className="w-full md:w-[230px]">
-                      <TextInput id={"itemColor"} label={"Item Color"} />
-                    </div>
+                    <PropertyFields />
                     <AddCustomPropertyButton id={`${index + 1}`} />
                   </div>
                 </div>
@@ -410,6 +414,29 @@ const ItemDetailsSection = ({
       </div>
       <ItemPreview index={index} />
     </div>
+  );
+};
+
+const PropertyFields = () => {
+  const { properties } = useShopContext();
+
+  if (!properties) return;
+
+  return (
+    <>
+      {properties.map((property, i) => {
+        return (
+          <div key={`${property.label}-${i}`} className="w-full md:w-[230px]">
+            <TextInput
+              key={`property-${i}`}
+              id={`property-${i}`}
+              label={property.label}
+              defaultValue={property.value}
+            />
+          </div>
+        );
+      })}
+    </>
   );
 };
 
@@ -433,23 +460,34 @@ const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
   const dataClose = `#${modalId}`;
   const maxWidth = "max-w-[456px]";
 
-  const [addMore, setAddMore] = useState(0);
+  const { properties, handleProperties } = useShopContext();
+  const { handleSubmit, control } = useForm<{
+    properties: PropertyType[];
+  }>({
+    defaultValues: {
+      properties: [],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "properties",
+  });
 
   const handleAddMore = () => {
-    setAddMore((prev) => ++prev);
+    append({ label: "", value: "" });
   };
 
-  const AddMoreProperties = () => {
-    return (
-      <button
-        onClick={handleAddMore}
-        aria-label="title}"
-        className="btn relative flex h-[40px] w-max flex-row items-center justify-center gap-x-2 whitespace-nowrap rounded-[20px] px-[16px] py-2.5 text-sm font-medium tracking-[.00714em]"
-      >
-        <img src="/images/add_more_icon.svg" alt="add more icon" />
-        <span className="body-lg text-primary-600">Add more properties</span>
-      </button>
+  const onSubmit: SubmitHandler<{
+    properties: PropertyType[];
+  }> = async (data) => {
+    const filtered = data.properties.filter(
+      (property) => property.label.length !== 0,
     );
+
+    if (properties === null) handleProperties(filtered);
+    else handleProperties([...properties, ...filtered]);
+
+    remove();
   };
 
   return (
@@ -463,7 +501,8 @@ const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
         data-close={dataClose}
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
-      <div
+      <form
+        onSubmit={handleSubmit(onSubmit)}
         className={`z-50 flex h-max w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px] ${maxWidth}`}
       >
         <div className="flex flex-col gap-[16px]">
@@ -476,51 +515,76 @@ const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
         </div>
 
         <div className="flex flex-col gap-[10px]">
-          {Array(addMore)
-            .fill(null)
-            .map((_, i) => {
-              return (
-                <div key={i} className="flex flex-col gap-[30px]">
-                  {i !== 0 && <hr className="mt-[20px]" />}
-                  <TextInput
-                    id="propertyLabel"
-                    label="Property Label"
-                    bg="bg-surface-300"
-                  />
-                  <TextAreaInput
-                    id="propertyDescription"
-                    label="Property Description"
-                    bg="bg-surface-300"
-                  />
-                </div>
-              );
-            })}
+          {fields.map((_, i) => {
+            return (
+              <div key={i} className="flex flex-col gap-[30px]">
+                {i !== 0 && <hr className="mt-[20px]" />}
 
-          <AddMoreProperties />
+                <Controller
+                  render={({ field }) => (
+                    <TextInput
+                      {...field}
+                      id={field.name}
+                      label="Property Label"
+                      bg="bg-surface-300"
+                    />
+                  )}
+                  name={`properties.${i}.label`}
+                  control={control}
+                />
+                <Controller
+                  render={({ field }) => (
+                    <TextAreaInput
+                      {...field}
+                      id={field.name}
+                      label="Property Description"
+                      bg="bg-surface-300"
+                    />
+                  )}
+                  name={`properties.${i}.value`}
+                  control={control}
+                />
+              </div>
+            );
+          })}
+
+          <AddMoreProperties onClick={handleAddMore} />
         </div>
 
         <div className="flex flex-row items-end justify-end">
           <div className="flex gap-[8px]">
-            <CancelButton dataClose={dataClose} onClick={() => setAddMore(0)} />
+            <CancelButton dataClose={dataClose} onClick={remove} />
             <AddPropertyButton dataClose={dataClose} />
           </div>
         </div>
-      </div>
+      </form>
     </div>
+  );
+};
+
+type AddMoreProperties = { onClick: () => void };
+
+const AddMoreProperties = ({ onClick }: AddMoreProperties) => {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="title}"
+      className="btn relative flex h-[40px] w-max flex-row items-center justify-center gap-x-2 whitespace-nowrap rounded-[20px] px-[16px] py-2.5 text-sm font-medium tracking-[.00714em]"
+    >
+      <img src="/images/add_more_icon.svg" alt="add more icon" />
+      <span className="body-lg text-primary-600">Add more properties</span>
+    </button>
   );
 };
 
 type AddPropertyButtonProps = ModalCloseType;
 
 const AddPropertyButton = ({ dataClose }: AddPropertyButtonProps) => {
-  const onClick = () => {
-    return;
-  };
-
   return (
     <button
       data-close={dataClose}
-      onClick={onClick}
+      type="submit"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <img

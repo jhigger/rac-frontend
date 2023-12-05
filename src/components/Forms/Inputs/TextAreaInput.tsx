@@ -1,30 +1,34 @@
-import { type ChangeEventHandler } from "react";
+import {
+  forwardRef,
+  type ChangeEventHandler,
+  type FocusEventHandler,
+  type Ref,
+} from "react";
 
 type TextAreaInputProps = {
   id: string;
   label: string;
   bg?: string;
+  defaultValue?: string;
   value?: string;
   onChange?: ChangeEventHandler<HTMLTextAreaElement>;
+  onBlur?: FocusEventHandler<HTMLTextAreaElement>;
 };
 
-const TextAreaInput = ({
-  id,
-  bg = "bg-neutral-10",
-  label,
-  value,
-  onChange,
-}: TextAreaInputProps) => {
+const TextAreaInput = (
+  { id, label, bg = "bg-neutral-10", ...props }: TextAreaInputProps,
+  ref: Ref<HTMLTextAreaElement>,
+) => {
   return (
     <div className="relative flex w-full flex-col">
       <textarea
+        ref={ref}
         aria-label={label}
         name={id}
         id={id}
         className={`peer relative block h-[144px] w-full overflow-x-auto rounded-[20px] border border-gray-500 px-4 py-2 leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0 ${bg}`}
         placeholder=" "
-        value={value}
-        onChange={onChange}
+        {...props}
       />
 
       <label
@@ -42,4 +46,4 @@ const TextAreaInput = ({
   );
 };
 
-export default TextAreaInput;
+export default forwardRef(TextAreaInput);

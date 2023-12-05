@@ -102,7 +102,7 @@ export type RequestItemType = {
   requestDate: string;
 };
 
-type PropertyType = { label: string; value: string | undefined };
+export type PropertyType = { label: string; value: string | undefined };
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
@@ -148,7 +148,12 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     if (!tabsRef.current[clickedTabIndex]) return;
     tabsRef.current[clickedTabIndex]?.click();
     setActiveTab(tabId);
+    reset();
+  };
+
+  const reset = () => {
     setActiveAction(null);
+    setProperties(null);
   };
 
   // testing purposes

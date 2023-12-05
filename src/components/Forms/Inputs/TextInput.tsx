@@ -10,6 +10,7 @@ type TextInputProps = {
   id: string;
   label: string;
   bg?: string;
+  defaultValue?:string
   disabled?: boolean;
   type?: HTMLInputTypeAttribute;
   value?: string;

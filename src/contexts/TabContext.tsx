@@ -61,9 +61,9 @@ export const tabs: AppBarTabType[] = [
   {
     nav: "Import",
     tabs: [
-      { id: "orders", title: "Orders", content: <></> },
-      { id: "requests", title: "Requests", content: <></> },
-      { id: "drafts", title: "Drafts", content: <></> },
+      { id: "orders", title: "Orders", content: <>import orders</> },
+      { id: "requests", title: "Requests", content: <>import requests</> },
+      { id: "drafts", title: "Drafts", content: <>import drafts</> },
     ],
   },
 ];
@@ -78,11 +78,14 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   };
   const handleTabChange = (tabId: TabIdType) => {
     let clickedTabIndex = 0;
-    tabs.forEach((tab, i) => {
-      if (tab.tabs[i]?.id === tabId) {
-        clickedTabIndex = i;
-      }
+    tabs.forEach((navTabs) => {
+      navTabs.tabs.forEach((tab, i) => {
+        if (tab.id === tabId) {
+          clickedTabIndex = i;
+        }
+      });
     });
+
     if (!tabsRef.current[clickedTabIndex]) return;
     tabsRef.current[clickedTabIndex]?.click();
     setActiveTab(tabId);

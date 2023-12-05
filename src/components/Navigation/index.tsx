@@ -24,6 +24,7 @@ export const NavItem = ({ navItem, onClick }: NavItemProps) => {
 
   return (
     <button
+      data-close="#sheet_b"
       onClick={handleClick}
       type="button"
       className={`flex w-full items-center bg-opacity-[8%] hover:bg-[url('/images/nav/nav_item_hover_bg.svg')] ${

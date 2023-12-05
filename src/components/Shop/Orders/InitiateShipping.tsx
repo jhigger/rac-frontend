@@ -195,11 +195,12 @@ const OrderItem = ({ index }: OrderItemProps) => {
   );
 };
 
-type DetailSectionProps = {
+export type DetailSectionProps = {
   label: string;
   value: string;
   colSpan?: number | "full";
   image?: boolean;
+  tooltip?: boolean;
 };
 
 export const DetailSection = ({

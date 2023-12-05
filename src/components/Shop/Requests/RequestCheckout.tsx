@@ -93,7 +93,7 @@ const RequestCheckout = () => {
         {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
         {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
         {currentStepIndex === 3 && (
-          <div className="w-[200px]">
+          <div className="w-full">
             <NextButton text="Done" next={handleFinish} />
           </div>
         )}
@@ -152,7 +152,7 @@ const DefaultBillingAddress = () => {
   return (
     <SectionContentLayout>
       <div className="flex w-full flex-col gap-[20px] py-[10px]">
-        <div className="col-span-full flex items-center gap-[30px]">
+        <div className="col-span-full flex items-center gap-[10px] md:gap-[30px]">
           <input
             className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
             name="radio"
@@ -198,7 +198,7 @@ const CustomBillingAddress = () => {
   return (
     <SectionContentLayout>
       <div className="flex w-full flex-col gap-[40px] py-[10px]">
-        <div className="col-span-full flex items-center gap-[30px]">
+        <div className="col-span-full flex items-center gap-[10px] md:gap-[30px]">
           <input
             className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
             name="radio"

@@ -220,7 +220,7 @@ export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
         className="w-[20px]"
       />
       <div className="flex w-full flex-col gap-[10px]">
-        <h3 className="label-lg text-secondary-900 font-medium">{title}</h3>
+        <h3 className="label-lg font-medium text-secondary-900">{title}</h3>
         {hr && <hr className="hidden w-full border-gray-500 md:block" />}
       </div>
     </div>
@@ -254,7 +254,7 @@ const SelectWarehouseOriginSection = () => {
 
 export const TooltipButton = () => {
   return (
-    <button className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
+    <button className="flex h-[24px] w-[24px] items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
       <img src="/images/tooltip_icon.svg" alt="tooltip icon" />
     </button>
   );

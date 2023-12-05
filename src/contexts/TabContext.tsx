@@ -1,6 +1,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useRef,
   useState,
   type MutableRefObject,
@@ -16,9 +17,9 @@ import { useNavContext, type NavTitleType } from "./NavigationContext";
 
 export type TabContextType = {
   activeAction: ActionType | null;
-  activeTab: TabIdType;
+  activeTab: AppBarTabType["tabs"][number]["id"];
   tabs: AppBarTabType[];
-  tabsRef: MutableRefObject<HTMLButtonElement[]>;
+  tabsRef: MutableRefObject<Array<HTMLButtonElement | null>>;
   handleActiveAction: (action: ActionType | null) => void;
   handleTabChange: (tab: TabIdType) => void;
 };
@@ -73,10 +74,12 @@ export const tabs: AppBarTabType[] = [
 
 const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const { activeNav } = useNavContext();
+  const firstTab = tabs.filter((tab) => tab.nav === activeNav)[0]!.tabs[0]!.id;
 
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
-  const [activeTab, setActiveTab] = useState<TabIdType>("orders");
-  const tabsRef = useRef<HTMLButtonElement[]>([]);
+  const [activeTab, setActiveTab] =
+    useState<AppBarTabType["tabs"][number]["id"]>(firstTab);
+  const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
 
   const handleActiveAction = (action: ActionType | null) => {
     setActiveAction(action);
@@ -102,6 +105,10 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const reset = () => {
     setActiveAction(null);
   };
+
+  useEffect(() => {
+    handleTabChange(firstTab);
+  }, [activeNav]);
 
   const value: TabContextType = {
     activeAction,

@@ -1,28 +1,33 @@
-import { useNavContext } from "~/contexts/NavigationContext";
+import { useRouter } from "next/router";
+import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { tabs, useTabContext } from "~/contexts/TabContext";
 
 const TabContentPanels = () => {
+  const router = useRouter();
   const { activeTab } = useTabContext();
   const { activeNav } = useNavContext();
 
   return (
     <div className="flex flex-col">
-      {tabs.map(({ nav, tabs: navTabs }) => {
-        if (nav !== activeNav) return false;
+      {navItems.map(({ href }) => {
+        return tabs.map(({ tabs: navTabs, nav: navTitle }) => {
+          if (router.asPath !== href) return null;
+          if (navTitle !== activeNav) return null;
 
-        return navTabs.map(({ id, content }, i) => {
-          return (
-            <div
-              key={`${nav}-panel-${i}`}
-              id={`${nav}-tab-${id}`}
-              role="tabpanel"
-              className={`duration-400 hidden transition ease-in-out [&.active]:block ${
-                id === activeTab && "active"
-              }`}
-            >
-              {content}
-            </div>
-          );
+          return navTabs.map(({ id, content }, i) => {
+            return (
+              <div
+                key={`${href.slice(1)}-panel-${i}`}
+                id={`${href.slice(1)}-panel-${id}`}
+                role="tabpanel"
+                className={`duration-400 hidden transition ease-in-out [&.active]:block ${
+                  id === activeTab && "active"
+                }`}
+              >
+                {content}
+              </div>
+            );
+          });
         });
       })}
     </div>

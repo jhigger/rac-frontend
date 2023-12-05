@@ -2,7 +2,6 @@ import { BottomNav, TopNav } from "~/components/Navigation";
 import SlideSheet from "~/components/Navigation/SlideSheet";
 import Welcome from "~/components/Navigation/Welcome";
 import TopAppBar from "~/components/TopAppBar";
-import TabContentPanels from "~/components/TopAppBar/TabContentPanels";
 import { useAuthContext } from "~/contexts/AuthContext";
 import TabContextProvider from "~/contexts/TabContext";
 
@@ -34,7 +33,6 @@ const importPage = () => {
             }}
           />
           <TopAppBar />
-          <TabContentPanels />
         </main>
       </div>
     </TabContextProvider>

@@ -6,6 +6,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import tailmater from "~/js/tailmater";
 
 export type NavContextType = {
   activeNav: NavTitleType;
@@ -64,9 +65,10 @@ export const bottomNavItems: NavItemType[] = [
   },
 ];
 
+export const navItems = [...topNavItems, ...bottomNavItems];
+
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  const navItems = [...topNavItems, ...bottomNavItems];
 
   const [activeNav, setActiveNav] =
     useState<NavItemType["title"]>("Shop for me");
@@ -90,6 +92,10 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
       }
     });
   }, [router.asPath]);
+
+  useEffect(() => {
+    tailmater();
+  }, [activeNav]);
 
   const value: NavContextType = {
     activeNav,

@@ -53,7 +53,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     if (user) {
       redirectTo("/shop");
     } else if (router.asPath === "/register") {
-      redirectTo("/register");
+      return;
     } else {
       redirectTo("/login");
     }

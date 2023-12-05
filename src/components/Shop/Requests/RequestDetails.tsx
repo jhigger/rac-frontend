@@ -364,7 +364,7 @@ type HighlightedInfoProps = { text: string };
 
 export const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
   return (
-    <div className="-mx-[10px] flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[14px] py-[10px]">
+    <div className="flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[14px] py-[10px]">
       <p className="body-md md:label-lg text-gray-700">{text}</p>
     </div>
   );

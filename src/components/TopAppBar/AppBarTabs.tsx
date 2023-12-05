@@ -1,9 +1,15 @@
+import { useEffect } from "react";
 import { useNavContext } from "~/contexts/NavigationContext";
 import { tabs, useTabContext } from "~/contexts/TabContext";
+import tailmater from "~/js/tailmater";
 
 const AppBarTabs = () => {
   const { activeTab, tabsRef, handleTabChange } = useTabContext();
   const { activeNav } = useNavContext();
+
+  useEffect(() => {
+    tailmater();
+  }, [activeNav]);
 
   return (
     <div className="tabs flex w-full flex-col">

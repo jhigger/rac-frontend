@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import {
   createContext,
   useContext,
+  useEffect,
   useRef,
   useState,
   type MutableRefObject,
@@ -71,6 +73,7 @@ export const tabs: AppBarTabType[] = [
 ];
 
 const TabContextProvider = ({ children }: { children: ReactNode }) => {
+  const router = useRouter();
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
   const [activeTab, setActiveTab] = useState<TabIdType>("orders");
   const tabsRef = useRef<HTMLButtonElement[]>([]);
@@ -98,6 +101,10 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const reset = () => {
     setActiveAction(null);
   };
+
+  useEffect(() => {
+    tabsRef.current = [];
+  }, [router.asPath]);
 
   const value: TabContextType = {
     activeAction,

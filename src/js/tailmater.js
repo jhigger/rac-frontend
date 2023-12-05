@@ -91,9 +91,12 @@ export default function () {
     const set_tabs = document.querySelectorAll('[data-type="tabs"]');
     const tabIndicator = document.querySelectorAll('[role="indicator"]');
 
-    if (set_tabs != null) {
+    if (set_tabs != null && set_tabs.length > 0) {
       function TabClicks(tabClickEvent) {
         const clickTarget = tabClickEvent.currentTarget;
+
+        if (!tabClickEvent.currentTarget.parentNode) return;
+
         const tabParent = tabClickEvent.currentTarget.parentNode.parentNode;
         const set_tabs = tabParent.querySelectorAll('[data-type="tabs"]');
         const tabIndicator = tabParent.querySelectorAll('[role="indicator"]');

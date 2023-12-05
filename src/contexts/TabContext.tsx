@@ -17,7 +17,7 @@ import { useNavContext, type NavTitleType } from "./NavigationContext";
 
 export type TabContextType = {
   activeAction: ActionType | null;
-  activeTab: AppBarTabType["tabs"][number]["id"];
+  activeTab: AppBarTabType["tabs"][number]["id"] | null;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<Array<HTMLButtonElement | null>>;
   handleActiveAction: (action: ActionType | null) => void;
@@ -53,7 +53,7 @@ type TabType = {
 
 type AppBarTabType = { nav: NavTitleType; tabs: TabType[] };
 
-export const tabs: AppBarTabType[] = [
+export const tabs: [AppBarTabType, ...AppBarTabType[]] = [
   {
     nav: "Shop for me",
     tabs: [
@@ -72,20 +72,30 @@ export const tabs: AppBarTabType[] = [
   },
 ];
 
+const getFirstTab = (activeNav: NavTitleType) => {
+  const activeTabs = tabs.find((tab) => tab.nav === activeNav);
+
+  if (activeTabs && activeTabs.tabs.length > 0 && activeTabs.tabs[0]) {
+    return activeTabs.tabs[0].id;
+  }
+
+  return null;
+};
+
 const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const { activeNav } = useNavContext();
-  const firstTab = tabs.filter((tab) => tab.nav === activeNav)[0]!.tabs[0]!.id;
 
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
-  const [activeTab, setActiveTab] =
-    useState<AppBarTabType["tabs"][number]["id"]>(firstTab);
+  const [activeTab, setActiveTab] = useState<
+    AppBarTabType["tabs"][number]["id"] | null
+  >(getFirstTab(activeNav));
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
 
   const handleActiveAction = (action: ActionType | null) => {
     setActiveAction(action);
   };
 
-  const handleTabChange = (tabId: TabIdType) => {
+  const handleTabChange = (tabId: TabIdType | null) => {
     let clickedTabIndex = 0;
     tabs.forEach(({ nav, tabs }) => {
       if (nav === activeNav)
@@ -107,7 +117,7 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    handleTabChange(firstTab);
+    handleTabChange(getFirstTab(activeNav));
   }, [activeNav]);
 
   const value: TabContextType = {

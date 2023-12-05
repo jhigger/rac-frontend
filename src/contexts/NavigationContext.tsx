@@ -6,7 +6,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import tailmater from "~/js/tailmater";
 
 export type NavContextType = {
   activeNav: NavTitleType;
@@ -92,10 +91,6 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
       }
     });
   }, [router.asPath]);
-
-  useEffect(() => {
-    tailmater();
-  }, [activeNav]);
 
   const value: NavContextType = {
     activeNav,

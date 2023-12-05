@@ -94,7 +94,6 @@ export default function () {
     if (set_tabs != null) {
       function TabClicks(tabClickEvent) {
         const clickTarget = tabClickEvent.currentTarget;
-        if (!clickTarget.parentNode) return;
         const tabParent = tabClickEvent.currentTarget.parentNode.parentNode;
         const set_tabs = tabParent.querySelectorAll('[data-type="tabs"]');
         const tabIndicator = tabParent.querySelectorAll('[role="indicator"]');
@@ -117,9 +116,9 @@ export default function () {
         for (let i = 0; i < isTab.length; i++) {
           isTab[i].classList.remove("active");
         }
-        // const activePaneId = clickTarget.getAttribute("data-target");
-        // const activePane = tabParent.querySelector(activePaneId);
-        // activePane.classList.add("active");
+        const activePaneId = clickTarget.getAttribute("data-target");
+        const activePane = tabParent.querySelector(activePaneId);
+        activePane.classList.add("active");
       }
 
       for (let i = 0; i < set_tabs.length; i++) {

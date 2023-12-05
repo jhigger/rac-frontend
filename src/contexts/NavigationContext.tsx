@@ -8,7 +8,7 @@ import {
 } from "react";
 
 export type NavContextType = {
-  activeNav: string;
+  activeNav: NavTitleType;
   handleActiveNavChange: (navTitle: NavTitleType) => void;
 };
 

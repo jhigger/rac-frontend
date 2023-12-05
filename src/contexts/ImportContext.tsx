@@ -86,7 +86,6 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    handleOrders();
     setRequestItems(requests);
   };
 

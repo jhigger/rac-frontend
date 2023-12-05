@@ -86,7 +86,6 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    handleOrders();
     setRequestItems(requests);
   };
 

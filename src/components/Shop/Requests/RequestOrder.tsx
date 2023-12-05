@@ -890,7 +890,7 @@ export const BackButton = ({ onClick }: BackButtonProps) => {
   );
 };
 
-const SaveAsDraftButton = () => {
+export const SaveAsDraftButton = () => {
   const { handleTabChange } = useTabContext();
 
   const onClick = () => {
@@ -929,7 +929,7 @@ export const ProceedButton = ({ next }: ProceedButtonProps) => {
 
 type DoneButtonProps = { handleFinish: () => void };
 
-const DoneButton = ({ handleFinish }: DoneButtonProps) => {
+export const DoneButton = ({ handleFinish }: DoneButtonProps) => {
   return (
     <button
       onClick={handleFinish}

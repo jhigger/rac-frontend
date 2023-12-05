@@ -6,7 +6,7 @@ import TabContentPanels from "~/components/TopAppBar/TabContentPanels";
 import { useAuthContext } from "~/contexts/AuthContext";
 import TabContextProvider from "~/contexts/TabContext";
 
-const autoImport = () => {
+const importPage = () => {
   const { user } = useAuthContext();
 
   if (!user) return null;
@@ -41,4 +41,4 @@ const autoImport = () => {
   );
 };
 
-export default autoImport;
+export default importPage;

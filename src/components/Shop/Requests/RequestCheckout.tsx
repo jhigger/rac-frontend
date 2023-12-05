@@ -684,9 +684,9 @@ const Success = () => {
 
 export const AndLastly = () => {
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="flex flex-col">
       <SectionHeader title="And lastly..." />
-      <div className="flex flex-col gap-[10px] px-[34px] py-[10px]">
+      <div className="flex flex-col gap-[10px] px-[10px] py-[10px] md:px-[34px]">
         <p className="body-md">
           We have sent you details about your Order to your email address
           <span className="text-primary-900">rexofforex@gmail.com</span>

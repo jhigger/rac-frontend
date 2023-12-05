@@ -11,6 +11,7 @@ import { useShopContext } from "~/contexts/ShopContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
+  AndLastly,
   Cost,
   ImportantNotice,
   NextButton,
@@ -91,17 +92,17 @@ const InitiateShipping = () => {
       </div>
       {currentStepIndex === 2 && (
         <div className="flex w-full flex-col gap-[10px]">
-          <div className="flex w-full items-center rounded-[20px] border-[1px] border-gray-200">
+          <div className="flex w-full items-center gap-[10px] rounded-[20px] border-[1px] border-gray-200 p-[10px]">
             <input
               type="checkbox"
               name="checked-demo"
-              className="m-[10px] h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-              checked
+              className="h-[24px] w-[24px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+              checked={undefined}
               onChange={() => {
                 return;
               }}
             />
-            <span className="body-lg text-neutral-900">
+            <span className="body-md md:body-lg text-neutral-900">
               I agree to pay for the shipment cost upon arrival/clearing for my
               package
             </span>
@@ -116,7 +117,7 @@ const InitiateShipping = () => {
             </div>
           </div>
 
-          <span className="body-md">
+          <span className="body-md text-center">
             Upon clicking &quot;initiate shipping&quot;, I confirm I have read
             and agreed to{" "}
             <a
@@ -550,32 +551,38 @@ const Success = () => {
         <SectionHeader title="Track your package" />
         <SectionContentLayout>
           <div className="flex flex-col gap-[10px]">
-            <h3 className="title-lg font-bold text-neutral-900">
+            <span className="title-md md:title-lg font-medium text-neutral-700 md:pl-[14px] md:font-bold">
               Here are more information on how to track
-            </h3>
+            </span>
             <ul className="flex flex-col gap-[14px]">
-              <li className="flex items-center gap-[26px]">
-                <span className="rounded-[20px] bg-primary-600 p-[10px] text-white">
-                  1
-                </span>
-                <span className="title-lg text-neutral-900">
-                  You can start tracking your package in the next 24 hrs using
-                  the Tracking ID above or{" "}
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    <span className="inline-flex items-center gap-[5px] font-bold text-primary-600">
-                      this link
-                      <img
-                        src="/images/export_circle_icon.svg"
-                        alt="export circle icon"
-                      />
-                    </span>
-                  </a>
-                </span>
+              <li>
+                <div className="flex items-center gap-[20px]">
+                  <span
+                    className={`title-lg rounded-[20px] bg-primary-600 p-[10px] text-white`}
+                  >
+                    1
+                  </span>
+                  <span className="body-lg md:title-lg text-neutral-900">
+                    You can start tracking your package in the next 24 hrs using
+                    the <b>Tracking ID</b> above or{" "}
+                    <a href="#" target="_blank" rel="noopener noreferrer">
+                      <span className="inline-flex items-center gap-[5px] font-bold text-primary-600">
+                        this link
+                        <img
+                          src="/images/export_circle_icon.svg"
+                          alt="export circle icon"
+                        />
+                      </span>
+                    </a>
+                  </span>
+                </div>
               </li>
             </ul>
           </div>
         </SectionContentLayout>
       </div>
+
+      <AndLastly />
     </div>
   );
 };

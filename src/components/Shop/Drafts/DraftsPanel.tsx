@@ -5,7 +5,7 @@ import { MoreButton } from "../Orders";
 import { TableFooter, type TableHeadType } from "../Orders/OrdersPanel";
 import RequestOrderButton from "../RequestOrderButton";
 import SearchBar from "../SearchBar";
-import TabContentLayout from "../TabContentLayout";
+import TabContentLayout from "../../Layouts/TabContentLayout";
 
 const fakeData = {
   draftDate: "22-03-2023 13:05",

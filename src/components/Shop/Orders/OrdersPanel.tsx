@@ -10,7 +10,7 @@ import RequestOrderButton from "../RequestOrderButton";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
 import SearchBar from "../SearchBar";
-import TabContentLayout from "../TabContentLayout";
+import TabContentLayout from "../../Layouts/TabContentLayout";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";

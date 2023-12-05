@@ -1,6 +1,6 @@
 import Balancer from "react-wrap-balancer";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
-import TabContentLayout from "~/components/Shop/TabContentLayout";
+import TabContentLayout from "~/components/Layouts/TabContentLayout";
 
 const ImportOrdersPanel = () => {
   return (

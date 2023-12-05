@@ -15,7 +15,7 @@ import {
 } from "../Orders/OrdersPanel";
 import RequestOrderButton from "../RequestOrderButton";
 import SearchBar from "../SearchBar";
-import TabContentLayout from "../TabContentLayout";
+import TabContentLayout from "../../Layouts/TabContentLayout";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";

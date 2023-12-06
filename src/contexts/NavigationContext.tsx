@@ -76,21 +76,14 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
     setActiveNav(navTitle);
   };
 
-  const redirectTo = (path: string) => {
-    router.push(path).catch((e) => console.log(e));
-  };
-
   useEffect(() => {
-    if (router.asPath === "/login") return;
-    if (router.asPath === "/register") return;
-    if (router.asPath === "/home") return redirectTo("/");
-
-    navItems.forEach((navItem) => {
-      if (router.asPath === navItem.href && activeNav !== navItem.title) {
-        setActiveNav(navItem.title);
-      }
-    });
-  }, [router.asPath]);
+    const matchedNavItem = navItems.find(
+      (navItem) => router.asPath === navItem.href,
+    );
+    if (matchedNavItem && activeNav !== matchedNavItem.title) {
+      setActiveNav(matchedNavItem.title);
+    }
+  }, [router.asPath, navItems, activeNav]);
 
   const value: NavContextType = {
     activeNav,

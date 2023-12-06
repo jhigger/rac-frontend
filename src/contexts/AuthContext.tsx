@@ -11,6 +11,7 @@ import { useCookies } from "react-cookie";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 import LoadingScreen from "~/components/LoadingScreen";
 import { type RegisterInputs } from "~/pages/register";
+import { navItems } from "./NavigationContext";
 
 export type AuthContextType = {
   user: UserType | null;
@@ -134,7 +135,11 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         .request(reqOptions)
         .then((response) => {
           setUser(response.data as UserType);
-          redirectTo("/shop");
+
+          const matchedNavItem = navItems.find(
+            (navItem) => router.asPath === navItem.href,
+          );
+          if (matchedNavItem) redirectTo(router.asPath);
         })
         .catch((e) => console.error(e))
         .finally(() => setLoading(false));

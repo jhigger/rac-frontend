@@ -10,11 +10,9 @@ import { orders, requests } from "~/fake data";
 export type ImportContextType = {
   orderItems: OrderItemType[] | null;
   payNowAction: { action: () => void } | null;
-  properties: PropertyType[] | null;
   requestItems: RequestItemType[] | null;
   handlePayNowAction: (action: ImportContextType["payNowAction"]) => void;
   handleOrders: () => void;
-  handleProperties: (p: PropertyType[] | null) => void;
   handleRequests: () => void;
 };
 
@@ -60,6 +58,14 @@ export type RequestItemType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestDate: string;
+  itemName: string;
+  idType: "Order ID" | "Tracking ID" | "Shipping ID";
+  idNumber: string;
+  itemDeliveryStatus: string; // todo: update types
+  deliveredBy: string;
+  itemOriginalCost: string;
+  quantity: number;
+  additionalItemDescription: string;
 };
 
 export type PropertyType = { label: string; value: string | undefined };
@@ -71,7 +77,6 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   const [requestItems, setRequestItems] = useState<RequestItemType[] | null>(
     null,
   );
-  const [properties, setProperties] = useState<PropertyType[] | null>(null);
 
   const handleOrders = () => {
     setOrderItems(orders);
@@ -81,12 +86,8 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
     setPayNowAction(action);
   };
 
-  const handleProperties = (p: PropertyType[] | null) => {
-    setProperties(p);
-  };
-
   const handleRequests = () => {
-    setRequestItems(requests);
+    setRequestItems(requests as RequestItemType[]);
   };
 
   // testing purposes
@@ -98,11 +99,9 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   const value: ImportContextType = {
     orderItems,
     payNowAction,
-    properties,
     requestItems,
     handleOrders,
     handlePayNowAction,
-    handleProperties,
     handleRequests,
   };
 

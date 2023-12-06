@@ -7,9 +7,9 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useCookies } from "react-cookie";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 import { type RegisterInputs } from "~/pages/register";
-import { useCookies } from "react-cookie";
 
 export type AuthContextType = {
   user: UserType | null;
@@ -45,6 +45,15 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const handleUser = (userData: UserType) => {
+    setUser(userData);
+
+    const jwtCookie = userData.jwt;
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 7); // Set expiration to 7 days from now
+    setCookie("jwt", jwtCookie, { expires: expirationDate });
+  };
+
   const handleLogin = (data: LoginInputs) => {
     const headersList = {
       Accept: "*/*",
@@ -64,12 +73,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       .request(reqOptions)
       .then((response) => {
         const userData = response.data as UserType;
-        setUser(userData);
-
-        const jwtCookie = userData.jwt;
-        const expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() + 7); // Set expiration to 7 days from now
-        setCookie("jwt", jwtCookie, { expires: expirationDate });
+        handleUser(userData);
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
@@ -98,8 +102,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       .request(reqOptions)
       .then((response) => {
         const userData = response.data as UserType;
-        console.log(userData);
-        setUser(userData);
+        handleUser(userData);
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
@@ -110,30 +113,28 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (!(user ?? loading)) redirectTo("/login");
-    else redirectTo("/shop");
-  }, [user]);
+    if (!cookies.jwt) {
+      if (!(user ?? loading)) redirectTo("/login");
+    } else {
+      const headersList = {
+        Accept: "*/*",
+      };
 
-  useEffect(() => {
-    // Check if JWT cookie exists
-    const headersList = {
-      Accept: "*/*",
-    };
+      const reqOptions = {
+        url: "https://rac-backend.onrender.com/api/users/profile",
+        method: "GET",
+        headers: headersList,
+        withCredentials: true,
+      };
 
-    const reqOptions = {
-      url: "https://rac-backend.onrender.com/api/users/profile",
-      method: "GET",
-      headers: headersList,
-      withCredentials: true,
-    };
-
-    axios
-      .request(reqOptions)
-      .then((response) => {
-        console.log(response.data);
-        setUser(response.data as UserType);
-      })
-      .catch((e) => console.error(e));
+      axios
+        .request(reqOptions)
+        .then((response) => {
+          setUser(response.data as UserType);
+          redirectTo("/shop");
+        })
+        .catch((e) => console.error(e));
+    }
   }, [cookies.jwt, setCookie]);
 
   const value: AuthContextType = {

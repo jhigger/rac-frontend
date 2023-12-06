@@ -514,19 +514,19 @@ export const PickUpInstructions = () => {
         Here is how to pick your package up from our office
       </span>
       <StepDescription
-        stepNumber="1"
+        stepNumber={1}
         description="We will notify you once we confirm your payment, so you can come to clear your package from our office."
         backgroundColor="primary-600"
       />
       <hr className="w-full border-gray-500 md:hidden" />
       <StepDescription
-        stepNumber="2"
+        stepNumber={2}
         description="When you come to pick up your package from our office, you will provide us the Order ID to ensure that we give you the package that rightly belongs to you."
         backgroundColor="primary-600"
       />
       <hr className="w-full border-gray-500 md:hidden" />
       <StepDescription
-        stepNumber="3"
+        stepNumber={3}
         description="If you won't be able to come pick up your package from our office, you can request for a doorstep delivery from us."
         backgroundColor="secondary-900"
       />
@@ -535,12 +535,12 @@ export const PickUpInstructions = () => {
 };
 
 type StepDescriptionProps = {
-  stepNumber: string;
+  stepNumber: number;
   description: string;
   backgroundColor: string;
 };
 
-const StepDescription = ({
+export const StepDescription = ({
   stepNumber,
   description,
   backgroundColor,

@@ -34,9 +34,12 @@ export type UserType = {
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [user, setUser] = useState<UserType | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleUser = (userData: UserType) => {
+    setLoading(true);
     setUser(userData);
+    setLoading(false);
   };
 
   const handleLogout = () => {
@@ -44,11 +47,11 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const redirectTo = (path: string) => {
-    router.replace(path).catch((e) => console.log(e));
+    void router.replace(path).catch((e) => console.log(e));
   };
 
   useEffect(() => {
-    if (!user) redirectTo("/login");
+    if (!(user ?? loading)) redirectTo("/login");
     else redirectTo("/import"); // todo: for testing
   }, [user]);
 

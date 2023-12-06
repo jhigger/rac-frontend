@@ -84,7 +84,7 @@ const RequestOrderStep1 = () => {
   };
 
   const handleRemoveItem = (index: number) => {
-    setItems(items.filter((_, i) => i !== index));
+    setItems((prev) => prev.filter((_, i) => i !== index)); // todo
   };
 
   return (

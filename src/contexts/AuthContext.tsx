@@ -114,6 +114,17 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     void router.replace(path).catch((e) => console.log(e));
   };
 
+  const handleNavigation = () => {
+    if (router.asPath === "/register" || router.asPath === "/login") {
+      return router.replace("/shop");
+    } else {
+      const matchedNavItem = navItems.find(
+        (navItem) => router.asPath === navItem.href,
+      );
+      if (matchedNavItem) redirectTo(router.asPath);
+    }
+  };
+
   useEffect(() => {
     if (!cookies.jwt) {
       if (!(user ?? loading)) redirectTo("/login");
@@ -135,11 +146,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         .request(reqOptions)
         .then((response) => {
           setUser(response.data as UserType);
-
-          const matchedNavItem = navItems.find(
-            (navItem) => router.asPath === navItem.href,
-          );
-          if (matchedNavItem) redirectTo(router.asPath);
+          return handleNavigation();
         })
         .catch((e) => console.error(e))
         .finally(() => setLoading(false));

@@ -83,7 +83,7 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
     if (matchedNavItem && activeNav !== matchedNavItem.title) {
       setActiveNav(matchedNavItem.title);
     }
-  }, [router.asPath, navItems, activeNav]);
+  }, [router.asPath]);
 
   const value: NavContextType = {
     activeNav,

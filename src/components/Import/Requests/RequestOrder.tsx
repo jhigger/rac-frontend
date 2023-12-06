@@ -228,8 +228,6 @@ const ItemDetailsSection = ({
     setFilename(files[0].name);
   };
 
-  console.log(index);
-
   return (
     <>
       <div className="flex items-center gap-[10px]">

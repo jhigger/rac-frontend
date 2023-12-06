@@ -423,7 +423,9 @@ type PropertyType = { label: string; value: string | undefined };
 
 type AddPropertiesSectionProps = { index: number };
 
-const AddPropertiesSection = ({ index = 0 }: AddPropertiesSectionProps) => {
+export const AddPropertiesSection = ({
+  index = 0,
+}: AddPropertiesSectionProps) => {
   const [properties, setProperties] = useState<PropertyType[] | null>(null);
 
   const handleProperties = (newProperties: PropertyType[]) => {
@@ -646,7 +648,7 @@ export const SectionContentLayout = ({
 type DeleteButtonIconProps = {
   onClick: () => void;
 };
-const DeleteButtonIcon = ({ onClick }: DeleteButtonIconProps) => {
+export const DeleteButtonIcon = ({ onClick }: DeleteButtonIconProps) => {
   return (
     <button
       onClick={onClick}
@@ -662,7 +664,7 @@ type DeleteItemButtonProps = {
   onClick: () => void;
 };
 
-const DeleteItemButton = ({ onClick }: DeleteItemButtonProps) => {
+export const DeleteItemButton = ({ onClick }: DeleteItemButtonProps) => {
   return (
     <button
       onClick={onClick}

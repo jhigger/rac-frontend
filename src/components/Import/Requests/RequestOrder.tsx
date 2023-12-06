@@ -186,12 +186,12 @@ const Step2 = () => {
 
       <SectionHeader title="describe your package" />
       <div className="flex flex-col gap-[20px]">
-        {fields.map((_, i) => {
+        {fields.map((field, i) => {
           return (
             <ItemDetailsSection
-              key={i}
+              key={field.id}
               index={i}
-              handleRemoveItem={handleRemove}
+              handleRemoveItem={() => handleRemove(i)}
               fields={fields}
               expanded
             />
@@ -208,7 +208,7 @@ const Step2 = () => {
 type ItemDetailsSectionProps = {
   index: number;
   expanded?: boolean;
-  handleRemoveItem: (index: number) => void;
+  handleRemoveItem: () => void;
   fields: FieldArrayWithId<Inputs, "requestItems", "id">[];
 };
 
@@ -227,6 +227,8 @@ const ItemDetailsSection = ({
     if (!files[0]) return;
     setFilename(files[0].name);
   };
+
+  console.log(index);
 
   return (
     <>
@@ -338,12 +340,12 @@ const ItemDetailsSection = ({
             )}
 
             <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 p-[10px] md:hidden">
-              <DeleteItemButton onClick={() => handleRemoveItem(index)} />
+              <DeleteItemButton onClick={handleRemoveItem} />
             </div>
           </div>
         </SectionContentLayout>
         <div className="hidden md:block">
-          <DeleteButtonIcon onClick={() => handleRemoveItem(index)} />
+          <DeleteButtonIcon onClick={handleRemoveItem} />
         </div>
       </div>
     </>

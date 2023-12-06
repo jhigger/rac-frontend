@@ -22,6 +22,7 @@ import NeedHelpFAB from "../../NeedHelpFAB";
 import { CancelButton } from "../Orders/OrdersPanel";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
+import { useNavContext } from "~/contexts/NavigationContext";
 
 const RequestOrderForm = () => {
   const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
@@ -476,7 +477,9 @@ const AddCustomPropertyButton = ({
   id,
   handleProperties,
 }: AddCustomPropertyButtonProps) => {
-  const modalId = `request-order-item-${id}`;
+  const { activeNav } = useNavContext();
+  const nav = activeNav.split(" ").join("-").toLowerCase();
+  const modalId = `${nav}-request-order-item-${id}`;
   const dataTarget = `#${modalId}`;
 
   return (

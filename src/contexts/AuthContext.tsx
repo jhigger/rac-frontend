@@ -8,11 +8,13 @@ import {
   type ReactNode,
 } from "react";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
+import { type RegisterInputs } from "~/pages/register";
 
 export type AuthContextType = {
   user: UserType | null;
   handleUser: (data: LoginInputs) => void;
   handleLogout: () => void;
+  handleRegister: (data: RegisterInputs) => void;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -69,6 +71,31 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
   };
 
+  const handleRegister = (data: RegisterInputs) => {
+    const headersList = {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    };
+    const reqOptions = {
+      url: "https://rac-backend.onrender.com/api/users/auth",
+      method: "POST",
+      headers: headersList,
+      data,
+      withCredentials: true,
+    };
+
+    setLoading(true);
+
+    axios
+      .request(reqOptions)
+      .then((response) => {
+        const userData = response.data as UserType;
+        setUser(userData);
+      })
+      .catch((e) => console.error(e))
+      .finally(() => setLoading(false));
+  };
+
   const redirectTo = (path: string) => {
     void router.replace(path).catch((e) => console.log(e));
   };
@@ -78,7 +105,12 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     else redirectTo("/import"); // todo: for testing
   }, [user]);
 
-  const value: AuthContextType = { user, handleUser, handleLogout };
+  const value: AuthContextType = {
+    user,
+    handleUser,
+    handleLogout,
+    handleRegister,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

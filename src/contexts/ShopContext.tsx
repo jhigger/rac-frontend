@@ -10,11 +10,9 @@ import { orders, requests } from "~/fake data";
 export type ShopContextType = {
   orderItems: OrderItemType[] | null;
   payNowAction: { action: () => void } | null;
-  properties: PropertyType[] | null;
   requestItems: RequestItemType[] | null;
   handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
   handleOrders: () => void;
-  handleProperties: (p: PropertyType[] | null) => void;
   handleRequests: () => void;
 };
 
@@ -62,8 +60,6 @@ export type RequestItemType = {
   requestDate: string;
 };
 
-export type PropertyType = { label: string; value: string | undefined };
-
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
   const [payNowAction, setPayNowAction] =
@@ -71,18 +67,12 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [requestItems, setRequestItems] = useState<RequestItemType[] | null>(
     null,
   );
-  const [properties, setProperties] = useState<PropertyType[] | null>(null);
-
   const handleOrders = () => {
     setOrderItems(orders);
   };
 
   const handlePayNowAction = (action: ShopContextType["payNowAction"]) => {
     setPayNowAction(action);
-  };
-
-  const handleProperties = (p: PropertyType[] | null) => {
-    setProperties(p);
   };
 
   const handleRequests = () => {
@@ -98,11 +88,9 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const value: ShopContextType = {
     orderItems,
     payNowAction,
-    properties,
     requestItems,
     handleOrders,
     handlePayNowAction,
-    handleProperties,
     handleRequests,
   };
 

@@ -6,7 +6,7 @@ import {
   useForm,
   type SubmitHandler,
 } from "react-hook-form";
-import { useShopContext, type PropertyType } from "~/contexts/ShopContext";
+import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -91,16 +91,19 @@ const RequestOrderStep1 = () => {
       <RequestFormHeader title="Requesting For New Shop For Me Service" />
       <ImportantNotice />
       <SelectWarehouseOriginSection />
-      {items.map((_, i) => {
-        return (
-          <ItemDetailsSection
-            key={i}
-            index={i}
-            handleRemoveItem={handleRemoveItem}
-            expanded
-          />
-        );
-      })}
+      <SectionHeader title="Fill in the Items details" />
+      <div className="flex flex-col gap-[20px]">
+        {items.map((_, i) => {
+          return (
+            <ItemDetailsSection
+              key={i}
+              index={i}
+              handleRemoveItem={handleRemoveItem}
+              expanded
+            />
+          );
+        })}
+      </div>
       <div className="w-max">
         <AddButton
           title="Add Item"
@@ -273,7 +276,7 @@ type ItemDetailsSectionProps = {
   handleRemoveItem: (index: number) => void;
 };
 
-const ItemDetailsSection = ({
+export const ItemDetailsSection = ({
   index,
   expanded = false,
   handleRemoveItem,
@@ -289,8 +292,7 @@ const ItemDetailsSection = ({
   };
 
   return (
-    <div className="flex flex-col gap-[20px]">
-      <SectionHeader title="Fill in the Items details" />
+    <>
       <div className="flex items-center gap-[10px]">
         <SectionContentLayout>
           <div className="flex w-full flex-col gap-[30px]">
@@ -396,8 +398,7 @@ const ItemDetailsSection = ({
                     hr
                   />
                   <div className="flex flex-col flex-wrap items-center gap-[30px] px-[10px] md:flex-row md:pl-[34px]">
-                    <PropertyFields />
-                    <AddCustomPropertyButton id={`${index + 1}`} />
+                    <AddPropertiesSection index={index} />
                   </div>
                 </div>
               </div>
@@ -414,15 +415,37 @@ const ItemDetailsSection = ({
         </div>
       </div>
       <ItemPreview index={index} />
-    </div>
+    </>
   );
 };
 
-const PropertyFields = () => {
-  const { properties } = useShopContext();
+type PropertyType = { label: string; value: string | undefined };
 
-  if (!properties) return;
+type AddPropertiesSectionProps = { index: number };
 
+const AddPropertiesSection = ({ index = 0 }: AddPropertiesSectionProps) => {
+  const [properties, setProperties] = useState<PropertyType[] | null>(null);
+
+  const handleProperties = (newProperties: PropertyType[]) => {
+    if (!properties) return setProperties(newProperties);
+    setProperties((prev) => [...prev!, ...newProperties]);
+  };
+
+  return (
+    <>
+      {properties && <PropertyFields properties={properties} />}
+      <AddCustomPropertyButton
+        id={`${index + 1}`}
+        properties={properties}
+        handleProperties={handleProperties}
+      />
+    </>
+  );
+};
+
+type PropertyFieldsProps = { properties: PropertyType[] };
+
+const PropertyFields = ({ properties }: PropertyFieldsProps) => {
   return (
     <>
       {properties.map((property, i) => {
@@ -441,27 +464,42 @@ const PropertyFields = () => {
   );
 };
 
-type AddCustomPropertyButtonProps = { id: string };
+type AddCustomPropertyButtonProps = {
+  id: string;
+  properties: PropertyType[] | null;
+  handleProperties: (p: PropertyType[]) => void;
+};
 
-const AddCustomPropertyButton = ({ id }: AddCustomPropertyButtonProps) => {
+const AddCustomPropertyButton = ({
+  id,
+  handleProperties,
+}: AddCustomPropertyButtonProps) => {
   const modalId = `request-order-item-${id}`;
   const dataTarget = `#${modalId}`;
 
   return (
     <div className="w-full md:w-max">
       <AddButton title="Add properties" dataTarget={dataTarget} />
-      <AddPropertiesModal modalId={modalId} />
+      <AddPropertiesModal
+        modalId={modalId}
+        handleProperties={handleProperties}
+      />
     </div>
   );
 };
 
-type AddPropertiesModalProps = { modalId: string };
+type AddPropertiesModalProps = {
+  modalId: string;
+  handleProperties: AddCustomPropertyButtonProps["handleProperties"];
+};
 
-const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
+const AddPropertiesModal = ({
+  modalId,
+  handleProperties,
+}: AddPropertiesModalProps) => {
   const dataClose = `#${modalId}`;
   const maxWidth = "max-w-[456px]";
 
-  const { properties, handleProperties } = useShopContext();
   const { handleSubmit, control } = useForm<{
     properties: PropertyType[];
   }>({
@@ -484,10 +522,7 @@ const AddPropertiesModal = ({ modalId }: AddPropertiesModalProps) => {
     const filtered = data.properties.filter(
       (property) => property.label.length !== 0,
     );
-
-    if (properties === null) handleProperties(filtered);
-    else handleProperties([...properties, ...filtered]);
-
+    handleProperties(filtered);
     remove();
   };
 
@@ -860,7 +895,7 @@ type AddButtonProps = {
   onClick?: () => void;
 };
 
-const AddButton = ({ title, dataTarget, onClick }: AddButtonProps) => {
+export const AddButton = ({ title, dataTarget, onClick }: AddButtonProps) => {
   return (
     <button
       onClick={onClick}

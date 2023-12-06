@@ -77,19 +77,27 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const redirectTo = (path: string) => {
-    router.push(path).catch((e) => console.log(e));
+    void router.push(path).catch((e) => console.log(e));
   };
 
   useEffect(() => {
-    if (router.asPath === "/login") return;
-    if (router.asPath === "/register") return;
-    if (router.asPath === "/home") return redirectTo("/");
+    const handleRouteChange = () => {
+      if (router.asPath === "/login") return;
+      if (router.asPath === "/register") return;
+      if (router.asPath === "/home") return redirectTo("/");
 
-    navItems.forEach((navItem) => {
-      if (router.asPath === navItem.href && activeNav !== navItem.title) {
-        setActiveNav(navItem.title);
-      }
-    });
+      navItems.forEach((navItem) => {
+        if (router.asPath === navItem.href && activeNav !== navItem.title) {
+          setActiveNav(navItem.title);
+        }
+      });
+    };
+
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
   }, [router.asPath]);
 
   const value: NavContextType = {

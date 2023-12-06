@@ -234,7 +234,7 @@ const ItemDetailsSection = ({
               <div className="grid w-full grid-cols-1 gap-[30px] md:grid-cols-12">
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-8">
                   <SelectInput
-                    id={"store"}
+                    id={`store-${index}`}
                     label={"Store"}
                     options={
                       <>
@@ -249,7 +249,7 @@ const ItemDetailsSection = ({
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-4">
                   <SelectInput
-                    id={"urgentPurchase"}
+                    id={`urgentPurchase-${index}`}
                     label={"Urgent Purchase"}
                     options={
                       <>
@@ -263,34 +263,34 @@ const ItemDetailsSection = ({
                 </div>
 
                 <div className="col-span-full">
-                  <TextInput id={"itemUrl"} label={"Item URL"} />
+                  <TextInput id={`itemUrl-${index}`} label={"Item URL"} />
                 </div>
 
                 <div className="col-span-full">
-                  <TextInput id={"itemName"} label={"Item Name"} />
+                  <TextInput id={`itemName-${index}`} label={"Item Name"} />
                 </div>
 
                 <div className="col-span-full md:col-span-8">
                   <CurrencyInput
-                    id={"itemOriginalCost"}
+                    id={`itemOriginalCost-${index}`}
                     label={"Item Original Cost"}
                   />
                 </div>
 
                 <div className="col-span-full md:col-span-4">
-                  <QuantityInput id={"quantity"} label={"Quantity"} />
+                  <QuantityInput id={`quantity-${index}`} label={"Quantity"} />
                 </div>
 
                 <div className="col-span-full">
                   <div className="md:hidden">
                     <CurrencyInput
-                      id={"totalShippingCost"}
+                      id={`totalShippingCost-${index}`}
                       label={"T. Sh. cost to your w.h & Sales Tax"}
                     />
                   </div>
                   <div className="hidden md:block">
                     <CurrencyInput
-                      id={"totalShippingCost"}
+                      id={`totalShippingCost-${index}`}
                       label={
                         "Total shipping cost to your warehouse & Sales Tax"
                       }
@@ -300,7 +300,7 @@ const ItemDetailsSection = ({
 
                 <div className="col-span-full">
                   <FileInput
-                    id={"itemPicture"}
+                    id={`itemPicture-${index}`}
                     label={"Upload Item Picture"}
                     value={filename}
                     onChange={handleChange}
@@ -309,7 +309,7 @@ const ItemDetailsSection = ({
 
                 <div className="col-span-full">
                   <TextAreaInput
-                    id={"additionalItemDescription"}
+                    id={`additionalItemDescription-${index}`}
                     label={"Additional Item Description"}
                   />
                 </div>

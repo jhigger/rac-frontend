@@ -11,11 +11,11 @@ export type LoginInputs = {
 };
 
 const LoginForm = () => {
-  const { handleUser } = useAuthContext();
+  const { handleLogin } = useAuthContext();
   const { register, handleSubmit } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
-    handleUser(data);
+    handleLogin(data);
   };
 
   return (

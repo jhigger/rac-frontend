@@ -12,7 +12,7 @@ import { type RegisterInputs } from "~/pages/register";
 
 export type AuthContextType = {
   user: UserType | null;
-  handleUser: (data: LoginInputs) => void;
+  handleLogin: (data: LoginInputs) => void;
   handleLogout: () => void;
   handleRegister: (data: RegisterInputs) => void;
 };
@@ -42,7 +42,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleUser = (data: LoginInputs) => {
+  const handleLogin = (data: LoginInputs) => {
     const headersList = {
       Accept: "*/*",
       "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value: AuthContextType = {
     user,
-    handleUser,
+    handleLogin,
     handleLogout,
     handleRegister,
   };

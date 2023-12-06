@@ -39,7 +39,7 @@ const INITIAL_DATA: RegisterInputs = {
 };
 
 const register = () => {
-  const { user, handleUser } = useAuthContext();
+  const { user, handleLogin } = useAuthContext();
 
   if (user) return null;
   const { handleSubmit, ...form } = useForm<RegisterInputs>({
@@ -50,32 +50,9 @@ const register = () => {
     <AddressForm {...form} />,
   ]);
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
-    // const reqOptions = {
-    //   url: "https://rac-backend.onrender.com/api/users/auth",
-    //   method: "POST",
-    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    //   // validateStatus: (status: any) => {
-    //   //   return (status >= 200 && status < 300) || status === 401;
-    //   // },
-    //   data,
-    // };
-
-    // const response = await axios.request(reqOptions);
-    // console.log(response.data);
-
     if (!isLastStep) return next();
-    alert(JSON.stringify(data, null, 2));
 
-    const userData = {
-      _id: "656bcb107c2bc6d6453efc71",
-      country: "Country A",
-      countryCode: "+1",
-      email: "john@example.com",
-      isAdmin: false,
-      firstName: "john",
-      lastName: "Doe",
-    };
-    handleUser(userData);
+    handleLogin(data);
   };
 
   return (

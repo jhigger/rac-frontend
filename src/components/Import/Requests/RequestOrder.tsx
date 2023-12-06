@@ -202,6 +202,7 @@ type ItemDetailsSectionProps = {
 };
 
 const ItemDetailsSection = ({
+  // fields // todo: register form fields
   index,
   expanded = false,
   handleRemoveItem,
@@ -232,10 +233,14 @@ const ItemDetailsSection = ({
 
             {open && (
               <div className="grid w-full grid-cols-1 gap-[30px] md:grid-cols-12">
-                <div className="col-span-full flex items-center gap-[10px] md:col-span-8">
+                <div className="col-span-full">
+                  <TextInput id={`itemName-${index}`} label={"Item Name"} />
+                </div>
+
+                <div className="col-span-full flex items-center gap-[10px] md:col-span-6">
                   <SelectInput
-                    id={`store-${index}`}
-                    label={"Store"}
+                    id={`idType-${index}`}
+                    label={"ID Type"}
                     options={
                       <>
                         <option value="" disabled hidden>
@@ -247,10 +252,15 @@ const ItemDetailsSection = ({
                   <TooltipButton />
                 </div>
 
-                <div className="col-span-full flex items-center gap-[10px] md:col-span-4">
+                <div className="col-span-full flex items-center gap-[10px] md:col-span-6 ">
+                  <TextInput id={`idNumber-${index}`} label={"ID Number"} />
+                  <TooltipButton />
+                </div>
+
+                <div className="col-span-full flex items-center gap-[10px]">
                   <SelectInput
-                    id={`urgentPurchase-${index}`}
-                    label={"Urgent Purchase"}
+                    id={`itemDeliveryStatus-${index}`}
+                    label={"Item Delivery Status"}
                     options={
                       <>
                         <option value="" disabled hidden>
@@ -262,12 +272,19 @@ const ItemDetailsSection = ({
                   <TooltipButton />
                 </div>
 
-                <div className="col-span-full">
-                  <TextInput id={`itemUrl-${index}`} label={"Item URL"} />
-                </div>
-
-                <div className="col-span-full">
-                  <TextInput id={`itemName-${index}`} label={"Item Name"} />
+                <div className="col-span-full flex items-center gap-[10px]">
+                  <SelectInput
+                    id={`deliveredBy-${index}`}
+                    label={"Delivered By"}
+                    options={
+                      <>
+                        <option value="" disabled hidden>
+                          No
+                        </option>
+                      </>
+                    }
+                  />
+                  <TooltipButton />
                 </div>
 
                 <div className="col-span-full md:col-span-8">
@@ -279,23 +296,6 @@ const ItemDetailsSection = ({
 
                 <div className="col-span-full md:col-span-4">
                   <QuantityInput id={`quantity-${index}`} label={"Quantity"} />
-                </div>
-
-                <div className="col-span-full">
-                  <div className="md:hidden">
-                    <CurrencyInput
-                      id={`totalShippingCost-${index}`}
-                      label={"T. Sh. cost to your w.h & Sales Tax"}
-                    />
-                  </div>
-                  <div className="hidden md:block">
-                    <CurrencyInput
-                      id={`totalShippingCost-${index}`}
-                      label={
-                        "Total shipping cost to your warehouse & Sales Tax"
-                      }
-                    />
-                  </div>
                 </div>
 
                 <div className="col-span-full">

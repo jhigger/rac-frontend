@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState, type ChangeEvent } from "react";
 import {
   FormProvider,
@@ -15,6 +16,11 @@ import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import TextAreaInput from "~/components/Forms/Inputs/TextAreaInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
+import { LabelId } from "~/components/Shop/Orders";
+import {
+  CongratulationImage,
+  StepDescription,
+} from "~/components/Shop/Orders/OrdersPanel";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import {
   AddButton,
@@ -94,6 +100,11 @@ const RequestOrder = () => {
         <RequestFormHeader title="Requesting For New Import Order" />
         {!isLastStep && (
           <HighlightedInfo text="Provide as much Information as possible needed for our staffs to identify your package if it has been delivered. The more Information you provide, the easier we identify your package." />
+        )}
+        {isLastStep && (
+          <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
+            <LabelId label="Request:" id="R78667" />
+          </div>
         )}
 
         {step}
@@ -339,8 +350,53 @@ const ItemDetailsSection = ({
   );
 };
 
+type ListItem = { content: string };
+
+const instructions: ListItem[] = [
+  {
+    content:
+      "Kindly note that we use the package descriptions you provided to identify the package you claim to have been delivered to our Warehouse (Origin warehouse you selected) for shipping.",
+  },
+  {
+    content:
+      "After we have been able to Identify your package, you will be notified so you can proceed to Initiate shipping processes for your package.",
+  },
+  {
+    content:
+      "Additionally, you will just agree with the shipping cost to allow us process your Order, You will be paying for the shipment Cost when upon arrival/clearing of your package.",
+  },
+  {
+    content:
+      "And finally, you will be paying for the shipping cost when the package gets to our office in Nigeria (you would inform us about the one closest to you in the coming shipping stages",
+  },
+];
+
 const Step3 = () => {
-  return <></>;
+  return (
+    <div className="flex flex-col gap-[30px]">
+      <CongratulationImage text="You have just successfully requested for Import service." />
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="What Next?" />
+        <SectionContentLayout>
+          <div className="flex flex-col gap-[20px]">
+            <span className="title-md md:title-lg pl-[11px] font-medium text-neutral-700 md:pl-[14px] md:font-bold">
+              Here is how to pick your package up from our office
+            </span>
+            <ul className="flex flex-col gap-[14px]">
+              {instructions.map((item, i) => (
+                <StepDescription
+                  key={i}
+                  stepNumber={i + 1}
+                  description={item.content}
+                  backgroundColor="primary-600"
+                />
+              ))}
+            </ul>
+          </div>
+        </SectionContentLayout>
+      </div>
+    </div>
+  );
 };
 
 const SelectOrigin = () => {

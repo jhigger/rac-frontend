@@ -15,8 +15,8 @@ const LoginForm = () => {
   // todo: add react query
   const { register, handleSubmit } = useForm<LoginInputs>();
 
-  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-    await handleUser(data);
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+    handleUser(data);
   };
 
   return (

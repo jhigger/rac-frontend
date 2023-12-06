@@ -11,7 +11,7 @@ import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 
 export type AuthContextType = {
   user: UserType | null;
-  handleUser: (data: LoginInputs) => Promise<void>;
+  handleUser: (data: LoginInputs) => void;
   handleLogout: () => void;
 };
 
@@ -38,7 +38,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleUser = async (data: LoginInputs) => {
+  const handleUser = (data: LoginInputs) => {
     const headersList = {
       Accept: "*/*",
       "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
     setLoading(true);
 
-    await axios
+    axios
       .request(reqOptions)
       .then((response) => {
         const userData = response.data as UserType;

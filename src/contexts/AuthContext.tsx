@@ -34,6 +34,8 @@ export type UserType = {
 };
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+  // todo: add react query
+
   const router = useRouter();
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);

@@ -12,7 +12,6 @@ export type LoginInputs = {
 
 const LoginForm = () => {
   const { handleUser } = useAuthContext();
-  // todo: add react query
   const { register, handleSubmit } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {

@@ -27,16 +27,6 @@ const PasswordInput = (
   return (
     <div className="relative flex flex-col">
       <div className="relative z-0">
-        <button
-          className="absolute right-4 top-4 z-10"
-          type="button"
-          onClick={toggleVisibility}
-        >
-          <span className="material-icons-outlined">
-            {show ? "visibility" : "visibility_off"}
-          </span>
-        </button>
-
         <input
           ref={ref}
           type={show ? "text" : "password"}
@@ -54,6 +44,16 @@ const PasswordInput = (
         >
           {label}
         </label>
+
+        <button
+          className="absolute right-4 top-4 z-10"
+          type="button"
+          onClick={toggleVisibility}
+        >
+          <span className="material-icons-outlined">
+            {show ? "visibility" : "visibility_off"}
+          </span>
+        </button>
       </div>
       <div className="hidden px-4 pt-1 text-xs tracking-[0.4px]">
         Supporting text

@@ -9,6 +9,7 @@ import {
 } from "react";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 import { type RegisterInputs } from "~/pages/register";
+import { useCookies } from "react-cookie";
 
 export type AuthContextType = {
   user: UserType | null;
@@ -33,11 +34,13 @@ export type UserType = {
   lastName: string;
   email: string;
   isAdmin: boolean;
+  jwt: string;
 };
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   // todo: add react query
 
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const router = useRouter();
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
@@ -62,6 +65,11 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       .then((response) => {
         const userData = response.data as UserType;
         setUser(userData);
+
+        const jwtCookie = userData.jwt;
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + 7); // Set expiration to 7 days from now
+        setCookie("jwt", jwtCookie, { expires: expirationDate });
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
@@ -69,6 +77,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleLogout = () => {
     setUser(null);
+    removeCookie("jwt");
   };
 
   const handleRegister = (data: RegisterInputs) => {
@@ -81,7 +90,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       method: "POST",
       headers: headersList,
       data,
-      withCredentials: true,
     };
 
     setLoading(true);
@@ -90,6 +98,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       .request(reqOptions)
       .then((response) => {
         const userData = response.data as UserType;
+        console.log(userData);
         setUser(userData);
       })
       .catch((e) => console.error(e))
@@ -102,8 +111,30 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!(user ?? loading)) redirectTo("/login");
-    else redirectTo("/import"); // todo: for testing
+    else redirectTo("/shop");
   }, [user]);
+
+  useEffect(() => {
+    // Check if JWT cookie exists
+    const headersList = {
+      Accept: "*/*",
+    };
+
+    const reqOptions = {
+      url: "https://rac-backend.onrender.com/api/users/profile",
+      method: "GET",
+      headers: headersList,
+      withCredentials: true,
+    };
+
+    axios
+      .request(reqOptions)
+      .then((response) => {
+        console.log(response.data);
+        setUser(response.data as UserType);
+      })
+      .catch((e) => console.error(e));
+  }, [cookies.jwt, setCookie]);
 
   const value: AuthContextType = {
     user,

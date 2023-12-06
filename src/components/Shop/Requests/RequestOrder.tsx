@@ -482,6 +482,10 @@ const AddCustomPropertyButton = ({
   const modalId = `${nav}-request-order-item-${id}`;
   const dataTarget = `#${modalId}`;
 
+  useEffect(() => {
+    tailmater();
+  }, []);
+
   return (
     <div className="w-full md:w-max">
       <AddButton title="Add properties" dataTarget={dataTarget} />

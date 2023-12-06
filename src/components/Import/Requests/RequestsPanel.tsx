@@ -1,4 +1,5 @@
 import Balancer from "react-wrap-balancer";
+import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import {
   TableFooter,
@@ -10,7 +11,6 @@ import {
   RequestTableHead,
 } from "~/components/Shop/Requests/RequestsPanel";
 import SearchBar from "~/components/Shop/SearchBar";
-import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import RequestOrder from "./RequestOrder";
@@ -27,12 +27,22 @@ const ImportRequestsPanel = () => {
     );
   }
 
+  // todo:
   if (activeAction === "request details") {
-    return <TabContentLayout>{/* <RequestDetails /> */}</TabContentLayout>;
+    return (
+      <TabContentLayout>
+        <>{/* <RequestDetails /> */}</>
+      </TabContentLayout>
+    );
   }
 
+  // todo:
   if (activeAction === "proceed to checkout") {
-    return <TabContentLayout>{/* <RequestCheckout /> */}</TabContentLayout>;
+    return (
+      <TabContentLayout>
+        <>{/* <RequestCheckout /> */}</>
+      </TabContentLayout>
+    );
   }
 
   if (requestItems) {

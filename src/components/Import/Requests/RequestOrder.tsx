@@ -64,10 +64,11 @@ type Inputs = {
 };
 
 const RequestOrder = () => {
+  const [oops] = useState(true);
   const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
     <Step1 />,
     <Step2 />,
-    <Step3 />,
+    <Step3 oops={oops} />,
   ]);
   const { handleRequests } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
@@ -350,51 +351,100 @@ const ItemDetailsSection = ({
   );
 };
 
-type ListItem = { content: string };
+type Step3Props = { oops: boolean };
 
-const instructions: ListItem[] = [
-  {
-    content:
-      "Kindly note that we use the package descriptions you provided to identify the package you claim to have been delivered to our Warehouse (Origin warehouse you selected) for shipping.",
-  },
-  {
-    content:
-      "After we have been able to Identify your package, you will be notified so you can proceed to Initiate shipping processes for your package.",
-  },
-  {
-    content:
-      "Additionally, you will just agree with the shipping cost to allow us process your Order, You will be paying for the shipment Cost when upon arrival/clearing of your package.",
-  },
-  {
-    content:
-      "And finally, you will be paying for the shipping cost when the package gets to our office in Nigeria (you would inform us about the one closest to you in the coming shipping stages",
-  },
-];
-
-const Step3 = () => {
+const Step3 = ({ oops }: Step3Props) => {
   return (
     <div className="flex flex-col gap-[30px]">
-      <CongratulationImage text="You have just successfully requested for Import service." />
+      {oops ? (
+        <CongratulationImage text="Send your package to our Warehouse in United States (your selected “Origin”)" />
+      ) : (
+        <CongratulationImage text="You have just successfully requested for Import service." />
+      )}
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="What Next?" />
         <SectionContentLayout>
-          <div className="flex flex-col gap-[20px]">
-            <span className="title-md md:title-lg pl-[11px] font-medium text-neutral-700 md:pl-[14px] md:font-bold">
-              Here is how to pick your package up from our office
-            </span>
-            <ul className="flex flex-col gap-[14px]">
-              {instructions.map((item, i) => (
-                <StepDescription
-                  key={i}
-                  stepNumber={i + 1}
-                  description={item.content}
-                  backgroundColor="primary-600"
-                />
-              ))}
-            </ul>
-          </div>
+          {oops ? <Guidelines /> : <Instructions />}
         </SectionContentLayout>
       </div>
+    </div>
+  );
+};
+
+type ListItem = { content: string };
+
+const Instructions = () => {
+  const instructions: ListItem[] = [
+    {
+      content:
+        "Kindly note that we use the package descriptions you provided to identify the package you claim to have been delivered to our Warehouse (Origin warehouse you selected) for shipping.",
+    },
+    {
+      content:
+        "After we have been able to Identify your package, you will be notified so you can proceed to Initiate shipping processes for your package.",
+    },
+    {
+      content:
+        "Additionally, you will just agree with the shipping cost to allow us process your Order, You will be paying for the shipment Cost when upon arrival/clearing of your package.",
+    },
+    {
+      content:
+        "And finally, you will be paying for the shipping cost when the package gets to our office in Nigeria (you would inform us about the one closest to you in the coming shipping stages",
+    },
+  ];
+
+  return (
+    <div className="flex flex-col gap-[20px]">
+      <span className="title-md md:title-lg pl-[11px] font-medium text-neutral-700 md:pl-[14px] md:font-bold">
+        Here is how to pick your package up from our office
+      </span>
+      <ul className="flex flex-col gap-[14px]">
+        {instructions.map((item, i) => (
+          <StepDescription
+            key={i}
+            stepNumber={i + 1}
+            description={item.content}
+            backgroundColor="primary-600"
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const Guidelines = () => {
+  return (
+    <div className="flex flex-col gap-[20px]">
+      <span className="title-md md:title-lg pl-[11px] font-medium text-neutral-700 md:pl-[14px] md:font-bold">
+        Here are some guidelines for you
+      </span>
+      <ul className="flex flex-col gap-[14px]">
+        <StepDescription
+          stepNumber={1}
+          description="Once you are sure that this package has gotten to the warehouse address above, attempt requesting for a new import order and provide us information we need to Identify the package as yours."
+          backgroundColor="primary-600"
+        />
+        <div className="flex items-center gap-[20px]">
+          <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">
+            2
+          </span>
+          <span className="body-lg md:title-lg text-gray-900">
+            Here are some tip to help us quickly identify your package
+            <ul className="list-item pl-[30px] [&>*]:list-disc">
+              <li>Attach your USER ID on the Package if you can.</li>
+              <li>
+                If you are purchasing the package directly from the seller,
+                provide us the TRACKING ID or any other related ID on the
+                package that is Unique to your order from the seller.
+              </li>
+              <li>
+                If you have the actual picture of the package, provide it while
+                requesting for the Import order on our website
+              </li>
+            </ul>
+          </span>
+        </div>
+      </ul>
     </div>
   );
 };

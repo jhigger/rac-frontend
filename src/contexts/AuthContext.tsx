@@ -77,7 +77,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       "Content-Type": "application/json",
     };
     const reqOptions = {
-      url: "https://rac-backend.onrender.com/api/users/auth",
+      url: "https://rac-backend.onrender.com/api/users/",
       method: "POST",
       headers: headersList,
       data,

@@ -62,18 +62,19 @@ const test = async () => {
 
 const LoginForm = () => {
   const { handleUser } = useAuthContext();
+  // todo: add react query
 
   const { register, handleSubmit } = useForm<LoginInputs>();
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     alert(JSON.stringify(data, null, 2));
-    const userData = {
+    const fakeData = {
       _id: "656bcb107c2bc6d6453efc71",
       firstName: "john",
       lastName: "Doe",
       email: "john@example.com",
       isAdmin: false,
     };
-    handleUser(userData);
+    handleUser(fakeData);
     // await test();
   };
   return (

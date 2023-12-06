@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useCookies } from "react-cookie";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
+import LoadingScreen from "~/components/LoadingScreen";
 import { type RegisterInputs } from "~/pages/register";
 
 export type AuthContextType = {
@@ -127,13 +128,16 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         withCredentials: true,
       };
 
+      setLoading(true);
+
       axios
         .request(reqOptions)
         .then((response) => {
           setUser(response.data as UserType);
           redirectTo("/shop");
         })
-        .catch((e) => console.error(e));
+        .catch((e) => console.error(e))
+        .finally(() => setLoading(false));
     }
   }, [cookies.jwt, setCookie]);
 
@@ -143,6 +147,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     handleLogout,
     handleRegister,
   };
+
+  if (loading) return <LoadingScreen />;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

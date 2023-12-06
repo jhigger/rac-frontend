@@ -39,7 +39,7 @@ const INITIAL_DATA: RegisterInputs = {
 };
 
 const register = () => {
-  const { user, handleLogin } = useAuthContext();
+  const { user, handleRegister } = useAuthContext();
 
   if (user) return null;
   const { handleSubmit, ...form } = useForm<RegisterInputs>({
@@ -52,7 +52,7 @@ const register = () => {
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     if (!isLastStep) return next();
 
-    handleLogin(data);
+    handleRegister(data);
   };
 
   return (

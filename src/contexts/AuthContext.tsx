@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -6,10 +7,11 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 
 export type AuthContextType = {
   user: UserType | null;
-  handleUser: (userData: UserType) => void;
+  handleUser: (data: LoginInputs) => Promise<void>;
   handleLogout: () => void;
 };
 
@@ -36,10 +38,29 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleUser = (userData: UserType) => {
+  const handleUser = async (data: LoginInputs) => {
+    const headersList = {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    };
+    const reqOptions = {
+      url: "https://rac-backend.onrender.com/api/users/auth",
+      method: "POST",
+      headers: headersList,
+      data,
+      withCredentials: true,
+    };
+
     setLoading(true);
-    setUser(userData);
-    setLoading(false);
+
+    await axios
+      .request(reqOptions)
+      .then((response) => {
+        const userData = response.data as UserType;
+        setUser(userData);
+      })
+      .catch((e) => console.error(e))
+      .finally(() => setLoading(false));
   };
 
   const handleLogout = () => {

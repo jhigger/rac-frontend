@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import axios from "axios";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useAuthContext, type UserType } from "~/contexts/AuthContext";
+import { useAuthContext } from "~/contexts/AuthContext";
 import FormHeader from "../FormHeader";
 import PasswordInput from "../Inputs/PasswordInput";
 import TextInput from "../Inputs/TextInput";
 
-type LoginInputs = {
+export type LoginInputs = {
   email: string;
   password: string;
 };
@@ -15,23 +14,9 @@ const LoginForm = () => {
   const { handleUser } = useAuthContext();
   // todo: add react query
   const { register, handleSubmit } = useForm<LoginInputs>();
-  
-  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
-    const headersList = {
-      Accept: "*/*",
-      "Content-Type": "application/json",
-    };
-    const reqOptions = {
-      url: "https://rac-backend.onrender.com/api/users/auth",
-      method: "POST",
-      headers: headersList,
-      data,
-      withCredentials: true,
-    };
 
-    const response = await axios.request(reqOptions);
-    console.log(response.data);
-    handleUser(response.data as UserType);
+  const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
+    await handleUser(data);
   };
 
   return (

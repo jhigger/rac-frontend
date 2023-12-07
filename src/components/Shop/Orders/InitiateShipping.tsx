@@ -201,28 +201,27 @@ const OrderItem = ({ index }: OrderItemProps) => {
 export type DetailSectionProps = {
   label: string;
   value: string;
-  colSpan?: number | "full";
+  colSpanMobile?: "full" | number;
+  colSpanDesktop?: "full" | number;
   image?: boolean;
-  tooltip?: boolean;
 };
 
 export const DetailSection = ({
   label,
   value,
-  colSpan = "full",
+  colSpanMobile = "full",
+  colSpanDesktop = "full",
   image = false,
 }: DetailSectionProps) => (
   <div
-    className={`col-span-${colSpan} flex flex-col gap-[20px] text-gray-700 md:col-span-${
-      colSpan === "full" ? "full" : 1
-    }`}
+    className={`col-span-${colSpanMobile} flex flex-col justify-between text-gray-700 md:col-span-${colSpanDesktop}`}
   >
-    <span className="body-md max-w-[100px]">{label}:</span>
+    <span className="body-md h-[40px] max-w-[100px]">{label}:</span>
     {image ? (
       <span className="title-lg text-neutral-900">
         <img
           src={value}
-          alt=""
+          alt="item image"
           className="w-[220px] rounded-[20px] bg-center object-cover"
         />
       </span>
@@ -240,13 +239,48 @@ const OrderItemDetails = () => {
       <DetailSection label="Store" value="Amazon" />
       <DetailSection label="Urgent Purchase" value="No" />
       <DetailSection label="Item URL" value="htttp/jjnkkukja.jhgyjayjdjjhcjc" />
-      <DetailSection label="Item Name" value="Designer Bags" />
-      <DetailSection label="Item Cost from Store" value="$45.00" />
-      <DetailSection label="Quantity" value="4" />
-      <DetailSection label="Weight" value="67kg" colSpan={2} />
-      <DetailSection label="Height" value="5 inches" colSpan={2} />
-      <DetailSection label="Length" value="5 inches" colSpan={2} />
-      <DetailSection label="Width" value="5 inches" colSpan={2} />
+      <DetailSection
+        label="Item Name"
+        value="Designer Bags"
+        colSpanMobile="full"
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Item Original Cost"
+        value="$45.00"
+        colSpanMobile="full"
+        colSpanDesktop={1}
+      />
+      <DetailSection
+        label="Quantity"
+        value="4"
+        colSpanMobile="full"
+        colSpanDesktop={1}
+      />
+      <DetailSection
+        label="Weight"
+        value="67kg"
+        colSpanMobile={2}
+        colSpanDesktop={1}
+      />
+      <DetailSection
+        label="Height"
+        value="5 inches"
+        colSpanMobile={2}
+        colSpanDesktop={1}
+      />
+      <DetailSection
+        label="Length"
+        value="5 inches"
+        colSpanMobile={2}
+        colSpanDesktop={1}
+      />
+      <DetailSection
+        label="Width"
+        value="5 inches"
+        colSpanMobile={2}
+        colSpanDesktop={1}
+      />
       <DetailSection
         label="Product/Item Picture"
         value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"

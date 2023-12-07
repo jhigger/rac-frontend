@@ -453,18 +453,34 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
             <CongratulationImage text="you can now pick up your package from our office in Nigeria (your selected “Destination”)" />
 
             <div className="rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
-              <div className="grid w-fit gap-[15px] md:grid-cols-4">
+              <div className="grid w-fit grid-cols-1 gap-[15px] md:grid-cols-4">
                 <DetailSection
                   label="Pick up Address"
                   value="No, 1osolo way, ikeja road, behind scaint merry"
                 />
-                <DetailSection label="Country" value="Nigeria" colSpan={1} />
-                <DetailSection label="State" value="Lagos" colSpan={1} />
-                <DetailSection label="City" value="Ikeja" colSpan={1} />
+                <DetailSection
+                  label="Country"
+                  value="Nigeria"
+                  colSpanMobile={1}
+                  colSpanDesktop={1}
+                />
+                <DetailSection
+                  label="State"
+                  value="Lagos"
+                  colSpanMobile={1}
+                  colSpanDesktop={1}
+                />
+                <DetailSection
+                  label="City"
+                  value="Ikeja"
+                  colSpanMobile={1}
+                  colSpanDesktop={1}
+                />
                 <DetailSection
                   label="Zip/postal Code"
                   value="98765"
-                  colSpan={1}
+                  colSpanMobile={1}
+                  colSpanDesktop={1}
                 />
               </div>
             </div>
@@ -510,25 +526,39 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
 export const PickUpInstructions = () => {
   return (
     <div className="flex w-full flex-col gap-[20px] rounded-[20px] border border-gray-200 px-[14px] py-[20px]">
-      <span className="title-md md:title-lg pl-[11px] font-medium text-neutral-700 md:pl-[14px] md:font-bold">
+      <span className="title-md md:title-lg pl-[11px] font-medium md:pl-[14px] md:font-bold">
         Here is how to pick your package up from our office
       </span>
+      <hr className="w-full border-gray-500 md:hidden" />
       <StepDescription
         stepNumber={1}
-        description="We will notify you once we confirm your payment, so you can come to clear your package from our office."
-        backgroundColor="primary-600"
+        description={
+          <>
+            When you come to pick up your package from our office, you will
+            provide us the <b>Order ID</b> to ensure that we give you the
+            package that rightly belongs to you.
+          </>
+        }
       />
       <hr className="w-full border-gray-500 md:hidden" />
       <StepDescription
         stepNumber={2}
-        description="When you come to pick up your package from our office, you will provide us the Order ID to ensure that we give you the package that rightly belongs to you."
-        backgroundColor="primary-600"
-      />
-      <hr className="w-full border-gray-500 md:hidden" />
-      <StepDescription
-        stepNumber={3}
-        description="If you won't be able to come pick up your package from our office, you can request for a doorstep delivery from us."
-        backgroundColor="secondary-900"
+        description={
+          <>
+            If you won&apos;t be able to come pick up your package up from our
+            office, you can request for a doorstep delivery from us{" "}
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="title-md md:title-lg inline-flex items-center gap-[5px] text-primary-600"
+            >
+              <b>here</b>
+              <img src="/images/export_circle_icon.svg" alt="external icon" />
+            </a>
+          </>
+        }
+        backgroundColor="bg-secondary-900"
       />
     </div>
   );
@@ -536,24 +566,26 @@ export const PickUpInstructions = () => {
 
 type StepDescriptionProps = {
   stepNumber: number;
-  description: string;
-  backgroundColor: string;
+  description: string | JSX.Element;
+  backgroundColor?: string;
 };
 
 export const StepDescription = ({
   stepNumber,
   description,
   backgroundColor,
-}: StepDescriptionProps) => (
-  <div className="flex items-center gap-[20px]">
-    <span
-      className={`title-lg rounded-[20px] bg-${backgroundColor} p-[10px] text-white`}
-    >
-      {stepNumber}
-    </span>
-    <span className="body-lg md:title-lg text-gray-900">{description}</span>
-  </div>
-);
+}: StepDescriptionProps) => {
+  const bg = backgroundColor ?? "bg-primary-600";
+
+  return (
+    <div className="flex items-center gap-[20px]">
+      <span className={`title-lg rounded-[20px] ${bg} p-[10px] text-white`}>
+        {stepNumber}
+      </span>
+      <span className="body-lg md:title-lg text-gray-900">{description}</span>
+    </div>
+  );
+};
 
 export const OrderTrackingId = () => {
   return (

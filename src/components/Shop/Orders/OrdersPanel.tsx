@@ -567,7 +567,7 @@ export const PickUpInstructions = () => {
 type StepDescriptionProps = {
   stepNumber: number;
   description: string | JSX.Element;
-  backgroundColor?: string;
+  backgroundColor?: "bg-primary-600" | "bg-secondary-900";
 };
 
 export const StepDescription = ({

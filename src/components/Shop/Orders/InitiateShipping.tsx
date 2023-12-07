@@ -24,6 +24,7 @@ import {
   type stepsContentType,
 } from "../Requests/RequestCheckout";
 import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
+import { LabelWithTooltip } from "../Requests/RequestDetails";
 
 const InitiateShipping = () => {
   const { orderItems } = useShopContext();
@@ -204,6 +205,7 @@ export type DetailSectionProps = {
   colSpanMobile?: "full" | number;
   colSpanDesktop?: "full" | number;
   image?: boolean;
+  tooltip?: boolean;
 };
 
 export const DetailSection = ({
@@ -211,17 +213,22 @@ export const DetailSection = ({
   value,
   colSpanMobile = "full",
   colSpanDesktop = "full",
-  image = false,
+  image,
+  tooltip = false,
 }: DetailSectionProps) => (
   <div
     className={`col-span-${colSpanMobile} flex flex-col justify-between text-gray-700 md:col-span-${colSpanDesktop}`}
   >
-    <span className="body-md h-[40px] max-w-[100px]">{label}:</span>
+    {tooltip ? (
+      <LabelWithTooltip label={label} />
+    ) : (
+      <span className="body-md h-[40px] max-w-[100px]">{label}:</span>
+    )}
     {image ? (
       <span className="title-lg text-neutral-900">
         <img
           src={value}
-          alt="item image"
+          alt=""
           className="w-[220px] rounded-[20px] bg-center object-cover"
         />
       </span>

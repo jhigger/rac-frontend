@@ -409,7 +409,7 @@ const Instructions = () => {
             key={i}
             stepNumber={i + 1}
             description={item.content}
-            backgroundColor="primary-600"
+            backgroundColor="bg-primary-600"
           />
         ))}
       </ul>
@@ -427,7 +427,7 @@ const Guidelines = () => {
         <StepDescription
           stepNumber={1}
           description="Once you are sure that this package has gotten to the warehouse address above, attempt requesting for a new import order and provide us information we need to Identify the package as yours."
-          backgroundColor="primary-600"
+          backgroundColor="bg-primary-600"
         />
         <div className="flex items-center gap-[20px]">
           <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">

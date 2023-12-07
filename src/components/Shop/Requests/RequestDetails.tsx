@@ -4,7 +4,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
 import { LabelId, RespondedStatus } from "../Orders";
-import { type DetailSectionProps } from "../Orders/InitiateShipping";
+import { DetailSection } from "../Orders/InitiateShipping";
 import {
   BackButton,
   RequestFormHeader,
@@ -145,61 +145,34 @@ export const Item = ({ index }: ItemProps) => {
   );
 };
 
-const DetailSection = ({
-  label,
-  value,
-  colSpan = "full",
-  image,
-  tooltip = false,
-}: DetailSectionProps) => (
-  <div
-    className={`col-span-${colSpan} flex flex-col gap-[20px] text-gray-700 md:col-span-${
-      colSpan === "full" ? 2 : 1
-    }`}
-  >
-    {tooltip ? (
-      <LabelWithTooltip label={label} />
-    ) : (
-      <span className="body-md max-w-[100px]">{label}:</span>
-    )}
-    {image ? (
-      <span className="title-lg text-neutral-900">
-        <img
-          src={value}
-          alt=""
-          className="w-[220px] rounded-[20px] bg-center object-cover"
-        />
-      </span>
-    ) : (
-      <span className="title-md md:title-lg break-words font-medium text-neutral-900">
-        {value}
-      </span>
-    )}
-  </div>
-);
-
 const RequestItemDetails = () => {
   return (
     <>
       <DetailSection label="Store" value="Amazon" />
       <DetailSection label="Urgent Purchase" value="No" />
       <DetailSection label="Item URL" value="htttp/jjnkkukja.jhgyjayjdjjhcjc" />
+      <DetailSection label="Item Name" value="Designer Bags" tooltip />
+      <DetailSection label="Item Cost from Store" value="$45.00" />
+      <DetailSection label="Quantity" value="4" />
+      <DetailSection label="Weight" value="67kg" colSpanDesktop={1} tooltip />
       <DetailSection
-        label="Item Name"
-        value="Designer Bags"
-        colSpan={"full"}
+        label="Height"
+        value="5 inches"
+        colSpanDesktop={1}
         tooltip
       />
       <DetailSection
-        label="Item Cost from Store"
-        value="$45.00"
-        colSpan={"full"}
+        label="Length"
+        value="5 inches"
+        colSpanDesktop={1}
+        tooltip
       />
-      <DetailSection label="Quantity" value="4" colSpan={"full"} />
-      <DetailSection label="Weight" value="67kg" colSpan={1} tooltip />
-      <DetailSection label="Height" value="5 inches" colSpan={1} tooltip />
-      <DetailSection label="Length" value="5 inches" colSpan={1} tooltip />
-      <DetailSection label="Width" value="5 inches" colSpan={1} tooltip />
+      <DetailSection
+        label="Width"
+        value="5 inches"
+        colSpanDesktop={1}
+        tooltip
+      />
       <DetailSection
         label="Product/Item Picture"
         value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
@@ -210,8 +183,13 @@ const RequestItemDetails = () => {
         label="Product Description"
         value="Additonvnv ghss jgsjvsn"
       />
-      <DetailSection label="Color" value="Blue" colSpan={1} tooltip />
-      <DetailSection label="Stripes" value="5 inches" colSpan={1} tooltip />
+      <DetailSection label="Color" value="Blue" colSpanDesktop={1} tooltip />
+      <DetailSection
+        label="Stripes"
+        value="5 inches"
+        colSpanDesktop={1}
+        tooltip
+      />
     </>
   );
 };
@@ -315,11 +293,11 @@ const ChangeCurrencyButton = () => {
 
 type LabelWithTooltipProps = { label: string };
 
-const LabelWithTooltip = ({ label }: LabelWithTooltipProps) => {
+export const LabelWithTooltip = ({ label }: LabelWithTooltipProps) => {
   return (
-    <div className="flex w-fit items-center gap-[10px]">
+    <div className="flex w-fit items-start gap-[10px]">
       <TooltipButton />
-      <span className="body-md">{label}</span>
+      <span className="body-md h-[40px] max-w-[100px]">{label}</span>
     </div>
   );
 };

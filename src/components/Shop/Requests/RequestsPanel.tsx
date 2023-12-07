@@ -93,7 +93,7 @@ const RequestsTable = () => {
   );
 };
 
-const tableHeads: TableHeadType[] = [
+export const tableHeads: TableHeadType[] = [
   { title: "Package(s) Image", sortIcon: false },
   { title: "Request ID", sortIcon: true },
   { title: "Request Status", sortIcon: false },
@@ -167,7 +167,7 @@ export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
                 {requestId}
               </p>
             </td>
-            <td className="border-0 p-0">
+            <td className="w-[150px] border-0 p-0">
               <RequestStatus id={requestId} status={requestStatus} />
             </td>
             <td className="border-0 p-0">

@@ -1,14 +1,12 @@
 import Balancer from "react-wrap-balancer";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import {
-  TableFooter,
-  type TableHeadType,
-} from "~/components/Shop/Orders/OrdersPanel";
+import { TableFooter } from "~/components/Shop/Orders/OrdersPanel";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import {
   RequestTableBody,
   RequestTableHead,
+  tableHeads,
 } from "~/components/Shop/Requests/RequestsPanel";
 import SearchBar from "~/components/Shop/SearchBar";
 import { useImportContext } from "~/contexts/ImportContext";
@@ -69,13 +67,6 @@ const ImportRequestsPanel = () => {
     </TabContentLayout>
   );
 };
-
-const tableHeads: TableHeadType[] = [
-  { title: "Package(s) Image", sortIcon: false },
-  { title: "Request ID", sortIcon: true },
-  { title: "Request Status", sortIcon: false },
-  { title: "Request Date", sortIcon: true },
-];
 
 const RequestsTable = () => {
   const { requestItems } = useImportContext();

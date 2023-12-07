@@ -52,7 +52,7 @@ const register = () => {
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     if (!isLastStep) return next();
 
-    handleRegister(data);
+    await handleRegister(data);
   };
 
   return (

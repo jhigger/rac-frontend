@@ -1,4 +1,4 @@
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -10,14 +10,19 @@ import {
 import { useCookies } from "react-cookie";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 import LoadingScreen from "~/components/LoadingScreen";
+import useFetchUser from "~/hooks/useFetchUser";
+import useLoginUser from "~/hooks/useLoginUser";
+import useRegisterUser from "~/hooks/useRegisterUser";
+import { queryClient } from "~/pages/_app";
 import { type RegisterInputs } from "~/pages/register";
 import { navItems } from "./NavigationContext";
 
 export type AuthContextType = {
   user: UserType | null;
+  error: globalThis.Error | null;
   handleLogin: (data: LoginInputs) => void;
-  handleLogout: () => void;
-  handleRegister: (data: RegisterInputs) => void;
+  handleLogout: () => Promise<void>;
+  handleRegister: (data: RegisterInputs) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -40,74 +45,53 @@ export type UserType = {
 };
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  // todo: add react query
-
-  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const router = useRouter();
-  const [user, setUser] = useState<UserType | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
+  const [loginInputs, setLoginInputs] = useState<LoginInputs | null>(null);
 
-  const handleUser = (userData: UserType) => {
-    setUser(userData);
+  const {
+    data: user,
+    isLoading,
+    isFetching,
+    isRefetching,
+    error,
+    refetch,
+  } = useQuery<UserType | null>({
+    queryKey: ["user"],
+    queryFn: async () => {
+      if (loginInputs) {
+        return await useLoginUser(loginInputs).then((userData) => {
+          handleJWTCookie(userData.jwt);
+          redirectTo("/shop");
+          return userData;
+        });
+      } else if (cookies.jwt) {
+        return await useFetchUser();
+      }
 
-    const jwtCookie = userData.jwt;
+      return null;
+    },
+    initialData: null,
+  });
+
+  const handleJWTCookie = (jwtCookie: string) => {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 7); // Set expiration to 7 days from now
     setCookie("jwt", jwtCookie, { expires: expirationDate });
   };
 
-  const handleLogin = (data: LoginInputs) => {
-    const headersList = {
-      Accept: "*/*",
-      "Content-Type": "application/json",
-    };
-    const reqOptions = {
-      url: "https://rac-backend.onrender.com/api/users/auth",
-      method: "POST",
-      headers: headersList,
-      data,
-      withCredentials: true,
-    };
-
-    setLoading(true);
-
-    axios
-      .request(reqOptions)
-      .then((response) => {
-        const userData = response.data as UserType;
-        handleUser(userData);
-      })
-      .catch((e) => console.error(e))
-      .finally(() => setLoading(false));
+  const handleLogin = (inputs: LoginInputs) => {
+    setLoginInputs(inputs);
   };
 
-  const handleLogout = () => {
-    setUser(null);
+  const handleLogout = async () => {
+    await queryClient.resetQueries({ queryKey: ["user"] });
     removeCookie("jwt");
   };
 
-  const handleRegister = (data: RegisterInputs) => {
-    const headersList = {
-      Accept: "*/*",
-      "Content-Type": "application/json",
-    };
-    const reqOptions = {
-      url: "https://rac-backend.onrender.com/api/users/",
-      method: "POST",
-      headers: headersList,
-      data,
-    };
-
-    setLoading(true);
-
-    axios
-      .request(reqOptions)
-      .then((response) => {
-        const userData = response.data as UserType;
-        handleUser(userData);
-      })
-      .catch((e) => console.error(e))
-      .finally(() => setLoading(false));
+  const handleRegister = async (inputs: RegisterInputs) => {
+    await useRegisterUser(inputs).catch((e) => console.error(e));
+    handleNavigation;
   };
 
   const redirectTo = (path: string) => {
@@ -116,7 +100,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleNavigation = () => {
     if (router.asPath === "/register" || router.asPath === "/login") {
-      return router.replace("/shop");
+      redirectTo("/shop");
     } else {
       const matchedNavItem = navItems.find(
         (navItem) => router.asPath === navItem.href,
@@ -126,41 +110,27 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (!cookies.jwt) {
-      if (!(user ?? loading)) redirectTo("/login");
-    } else {
-      const headersList = {
-        Accept: "*/*",
-      };
+    if (!loginInputs) void refetch();
+  }, [loginInputs]);
 
-      const reqOptions = {
-        url: "https://rac-backend.onrender.com/api/users/profile",
-        method: "GET",
-        headers: headersList,
-        withCredentials: true,
-      };
+  useEffect(() => {
+    if (!cookies.jwt) void refetch();
+  }, [cookies.jwt]);
 
-      setLoading(true);
-
-      axios
-        .request(reqOptions)
-        .then((response) => {
-          setUser(response.data as UserType);
-          return handleNavigation();
-        })
-        .catch((e) => console.error(e))
-        .finally(() => setLoading(false));
-    }
-  }, [cookies.jwt, setCookie]);
+  useEffect(() => {
+    if (!user && !isLoading) redirectTo("/login");
+    else redirectTo("/shop");
+  }, [user]);
 
   const value: AuthContextType = {
     user,
+    error,
     handleLogin,
     handleLogout,
     handleRegister,
   };
 
-  if (loading) return <LoadingScreen />;
+  if (isLoading || isFetching || isRefetching) return <LoadingScreen />;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

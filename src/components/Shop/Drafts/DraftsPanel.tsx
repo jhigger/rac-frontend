@@ -44,17 +44,17 @@ const DraftsPanel = () => {
   );
 };
 
-const DraftsTable = () => {
-  const tableHeads: TableHeadType[] = [
-    { title: "Draft Date", sortIcon: true },
-    { title: "Item", sortIcon: true },
-    { title: "Item URL", sortIcon: true },
-    { title: "Item Cost from Store", sortIcon: true },
-    { title: "Urgent Purchase", sortIcon: true },
-    { title: "Quantity of items", sortIcon: true },
-    { title: "Total value of item", sortIcon: true },
-  ];
+const tableHeads: TableHeadType[] = [
+  { title: "Draft Date", sortIcon: true },
+  { title: "Item", sortIcon: true },
+  { title: "Item URL", sortIcon: true },
+  { title: "Item Cost from Store", sortIcon: true },
+  { title: "Urgent Purchase", sortIcon: true },
+  { title: "Quantity of items", sortIcon: true },
+  { title: "Total value of item", sortIcon: true },
+];
 
+const DraftsTable = () => {
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
       <div className="flex flex-col gap-[20px]">
@@ -141,7 +141,7 @@ const DraftTableBody = () => {
                   </a>
                 </td>
                 <td className="col-span-1">{costFromStore}</td>
-                <td className="col-span-1">{urgentPurchase}9</td>
+                <td className="col-span-1">{urgentPurchase}</td>
                 <td className="col-span-1">{quantity}</td>
                 <td className="col-span-1">{totalValue}</td>
 

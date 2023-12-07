@@ -82,6 +82,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   // testing purposes
   useEffect(() => {
     handleRequests();
+    // todo: if (user) void useFetchShopRequests(user._id);
     handleOrders();
   }, []);
 

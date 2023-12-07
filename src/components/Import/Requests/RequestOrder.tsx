@@ -65,11 +65,9 @@ type Inputs = {
 
 const RequestOrder = () => {
   const [oops] = useState(true);
-  const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
-    <Step1 />,
-    <Step2 />,
-    <Step3 oops={oops} />,
-  ]);
+  const steps = [<Step1 />, <Step2 />, <Step3 oops={oops} />];
+  const { step, next, isFirstStep, isLastStep, currentStepIndex } =
+    useMultiStepForm(steps);
   const { handleRequests } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
   const formMethods = useForm<Inputs>({
@@ -86,6 +84,7 @@ const RequestOrder = () => {
   const handleFinish = () => {
     handleRequests();
     handleTabChange("requests");
+    formMethods.handleSubmit(onSubmit);
   };
 
   const handleBack = () => {
@@ -94,10 +93,7 @@ const RequestOrder = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <div
-        onSubmit={formMethods.handleSubmit(onSubmit)}
-        className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
-      >
+      <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <RequestFormHeader title="Requesting For New Import Order" />
         {!isLastStep && (
           <HighlightedInfo text="Provide as much Information as possible needed for our staffs to identify your package if it has been delivered. The more Information you provide, the easier we identify your package." />
@@ -107,9 +103,7 @@ const RequestOrder = () => {
             <LabelId label="Request:" id="R78667" />
           </div>
         )}
-
         {step}
-
         {isFirstStep && (
           <>
             <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
@@ -123,7 +117,13 @@ const RequestOrder = () => {
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               <BackButton onClick={handleBack} />
               <SaveAsDraftButton />
-              <ProceedButton next={next} />
+              <ProceedButton
+                next={
+                  currentStepIndex === steps.length - 2
+                    ? formMethods.handleSubmit(onSubmit)
+                    : next
+                }
+              />
             </div>
             {/* for mobile screen */}
             <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
@@ -131,7 +131,13 @@ const RequestOrder = () => {
                 <BackButton onClick={handleBack} />
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                <ProceedButton next={next} />
+                <ProceedButton
+                  next={
+                    currentStepIndex === steps.length - 2
+                      ? formMethods.handleSubmit(onSubmit)
+                      : next
+                  }
+                />
               </div>
               <div className="col-span-full">
                 <SaveAsDraftButton />
@@ -139,7 +145,6 @@ const RequestOrder = () => {
             </div>
           </>
         )}
-
         {isLastStep && (
           <div className="w-full md:w-[200px]">
             <DoneButton handleFinish={handleFinish} />

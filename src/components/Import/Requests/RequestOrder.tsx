@@ -64,7 +64,7 @@ type Inputs = {
 };
 
 const RequestOrder = () => {
-  const [oops] = useState(true);
+  const [oops] = useState(false);
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 oops={oops} />]);
 
@@ -429,26 +429,28 @@ const Guidelines = () => {
           description="Once you are sure that this package has gotten to the warehouse address above, attempt requesting for a new import order and provide us information we need to Identify the package as yours."
           backgroundColor="bg-primary-600"
         />
-        <div className="flex items-center gap-[20px]">
-          <span className="title-lg rounded-[20px] bg-primary-600 p-[10px] text-white">
-            2
-          </span>
-          <span className="body-lg md:title-lg text-gray-900">
-            Here are some tip to help us quickly identify your package
-            <ul className="list-item pl-[30px] [&>*]:list-disc">
-              <li>Attach your USER ID on the Package if you can.</li>
-              <li>
-                If you are purchasing the package directly from the seller,
-                provide us the TRACKING ID or any other related ID on the
-                package that is Unique to your order from the seller.
-              </li>
-              <li>
-                If you have the actual picture of the package, provide it while
-                requesting for the Import order on our website
-              </li>
-            </ul>
-          </span>
-        </div>
+
+        <StepDescription
+          stepNumber={2}
+          description={
+            <span className="body-lg md:title-lg text-gray-900">
+              Here are some tip to help us quickly identify your package
+              <ul className="list-item pl-[30px] [&>*]:list-disc">
+                <li>Attach your USER ID on the Package if you can.</li>
+                <li>
+                  If you are purchasing the package directly from the seller,
+                  provide us the TRACKING ID or any other related ID on the
+                  package that is Unique to your order from the seller.
+                </li>
+                <li>
+                  If you have the actual picture of the package, provide it
+                  while requesting for the Import order on our website
+                </li>
+              </ul>
+            </span>
+          }
+          backgroundColor="bg-primary-600"
+        />
       </ul>
     </div>
   );

@@ -121,7 +121,7 @@ const InitiateShipping = () => {
             </div>
           </div>
 
-          <span className="body-md text-center">
+          <span className="body-md text-center md:text-start">
             Upon clicking &quot;initiate shipping&quot;, I confirm I have read
             and agreed to{" "}
             <a
@@ -534,7 +534,7 @@ export const ShippingMethod = ({
     <SectionContentLayout>
       <div className="flex w-full flex-col gap-[30px] py-[10px]">
         <div className="col-span-full flex items-center gap-[30px]">
-          <fieldset id="shippingMethod">
+          <fieldset id="shippingMethod" className="flex items-center">
             <input
               disabled={disabled}
               className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"

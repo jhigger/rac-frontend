@@ -1,6 +1,6 @@
 import {
-  type OrderItemType,
-  type RequestItemType,
+  type ShopOrderItemType,
+  type ShopRequestItemType,
 } from "~/contexts/ShopContext";
 
 const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image";
@@ -13,7 +13,7 @@ const images = (n: number) => {
     });
 };
 
-export const orders: OrderItemType[] = [
+export const orders: ShopOrderItemType[] = [
   {
     images: images(1),
     orderId: "OD08751",
@@ -104,7 +104,7 @@ export const orders: OrderItemType[] = [
   },
 ];
 
-export const requests: RequestItemType[] = [
+export const requests: ShopRequestItemType[] = [
   {
     images: images(1),
     requestId: "OD08751",

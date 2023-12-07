@@ -3,7 +3,7 @@ import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import {
   useShopContext,
-  type OrderItemType as ShopOrderItemType,
+  type ShopOrderItemType as ShopOrderItemType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";

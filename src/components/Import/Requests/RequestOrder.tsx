@@ -38,13 +38,13 @@ import {
 } from "~/components/Shop/Requests/RequestOrder";
 import {
   useImportContext,
-  type RequestItemType,
+  type ImportRequestItemType,
 } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
-const emptyValue: RequestItemType = {
+const emptyValue: ImportRequestItemType = {
   images: [],
   requestId: "",
   requestStatus: "not responded",
@@ -60,7 +60,7 @@ const emptyValue: RequestItemType = {
 };
 
 type Inputs = {
-  requestItems: RequestItemType[];
+  requestItems: ImportRequestItemType[];
 };
 
 const RequestOrder = () => {

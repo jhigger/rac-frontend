@@ -8,9 +8,9 @@ import {
 import { orders, requests } from "~/fake data";
 
 export type ShopContextType = {
-  orderItems: OrderItemType[] | null;
+  orderItems: ShopOrderItemType[] | null;
   payNowAction: { action: () => void } | null;
-  requestItems: RequestItemType[] | null;
+  requestItems: ShopRequestItemType[] | null;
   handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
   handleOrders: () => void;
   handleRequests: () => void;
@@ -39,7 +39,7 @@ const SHOP_FOR_ME_STATUS = [
   "purchase completed",
 ] as const;
 
-export type OrderItemType = {
+export type ShopOrderItemType = {
   images: string[];
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
@@ -53,7 +53,7 @@ export type OrderItemType = {
 
 const REQUEST_STATUS = ["responded", "not responded"] as const;
 
-export type RequestItemType = {
+export type ShopRequestItemType = {
   images: string[];
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
@@ -61,12 +61,14 @@ export type RequestItemType = {
 };
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
-  const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
-  const [payNowAction, setPayNowAction] =
-    useState<ShopContextType["payNowAction"]>(null);
-  const [requestItems, setRequestItems] = useState<RequestItemType[] | null>(
+  const [orderItems, setOrderItems] = useState<ShopOrderItemType[] | null>(
     null,
   );
+  const [payNowAction, setPayNowAction] =
+    useState<ShopContextType["payNowAction"]>(null);
+  const [requestItems, setRequestItems] = useState<
+    ShopRequestItemType[] | null
+  >(null);
   const handleOrders = () => {
     setOrderItems(orders);
   };

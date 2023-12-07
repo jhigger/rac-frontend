@@ -1,5 +1,5 @@
 import axios from "axios";
-import { type RequestItemType } from "~/contexts/ShopContext";
+import { type ShopRequestItemType } from "~/contexts/ShopContext";
 
 const useFetchShopRequests = async (userId: string) => {
   const headersList = {
@@ -16,7 +16,7 @@ const useFetchShopRequests = async (userId: string) => {
   };
 
   const response = await axios.request(reqOptions);
-  return response.data as RequestItemType;
+  return response.data as ShopRequestItemType;
 };
 
 export default useFetchShopRequests;

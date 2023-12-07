@@ -10,7 +10,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { useNavContext } from "~/contexts/NavigationContext";
-import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
+import { useShopContext, type ShopOrderItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -27,7 +27,7 @@ import { CancelButton } from "../Orders/OrdersPanel";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 
-const emptyValue: OrderItemType = {
+const emptyValue: ShopOrderItemType = {
   images: [],
   orderId: "",
   orderStatus: "not responded",
@@ -40,7 +40,7 @@ const emptyValue: OrderItemType = {
 };
 
 type Inputs = {
-  requestItems: OrderItemType[];
+  requestItems: ShopOrderItemType[];
 };
 
 const RequestOrderForm = () => {

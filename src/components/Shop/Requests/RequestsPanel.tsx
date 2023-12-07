@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
-import { type RequestItemType as ImportRequestItemType } from "~/contexts/ImportContext";
+import { type ImportRequestItemType as ImportRequestItemType } from "~/contexts/ImportContext";
 import {
   useShopContext,
-  type RequestItemType as ShopRequestItemType,
+  type ShopRequestItemType as ShopRequestItemType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";

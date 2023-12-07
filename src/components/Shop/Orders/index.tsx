@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { type OrderItemType } from "~/contexts/ShopContext";
+import { type ShopOrderItemType } from "~/contexts/ShopContext";
 
 type LabelIdProps = { label: string; id: string };
 
@@ -12,7 +12,7 @@ export const LabelId = ({ label, id }: LabelIdProps) => {
   );
 };
 
-type OrderItemImagesProps = Pick<OrderItemType, "images">;
+type OrderItemImagesProps = Pick<ShopOrderItemType, "images">;
 
 export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
   return (

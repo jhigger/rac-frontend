@@ -8,9 +8,9 @@ import {
 import { orders, requests } from "~/fake data";
 
 export type ImportContextType = {
-  orderItems: OrderItemType[] | null;
+  orderItems: ImportOrderItemType[] | null;
   payNowAction: { action: () => void } | null;
-  requestItems: RequestItemType[] | null;
+  requestItems: ImportRequestItemType[] | null;
   handlePayNowAction: (action: ImportContextType["payNowAction"]) => void;
   handleOrders: () => void;
   handleRequests: () => void;
@@ -34,7 +34,7 @@ const SHIPPING_STATUS = [
   "delivered",
 ] as const;
 
-export type OrderItemType = {
+export type ImportOrderItemType = {
   images: string[];
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
@@ -47,7 +47,7 @@ export type OrderItemType = {
 const REQUEST_STATUS = ["responded", "not responded"] as const;
 const ID_TYPE = ["Order ID", "Tracking ID", "Shipping ID"] as const;
 
-export type RequestItemType = {
+export type ImportRequestItemType = {
   images: string[];
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
@@ -65,15 +65,17 @@ export type RequestItemType = {
 export type PropertyType = { label: string; value: string | undefined };
 
 const ImportContextProvider = ({ children }: { children: ReactNode }) => {
-  const [orderItems, setOrderItems] = useState<OrderItemType[] | null>(null);
-  const [payNowAction, setPayNowAction] =
-    useState<ImportContextType["payNowAction"]>(null);
-  const [requestItems, setRequestItems] = useState<RequestItemType[] | null>(
+  const [orderItems, setOrderItems] = useState<ImportOrderItemType[] | null>(
     null,
   );
+  const [payNowAction, setPayNowAction] =
+    useState<ImportContextType["payNowAction"]>(null);
+  const [requestItems, setRequestItems] = useState<
+    ImportRequestItemType[] | null
+  >(null);
 
   const handleOrders = () => {
-    setOrderItems(orders as OrderItemType[]);
+    setOrderItems(orders as ImportOrderItemType[]);
   };
 
   const handlePayNowAction = (action: ImportContextType["payNowAction"]) => {
@@ -81,7 +83,7 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestItems(requests as RequestItemType[]);
+    setRequestItems(requests as ImportRequestItemType[]);
   };
 
   // testing purposes

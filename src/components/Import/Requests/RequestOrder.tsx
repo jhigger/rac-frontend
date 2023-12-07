@@ -70,7 +70,7 @@ const RequestOrder = () => {
 
   const { handleRequests } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
-  
+
   const formMethods = useForm<Inputs>({
     defaultValues: {
       requestItems: [emptyValue],
@@ -80,6 +80,7 @@ const RequestOrder = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     // handleRequests();
     console.log(data.requestItems);
+    next();
   };
 
   const handleFinish = () => {

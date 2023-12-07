@@ -59,6 +59,7 @@ const RequestOrderForm = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     // handleRequests();
     console.log(data.requestItems);
+    next();
   };
 
   const handleFinish = () => {

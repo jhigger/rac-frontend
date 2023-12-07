@@ -252,7 +252,7 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
       <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
-        <RequestFormHeader title="Shipping Status" />
+        <RequestFormHeader title="Request Status" />
 
         <LabelId label="Request ID:" id="OD78667" />
 

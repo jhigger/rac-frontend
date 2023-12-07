@@ -56,30 +56,40 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     isRefetching,
     error,
     refetch,
-  } = useQuery<UserType | null>({
+  } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      if (loginInputs) {
-        console.log("logging in...");
-        return await useLoginUser(loginInputs).then(async (userData) => {
-          console.log("user logged in");
-          setLoginInputs(null);
-          handleJWTCookie(userData.jwt);
-          redirectTo("/shop");
-          console.log("getting user requests");
-          const requestItems = await useFetchShopRequests(userData._id);
-          console.log("user requests:", requestItems);
-          return userData;
-        });
-      } else if (cookies.jwt) {
-        return await useFetchUser().then(async (userData) => {
-          const requestItems = await useFetchShopRequests(userData._id);
-          console.log("user requests:", requestItems);
-          return userData;
-        });
-      }
+      return {
+        isAdmin: false,
+        _id: "657143f8c2c0961185969950",
+        firstName: "john",
+        lastName: "doe",
+        email: "asd@asd.asd",
+        country: "AF",
+        countryCode: "375",
+        jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTcxNDNmOGMyYzA5NjExODU5Njk5NTAiLCJpYXQiOjE3MDE5MjE3ODUsImV4cCI6MTcwNDUxMzc4NX0.u8d6atI5n0Jf1florP3xzsmynsCAyhvZHkvZp6l5xks",
+      };
+      // if (loginInputs) {
+      //   console.log("logging in...");
+      //   return await useLoginUser(loginInputs).then(async (userData) => {
+      //     console.log("user logged in");
+      //     setLoginInputs(null);
+      //     handleJWTCookie(userData.jwt);
+      //     redirectTo("/shop");
+      //     console.log("getting user requests");
+      //     const requestItems = await useFetchShopRequests(userData._id);
+      //     console.log("user requests:", requestItems);
+      //     return userData;
+      //   });
+      // } else if (cookies.jwt) {
+      //   return await useFetchUser().then(async (userData) => {
+      //     const requestItems = await useFetchShopRequests(userData._id);
+      //     console.log("user requests:", requestItems);
+      //     return userData;
+      //   });
+      // }
 
-      return null;
+      // return null;
     },
     initialData: null,
   });

@@ -33,11 +33,6 @@ const SHIPPING_STATUS = [
   "cleared",
   "delivered",
 ] as const;
-const SHOP_FOR_ME_STATUS = [
-  "purchase not started",
-  "purchase in progress",
-  "purchase completed",
-] as const;
 
 export type OrderItemType = {
   images: string[];
@@ -46,12 +41,11 @@ export type OrderItemType = {
   orderDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
-  shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
-  shopForMeCost: string;
   shippingCost: string;
 };
 
 const REQUEST_STATUS = ["responded", "not responded"] as const;
+const ID_TYPE = ["Order ID", "Tracking ID", "Shipping ID"] as const;
 
 export type RequestItemType = {
   images: string[];
@@ -59,7 +53,7 @@ export type RequestItemType = {
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestDate: string;
   itemName: string;
-  idType: "Order ID" | "Tracking ID" | "Shipping ID";
+  idType: (typeof ID_TYPE)[number];
   idNumber: string;
   itemDeliveryStatus: string; // todo: update types
   deliveredBy: string;

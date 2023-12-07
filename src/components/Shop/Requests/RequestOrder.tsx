@@ -2,11 +2,15 @@
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 import {
   Controller,
+  FormProvider,
   useFieldArray,
   useForm,
+  useFormContext,
+  type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
-import { useShopContext } from "~/contexts/ShopContext";
+import { useNavContext } from "~/contexts/NavigationContext";
+import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -22,16 +26,40 @@ import NeedHelpFAB from "../../NeedHelpFAB";
 import { CancelButton } from "../Orders/OrdersPanel";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
-import { useNavContext } from "~/contexts/NavigationContext";
+
+const emptyValue: OrderItemType = {
+  images: [],
+  orderId: "",
+  orderStatus: "not responded",
+  orderDate: "",
+  trackingId: "",
+  shippingStatus: "not started",
+  shopForMeStatus: "purchase not started",
+  shopForMeCost: "",
+  shippingCost: "",
+};
+
+type Inputs = {
+  requestItems: OrderItemType[];
+};
 
 const RequestOrderForm = () => {
-  const { step, next, isFirstStep, isLastStep } = useMultiStepForm([
-    <RequestOrderStep1 />,
-    <RequestOrderStep2 />,
-  ]);
+  const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
+    useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
 
   const { handleRequests } = useShopContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
+
+  const formMethods = useForm<Inputs>({
+    defaultValues: {
+      requestItems: [emptyValue],
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    // handleRequests();
+    console.log(data.requestItems);
+  };
 
   const handleFinish = () => {
     handleRequests();
@@ -43,50 +71,68 @@ const RequestOrderForm = () => {
   };
 
   return (
-    <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      {step}
-      {isFirstStep && (
-        <>
-          <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-            <BackButton onClick={handleBack} />
-            <SaveAsDraftButton />
-            <ProceedButton next={next} />
-          </div>
-          {/* for mobile screen */}
-          <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
-            <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+    <FormProvider {...formMethods}>
+      <div
+        onSubmit={formMethods.handleSubmit(onSubmit)}
+        className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
+      >
+        {step}
+        {isFirstStep && (
+          <>
+            <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               <BackButton onClick={handleBack} />
-            </div>
-            <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-              <ProceedButton next={next} />
-            </div>
-            <div className="col-span-full">
               <SaveAsDraftButton />
+              <ProceedButton
+                next={
+                  isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
+                }
+              />
             </div>
+            {/* for mobile screen */}
+            <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
+              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                <BackButton onClick={handleBack} />
+              </div>
+              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                <ProceedButton
+                  next={
+                    isSecondToLastStep
+                      ? formMethods.handleSubmit(onSubmit)
+                      : next
+                  }
+                />
+              </div>
+              <div className="col-span-full">
+                <SaveAsDraftButton />
+              </div>
+            </div>
+          </>
+        )}
+        {isLastStep && (
+          <div className="w-full md:w-[200px]">
+            <DoneButton handleFinish={handleFinish} />
           </div>
-        </>
-      )}
-      {isLastStep && (
-        <div className="w-full md:w-[200px]">
-          <DoneButton handleFinish={handleFinish} />
-        </div>
-      )}
-      <NeedHelpFAB />
-    </div>
+        )}
+        <NeedHelpFAB />
+      </div>
+    </FormProvider>
   );
 };
 
 const RequestOrderStep1 = () => {
-  const [items, setItems] = useState<string[]>([]);
+  const { control } = useFormContext<Inputs>();
+  const { fields, append, remove } = useFieldArray<Inputs>({
+    control,
+    name: "requestItems",
+  });
 
-  const handleAddItem = (item: string) => {
-    setItems((prev) => [...prev, item]);
+  const handleAddMore = () => {
+    append(emptyValue);
   };
 
-  const handleRemoveItem = (index: number) => {
-    setItems((prev) => prev.filter((_, i) => i !== index)); // todo
+  const handleRemove = (index: number) => {
+    remove(index);
   };
-
   return (
     <>
       <RequestFormHeader title="Requesting For New Shop For Me Service" />
@@ -94,24 +140,20 @@ const RequestOrderStep1 = () => {
       <SelectWarehouseOriginSection />
       <SectionHeader title="Fill in the Items details" />
       <div className="flex flex-col gap-[20px]">
-        {items.map((_, i) => {
+        {fields.map((field, i) => {
           return (
             <ItemDetailsSection
-              key={i}
+              key={field.id}
               index={i}
-              handleRemoveItem={handleRemoveItem}
+              handleRemoveItem={() => handleRemove(i)}
+              fields={fields}
               expanded
             />
           );
         })}
       </div>
       <div className="w-max">
-        <AddButton
-          title="Add Item"
-          onClick={() => {
-            handleAddItem("");
-          }}
-        />
+        <AddButton title="Add Item" onClick={handleAddMore} />
       </div>
     </>
   );
@@ -275,9 +317,11 @@ type ItemDetailsSectionProps = {
   index: number;
   expanded?: boolean;
   handleRemoveItem: (index: number) => void;
+  fields: FieldArrayWithId<Inputs, "requestItems", "id">[];
 };
 
 export const ItemDetailsSection = ({
+  // fields // todo: register form fields
   index,
   expanded = false,
   handleRemoveItem,

@@ -13,7 +13,6 @@ import LoadingScreen from "~/components/LoadingScreen";
 import useFetchUser from "~/hooks/useFetchUser";
 import useLoginUser from "~/hooks/useLoginUser";
 import useRegisterUser from "~/hooks/useRegisterUser";
-import { queryClient } from "~/pages/_app";
 import { type RegisterInputs } from "~/pages/register";
 import { navItems } from "./NavigationContext";
 
@@ -61,6 +60,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     queryFn: async () => {
       if (loginInputs) {
         return await useLoginUser(loginInputs).then((userData) => {
+          setLoginInputs(null);
           handleJWTCookie(userData.jwt);
           redirectTo("/shop");
           return userData;
@@ -85,7 +85,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleLogout = async () => {
-    await queryClient.resetQueries({ queryKey: ["user"] });
     removeCookie("jwt");
   };
 
@@ -110,17 +109,17 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    if (!loginInputs) void refetch();
+    if (loginInputs) void refetch(); // fetch user after clicking login
   }, [loginInputs]);
 
   useEffect(() => {
-    if (!cookies.jwt) void refetch();
+    if (!cookies.jwt) void refetch(); // set user to null if there is no cookie
   }, [cookies.jwt]);
 
   useEffect(() => {
     if (!user && !isLoading) redirectTo("/login");
     else redirectTo("/shop");
-  }, [user]);
+  }, [user, isLoading]);
 
   const value: AuthContextType = {
     user,

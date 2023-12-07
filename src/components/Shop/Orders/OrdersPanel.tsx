@@ -1,16 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
-import { useShopContext, type OrderItemType } from "~/contexts/ShopContext";
+import {
+  useShopContext,
+  type OrderItemType as ShopOrderItemType,
+} from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import { LabelId, MoreButton } from ".";
+import TabContentLayout from "../../Layouts/TabContentLayout";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import RequestOrderButton from "../RequestOrderButton";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
 import SearchBar from "../SearchBar";
-import TabContentLayout from "../../Layouts/TabContentLayout";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
@@ -69,13 +72,17 @@ const OrdersPanel = () => {
 };
 
 const OrdersTable = () => {
+  const { orderItems } = useShopContext();
+
+  if (!orderItems) return;
+
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
             <OrderTableHead th={tableHeads} />
-            <OrderTableBody />
+            <OrderTableBody orderItems={orderItems} />
           </table>
         </div>
       </div>
@@ -138,11 +145,11 @@ const OrderTableHead = ({ th }: OrderTableHeadProps) => {
   );
 };
 
-const OrderTableBody = () => {
-  const { orderItems } = useShopContext();
+type OrderTableBodyProps = {
+  orderItems: ShopOrderItemType[];
+};
 
-  if (!orderItems) return;
-
+const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
   return (
     <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {orderItems.map(
@@ -153,9 +160,9 @@ const OrderTableBody = () => {
           orderDate,
           shippingCost,
           shippingStatus,
-          shopForMeCost,
-          shopForMeStatus,
           trackingId,
+          shopForMeStatus,
+          shopForMeCost,
         }) => {
           return (
             <tr
@@ -302,12 +309,12 @@ export const ImageColumn = ({ images }: ImageColumnProps) => {
   );
 };
 
-type ShippingStatusProps = {
+export type ShippingStatusProps = {
   id: string;
-  status: OrderItemType["shippingStatus"];
+  status: ShopOrderItemType["shippingStatus"];
 };
 
-const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
+export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
   const capitalizedWords = status
     .split(" ")
     .map((word) => {

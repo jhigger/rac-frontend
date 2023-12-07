@@ -73,7 +73,7 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const handleOrders = () => {
-    setOrderItems(orders);
+    setOrderItems(orders as OrderItemType[]);
   };
 
   const handlePayNowAction = (action: ImportContextType["payNowAction"]) => {

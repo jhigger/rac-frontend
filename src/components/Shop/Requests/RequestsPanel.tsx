@@ -1,9 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
-import { useShopContext, type RequestItemType } from "~/contexts/ShopContext";
+import { type RequestItemType as ImportRequestItemType } from "~/contexts/ImportContext";
+import {
+  useShopContext,
+  type RequestItemType as ShopRequestItemType,
+} from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
+import TabContentLayout from "../../Layouts/TabContentLayout";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import { LabelId, MoreButton } from "../Orders";
 import {
@@ -15,7 +20,6 @@ import {
 } from "../Orders/OrdersPanel";
 import RequestOrderButton from "../RequestOrderButton";
 import SearchBar from "../SearchBar";
-import TabContentLayout from "../../Layouts/TabContentLayout";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
@@ -140,7 +144,9 @@ export const RequestTableHead = ({ th }: RequestTableHeadProps) => {
   );
 };
 
-type RequestTableBodyProps = { requestItems: RequestItemType[] };
+type RequestTableBodyProps = {
+  requestItems: ShopRequestItemType[] | ImportRequestItemType[];
+};
 
 export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
   return (
@@ -187,10 +193,10 @@ export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
 
 type RequestStatusProps = {
   id: string;
-  status: RequestItemType["requestStatus"];
+  status: ShopRequestItemType["requestStatus"];
 };
 
-const RequestStatus = ({ id, status }: RequestStatusProps) => {
+export const RequestStatus = ({ id, status }: RequestStatusProps) => {
   const capitalizedWords = status
     .split(" ")
     .map((word) => {

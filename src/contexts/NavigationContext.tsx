@@ -64,7 +64,12 @@ export const bottomNavItems: NavItemType[] = [
   },
 ];
 
-export const navItems = [...topNavItems, ...bottomNavItems];
+export const navItems: NavItemType[] = [
+  { src: "/images/nav/home_icon.svg", title: "Home", href: "/" },
+  { src: "/images/nav/billing_icon.svg", title: "Billing", href: "/billing" },
+  ...topNavItems,
+  ...bottomNavItems,
+];
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();

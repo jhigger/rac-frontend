@@ -15,6 +15,7 @@ import useLoginUser from "~/hooks/useLoginUser";
 import useRegisterUser from "~/hooks/useRegisterUser";
 import { type RegisterInputs } from "~/pages/register";
 import { navItems } from "./NavigationContext";
+import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 
 export type AuthContextType = {
   user: UserType | null;
@@ -59,14 +60,23 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     queryKey: ["user"],
     queryFn: async () => {
       if (loginInputs) {
-        return await useLoginUser(loginInputs).then((userData) => {
+        console.log("logging in...");
+        return await useLoginUser(loginInputs).then(async (userData) => {
+          console.log("user logged in");
           setLoginInputs(null);
           handleJWTCookie(userData.jwt);
           redirectTo("/shop");
+          console.log("getting user requests");
+          const requestItems = await useFetchShopRequests(userData._id);
+          console.log("user requests:", requestItems);
           return userData;
         });
       } else if (cookies.jwt) {
-        return await useFetchUser();
+        return await useFetchUser().then(async (userData) => {
+          const requestItems = await useFetchShopRequests(userData._id);
+          console.log("user requests:", requestItems);
+          return userData;
+        });
       }
 
       return null;

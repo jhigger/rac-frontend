@@ -65,11 +65,12 @@ type Inputs = {
 
 const RequestOrder = () => {
   const [oops] = useState(true);
-  const steps = [<Step1 />, <Step2 />, <Step3 oops={oops} />];
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
-    useMultiStepForm(steps);
+    useMultiStepForm([<Step1 />, <Step2 />, <Step3 oops={oops} />]);
+
   const { handleRequests } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
+  
   const formMethods = useForm<Inputs>({
     defaultValues: {
       requestItems: [emptyValue],

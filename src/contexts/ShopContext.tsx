@@ -5,6 +5,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import {
+  type ORDER_STATUS,
+  type REQUEST_STATUS,
+  type SHIPPING_STATUS,
+  type SHOP_FOR_ME_STATUS,
+} from "~/constants";
 import { orders, requests } from "~/fake data";
 
 export type ShopContextType = {
@@ -22,23 +28,6 @@ export const ShopContext = createContext<ShopContextType>(
 
 export const useShopContext = () => useContext(ShopContext);
 
-const ORDER_STATUS = ["responded", "processed", "not responded"] as const;
-const SHIPPING_STATUS = [
-  "ready for shipping",
-  "not started",
-  "processing",
-  "cancelled",
-  "in transit",
-  "arrived destination",
-  "cleared",
-  "delivered",
-] as const;
-const SHOP_FOR_ME_STATUS = [
-  "purchase not started",
-  "purchase in progress",
-  "purchase completed",
-] as const;
-
 export type ShopOrderItemType = {
   images: string[];
   orderId: string;
@@ -50,8 +39,6 @@ export type ShopOrderItemType = {
   shopForMeCost: string;
   shippingCost: string;
 };
-
-const REQUEST_STATUS = ["responded", "not responded"] as const;
 
 export type ShopRequestItemType = {
   images: string[];

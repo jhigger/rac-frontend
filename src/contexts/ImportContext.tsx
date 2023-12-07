@@ -5,6 +5,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import {
+  type REQUEST_STATUS,
+  type ORDER_STATUS,
+  type SHIPPING_STATUS,
+  type ID_TYPE,
+} from "~/constants";
 import { orders, requests } from "~/fake data";
 
 export type ImportContextType = {
@@ -22,18 +28,6 @@ export const ImportContext = createContext<ImportContextType>(
 
 export const useImportContext = () => useContext(ImportContext);
 
-const ORDER_STATUS = ["responded", "processed", "not responded"] as const;
-const SHIPPING_STATUS = [
-  "ready for shipping",
-  "not started",
-  "processing",
-  "cancelled",
-  "in transit",
-  "arrived destination",
-  "cleared",
-  "delivered",
-] as const;
-
 export type ImportOrderItemType = {
   images: string[];
   orderId: string;
@@ -43,9 +37,6 @@ export type ImportOrderItemType = {
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shippingCost: string;
 };
-
-const REQUEST_STATUS = ["responded", "not responded"] as const;
-const ID_TYPE = ["Order ID", "Tracking ID", "Shipping ID"] as const;
 
 export type ImportRequestItemType = {
   images: string[];

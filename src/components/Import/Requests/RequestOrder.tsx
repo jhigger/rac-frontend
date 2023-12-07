@@ -66,7 +66,7 @@ type Inputs = {
 const RequestOrder = () => {
   const [oops] = useState(true);
   const steps = [<Step1 />, <Step2 />, <Step3 oops={oops} />];
-  const { step, next, isFirstStep, isLastStep, currentStepIndex } =
+  const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm(steps);
   const { handleRequests } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
@@ -119,9 +119,7 @@ const RequestOrder = () => {
               <SaveAsDraftButton />
               <ProceedButton
                 next={
-                  currentStepIndex === steps.length - 2
-                    ? formMethods.handleSubmit(onSubmit)
-                    : next
+                  isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
                 }
               />
             </div>
@@ -133,7 +131,7 @@ const RequestOrder = () => {
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
                 <ProceedButton
                   next={
-                    currentStepIndex === steps.length - 2
+                    isSecondToLastStep
                       ? formMethods.handleSubmit(onSubmit)
                       : next
                   }

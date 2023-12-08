@@ -338,7 +338,7 @@ export const PackageTable = () => {
 
   return (
     <div className="overflow-x-scroll ">
-      <table className="relative w-full min-w-max table-auto text-left">
+      <table className="relative w-full min-w-fit table-auto text-left">
         <PackageTableHead th={th} />
         <PackageTableBody />
         <Totals />
@@ -622,9 +622,9 @@ const PackageTableBody = () => {
   );
 };
 
-type PackageTableHeadProps = { th: string[] };
+export type PackageTableHeadProps = { th: string[] };
 
-const PackageTableHead = ({ th }: PackageTableHeadProps) => {
+export const PackageTableHead = ({ th }: PackageTableHeadProps) => {
   return (
     <thead className="title-sm sticky top-0 z-10 grid grid-cols-8 gap-[20px] rounded-t-[20px] border border-b-0 border-gray-200 bg-neutral-50 p-[30px] font-medium text-secondary-900">
       {th.map((title, i) => {

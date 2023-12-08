@@ -332,7 +332,7 @@ const PackageOrigin = () => {
   );
 };
 
-const BillingAddressStep = () => {
+export const BillingAddressStep = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">

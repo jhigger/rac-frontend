@@ -33,7 +33,7 @@ import {
 } from "./OrdersPanel";
 
 const ClearPackage = () => {
-  const { orderItems, handlePayNowAction } = useShopContext();
+  const { handlePayNowAction } = useShopContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -49,8 +49,6 @@ const ClearPackage = () => {
   const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
     useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
-
-  if (!orderItems) return;
 
   const handleBack = () => {
     handleActiveAction(null);

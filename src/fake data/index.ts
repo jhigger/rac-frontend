@@ -623,7 +623,25 @@ export const importDrafts: ImportDraftItemType[] = [
   {
     draftDate: "22-03-2023 13:05",
     origin: "origin",
-    packageDeliveryStatus: "",
+    packageDeliveryStatus: "not started",
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: "",
+        quantity: 1,
+        images: images(1),
+        description: "",
+      },
+    ],
+  },
+  {
+    draftDate: "22-03-2023 13:05",
+    origin: "origin",
+    packageDeliveryStatus: "not started",
     items: [
       {
         name: "Designer Bags",

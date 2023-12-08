@@ -81,6 +81,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         });
       }
 
+      console.log("user not found, redirecting to login page...");
       redirectTo("/login");
       return null;
     },

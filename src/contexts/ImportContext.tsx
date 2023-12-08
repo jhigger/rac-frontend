@@ -48,7 +48,7 @@ type ImportItemType = {
 
 export type ImportOrderItemInput = {
   origin: string;
-  packageDeliveryStatus: string;
+  packageDeliveryStatus: (typeof SHIPPING_STATUS)[number];
   items: ImportItemType[];
 };
 

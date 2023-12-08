@@ -151,19 +151,16 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
   return (
     <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {orderItems.map(
-        (
-          {
-            items,
-            orderId,
-            orderStatus,
-            orderDate,
-            shippingCost,
-            shippingStatus,
-            trackingId,
-          },
-          i,
-        ) => {
-          if (items.length <= 0) return;
+        ({
+          items,
+          orderId,
+          orderStatus,
+          orderDate,
+          shippingCost,
+          shippingStatus,
+          trackingId,
+        }) => {
+          if (!items[0]?.images) return;
 
           return (
             <tr
@@ -179,7 +176,7 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 />
               </td>
               <td className="border-0 p-0">
-                <ImageColumn images={items[i]!.images} />
+                <ImageColumn images={items[0].images} />
               </td>
               <td className="border-0 p-0">
                 <p className="title-md whitespace-nowrap">{orderId}</p>

@@ -368,14 +368,34 @@ export const DefaultBillingAddress = () => {
 
         {open && (
           <div className="grid w-fit grid-cols-4 gap-[20px]">
-            <DetailSection label="First Name" value="Malibu" />
-            <DetailSection label="Last Name" value="SHedrack" />
-            <DetailSection label="Contact Number" value="+234 803 456 7845" />
-            <DetailSection label="Email" value="Malibushdrack@gmail.com" />
-            <DetailSection label="Country" value="Turkey" />
-            <DetailSection label="State" value="Istanbul" />
-            <DetailSection label="City" value="Cyprusic" />
-            <DetailSection label="Zip/postal Code" value="98765" />
+            <DetailSection
+              label="First Name"
+              value="Malibu"
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="Last Name"
+              value="SHedrack"
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="Contact Number"
+              value="+234 803 456 7845"
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="Email"
+              value="Malibushdrack@gmail.com"
+              colSpanDesktop={2}
+            />
+            <DetailSection label="Country" value="Turkey" colSpanDesktop={1} />
+            <DetailSection label="State" value="Istanbul" colSpanDesktop={1} />
+            <DetailSection label="City" value="Cyprusic" colSpanDesktop={1} />
+            <DetailSection
+              label="Zip/postal Code"
+              value="98765"
+              colSpanDesktop={1}
+            />
             <DetailSection
               label="Address"
               value="No, 1osolo way, ikeja road, behind scaint merry"
@@ -452,7 +472,7 @@ const InitiateShippingStep = () => {
   );
 };
 
-type ShipmentCostsSummaryProps = { payButton?: boolean };
+export type ShipmentCostsSummaryProps = { payButton?: boolean };
 
 export const ShipmentCostsSummary = ({
   payButton = false,
@@ -493,7 +513,7 @@ export const ShipmentCostsSummary = ({
   );
 };
 
-const Summary = () => {
+export const Summary = () => {
   return (
     <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[28px] py-[20px] text-white">
       <span className="title-lg">Shipping Costs Summary</span>
@@ -533,18 +553,20 @@ export const ShippingMethod = ({
     <SectionContentLayout>
       <div className="flex w-full flex-col gap-[30px] py-[10px]">
         <div className="col-span-full flex items-center gap-[30px]">
-          <fieldset id="shippingMethod" className="flex items-center">
-            <input
-              disabled={disabled}
-              className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-              name="radio"
-              type="radio"
-              value="male"
-              aria-label="Custom Billing Address"
-              checked={checked}
-              onChange={onChange}
-            />
-          </fieldset>
+          <form>
+            <fieldset id="shippingMethods" className="flex items-center">
+              <input
+                disabled={disabled}
+                className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
+                name="radio"
+                type="radio"
+                value="male"
+                aria-label="Custom Billing Address"
+                checked={checked}
+                onChange={onChange}
+              />
+            </fieldset>
+          </form>
           <h4 className="title-md md:title-lg text-black">Basic</h4>
           <div className="flex flex-grow justify-end">
             <AccordionButton {...{ open, toggle }} />
@@ -553,7 +575,7 @@ export const ShippingMethod = ({
 
         {open && (
           <div className="flex flex-col gap-[10px] pl-[10px]">
-            <div className="label-lg grid w-full grid-cols-2 gap-[20px] font-medium text-neutral-900 md:w-max ">
+            <div className="label-lg grid w-full grid-cols-2 gap-[20px] font-medium text-neutral-900 md:w-max">
               <span className="col-span-1">Shipping Cost:</span>
               <span className="col-span-1 place-self-end">$126.66</span>
               <span className="col-span-1">Clearing, Port Handling:</span>

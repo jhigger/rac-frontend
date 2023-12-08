@@ -281,7 +281,7 @@ const InitiateShippingStep = () => {
   );
 };
 
-const PackageTable = () => {
+export const PackageTable = () => {
   const th = [
     "Item",
     "Value Per Item",
@@ -360,7 +360,7 @@ const PackageTableBody = () => {
               key={i}
               className="label-lg grid grid-cols-4 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
             >
-              <td className="col-span-1 flex gap-[10px]">
+              <td className="col-span-1 flex items-center gap-[10px]">
                 <div className="w-[62px] overflow-hidden rounded-[10px]">
                   <img src={image} alt="item image" />
                 </div>

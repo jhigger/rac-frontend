@@ -307,22 +307,27 @@ const PlaceOrder = () => {
 
 export const PaymentMethods = () => {
   return (
-    <div className="flex flex-col gap-[10px] md:pb-[40px]">
-      <PaymentMethod
-        title="Credit/Debit Cards - Pay with Dollar/US Cards"
-        description="Valid for MasterCard and Visa Cards. Maximum allowed is $1,500"
-        checked
-        expanded
-      />
-      <PaymentMethod
-        title="Paystack - Pay with Naira Card"
-        description="Pay with Your Naira Card"
-        expanded
-      />
-      <PaymentMethod title="Pay At Bank in $ - Nigeria" />
-      <PaymentMethod title="Pay At Bank in Naira - Nigeria" />
-      <PaymentMethod title="Pay Via PayPal" />
-    </div>
+    <form>
+      <fieldset
+        id="PaymentMethods"
+        className="flex flex-col gap-[10px] md:pb-[40px]"
+      >
+        <PaymentMethod
+          title="Credit/Debit Cards - Pay with Dollar/US Cards"
+          description="Valid for MasterCard and Visa Cards. Maximum allowed is $1,500"
+          checked
+          expanded
+        />
+        <PaymentMethod
+          title="Paystack - Pay with Naira Card"
+          description="Pay with Your Naira Card"
+          expanded
+        />
+        <PaymentMethod title="Pay At Bank in $ - Nigeria" />
+        <PaymentMethod title="Pay At Bank in Naira - Nigeria" />
+        <PaymentMethod title="Pay Via PayPal" />
+      </fieldset>
+    </form>
   );
 };
 
@@ -598,7 +603,7 @@ const PackageTableBody = () => {
                 className="label-lg grid grid-cols-8 items-center font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
               >
                 <td className="col-span-2 flex gap-[10px]">
-                  <div className="w-[62px] overflow-hidden rounded-[10px]">
+                  <div className="w-[62px] items-center overflow-hidden rounded-[10px]">
                     <img src={image} alt="item image" />
                   </div>
                   <div className="max-w-[160px] text-secondary-900">

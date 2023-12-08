@@ -3,7 +3,6 @@ import Balancer from "react-wrap-balancer";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { MoreButton } from "~/components/Shop/Orders";
-import ClearPackage from "~/components/Shop/Orders/ClearPackage";
 import OrderDetails from "~/components/Shop/Orders/OrderDetails";
 import {
   ImageColumn,
@@ -19,6 +18,7 @@ import {
 } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import InitiateShipping from "./InitiateShipping";
+import ClearPackage from "./ClearPackage";
 
 const ImportOrdersPanel = () => {
   const { orderItems } = useImportContext();

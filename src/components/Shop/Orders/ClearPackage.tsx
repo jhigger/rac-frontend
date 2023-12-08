@@ -42,7 +42,7 @@ const ClearPackage = () => {
       title: "Shipping & Billing Details Confirmation",
       content: <BillingDetailsConfirmation />,
     },
-    { title: "Initiate Shipping", content: <ClearPackageStep /> },
+    { title: "Clear Package", content: <ClearPackageStep /> },
     { title: "Success", content: <Success /> },
   ];
   const stepsContent = steps.map((step) => step.content);
@@ -114,7 +114,7 @@ const ClearPackage = () => {
   );
 };
 
-const BillingDetailsConfirmation = () => {
+export const BillingDetailsConfirmation = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <DestinationShippingAddress />
@@ -160,18 +160,18 @@ type AddressDetail = {
   colSpan?: number | "full";
 };
 
-const AddressDetail = ({ label, value, colSpan = "full" }: AddressDetail) => (
-  <div
-    className={`col-span-${colSpan} flex flex-col gap-[20px] ${
-      colSpan === "full" ? "md:col-span-2" : "justify-between"
-    }`}
-  >
-    <span className="body-md max-w-[100px] text-primary-600">{label}:</span>
-    <span className="title-md md:title-lg font-medium text-primary-900">
-      {value}
-    </span>
-  </div>
-);
+const AddressDetail = ({ label, value, colSpan = "full" }: AddressDetail) => {
+  return (
+    <div className={`col-span-full flex flex-col md:col-span-${colSpan}`}>
+      <span className="body-md h-[40px] max-w-[100px] text-primary-600">
+        {label}:
+      </span>
+      <span className="title-md md:title-lg font-medium text-primary-900">
+        {value}
+      </span>
+    </div>
+  );
+};
 
 const DestinationAddressDetails = () => {
   return (
@@ -183,23 +183,23 @@ const DestinationAddressDetails = () => {
 
         <hr className="mx-[10px] flex-grow border-dashed border-primary-900" />
       </div>
-      <div className="grid w-fit grid-cols-4 gap-[15px]">
-        <AddressDetail label="First Name" value="Malibu" />
-        <AddressDetail label="Last Name" value="SHedrack" />
+      <div className="grid w-fit grid-cols-4 gap-[20px]">
+        <AddressDetail label="First Name" value="Malibu" colSpan={2} />
+        <AddressDetail label="Last Name" value="SHedrack" colSpan={2} />
         <AddressDetail
           label="Street Address"
           value="No, 1osolo way, ikeja road, behind scaint merry"
         />
-        <AddressDetail label="Country" value="Nigeria" />
-        <AddressDetail label="State" value="Lagos" />
-        <AddressDetail label="City" value="Ikeja" />
-        <AddressDetail label="Zip/postal Code" value="98765" />
+        <AddressDetail label="Country" value="Nigeria" colSpan={1} />
+        <AddressDetail label="State" value="Lagos" colSpan={1} />
+        <AddressDetail label="City" value="Ikeja" colSpan={1} />
+        <AddressDetail label="Zip/postal Code" value="98765" colSpan={1} />
       </div>
     </>
   );
 };
 
-const ClearPackageStep = () => {
+export const ClearPackageStep = () => {
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
@@ -220,7 +220,7 @@ const ClearPackageStep = () => {
   );
 };
 
-const Success = () => {
+export const Success = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <PickUpAddress />
@@ -250,10 +250,14 @@ const PickUpAddress = () => {
               label="Pick up Address"
               value="No, 1osolo way, ikeja road, behind scaint merry"
             />
-            <DetailSection label="Country" value="Nigeria" />
-            <DetailSection label="State" value="Lagos" />
-            <DetailSection label="City" value="Ikeja" />
-            <DetailSection label="Zip/postal Code" value="98765" />
+            <DetailSection label="Country" value="Nigeria" colSpanDesktop={1} />
+            <DetailSection label="State" value="Lagos" colSpanDesktop={1} />
+            <DetailSection label="City" value="Ikeja" colSpanDesktop={1} />
+            <DetailSection
+              label="Zip/postal Code"
+              value="98765"
+              colSpanDesktop={1}
+            />
           </div>
         )}
       </div>

@@ -23,11 +23,10 @@ import {
   TotalCost,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
-import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
 import { LabelWithTooltip } from "../Requests/RequestDetails";
+import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
 
 const InitiateShipping = () => {
-  const { orderItems } = useShopContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -43,8 +42,6 @@ const InitiateShipping = () => {
   const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
     useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
-
-  if (!orderItems) return;
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -146,7 +143,9 @@ const InitiateShipping = () => {
 
 type InitiateShippingButtonProps = { onClick: () => void };
 
-const InitiateShippingButton = ({ onClick }: InitiateShippingButtonProps) => {
+export const InitiateShippingButton = ({
+  onClick,
+}: InitiateShippingButtonProps) => {
   return (
     <button
       onClick={onClick}
@@ -177,7 +176,7 @@ export const PackageConfirmation = () => {
   );
 };
 
-type OrderItemProps = {
+export type OrderItemProps = {
   index: number;
 };
 
@@ -337,7 +336,7 @@ const BillingAddressStep = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
-        <SectionHeader title="Provide your billing address" hr />
+        <SectionHeader title="Provide your shipping address" hr />
         <div className="flex flex-col items-center gap-[30px] md:pl-[34px]">
           <ShippingImportantNotice />
           <DestinationShippingAddress />

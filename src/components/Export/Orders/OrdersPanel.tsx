@@ -17,13 +17,13 @@ const ExportOrdersPanel = () => {
   const { orderItems } = useExportContext();
   const { activeAction } = useTabContext();
 
-  // todo:
   if (activeAction === "clear package") {
-    // return (
-    //   <TabContentLayout>
-    //     <ClearPackage />
-    //   </TabContentLayout>
-    // );
+    return (
+      <>No UI</>
+      // <TabContentLayout>
+      //   <ClearPackage />
+      // </TabContentLayout>
+    );
   }
 
   if (activeAction === "initiate shipping") {
@@ -34,13 +34,13 @@ const ExportOrdersPanel = () => {
     );
   }
 
-  // todo:
   if (activeAction === "order details") {
-    // return (
-    //   <TabContentLayout>
-    //     <OrderDetails />
-    //   </TabContentLayout>
-    // );
+    return (
+      <>No UI</>
+      // <TabContentLayout>
+      //   <OrderDetails />
+      // </TabContentLayout>
+    );
   }
 
   if (orderItems) {

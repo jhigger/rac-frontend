@@ -34,12 +34,12 @@ const ImportRequestsPanel = () => {
     );
   }
 
-  // todo:
   if (activeAction === "proceed to checkout") {
     return (
-      <TabContentLayout>
-        <>{/* <RequestCheckout /> */}</>
-      </TabContentLayout>
+      <>No UI</>
+      // <TabContentLayout>
+      //   <RequestCheckout />
+      // </TabContentLayout>
     );
   }
 

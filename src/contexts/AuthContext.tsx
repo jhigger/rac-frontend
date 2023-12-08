@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { type AxiosError } from "axios";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -18,7 +19,7 @@ import { type RegisterInputs } from "~/pages/register";
 
 export type AuthContextType = {
   user: UserType | null;
-  loginError: globalThis.Error | null;
+  loginError: AxiosError | null;
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => Promise<void>;
   handleRegister: (data: RegisterInputs) => Promise<void>;
@@ -55,7 +56,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     isRefetching,
     error: loginError,
     refetch,
-  } = useQuery({
+  } = useQuery<UserType | null, AxiosError>({
     queryKey: ["user"],
     queryFn: async () => {
       if (loginInputs) {

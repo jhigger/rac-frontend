@@ -11,7 +11,7 @@ export type LoginInputs = {
 };
 
 const LoginForm = () => {
-  const { handleLogin } = useAuthContext();
+  const { loginError, handleLogin } = useAuthContext();
   const { register, handleSubmit } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
@@ -37,6 +37,12 @@ const LoginForm = () => {
           {...register("password")}
         />
       </div>
+      {loginError && (
+        <span className="text-error-500">
+          {loginError.response?.status === 401 &&
+            "Email or Password is incorrect"}
+        </span>
+      )}
       <LoginButton />
     </form>
   );

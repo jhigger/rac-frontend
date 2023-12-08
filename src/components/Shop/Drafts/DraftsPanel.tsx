@@ -1,25 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
+import { type ShopDraftItemType, useShopContext } from "~/contexts/ShopContext";
+import TabContentLayout from "../../Layouts/TabContentLayout";
 import { MoreButton } from "../Orders";
 import { TableFooter, type TableHeadType } from "../Orders/OrdersPanel";
 import RequestOrderButton from "../RequestOrderButton";
 import SearchBar from "../SearchBar";
-import TabContentLayout from "../../Layouts/TabContentLayout";
-
-const fakeData = {
-  draftDate: "22-03-2023 13:05",
-  image: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-  name: "SteelSeries Rival 5 Gaming Laptop with PrismSync RGB...",
-  url: "htttp/jjnkkukja.jhgyja...",
-  costFromStore: "$88.99",
-  urgentPurchase: "$88.99",
-  quantity: "3",
-  totalValue: "$112.49",
-};
 
 const DraftsPanel = () => {
-  if (fakeData) {
+  const { draftItems } = useShopContext();
+
+  if (draftItems) {
     return (
       <TabContentLayout>
         <SearchBar />
@@ -55,13 +47,17 @@ const tableHeads: TableHeadType[] = [
 ];
 
 const DraftsTable = () => {
+  const { draftItems } = useShopContext();
+
+  if (!draftItems) return;
+
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
             <DraftTableHead th={tableHeads} />
-            <DraftTableBody />
+            <DraftTableBody draftItems={draftItems} />
           </table>
         </div>
       </div>
@@ -98,60 +94,35 @@ const DraftTableHead = ({ th }: DraftTableHeadProps) => {
   );
 };
 
-const DraftTableBody = () => {
-  const limitChars = (text: string, limit: number) => {
-    return `${text.slice(0, limit - 3)}...`;
-  };
+type DraftTableBody = {
+  draftItems: ShopDraftItemType[];
+};
 
+const DraftTableBody = ({ draftItems }: DraftTableBody) => {
   return (
     <tbody className="flex flex-col bg-white px-[20px] [&>tr]:border-b-[1px] [&>tr]:border-gray-500 first:[&>tr]:border-t-[1px]">
-      {Array<typeof fakeData>(2)
-        .fill(fakeData)
-        .map(
-          (
-            {
-              draftDate,
-              image,
-              name,
-              url,
-              costFromStore,
-              urgentPurchase,
-              quantity,
-              totalValue,
-            },
-            i,
-          ) => {
-            return (
-              <tr
-                key={i}
-                className="label-lg grid w-full grid-cols-8 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
-              >
-                <td className="col-span-1">{draftDate}</td>
-                <td className="col-span-1 flex gap-[10px]">
-                  <div className="w-[62px] overflow-hidden rounded-[10px]">
-                    <img src={image} alt="item image" />
-                  </div>
-                  <div className="max-w-[160px] text-secondary-900">
-                    {limitChars(name, 80)}
-                  </div>
-                </td>
-                <td className="col-span-1 w-[150px] text-primary-600 underline">
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    {limitChars(url, 25)}
-                  </a>
-                </td>
-                <td className="col-span-1">{costFromStore}</td>
-                <td className="col-span-1">{urgentPurchase}</td>
-                <td className="col-span-1">{quantity}</td>
-                <td className="col-span-1">{totalValue}</td>
+      {draftItems.map(({ draftDate, origin, items }, i) => {
+        if (items.length <= 0) return;
 
-                <td className="border-0 p-0">
-                  <MoreButton />
-                </td>
-              </tr>
-            );
-          },
-        )}
+        return (
+          <tr
+            key={i}
+            className="label-lg grid w-full grid-cols-8 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
+          >
+            <td className="col-span-1">{draftDate}</td>
+            <td className="col-span-1 flex gap-[10px]">
+              <div className="w-[62px] overflow-hidden rounded-[10px]">
+                <img src={items[i]!.images[i]} alt="item image" />
+              </div>
+            </td>
+            <td className="col-span-1">{origin}</td>
+
+            <td className="border-0 p-0">
+              <MoreButton />
+            </td>
+          </tr>
+        );
+      })}
     </tbody>
   );
 };

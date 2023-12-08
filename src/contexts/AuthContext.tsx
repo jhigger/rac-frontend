@@ -18,7 +18,7 @@ import { type RegisterInputs } from "~/pages/register";
 
 export type AuthContextType = {
   user: UserType | null;
-  error: globalThis.Error | null;
+  loginError: globalThis.Error | null;
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => Promise<void>;
   handleRegister: (data: RegisterInputs) => Promise<void>;
@@ -53,7 +53,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     isFetching,
     isRefetching,
-    error,
+    error: loginError,
     refetch,
   } = useQuery({
     queryKey: ["user"],
@@ -103,7 +103,9 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRegister = async (inputs: RegisterInputs) => {
-    await useRegisterUser(inputs).catch((e) => console.error(e));
+    await useRegisterUser(inputs)
+      .then(() => setLoginInputs(inputs))
+      .catch((e) => console.error(e));
   };
 
   const redirectTo = (path: string) => {
@@ -120,7 +122,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value: AuthContextType = {
     user,
-    error,
+    loginError,
     handleLogin,
     handleLogout,
     handleRegister,

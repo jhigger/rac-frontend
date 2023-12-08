@@ -742,10 +742,12 @@ export const CancelButton = ({ dataClose, onClick }: CloseButtonProps) => {
 
 export const TableFooter = () => {
   return (
-    <div className="body-lg flex items-center gap-[20px] px-[20px] py-[10px]">
-      <span>Items per page:</span>
-      <div className="w-max">
-        <SelectNumber />
+    <div className="body-lg flex flex-col items-center gap-[20px] px-[20px] py-[10px] md:flex-row">
+      <div className="flex items-center gap-[12px]">
+        <span className="whitespace-nowrap">Items per page:</span>
+        <div className="w-full md:w-max">
+          <SelectNumber />
+        </div>
       </div>
       <div className="flex gap-[20px]">
         <span>1-10 of 12</span>

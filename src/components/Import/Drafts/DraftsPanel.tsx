@@ -9,18 +9,15 @@ import {
 } from "~/components/Shop/Orders/OrdersPanel";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import SearchBar from "~/components/Shop/SearchBar";
-
-const fakeData = {
-  draftDate: "22-03-2023 13:05",
-  image: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-  name: "SteelSeries Rival 5 Gaming Laptop with PrismSync RGB...",
-  url: "htttp/jjnkkukja.jhgyja...",
-  quantity: "3",
-  totalValue: "$112.49",
-};
+import {
+  useImportContext,
+  type ImportDraftItemType,
+} from "~/contexts/ImportContext";
 
 const ImportDraftsPanel = () => {
-  if (fakeData) {
+  const { draftItems } = useImportContext();
+
+  if (draftItems) {
     return (
       <TabContentLayout>
         <SearchBar />
@@ -47,20 +44,22 @@ const ImportDraftsPanel = () => {
 
 const tableHeads: TableHeadType[] = [
   { title: "Draft Date", sortIcon: true },
-  { title: "Item", sortIcon: true },
-  { title: "Item URL", sortIcon: true },
-  { title: "Item Cost from Store", sortIcon: true },
-  { title: "Total value of item", sortIcon: true },
+  { title: "Item", sortIcon: false },
+  { title: "Origin", sortIcon: true },
 ];
 
 const DraftsTable = () => {
+  const { draftItems } = useImportContext();
+
+  if (!draftItems) return;
+
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
       <div className="flex flex-col gap-[20px]">
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
             <DraftTableHead th={tableHeads} />
-            <DraftTableBody />
+            <DraftTableBody draftItems={draftItems} />
           </table>
         </div>
       </div>
@@ -73,7 +72,7 @@ type DraftTableHeadProps = { th: TableHeadType[] };
 
 const DraftTableHead = ({ th }: DraftTableHeadProps) => {
   return (
-    <thead className="title-sm sticky top-0 z-10 grid w-full grid-cols-8 items-center gap-[20px] p-[20px] font-medium text-neutral-900">
+    <thead className="title-sm sticky top-0 z-10 grid w-full grid-cols-3 items-center gap-[20px] p-[20px] font-medium text-neutral-900">
       {th.map(({ title, sortIcon }) => {
         return (
           <tr key={title} className="col-span-1">
@@ -98,44 +97,36 @@ const DraftTableHead = ({ th }: DraftTableHeadProps) => {
   );
 };
 
-const DraftTableBody = () => {
-  const limitChars = (text: string, limit: number) => {
-    return `${text.slice(0, limit - 3)}...`;
-  };
+type DraftTableBody = {
+  draftItems: ImportDraftItemType[];
+};
 
+const DraftTableBody = ({ draftItems }: DraftTableBody) => {
   return (
     <tbody className="flex flex-col bg-white px-[20px] [&>tr]:border-b-[1px] [&>tr]:border-gray-500 first:[&>tr]:border-t-[1px]">
-      {Array<typeof fakeData>(2)
-        .fill(fakeData)
-        .map(({ draftDate, image, name, url, quantity, totalValue }, i) => {
+      {draftItems.map(
+        ({ draftDate, origin, packageDeliveryStatus, items }, i) => {
           return (
             <tr
               key={i}
-              className="label-lg grid w-full grid-cols-8 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
+              className="label-lg grid w-full grid-cols-3 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
             >
               <td className="col-span-1">{draftDate}</td>
               <td className="col-span-1 flex gap-[10px]">
                 <div className="w-[62px] overflow-hidden rounded-[10px]">
-                  <img src={image} alt="item image" />
-                </div>
-                <div className="max-w-[160px] text-secondary-900">
-                  {limitChars(name, 80)}
+                  <img src={items[0]?.images[0]} alt="item image" />
                 </div>
               </td>
-              <td className="col-span-1 w-[150px] text-primary-600 underline">
-                <a href="#" target="_blank" rel="noopener noreferrer">
-                  {limitChars(url, 25)}
-                </a>
-              </td>
-              <td className="col-span-1">{quantity}</td>
-              <td className="col-span-1">{totalValue}</td>
+              <td className="col-span-1">{origin}</td>
+              <td className="col-span-1">{packageDeliveryStatus}</td>
 
               <td className="border-0 p-0">
                 <MoreButton />
               </td>
             </tr>
           );
-        })}
+        },
+      )}
     </tbody>
   );
 };

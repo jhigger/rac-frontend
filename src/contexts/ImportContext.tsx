@@ -6,19 +6,21 @@ import {
   type ReactNode,
 } from "react";
 import {
-  type REQUEST_STATUS,
-  type ORDER_STATUS,
-  type SHIPPING_STATUS,
   type ID_TYPE,
+  type ORDER_STATUS,
+  type REQUEST_STATUS,
+  type SHIPPING_STATUS,
 } from "~/constants";
-import { orders, requests } from "~/fake data";
+import { importDrafts, importOrders, importRequests } from "~/fake data";
 
 export type ImportContextType = {
+  draftItems: ImportDraftItemType[] | null;
   orderItems: ImportOrderItemType[] | null;
   payNowAction: { action: () => void } | null;
   requestItems: ImportRequestItemType[] | null;
-  handlePayNowAction: (action: ImportContextType["payNowAction"]) => void;
+  handleDrafts: () => void;
   handleOrders: () => void;
+  handlePayNowAction: (action: ImportContextType["payNowAction"]) => void;
   handleRequests: () => void;
 };
 
@@ -28,34 +30,55 @@ export const ImportContext = createContext<ImportContextType>(
 
 export const useImportContext = () => useContext(ImportContext);
 
-export type ImportOrderItemType = {
+type ImportItemType = {
+  name: string;
+  idType: (typeof ID_TYPE)[number];
+  idNumber: string;
+  deliveryStatus: string;
+  deliveredBy: string;
+  originalCost: string;
+  quantity: number;
   images: string[];
+  description: string;
+  properties?: {
+    label: string;
+    value: string;
+  }[];
+};
+
+export type ImportOrderItemInput = {
+  origin: string;
+  packageDeliveryStatus: string;
+  items: ImportItemType[];
+};
+
+export type ImportDraftItemType = ImportOrderItemInput & {
+  draftDate: string;
+};
+
+export type ImportOrderItemType = {
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
   orderDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shippingCost: string;
+  items: ImportItemType[];
 };
 
 export type ImportRequestItemType = {
-  images: string[];
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestDate: string;
-  itemName: string;
-  idType: (typeof ID_TYPE)[number];
-  idNumber: string;
-  itemDeliveryStatus: string; // todo: update types
-  deliveredBy: string;
-  itemOriginalCost: string;
-  quantity: number;
-  additionalItemDescription: string;
-};
+  items: ImportItemType[];
+}
 
 export type PropertyType = { label: string; value: string | undefined };
 
 const ImportContextProvider = ({ children }: { children: ReactNode }) => {
+  const [draftItems, setDraftItems] = useState<ImportDraftItemType[] | null>(
+    null,
+  );
   const [orderItems, setOrderItems] = useState<ImportOrderItemType[] | null>(
     null,
   );
@@ -65,8 +88,12 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
     ImportRequestItemType[] | null
   >(null);
 
+  const handleDrafts = () => {
+    setDraftItems(importDrafts);
+  };
+
   const handleOrders = () => {
-    setOrderItems(orders as ImportOrderItemType[]);
+    setOrderItems(importOrders);
   };
 
   const handlePayNowAction = (action: ImportContextType["payNowAction"]) => {
@@ -74,7 +101,7 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestItems(requests as ImportRequestItemType[]);
+    setRequestItems(importRequests);
   };
 
   // testing purposes
@@ -84,9 +111,11 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const value: ImportContextType = {
+    draftItems,
     orderItems,
     payNowAction,
     requestItems,
+    handleDrafts,
     handleOrders,
     handlePayNowAction,
     handleRequests,

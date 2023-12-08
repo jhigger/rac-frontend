@@ -106,6 +106,8 @@ const DraftTableBody = ({ draftItems }: DraftTableBody) => {
     <tbody className="flex flex-col bg-white px-[20px] [&>tr]:border-b-[1px] [&>tr]:border-gray-500 first:[&>tr]:border-t-[1px]">
       {draftItems.map(
         ({ draftDate, origin, packageDeliveryStatus, items }, i) => {
+          if (items.length <= 0) return;
+
           return (
             <tr
               key={i}
@@ -114,7 +116,7 @@ const DraftTableBody = ({ draftItems }: DraftTableBody) => {
               <td className="col-span-1">{draftDate}</td>
               <td className="col-span-1 flex gap-[10px]">
                 <div className="w-[62px] overflow-hidden rounded-[10px]">
-                  <img src={items[0]?.images[0]} alt="item image" />
+                  <img src={items[i]!.images[i]} alt="item image" />
                 </div>
               </td>
               <td className="col-span-1">{origin}</td>

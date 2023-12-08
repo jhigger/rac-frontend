@@ -28,7 +28,6 @@ import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 
 const emptyValue: ShopOrderItemType = {
-  images: [],
   orderId: "",
   orderStatus: "not responded",
   orderDate: "",
@@ -37,6 +36,19 @@ const emptyValue: ShopOrderItemType = {
   shopForMeStatus: "purchase not started",
   shopForMeCost: "",
   shippingCost: "",
+  items: [
+    {
+      store: "",
+      urgentPurchase: "No",
+      url: "",
+      name: "Designer Bags",
+      originalCost: "",
+      quantity: 1,
+      shippingCost: "",
+      images: [],
+      description: "",
+    },
+  ],
 };
 
 type Inputs = {
@@ -318,7 +330,13 @@ type ItemDetailsSectionProps = {
   index: number;
   expanded?: boolean;
   handleRemoveItem: (index: number) => void;
-  fields: FieldArrayWithId<Inputs, "requestItems", "id">[];
+  fields: FieldArrayWithId<
+    Inputs,
+    | "requestItems"
+    | `requestItems.${number}.items`
+    | `requestItems.${number}.items.${number}.properties`,
+    "id"
+  >[];
 };
 
 export const ItemDetailsSection = ({

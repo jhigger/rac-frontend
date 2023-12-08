@@ -151,42 +151,46 @@ type RequestTableBodyProps = {
 export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
   return (
     <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
-      {requestItems.map(({ images, requestId, requestStatus, requestDate }) => {
-        return (
-          <tr
-            key={requestId}
-            className="grid grid-cols-[50px_repeat(5,1fr)] items-center gap-[10px] bg-gray-10 p-[10px] md:gap-[20px] md:p-[20px]"
-          >
-            <td className="border-0 p-0">
-              <input
-                type="checkbox"
-                name={`check-${requestId}`}
-                className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-                checked={undefined}
-              />
-            </td>
-            <td className="border-0 p-0">
-              <ImageColumn images={images} />
-            </td>
-            <td className="border-0 p-0">
-              <p className="label-lg md:title-md max-w-[100px] whitespace-nowrap">
-                {requestId}
-              </p>
-            </td>
-            <td className="w-[150px] border-0 p-0">
-              <RequestStatus id={requestId} status={requestStatus} />
-            </td>
-            <td className="border-0 p-0">
-              <p className="label-lg whitespace-nowrap text-neutral-900">
-                {requestDate}
-              </p>
-            </td>
-            <td className="border-0 p-0">
-              <MoreButton />
-            </td>
-          </tr>
-        );
-      })}
+      {requestItems.map(
+        ({ items, requestId, requestStatus, requestDate }, i) => {
+          if (items.length <= 0) return;
+
+          return (
+            <tr
+              key={requestId}
+              className="grid grid-cols-[50px_repeat(5,1fr)] items-center gap-[10px] bg-gray-10 p-[10px] md:gap-[20px] md:p-[20px]"
+            >
+              <td className="border-0 p-0">
+                <input
+                  type="checkbox"
+                  name={`check-${requestId}`}
+                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+                  checked={undefined}
+                />
+              </td>
+              <td className="border-0 p-0">
+                <ImageColumn images={items[i]!.images} />
+              </td>
+              <td className="border-0 p-0">
+                <p className="label-lg md:title-md max-w-[100px] whitespace-nowrap">
+                  {requestId}
+                </p>
+              </td>
+              <td className="w-[150px] border-0 p-0">
+                <RequestStatus id={requestId} status={requestStatus} />
+              </td>
+              <td className="border-0 p-0">
+                <p className="label-lg whitespace-nowrap text-neutral-900">
+                  {requestDate}
+                </p>
+              </td>
+              <td className="border-0 p-0">
+                <MoreButton />
+              </td>
+            </tr>
+          );
+        },
+      )}
     </tbody>
   );
 };
@@ -251,7 +255,7 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
   return (
     <div
       id={modalId}
-      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 items-center w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
     >
       <div
         data-close={dataClose}

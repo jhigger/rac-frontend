@@ -30,7 +30,7 @@ export const ShopContext = createContext<ShopContextType>(
 
 export const useShopContext = () => useContext(ShopContext);
 
-type ShopItemType = {
+export type ShopItemType = {
   store: string;
   urgentPurchase: string;
   url: string;

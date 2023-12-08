@@ -45,18 +45,22 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
 const emptyValue: ImportRequestItemType = {
-  images: [],
   requestId: "",
   requestStatus: "not responded",
   requestDate: "",
-  itemName: "",
-  idType: "Tracking ID",
-  idNumber: "",
-  itemDeliveryStatus: "",
-  deliveredBy: "",
-  itemOriginalCost: "",
-  quantity: 0,
-  additionalItemDescription: "",
+  items: [
+    {
+      images: [],
+      name: "",
+      idType: "Tracking ID",
+      idNumber: "",
+      deliveryStatus: "",
+      deliveredBy: "",
+      originalCost: "",
+      quantity: 0,
+      description: "",
+    },
+  ],
 };
 
 type Inputs = {
@@ -215,7 +219,13 @@ type ItemDetailsSectionProps = {
   index: number;
   expanded?: boolean;
   handleRemoveItem: () => void;
-  fields: FieldArrayWithId<Inputs, "requestItems", "id">[];
+  fields: FieldArrayWithId<
+    Inputs,
+    | "requestItems"
+    | `requestItems.${number}.items`
+    | `requestItems.${number}.items.${number}.properties`,
+    "id"
+  >[];
 };
 
 const ItemDetailsSection = ({

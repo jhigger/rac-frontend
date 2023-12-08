@@ -10,12 +10,11 @@ import {
 import { useCookies } from "react-cookie";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 import LoadingScreen from "~/components/LoadingScreen";
+import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 import useFetchUser from "~/hooks/useFetchUser";
 import useLoginUser from "~/hooks/useLoginUser";
 import useRegisterUser from "~/hooks/useRegisterUser";
 import { type RegisterInputs } from "~/pages/register";
-import { navItems } from "./NavigationContext";
-import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 
 export type AuthContextType = {
   user: UserType | null;
@@ -59,37 +58,31 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      return {
-        isAdmin: false,
-        _id: "657143f8c2c0961185969950",
-        firstName: "john",
-        lastName: "doe",
-        email: "asd@asd.asd",
-        country: "AF",
-        countryCode: "375",
-        jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTcxNDNmOGMyYzA5NjExODU5Njk5NTAiLCJpYXQiOjE3MDE5MjE3ODUsImV4cCI6MTcwNDUxMzc4NX0.u8d6atI5n0Jf1florP3xzsmynsCAyhvZHkvZp6l5xks",
-      };
-      // if (loginInputs) {
-      //   console.log("logging in...");
-      //   return await useLoginUser(loginInputs).then(async (userData) => {
-      //     console.log("user logged in");
-      //     setLoginInputs(null);
-      //     handleJWTCookie(userData.jwt);
-      //     redirectTo("/shop");
-      //     console.log("getting user requests");
-      //     const requestItems = await useFetchShopRequests(userData._id);
-      //     console.log("user requests:", requestItems);
-      //     return userData;
-      //   });
-      // } else if (cookies.jwt) {
-      //   return await useFetchUser().then(async (userData) => {
-      //     const requestItems = await useFetchShopRequests(userData._id);
-      //     console.log("user requests:", requestItems);
-      //     return userData;
-      //   });
-      // }
+      if (loginInputs) {
+        console.log("logging in...");
+        return await useLoginUser(loginInputs).then(async (userData) => {
+          console.log("user logged in");
+          setLoginInputs(null);
+          handleJWTCookie(userData.jwt);
+          redirectTo("/shop");
+          console.log("getting user requests...");
+          const requestItems = await useFetchShopRequests(userData._id);
+          console.log("user requests:", requestItems);
+          return userData;
+        });
+      } else if (cookies.jwt) {
+        console.log("token found, fetching user info...");
+        return await useFetchUser().then(async (userData) => {
+          console.log("user found");
+          console.log("getting user requests...");
+          const requestItems = await useFetchShopRequests(userData._id);
+          console.log("user requests:", requestItems);
+          return userData;
+        });
+      }
 
-      // return null;
+      redirectTo("/login");
+      return null;
     },
     initialData: null,
   });
@@ -110,22 +103,10 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleRegister = async (inputs: RegisterInputs) => {
     await useRegisterUser(inputs).catch((e) => console.error(e));
-    handleNavigation;
   };
 
   const redirectTo = (path: string) => {
     void router.replace(path).catch((e) => console.log(e));
-  };
-
-  const handleNavigation = () => {
-    if (router.asPath === "/register" || router.asPath === "/login") {
-      redirectTo("/shop");
-    } else {
-      const matchedNavItem = navItems.find(
-        (navItem) => router.asPath === navItem.href,
-      );
-      if (matchedNavItem) redirectTo(router.asPath);
-    }
   };
 
   useEffect(() => {
@@ -135,11 +116,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!cookies.jwt) void refetch(); // set user to null if there is no cookie
   }, [cookies.jwt]);
-
-  useEffect(() => {
-    if (!user && !isLoading) redirectTo("/login");
-    else redirectTo("/shop");
-  }, [user, isLoading]);
 
   const value: AuthContextType = {
     user,

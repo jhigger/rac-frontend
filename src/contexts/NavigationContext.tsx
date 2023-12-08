@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import {
   createContext,
   useContext,
-  useEffect,
   useState,
   type ReactNode,
+  useEffect,
 } from "react";
 
 export type NavContextType = {
@@ -73,7 +73,6 @@ export const navItems: NavItemType[] = [
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-
   const [activeNav, setActiveNav] =
     useState<NavItemType["title"]>("Shop for me");
 
@@ -81,19 +80,25 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
     setActiveNav(navTitle);
   };
 
-  useEffect(() => {
-    const matchedNavItem = navItems.find(
-      (navItem) => router.asPath === navItem.href,
-    );
-    if (matchedNavItem && activeNav !== matchedNavItem.title) {
-      setActiveNav(matchedNavItem.title);
-    }
-  }, [router.asPath]);
-
   const value: NavContextType = {
     activeNav,
     handleActiveNavChange,
   };
+
+  const redirectTo = (path: string) => {
+    void router.replace(path).catch((e) => console.log(e));
+  };
+
+  useEffect(() => {
+    const matchedNavItem = navItems.find(
+      (navItem) => router.asPath === navItem.href,
+    );
+
+    if (matchedNavItem) {
+      handleActiveNavChange(matchedNavItem.title);
+      redirectTo(router.asPath);
+    }
+  }, [router.asPath]);
 
   return <NavContext.Provider value={value}>{children}</NavContext.Provider>;
 };

@@ -3,7 +3,6 @@ import Balancer from "react-wrap-balancer";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { MoreButton } from "~/components/Shop/Orders";
-import OrderDetails from "~/components/Shop/Orders/OrderDetails";
 import {
   ImageColumn,
   ShippingStatus,
@@ -40,12 +39,13 @@ const ImportOrdersPanel = () => {
     );
   }
 
+  // todo:
   if (activeAction === "order details") {
-    return (
-      <TabContentLayout>
-        <OrderDetails />
-      </TabContentLayout>
-    );
+    // return (
+    //   <TabContentLayout>
+    //     <OrderDetails />
+    //   </TabContentLayout>
+    // );
   }
 
   if (orderItems) {
@@ -73,7 +73,7 @@ const ImportOrdersPanel = () => {
   );
 };
 
-const tableHeads: TableHeadType[] = [
+export const tableHeads: TableHeadType[] = [
   { title: "Package(s) Image", sortIcon: false },
   { title: "Order ID", sortIcon: true },
   { title: "Order Status", sortIcon: false },
@@ -105,7 +105,7 @@ const OrdersTable = () => {
 
 type OrderTableHeadProps = { th: TableHeadType[] };
 
-const OrderTableHead = ({ th }: OrderTableHeadProps) => {
+export const OrderTableHead = ({ th }: OrderTableHeadProps) => {
   return (
     <thead className="title-sm sticky top-0 z-10 grid grid-cols-[50px_repeat(8,1fr)] gap-[20px] p-[20px] font-medium text-neutral-900">
       <tr className="col-span-1 w-max">
@@ -147,7 +147,7 @@ type OrderTableBodyProps = {
   orderItems: ImportOrderItemType[];
 };
 
-const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
+export const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
   return (
     <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {orderItems.map(

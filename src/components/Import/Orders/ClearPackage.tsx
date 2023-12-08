@@ -133,7 +133,7 @@ const PackageConfirmation = () => {
   );
 };
 
-const OrderItem = ({ index }: OrderItemProps) => {
+export const OrderItem = ({ index }: OrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -231,6 +231,7 @@ const ClearPackageStep = () => {
     </div>
   );
 };
+
 const ShipmentCostsSummary = ({
   payButton = false,
 }: ShipmentCostsSummaryProps) => {

@@ -691,7 +691,7 @@ export const AndLastly = () => {
       <SectionHeader title="And lastly..." />
       <div className="flex flex-col gap-[10px] px-[10px] py-[10px] md:px-[34px]">
         <p className="body-md">
-          We have sent you details about your Order to your email address
+          We have sent you details about your Order to your email address{" "}
           <span className="text-primary-900">rexofforex@gmail.com</span>
         </p>
         <div className="max-w-[150px]">

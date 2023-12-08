@@ -160,7 +160,7 @@ const RequestOrder = () => {
   );
 };
 
-const Step1 = () => {
+export const Step1 = () => {
   return (
     <>
       <SectionHeader
@@ -175,7 +175,7 @@ const Step1 = () => {
   );
 };
 
-const Step2 = () => {
+export const Step2 = () => {
   const { control } = useFormContext<Inputs>();
   const { fields, append, remove } = useFieldArray<Inputs>({
     control,
@@ -366,7 +366,7 @@ const ItemDetailsSection = ({
   );
 };
 
-type Step3Props = { oops: boolean };
+export type Step3Props = { oops: boolean };
 
 const Step3 = ({ oops }: Step3Props) => {
   return (
@@ -386,13 +386,19 @@ const Step3 = ({ oops }: Step3Props) => {
   );
 };
 
-type ListItem = { content: string };
+export type InstructionsItem = { content: string | JSX.Element };
 
 const Instructions = () => {
-  const instructions: ListItem[] = [
+  const instructions: InstructionsItem[] = [
     {
-      content:
-        "Kindly note that we use the package descriptions you provided to identify the package you claim to have been delivered to our Warehouse (Origin warehouse you selected) for shipping.",
+      content: (
+        <>
+          Kindly note that we use the package descriptions you provided to
+          identify the package you claim to have been delivered to our Warehouse
+          (<span className="text-primary-600">Origin warehouse</span> you
+          selected) for shipping.
+        </>
+      ),
     },
     {
       content:
@@ -427,7 +433,7 @@ const Instructions = () => {
   );
 };
 
-const Guidelines = () => {
+export const Guidelines = () => {
   return (
     <div className="flex flex-col gap-[20px]">
       <span className="title-md md:title-lg pl-[11px] font-medium text-neutral-700 md:pl-[14px] md:font-bold">

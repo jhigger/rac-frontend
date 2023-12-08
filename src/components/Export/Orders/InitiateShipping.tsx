@@ -1,25 +1,35 @@
 /* eslint-disable @next/next/no-img-element */
-import AccordionButton from "~/components/Forms/AccordionButton";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import TextInput from "~/components/Forms/Inputs/TextInput";
+import {
+  SelectCountry,
+  SelectCountryPhoneCode,
+} from "~/components/Forms/Register/AccountForm";
+import {
+  SelectCity,
+  SelectState,
+} from "~/components/Forms/Register/AddressForm";
+import { OrderItem } from "~/components/Import/Orders/ClearPackage";
+import { PackageTable } from "~/components/Import/Orders/InitiateShipping";
 import { LabelId } from "~/components/Shop/Orders";
 import {
-  DestinationShippingAddress,
-  DetailSection,
-  InitiateShippingButton,
-  ShippingImportantNotice,
   ShippingMethod,
   Summary,
-  type OrderItemProps,
   type ShipmentCostsSummaryProps,
 } from "~/components/Shop/Orders/InitiateShipping";
-import { CongratulationImage, OrderTrackingId } from "~/components/Shop/Orders/OrdersPanel";
 import {
+  CongratulationImage,
+  OrderTrackingId,
+} from "~/components/Shop/Orders/OrdersPanel";
+import {
+  AndLastly,
   CustomBillingAddress,
   DefaultBillingAddress,
   NextButton,
+  PaymentMethods,
   StepIndex,
   SubSectionTitle,
-  SuccessImportantNotice,
-  type PackageTableHeadProps,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
 import { PackageOrigin } from "~/components/Shop/Requests/RequestDetails";
@@ -28,12 +38,14 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { useImportContext } from "~/contexts/ImportContext";
+import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import useStatesCities from "~/hooks/useStatesCities";
+import { type RegisterInputs } from "~/pages/register";
 
 const InitiateShipping = () => {
+  const { handlePayNowAction } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -42,7 +54,7 @@ const InitiateShipping = () => {
       title: "Shipping & Billing Address",
       content: <BillingAddressStep />,
     },
-    { title: "Initiate Shipping", content: <InitiateShippingStep /> },
+    { title: "Place Order", content: <InitiateShippingStep /> },
     { title: "Success", content: <Success /> },
   ];
   const stepsContent = steps.map((step) => step.content);
@@ -57,6 +69,10 @@ const InitiateShipping = () => {
   const handleFinish = () => {
     handleTabChange("orders");
   };
+
+  useEffect(() => {
+    handlePayNowAction({ action: next });
+  }, []);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -100,47 +116,6 @@ const InitiateShipping = () => {
         {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
         {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
       </div>
-      {currentStepIndex === 2 && (
-        <div className="flex w-full flex-col gap-[10px]">
-          <div className="flex w-full items-center gap-[10px] rounded-[20px] border-[1px] border-gray-200 p-[10px]">
-            <input
-              type="checkbox"
-              name="checked-demo"
-              className="h-[24px] w-[24px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-              checked={undefined}
-              onChange={() => {
-                return;
-              }}
-            />
-            <span className="body-md md:body-lg text-neutral-900">
-              I agree to pay for the shipment cost upon arrival/clearing for my
-              package
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-[10px] md:flex-row">
-            <div className="w-full md:max-w-[141px]">
-              <BackButton onClick={back} />
-            </div>
-            <div className="w-full md:max-w-[249px]">
-              <InitiateShippingButton onClick={next} />
-            </div>
-          </div>
-
-          <span className="body-md text-center md:text-start">
-            Upon clicking &quot;initiate shipping&quot;, I confirm I have read
-            and agreed to{" "}
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600"
-            >
-              all terms and policies
-            </a>
-          </span>
-        </div>
-      )}
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
           <NextButton text="Done" next={handleFinish} />
@@ -151,7 +126,7 @@ const InitiateShipping = () => {
 };
 
 const PackageConfirmation = () => {
-  const { orderItems } = useImportContext();
+  const { orderItems } = useExportContext();
 
   if (!orderItems) return;
 
@@ -166,92 +141,13 @@ const PackageConfirmation = () => {
   );
 };
 
-const OrderItem = ({ index }: OrderItemProps) => {
-  const { open, toggle } = useAccordion(true);
-
-  return (
-    <SectionContentLayout>
-      <div className="flex w-full flex-col gap-[30px]">
-        <div className="flex w-full items-center justify-between">
-          <h4 className="title-md md:title-lg font-medium text-gray-700">
-            Item - <span className="text-primary-600">#{index + 1}</span>
-          </h4>
-          <AccordionButton {...{ open, toggle }} />
-        </div>
-        {open && <OrderItemDetails />}
-      </div>
-    </SectionContentLayout>
-  );
-};
-
-const OrderItemDetails = () => {
-  return (
-    <div className="grid w-fit grid-cols-4 gap-[15px]">
-      <DetailSection
-        label="Item Name"
-        value="Designer Bags"
-        colSpanMobile="full"
-        colSpanDesktop={2}
-      />
-      <DetailSection
-        label="Item Original Cost"
-        value="$45.00"
-        colSpanMobile="full"
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Quantity"
-        value="4"
-        colSpanMobile="full"
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Weight"
-        value="67kg"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Height"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Length"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Width"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Product/Item Picture"
-        value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-        image
-      />
-      <DetailSection
-        label="Product Description"
-        value="Additonvnv ghss jgsjvsn"
-      />
-      <DetailSection label="Color" value="Blue" />
-      <DetailSection label="Stripes" value="5 inches" />
-    </div>
-  );
-};
-
-export const BillingAddressStep = () => {
+const BillingAddressStep = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
-        <SectionHeader title="Provide your shipping address" hr />
+        <SectionHeader title="Fill in the shipment Address" hr />
         <div className="flex flex-col items-center gap-[30px] md:pl-[34px]">
-          <ShippingImportantNotice />
-          <DestinationShippingAddress />
+          <FillInShippingAddress />
         </div>
       </div>
 
@@ -259,6 +155,74 @@ export const BillingAddressStep = () => {
         <SectionHeader title="Confirm your Billing Information" />
         <DefaultBillingAddress />
         <CustomBillingAddress />
+      </div>
+    </div>
+  );
+};
+
+const FillInShippingAddress = () => {
+  const { register, getValues, setValue, watch } = useForm<RegisterInputs>();
+  const { states, cities } = useStatesCities({ getValues, setValue, watch });
+
+  return (
+    <div className="flex w-full flex-col gap-[40px] py-[10px]">
+      <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
+          <div className="col-span-1">
+            <TextInput id={"firstName"} label={"Receiver's First Name"} />
+          </div>
+
+          <div className="col-span-1">
+            <TextInput id={"lastName"} label={"Receiver's Last Name"} />
+          </div>
+        </div>
+
+        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+          <div className="col-span-full md:col-span-5">
+            <TextInput id="email" label="Receiver's Email" type="email" />
+          </div>
+          <div className="col-span-full md:col-span-3">
+            <SelectCountryPhoneCode register={register} />
+          </div>
+          <div className="col-span-full md:col-span-4">
+            <TextInput
+              id="phone-number"
+              label="Receiver's Phone Number"
+              type="tel"
+              // value={phoneNumber}
+              // onChange={(e) =>
+              //   updateFields({ phoneNumber: e.target.value })
+              // }
+            />
+          </div>
+        </div>
+
+        <div className="col-span-full">
+          <TextInput
+            id={"street-address"}
+            label={"Receiver's Address"}
+            // value={streetAddress}
+            // onChange={(e) =>
+            //   updateFields({ streetAddress: e.target.value })
+            // }
+          />
+        </div>
+
+        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+          <div className="col-span-4">
+            <SelectCountry register={register} />
+          </div>
+          <div className="col-span-4">
+            <SelectState states={states} register={register} />
+          </div>
+          <div className="col-span-4">
+            <SelectCity cities={cities} register={register} />
+          </div>
+        </div>
+
+        <div className="col-span-full">
+          <TextInput id={"zipPostalCode"} label={"Zip Postal Code"} />
+        </div>
       </div>
     </div>
   );
@@ -276,8 +240,14 @@ const InitiateShippingStep = () => {
       </div>
       <ShippingMethod checked disabled expanded />
 
+      <SectionHeader title="Shipping Methods" />
+      <div className="pl-[14px]">
+        <SubSectionTitle title="Select The Payment Method You Wish to Use" />
+      </div>
+      <PaymentMethods />
+
       <SectionHeader title="Shipment costs" />
-      <ShipmentCostsSummary />
+      <ShipmentCostsSummary payButton />
     </div>
   );
 };
@@ -322,7 +292,7 @@ const ShipmentCostsSummary = ({
 };
 
 const PayNowButton = () => {
-  const { payNowAction } = useImportContext();
+  const { payNowAction } = useExportContext();
 
   if (!payNowAction) return;
 
@@ -338,108 +308,9 @@ const PayNowButton = () => {
   );
 };
 
-export const PackageTable = () => {
-  const th = [
-    "Item",
-    "Value Per Item",
-    "Quantity of items",
-    "Total value of item",
-  ];
-
-  return (
-    <div className="overflow-x-scroll ">
-      <table className="relative w-full min-w-fit table-auto text-left">
-        <PackageTableHead th={th} />
-        <PackageTableBody />
-        <Totals />
-      </table>
-    </div>
-  );
-};
-
-const PackageTableHead = ({ th }: PackageTableHeadProps) => {
-  return (
-    <thead className="title-sm sticky top-0 z-10 grid grid-cols-4 gap-[20px] rounded-t-[20px] border border-b-0 border-gray-200 bg-neutral-50 p-[30px] font-medium text-secondary-900">
-      {th.map((title) => {
-        return (
-          <tr key={title} className="col-span-1">
-            <th className="max-w-[150px] border-0 p-0">
-              <span className="label-lg">{title}</span>
-            </th>
-          </tr>
-        );
-      })}
-    </thead>
-  );
-};
-
-const Totals = () => {
-  return (
-    <tfoot className="grid  grid-cols-3 gap-y-[20px] rounded-b-[20px] border border-t-0 border-gray-200 bg-neutral-50 px-[30px] py-[10px] [&>tr>td]:border-0 [&>tr>td]:p-0">
-      <tr className="col-span-1 flex flex-col gap-[5px]">
-        <td className="body-md h-[40px] w-[100px] text-gray-700">
-          Total number of items:
-        </td>
-        <td className="title-lg text-neutral-900">6</td>
-      </tr>
-      <tr className="col-span-1 flex h-[40px] w-[100px] flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Total Gross weight:</td>
-        <td className="title-lg text-neutral-900">30lbs</td>
-      </tr>
-      <tr className="col-span-1 flex h-[40px] w-[100px] flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Total Declared Value:</td>
-        <td className="title-lg text-neutral-900">$345.00</td>
-      </tr>
-    </tfoot>
-  );
-};
-
-const PackageTableBody = () => {
-  const limitChars = (text: string, limit: number) => {
-    return `${text.slice(0, limit - 3)}...`;
-  };
-
-  const fakeData = {
-    image: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-    name: "SteelSeries Rival 5 Gaming Laptop with PrismSync RGB...",
-    valuePerItem: "$88.99",
-    quantity: "3",
-    totalValue: "$112.49",
-  };
-
-  return (
-    <tbody className="flex flex-col border-x border-gray-200 bg-white px-[20px] [&>tr]:border-b-[0.5px] [&>tr]:border-gray-500">
-      {Array<typeof fakeData>(2)
-        .fill(fakeData)
-        .map(({ image, name, valuePerItem, quantity, totalValue }, i) => {
-          return (
-            <tr
-              key={i}
-              className="label-lg grid grid-cols-4 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
-            >
-              <td className="col-span-1 flex items-center gap-[10px]">
-                <div className="w-[62px] overflow-hidden rounded-[10px]">
-                  <img src={image} alt="item image" />
-                </div>
-                <div className="max-w-[160px] text-secondary-900">
-                  {limitChars(name, 80)}
-                </div>
-              </td>
-              <td className="col-span-1">{valuePerItem}</td>
-              <td className="col-span-1">{quantity}</td>
-              <td className="col-span-1">{totalValue}</td>
-            </tr>
-          );
-        })}
-    </tbody>
-  );
-};
-
 const Success = () => {
   return (
     <div className="flex flex-col gap-[20px]">
-      <SuccessImportantNotice />
-
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Track your package" />
         <SectionContentLayout>
@@ -474,8 +345,8 @@ const Success = () => {
           </div>
         </SectionContentLayout>
       </div>
+      <AndLastly />
     </div>
   );
 };
-
 export default InitiateShipping;

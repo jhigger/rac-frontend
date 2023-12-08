@@ -14,6 +14,9 @@ import ShopDraftsPanel from "~/components/Shop/Drafts/DraftsPanel";
 import ShopOrdersPanel from "~/components/Shop/Orders/OrdersPanel";
 import ShopRequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { useNavContext, type NavTitleType } from "./NavigationContext";
+import ExportOrdersPanel from "~/components/Export/Orders/OrdersPanel";
+import ExportRequestsPanel from "~/components/Export/Requests/RequestsPanel";
+import ExportDraftsPanel from "~/components/Export/Drafts/DraftsPanel";
 
 export type TabContextType = {
   activeAction: ActionType | null;
@@ -68,6 +71,14 @@ export const tabs: [AppBarTabType, ...AppBarTabType[]] = [
       { id: "orders", title: "Orders", content: <ImportOrdersPanel /> },
       { id: "requests", title: "Requests", content: <ImportRequestsPanel /> },
       { id: "drafts", title: "Drafts", content: <ImportDraftsPanel /> },
+    ],
+  },
+  {
+    nav: "Export",
+    tabs: [
+      { id: "orders", title: "Orders", content: <ExportOrdersPanel /> },
+      { id: "requests", title: "Requests", content: <ExportRequestsPanel /> },
+      { id: "drafts", title: "Drafts", content: <ExportDraftsPanel /> },
     ],
   },
 ];

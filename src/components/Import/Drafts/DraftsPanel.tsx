@@ -42,7 +42,7 @@ const ImportDraftsPanel = () => {
   );
 };
 
-const tableHeads: TableHeadType[] = [
+export const tableHeads: TableHeadType[] = [
   { title: "Draft Date", sortIcon: true },
   { title: "Item", sortIcon: false },
   { title: "Origin", sortIcon: true },
@@ -71,7 +71,7 @@ const DraftsTable = () => {
 
 type DraftTableHeadProps = { th: TableHeadType[] };
 
-const DraftTableHead = ({ th }: DraftTableHeadProps) => {
+export const DraftTableHead = ({ th }: DraftTableHeadProps) => {
   return (
     <thead className="title-sm sticky top-0 z-10 grid w-full grid-cols-5 items-center gap-[20px] p-[20px] font-medium text-neutral-900">
       {th.map(({ title, sortIcon }) => {
@@ -102,7 +102,7 @@ type DraftTableBody = {
   draftItems: ImportDraftItemType[];
 };
 
-const DraftTableBody = ({ draftItems }: DraftTableBody) => {
+export const DraftTableBody = ({ draftItems }: DraftTableBody) => {
   return (
     <tbody className="flex flex-col bg-white px-[20px] [&>tr]:border-b-[1px] [&>tr]:border-gray-500 first:[&>tr]:border-t-[1px]">
       {draftItems.map(

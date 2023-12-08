@@ -14,12 +14,12 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   AndLastly,
   Cost,
-  ImportantNotice,
   NextButton,
   PackageTable,
   PayNowButton,
   StepIndex,
   SubSectionTitle,
+  SuccessImportantNotice,
   TotalCost,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
@@ -332,7 +332,7 @@ const PackageOrigin = () => {
   );
 };
 
-export const BillingAddressStep = () => {
+const BillingAddressStep = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
@@ -387,7 +387,7 @@ export const DefaultBillingAddress = () => {
   );
 };
 
-const DestinationShippingAddress = () => {
+export const DestinationShippingAddress = () => {
   return (
     <div className="flex w-full items-center gap-[10px]">
       <SelectInput
@@ -406,7 +406,7 @@ const DestinationShippingAddress = () => {
   );
 };
 
-const ShippingImportantNotice = () => {
+export const ShippingImportantNotice = () => {
   return (
     <div className="flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[28px] py-[20px]">
       <span className="label-lg text-primary-900">IMPORTANT NOTICE:</span>
@@ -589,7 +589,7 @@ export const ShippingMethod = ({
 const Success = () => {
   return (
     <div className="flex flex-col gap-[20px]">
-      <ImportantNotice />
+      <SuccessImportantNotice />
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Track your package" />

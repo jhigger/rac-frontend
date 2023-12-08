@@ -144,7 +144,7 @@ const BillingAddress = () => {
   );
 };
 
-const DefaultBillingAddress = () => {
+export const DefaultBillingAddress = () => {
   const { open, toggle } = useAccordion(false);
 
   return (
@@ -188,7 +188,7 @@ const DefaultBillingAddress = () => {
   );
 };
 
-const CustomBillingAddress = () => {
+export const CustomBillingAddress = () => {
   const { open, toggle } = useAccordion(true);
   const { register, getValues, setValue, watch } = useForm<RegisterInputs>();
   const { states, cities } = useStatesCities({ getValues, setValue, watch });
@@ -705,7 +705,7 @@ export const AndLastly = () => {
   );
 };
 
-const SuccessImportantNotice = () => {
+export const SuccessImportantNotice = () => {
   return (
     <div className="flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[28px] py-[20px]">
       <span className="title-lg font-bold text-primary-900">

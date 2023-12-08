@@ -38,12 +38,8 @@ const DraftsPanel = () => {
 
 const tableHeads: TableHeadType[] = [
   { title: "Draft Date", sortIcon: true },
-  { title: "Item", sortIcon: true },
-  { title: "Item URL", sortIcon: true },
-  { title: "Item Cost from Store", sortIcon: true },
-  { title: "Urgent Purchase", sortIcon: true },
-  { title: "Quantity of items", sortIcon: true },
-  { title: "Total value of item", sortIcon: true },
+  { title: "Item", sortIcon: false },
+  { title: "Origin", sortIcon: true },
 ];
 
 const DraftsTable = () => {
@@ -69,7 +65,7 @@ type DraftTableHeadProps = { th: TableHeadType[] };
 
 const DraftTableHead = ({ th }: DraftTableHeadProps) => {
   return (
-    <thead className="title-sm sticky top-0 z-10 grid w-full grid-cols-8 items-center gap-[20px] p-[20px] font-medium text-neutral-900">
+    <thead className="title-sm sticky top-0 z-10 grid w-full grid-cols-4 items-center gap-[20px] p-[20px] font-medium text-neutral-900">
       {th.map(({ title, sortIcon }) => {
         return (
           <tr key={title} className="col-span-1">
@@ -107,7 +103,7 @@ const DraftTableBody = ({ draftItems }: DraftTableBody) => {
         return (
           <tr
             key={i}
-            className="label-lg grid w-full grid-cols-8 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
+            className="label-lg grid w-full grid-cols-4 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
           >
             <td className="col-span-1">{draftDate}</td>
             <td className="col-span-1 flex gap-[10px]">

@@ -108,6 +108,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     handleRequests();
     // todo: if (user) void useFetchShopRequests(user._id);
     handleOrders();
+    handleDrafts();
   }, []);
 
   const value: ShopContextType = {

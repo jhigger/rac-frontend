@@ -71,7 +71,7 @@ export type ImportRequestItemType = {
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestDate: string;
   items: ImportItemType[];
-}
+};
 
 export type PropertyType = { label: string; value: string | undefined };
 
@@ -108,6 +108,7 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     handleRequests();
     handleOrders();
+    handleDrafts();
   }, []);
 
   const value: ImportContextType = {

@@ -4,7 +4,6 @@ import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { MoreButton } from "~/components/Shop/Orders";
 import ClearPackage from "~/components/Shop/Orders/ClearPackage";
-import InitiateShipping from "~/components/Shop/Orders/InitiateShipping";
 import OrderDetails from "~/components/Shop/Orders/OrderDetails";
 import {
   ImageColumn,
@@ -19,6 +18,7 @@ import {
   type ImportOrderItemType,
 } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
+import InitiateShipping from "./InitiateShipping";
 
 const ImportOrdersPanel = () => {
   const { orderItems } = useImportContext();

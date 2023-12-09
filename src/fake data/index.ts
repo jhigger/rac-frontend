@@ -1,12 +1,12 @@
 import {
-  type ImportDraftItemType,
-  type ImportOrderItemType,
-  type ImportRequestItemType,
+  type ImportDraftPackageType,
+  type ImportOrderPackageType,
+  type ImportRequestPackageType,
 } from "~/contexts/ImportContext";
 import {
-  type ShopDraftItemType,
-  type ShopOrderItemType,
-  type ShopRequestItemType,
+  type ShopDraftPackageType,
+  type ShopOrderPackageType,
+  type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
 
 const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image";
@@ -19,7 +19,7 @@ const images = (n: number) => {
     });
 };
 
-export const shopOrders: ShopOrderItemType[] = [
+export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
@@ -206,7 +206,7 @@ export const shopOrders: ShopOrderItemType[] = [
   },
 ];
 
-export const shopRequests: ShopRequestItemType[] = [
+export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "OD08751",
     requestStatus: "not responded",
@@ -317,7 +317,7 @@ export const shopRequests: ShopRequestItemType[] = [
   },
 ];
 
-export const shopDrafts: ShopDraftItemType[] = [
+export const shopDrafts: ShopDraftPackageType[] = [
   {
     draftDate: "22-03-2023 13:05",
     origin: "origin",
@@ -337,7 +337,7 @@ export const shopDrafts: ShopDraftItemType[] = [
   },
 ];
 
-export const importOrders: ImportOrderItemType[] = [
+export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
@@ -508,7 +508,7 @@ export const importOrders: ImportOrderItemType[] = [
   },
 ];
 
-export const importRequests: ImportRequestItemType[] = [
+export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "OD08751",
     requestStatus: "not responded",
@@ -619,7 +619,7 @@ export const importRequests: ImportRequestItemType[] = [
   },
 ];
 
-export const importDrafts: ImportDraftItemType[] = [
+export const importDrafts: ImportDraftPackageType[] = [
   {
     draftDate: "22-03-2023 13:05",
     origin: "origin",

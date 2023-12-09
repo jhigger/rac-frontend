@@ -25,12 +25,12 @@ import {
 } from "~/components/Shop/Requests/RequestOrder";
 import {
   useExportContext,
-  type ExportRequestItemType,
+  type ExportRequestPackageType,
 } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
-const emptyValue: ExportRequestItemType = {
+const emptyValue: ExportRequestPackageType = {
   requestId: "",
   requestStatus: "not responded",
   requestDate: "",
@@ -50,7 +50,7 @@ const emptyValue: ExportRequestItemType = {
 };
 
 type Inputs = {
-  requestItems: ExportRequestItemType[];
+  requestItems: ExportRequestPackageType[];
 };
 
 const RequestOrder = () => {

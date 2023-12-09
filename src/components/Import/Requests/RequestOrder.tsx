@@ -38,13 +38,13 @@ import {
 } from "~/components/Shop/Requests/RequestOrder";
 import {
   useImportContext,
-  type ImportRequestItemType,
+  type ImportRequestPackageType,
 } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
-const emptyValue: ImportRequestItemType = {
+const emptyValue: ImportRequestPackageType = {
   requestId: "",
   requestStatus: "not responded",
   requestDate: "",
@@ -64,7 +64,7 @@ const emptyValue: ImportRequestItemType = {
 };
 
 type Inputs = {
-  requestItems: ImportRequestItemType[];
+  requestItems: ImportRequestPackageType[];
 };
 
 const RequestOrder = () => {

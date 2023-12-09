@@ -13,11 +13,11 @@ import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import SearchBar from "~/components/Shop/SearchBar";
 import {
   useImportContext,
-  type ImportOrderItemType,
+  type ImportOrderPackageType,
 } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import InitiateShipping from "./InitiateShipping";
 import ClearPackage from "./ClearPackage";
+import InitiateShipping from "./InitiateShipping";
 
 const ImportOrdersPanel = () => {
   const { orderItems } = useImportContext();
@@ -144,7 +144,7 @@ export const OrderTableHead = ({ th }: OrderTableHeadProps) => {
 };
 
 type OrderTableBodyProps = {
-  orderItems: ImportOrderItemType[];
+  orderItems: ImportOrderPackageType[];
 };
 
 export const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {

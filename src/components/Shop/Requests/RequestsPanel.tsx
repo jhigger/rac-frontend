@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
-import { type ImportRequestItemType as ImportRequestItemType } from "~/contexts/ImportContext";
+import { type ImportRequestPackageType } from "~/contexts/ImportContext";
 import {
   useShopContext,
-  type ShopRequestItemType as ShopRequestItemType,
+  type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
@@ -145,7 +145,7 @@ export const RequestTableHead = ({ th }: RequestTableHeadProps) => {
 };
 
 type RequestTableBodyProps = {
-  requestItems: ShopRequestItemType[] | ImportRequestItemType[];
+  requestItems: ShopRequestPackageType[] | ImportRequestPackageType[];
 };
 
 export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
@@ -195,7 +195,7 @@ export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
 
 type RequestStatusProps = {
   id: string;
-  status: ShopRequestItemType["requestStatus"];
+  status: ShopRequestPackageType["requestStatus"];
 };
 
 export const RequestStatus = ({ id, status }: RequestStatusProps) => {

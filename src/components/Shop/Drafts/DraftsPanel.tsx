@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { type ShopDraftItemType, useShopContext } from "~/contexts/ShopContext";
+import {
+  type ShopDraftPackageType,
+  useShopContext,
+} from "~/contexts/ShopContext";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import { MoreButton } from "../Orders";
 import { TableFooter, type TableHeadType } from "../Orders/OrdersPanel";
@@ -91,7 +94,7 @@ const DraftTableHead = ({ th }: DraftTableHeadProps) => {
 };
 
 type DraftTableBody = {
-  draftItems: ShopDraftItemType[];
+  draftItems: ShopDraftPackageType[];
 };
 
 const DraftTableBody = ({ draftItems }: DraftTableBody) => {

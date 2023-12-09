@@ -3,7 +3,7 @@ import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import {
   useShopContext,
-  type ShopOrderItemType as ShopOrderItemType,
+  type ShopOrderPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
@@ -146,7 +146,7 @@ const OrderTableHead = ({ th }: OrderTableHeadProps) => {
 };
 
 type OrderTableBodyProps = {
-  orderItems: ShopOrderItemType[];
+  orderItems: ShopOrderPackageType[];
 };
 
 const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
@@ -313,7 +313,7 @@ export const ImageColumn = ({ images }: ImageColumnProps) => {
 
 export type ShippingStatusProps = {
   id: string;
-  status: ShopOrderItemType["shippingStatus"];
+  status: ShopOrderPackageType["shippingStatus"];
 };
 
 export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {

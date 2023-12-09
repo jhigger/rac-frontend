@@ -11,7 +11,7 @@ import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import SearchBar from "~/components/Shop/SearchBar";
 import {
   useImportContext,
-  type ImportDraftItemType,
+  type ImportDraftPackageType,
 } from "~/contexts/ImportContext";
 
 const ImportDraftsPanel = () => {
@@ -99,7 +99,7 @@ export const DraftTableHead = ({ th }: DraftTableHeadProps) => {
 };
 
 type DraftTableBody = {
-  draftItems: ImportDraftItemType[];
+  draftItems: ImportDraftPackageType[];
 };
 
 export const DraftTableBody = ({ draftItems }: DraftTableBody) => {

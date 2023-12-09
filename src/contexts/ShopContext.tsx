@@ -14,10 +14,10 @@ import {
 import { shopDrafts, shopOrders, shopRequests } from "~/fake data";
 
 export type ShopContextType = {
-  draftItems: ShopDraftItemType[] | null;
-  orderItems: ShopOrderItemType[] | null;
+  draftItems: ShopDraftPackageType[] | null;
+  orderItems: ShopOrderPackageType[] | null;
   payNowAction: { action: () => void } | null;
-  requestItems: ShopRequestItemType[] | null;
+  requestItems: ShopRequestPackageType[] | null;
   handleDrafts: () => void;
   handleOrders: () => void;
   handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
@@ -46,16 +46,16 @@ export type ShopItemType = {
   }[];
 };
 
-export type ShopOrderItemInput = {
+export type ShopOrderPackageInput = {
   origin: string;
   items: ShopItemType[];
 };
 
-export type ShopDraftItemType = ShopOrderItemInput & {
+export type ShopDraftPackageType = ShopOrderPackageInput & {
   draftDate: string;
 };
 
-export type ShopOrderItemType = {
+export type ShopOrderPackageType = {
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
   orderDate: string;
@@ -67,7 +67,7 @@ export type ShopOrderItemType = {
   items: ShopItemType[];
 };
 
-export type ShopRequestItemType = {
+export type ShopRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestDate: string;
@@ -75,24 +75,24 @@ export type ShopRequestItemType = {
 };
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
-  const [draftItems, setDraftItems] = useState<ShopDraftItemType[] | null>(
-    null,
-  );
-  const [orderItems, setOrderItems] = useState<ShopOrderItemType[] | null>(
-    null,
-  );
+  const [draftPackages, setDraftPackages] = useState<
+    ShopDraftPackageType[] | null
+  >(null);
+  const [orderPackages, setOrderPackages] = useState<
+    ShopOrderPackageType[] | null
+  >(null);
   const [payNowAction, setPayNowAction] =
     useState<ShopContextType["payNowAction"]>(null);
-  const [requestItems, setRequestItems] = useState<
-    ShopRequestItemType[] | null
+  const [requestPackages, setRequestPackages] = useState<
+    ShopRequestPackageType[] | null
   >(null);
 
   const handleDrafts = () => {
-    setDraftItems(shopDrafts);
+    setDraftPackages(shopDrafts);
   };
 
   const handleOrders = () => {
-    setOrderItems(shopOrders);
+    setOrderPackages(shopOrders);
   };
 
   const handlePayNowAction = (action: ShopContextType["payNowAction"]) => {
@@ -100,7 +100,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestItems(shopRequests);
+    setRequestPackages(shopRequests);
   };
 
   // testing purposes
@@ -112,10 +112,10 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const value: ShopContextType = {
-    draftItems,
-    orderItems,
+    draftItems: draftPackages,
+    orderItems: orderPackages,
     payNowAction,
-    requestItems,
+    requestItems: requestPackages,
     handleDrafts,
     handleOrders,
     handlePayNowAction,

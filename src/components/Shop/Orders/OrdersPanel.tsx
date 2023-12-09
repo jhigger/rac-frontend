@@ -372,22 +372,21 @@ export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
   );
 };
 
-type ShippingStatusModalProps = {
+export type ShippingStatusModalProps = {
   modalId: string;
   status: ShippingStatusProps["status"];
 };
 
-const excluded = [
+export const excluded = [
   "not started",
   "cancelled",
   "cleared",
-  "arrived destination",
   "delivered",
 ];
 
 const EXCLUDED_CONST = [...excluded] as const;
 
-type SomeStatusType = Exclude<
+export type SomeStatusType = Exclude<
   ShippingStatusProps["status"],
   (typeof EXCLUDED_CONST)[number]
 >;
@@ -647,7 +646,7 @@ export const CongratulationImage = ({ text }: CongratulationImageProps) => {
 
 type ClearPackageButtonProps = ModalCloseType;
 
-const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
+export const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
   const { handleActiveAction } = useTabContext();
 
   const onClick = () => {
@@ -668,7 +667,7 @@ const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
 
 type TrackButtonProps = ModalCloseType;
 
-const TrackButton = ({ dataClose }: TrackButtonProps) => {
+export const TrackButton = ({ dataClose }: TrackButtonProps) => {
   const { handleActiveAction } = useTabContext();
 
   const onClick = () => {

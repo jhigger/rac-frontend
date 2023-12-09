@@ -25,6 +25,7 @@ import {
   type stepsContentType,
 } from "../Requests/RequestCheckout";
 import { LabelWithTooltip } from "../Requests/RequestDetails";
+import { type ModalCloseType } from "../Requests/RequestsPanel";
 import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
 
 const InitiateShipping = () => {
@@ -142,14 +143,18 @@ const InitiateShipping = () => {
   );
 };
 
-type InitiateShippingButtonProps = { onClick: () => void };
+type InitiateShippingButtonProps = Partial<ModalCloseType> & {
+  onClick?: () => void;
+};
 
 export const InitiateShippingButton = ({
+  dataClose,
   onClick,
 }: InitiateShippingButtonProps) => {
   return (
     <button
       onClick={onClick}
+      data-close={dataClose}
       className="btn relative flex h-full w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <Ship size="18" variant="Bold" />

@@ -163,7 +163,7 @@ export const OrderTableHead = ({ th }: OrderTableHeadProps) => {
   );
 };
 
-type OrderTableBodyProps = {
+export type OrderTableBodyProps = {
   orderItems: ImportOrderPackageType[];
 };
 

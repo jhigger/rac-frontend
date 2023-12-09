@@ -151,9 +151,16 @@ export const InitiateShippingButton = ({
   dataClose,
   onClick,
 }: InitiateShippingButtonProps) => {
+  const { handleActiveAction, handleTabChange } = useTabContext();
+
+  const handleClick = () => {
+    handleTabChange("orders");
+    handleActiveAction("initiate shipping");
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={onClick ?? handleClick}
       data-close={dataClose}
       className="btn relative flex h-full w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >

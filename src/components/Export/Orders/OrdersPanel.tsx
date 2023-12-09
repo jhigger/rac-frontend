@@ -43,15 +43,6 @@ const ExportOrdersPanel = () => {
   const { orderItems } = useExportContext();
   const { activeAction } = useTabContext();
 
-  if (activeAction === "clear package") {
-    return (
-      <>No UI</>
-      // <TabContentLayout>
-      //   <ClearPackage />
-      // </TabContentLayout>
-    );
-  }
-
   if (activeAction === "initiate shipping") {
     return (
       <TabContentLayout>

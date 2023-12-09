@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { ArrowRight3, Wallet } from "iconsax-react";
 import { useEffect } from "react";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import {
@@ -8,9 +8,9 @@ import {
 import {
   DetailSection,
   ShippingMethod,
+  Summary,
   type OrderItemProps,
   type ShipmentCostsSummaryProps,
-  Summary,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
   CongratulationImage,
@@ -241,21 +241,21 @@ const ShipmentCostsSummary = ({
       <div className="flex flex-col justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_red_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-error-600" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               The total you are paying now includes only the Shipping fees and
               is to be paid upon clearing/arrival of your package
             </span>
           </div>
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_purple_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-primary-900" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               Prices and subtotals are displayed including taxes
             </span>
           </div>
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_purple_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-primary-900" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               Discounts are calculated based on prices and subtotals taken
               without considering taxes
             </span>
@@ -282,7 +282,7 @@ const PayNowButton = () => {
       aria-label="Pay Now"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img src="/images/wallet_icon.svg" alt="wallet icon" />
+      <Wallet size={18} variant="Bold" />
       <span className="body-lg text-white">Pay Now</span>
     </button>
   );

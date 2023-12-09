@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import PageLayout from "~/components/Layouts/PageLayout";
 import TopAppBar from "~/components/TopAppBar";
 import { useAuthContext } from "~/contexts/AuthContext";

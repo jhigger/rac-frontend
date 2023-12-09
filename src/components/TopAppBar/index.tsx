@@ -1,4 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
+import {
+  ArrowDown2,
+  HambergerMenu,
+  NotificationBing,
+  User,
+} from "iconsax-react";
 import { useNavContext } from "~/contexts/NavigationContext";
 import AppBarTabs from "./AppBarTabs";
 import BreadCrumbs from "./BreadCrumbs";
@@ -13,7 +18,7 @@ const TopAppBar = () => {
             data-target="#sheet_b"
             className="flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
           >
-            <img src="/images/top app bar/menu_icon.svg" alt="menu icon" />
+            <HambergerMenu className="text-gray-500" />
           </button>
         </div>
         <div className="hidden flex-col gap-[10px] md:flex">
@@ -22,20 +27,18 @@ const TopAppBar = () => {
 
         <div className="flex flex-row items-center justify-end">
           <button className="relative flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-            <img
-              src="/images/top app bar/notification_icon.svg"
-              alt="notification icon"
-            />
+            <NotificationBing className="text-gray-500" />
+
             <div className="label-sm absolute right-3 top-3 flex h-[10px] min-w-[10px] items-center justify-center rounded-full bg-error-600 p-1 text-[8px] text-white">
               {/* put notification count here */}
             </div>
           </button>
           <button className="group flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-            <img src="/images/top app bar/user_icon.svg" alt="user icon" />
-            <img
-              src="/images/top app bar/arrow_down_bold_icon.svg"
-              alt="arrow down bold icon"
-              className="hidden group-hover:block"
+            <User className="text-gray-500" />
+
+            <ArrowDown2
+              variant="Bold"
+              className="hidden text-gray-500 group-hover:block"
             />
           </button>
         </div>

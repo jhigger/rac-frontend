@@ -1,3 +1,4 @@
+import { Eye, EyeSlash } from "iconsax-react";
 import {
   forwardRef,
   useState,
@@ -50,9 +51,7 @@ const PasswordInput = (
           type="button"
           onClick={toggleVisibility}
         >
-          <span className="material-icons-outlined">
-            {show ? "visibility" : "visibility_off"}
-          </span>
+          {show ? <Eye color="#292d32" /> : <EyeSlash color="#292d32" />}
         </button>
       </div>
       <div className="hidden px-4 pt-1 text-xs tracking-[0.4px]">

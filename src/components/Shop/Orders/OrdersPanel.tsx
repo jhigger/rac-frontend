@@ -1,4 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
+import {
+  ArrowCircleDown2,
+  ArrowCircleRight2,
+  ArrowSquareLeft,
+  ArrowSquareRight,
+  ArrowSwapVertical,
+  ClipboardTick,
+  CloseCircle,
+  ExportCircle,
+  More,
+  Ship,
+  TickSquare,
+} from "iconsax-react";
 import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import {
@@ -127,10 +140,9 @@ const OrderTableHead = ({ th }: OrderTableHeadProps) => {
             <th className="flex items-center gap-[20px] whitespace-nowrap border-0 p-0">
               {title}
               {sortIcon && (
-                <img
-                  src="/images/arrow_swap_icon.svg"
-                  alt="arrow swap icon"
-                  className="self-end"
+                <ArrowSwapVertical
+                  className="self-end text-neutral-500"
+                  size="20"
                 />
               )}
             </th>
@@ -206,14 +218,15 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 <p className="title-md whitespace-nowrap">{shopForMeStatus}</p>
               </td>
               <td className="flex gap-[5px] border-0 p-0">
-                <img
-                  src="/images/tick_square_bold_icon.svg"
-                  alt="tick square bold icon"
+                <TickSquare
+                  size="20"
+                  variant="Bold"
+                  className="text-primary-600"
                 />
                 <p className="title-md">{shopForMeCost}</p>
               </td>
               <td className="flex gap-[5px] border-0 p-0">
-                <img src="/images/more_bold_icon.svg" alt="more bold icon" />
+                <More size="20" variant="Bold" className="text-error-600" />
 
                 <p className="title-md">{shippingCost}</p>
               </td>
@@ -563,7 +576,7 @@ export const PickUpInstructions = () => {
               className="title-md md:title-lg inline-flex items-center gap-[5px] text-primary-600"
             >
               <b>here</b>
-              <img src="/images/export_circle_icon.svg" alt="external icon" />
+              <ExportCircle color="#292D32" size={18} />
             </a>
           </>
         }
@@ -601,16 +614,11 @@ export const OrderTrackingId = () => {
     <div className="flex w-full flex-col items-center justify-center gap-[10px] md:flex-row">
       <div className="flex items-center gap-[10px]">
         <LabelId label="Order ID:" id="OD78667" />
-        <img
-          src="/images/shipping status modal/order_tracking_icon.svg"
-          alt="order tracking icon"
-          className="w-min rotate-90 md:hidden"
-        />
+        <ArrowCircleDown2 variant="Bold" className="text-gray-500 md:hidden" />
       </div>
-      <img
-        src="/images/shipping status modal/order_tracking_icon.svg"
-        alt="order tracking icon"
-        className="hidden w-min md:block"
+      <ArrowCircleRight2
+        variant="Bold"
+        className="hidden text-gray-500 md:block"
       />
       <LabelId label="Tracking ID:" id="SH78667" />
     </div>
@@ -652,10 +660,7 @@ const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
       onClick={onClick}
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img
-        src="/images/shipping status modal/clipboard_tick_bold_icon.svg"
-        alt="clipboard tick bold icon"
-      />
+      <ClipboardTick variant="Bold" />
       <span className="label-lg text-white">Clear Package</span>
     </button>
   );
@@ -699,10 +704,7 @@ const InitiateShippingButton = ({ dataClose }: InitiateShippingButtonProps) => {
       onClick={onClick}
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img
-        src="/images/shipping status modal/ship_bold_icon.svg"
-        alt="ship bold icon"
-      />
+      <Ship size="18" variant="Bold" />
       <span className="label-lg text-white">Initiate Shipping</span>
     </button>
   );
@@ -718,10 +720,7 @@ export const CloseButton = ({ dataClose, onClick }: CloseButtonProps) => {
       data-close={dataClose}
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img
-        src="/images/shipping status modal/close_icon.svg"
-        alt="close icon"
-      />
+      <CloseCircle size="18" variant="Bold" />
       <span className="label-lg text-white">close</span>
     </button>
   );
@@ -752,14 +751,14 @@ export const TableFooter = () => {
       <div className="flex gap-[20px]">
         <span>1-10 of 12</span>
         <div className="flex gap-[10px]">
-          <button className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-            <img
-              src="/images/arrow_square_disabled_icon.svg"
-              alt="arrow square icon"
-            />
+          <button
+            disabled
+            className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
+          >
+            <ArrowSquareLeft className="text-primary-600" />
           </button>
           <button className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-            <img src="/images/arrow_square_icon.svg" alt="arrow square  icon" />
+            <ArrowSquareRight className="text-primary-600" />
           </button>
         </div>
       </div>

@@ -15,7 +15,7 @@
     "@tanstack/react-query": "^5.12.2",
     "axios": "^1.6.2",
     "country-state-city": "^3.2.1",
-    "material-icons": "^1.13.12",
+    "iconsax-react": "^0.0.8",
     "next": "^14.0.3",
     "react": "18.2.0",
     "react-cookie": "^6.1.1",

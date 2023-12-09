@@ -1,3 +1,4 @@
+import { ArrowLeft } from "iconsax-react";
 import Link from "next/link";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
@@ -99,7 +100,7 @@ const BackButton = ({ back, isFirstStep }: BackButtonProps) => {
       onClick={back}
       className="btn-outline relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600"
     >
-      <span className="material-icons">arrow_back</span>
+      <ArrowLeft />
     </button>
   );
 };

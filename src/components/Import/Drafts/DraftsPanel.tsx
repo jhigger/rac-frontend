@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { ArrowSwapVertical } from "iconsax-react";
 import Balancer from "react-wrap-balancer";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
@@ -80,10 +81,9 @@ export const DraftTableHead = ({ th }: DraftTableHeadProps) => {
             <th className="flex items-center gap-[20px] whitespace-nowrap border-0 p-0">
               {title}
               {sortIcon && (
-                <img
-                  src="/images/arrow_swap_icon.svg"
-                  alt="arrow swap icon"
-                  className="self-end"
+                <ArrowSwapVertical
+                  className="self-end text-neutral-500"
+                  size="20"
                 />
               )}
             </th>

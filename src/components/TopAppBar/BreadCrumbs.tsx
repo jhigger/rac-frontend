@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { ArrowLeft, Home2 } from "iconsax-react";
 import { useNavContext } from "~/contexts/NavigationContext";
 import { useTabContext } from "~/contexts/TabContext";
 
@@ -8,13 +8,8 @@ const BreadCrumbs = () => {
 
   return (
     <div className="flex w-full items-center justify-center gap-[10px] md:gap-4">
-      <img
-        src="/images/nav/home_icon.svg"
-        alt="home icon"
-        className="h-[19px] w-[19px]"
-      />
-
-      <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
+      <Home2 size="19" className="text-secondary-600" />
+      <ArrowLeft size={10} color="#292D32" variant="Outline" />
       <span className="title-sm text-secondary-600">
         <div className="hidden [@media(min-width:500px)]:block">
           {activeNav.toLowerCase()}
@@ -24,7 +19,7 @@ const BreadCrumbs = () => {
         </div>
       </span>
 
-      <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
+      <ArrowLeft size={10} color="#292D32" variant="Outline" />
       <span className="title-sm text-secondary-600">
         <div className="hidden [@media(min-width:375px)]:block">
           {activeTab}
@@ -36,7 +31,7 @@ const BreadCrumbs = () => {
 
       {activeAction && (
         <>
-          <img src="/images/arrow_left_icon.svg" alt="arrow icon" />
+          <ArrowLeft size={10} color="#292D32" variant="Outline" />
           <span className="title-sm text-secondary-600">{activeAction}</span>
         </>
       )}

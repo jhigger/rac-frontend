@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { DollarSquare } from "iconsax-react";
 import { useRef, type ChangeEventHandler } from "react";
 
 type CurrencyInputProps = {
@@ -24,7 +24,7 @@ const CurrencyInput = ({ id, label, value, onChange }: CurrencyInputProps) => {
             className="btn relative flex items-center justify-center rounded-[6.25rem] bg-primary-100 p-[8px]"
             type="button"
           >
-            <img src="/images/dollar_square_icon.svg" alt="menu icon" />
+            <DollarSquare size={24} color="#292d32" variant="Outline" />
           </button>
         </div>
 

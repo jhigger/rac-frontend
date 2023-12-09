@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -12,6 +11,7 @@ import {
   SectionHeader,
   TooltipButton,
 } from "./RequestOrder";
+import { ConvertCard, Security, Wallet } from "iconsax-react";
 
 const RequestDetails = () => {
   const { orderItems } = useShopContext();
@@ -57,7 +57,7 @@ const ProceedButton = ({ onClick }: ProceedButtonProps) => {
       aria-label="Proceed"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img src="/images/wallet_icon.svg" alt="wallet icon" />
+      <Wallet size={18} variant="Bold" />
       <span className="body-lg text-white">Proceed to checkout</span>
     </button>
   );
@@ -282,10 +282,7 @@ const ChangeCurrencyButton = () => {
       aria-label="change currency"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-400 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600 md:px-6"
     >
-      <img
-        src="/images/change_currency_dark_icon.svg"
-        alt="change currency icon"
-      />
+      <ConvertCard size={16} color="#292d32" variant="Bold" />
       <span className="label-lg">Change Currency</span>
     </button>
   );
@@ -394,11 +391,7 @@ const ProceedToCheckoutButton = ({ onClick }: ProceedToCheckoutButtonProps) => {
       aria-label="Take Action Now"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
     >
-      <img
-        src="/images/security_icon.svg"
-        alt="security icon"
-        className="h-4 w-4"
-      />
+      <Security size={18} variant="Bold" />
       <span className="label-lg whitespace-nowrap text-primary-600">
         Proceed to Checkout
       </span>

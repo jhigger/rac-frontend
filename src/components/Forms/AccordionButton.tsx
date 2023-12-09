@@ -1,4 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
+import { ArrowCircleDown, ArrowCircleUp } from "iconsax-react";
+
 type AccordionButtonProps = { open: boolean; toggle: () => void };
 
 const AccordionButton = ({ open, toggle }: AccordionButtonProps) => {
@@ -9,16 +10,9 @@ const AccordionButton = ({ open, toggle }: AccordionButtonProps) => {
       className="flex h-[24px] w-[24px] items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
     >
       {open ? (
-        <img
-          src="/images/arrow_circle_up_icon.svg"
-          alt="arrow circle up icon"
-        />
+        <ArrowCircleUp color="#292D32" variant="Outline" />
       ) : (
-        <img
-          src="/images/arrow_circle_up_icon.svg"
-          alt="arrow circle up icon"
-          className="rotate-180"
-        />
+        <ArrowCircleDown color="#292D32" variant="Outline" />
       )}
     </button>
   );

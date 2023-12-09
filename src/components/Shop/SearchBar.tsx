@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { ExportSquare, FtxToken, ImportSquare } from "iconsax-react";
 import { useTabContext } from "~/contexts/TabContext";
 import SearchInput from "../Forms/Inputs/SearchInput";
 
@@ -48,7 +48,7 @@ const FilterButton = () => {
       aria-label="Filter"
       className="btn relative flex h-14 w-14 flex-row items-center justify-center gap-x-[12px] rounded-[20px] bg-brand p-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 sm:p-4 md:w-full"
     >
-      <img src="/images/filter_icon.svg" alt="filter icon" />
+      <FtxToken variant="Bold" className="w-[18px] md:w-6" />
       <span className="label-lg hidden text-neutral-100 [@media(min-width:1000px)]:block">
         Filter View
       </span>
@@ -73,15 +73,13 @@ const RequestNewOrderButton = () => {
       aria-label="Filter"
       className="btn relative flex h-14 w-full flex-row items-center justify-center gap-[9px] rounded-[20px] bg-brand px-[8px] py-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 md:gap-x-[12px] md:p-4"
     >
-      <img
-        src="/images/import_bold_icon.svg"
-        alt="import bold icon"
-        className="hidden h-6 w-6 md:block"
+      <ImportSquare
+        variant="Bold"
+        className="hidden w-[18px] md:block md:w-6"
       />
-      <img
-        src="/images/export_bold_icon.svg"
-        alt="export bold icon"
-        className="block h-6 w-6 md:hidden"
+      <ExportSquare
+        variant="Bold"
+        className="block w-[18px] md:hidden md:w-6"
       />
       <span className="label-lg text-neutral-100">Request new order</span>
     </button>

@@ -8,7 +8,6 @@ import AuthContextProvider from "~/contexts/AuthContext";
 import NavContextProvider from "~/contexts/NavigationContext";
 import tailmater from "~/js/tailmater";
 
-import "material-icons/iconfont/material-icons.css";
 import "~/styles/globals.css";
 
 const roboto = Roboto({

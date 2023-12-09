@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { ExportCurve } from "iconsax-react";
 import { type ChangeEventHandler, type HTMLInputTypeAttribute } from "react";
 
 type FileInputProps = {
@@ -45,7 +45,7 @@ const FileInput = ({ id, label, value, onChange }: FileInputProps) => {
             className="absolute inset-0 z-10 cursor-pointer opacity-0"
           />
           <div className="label-lg flex items-center gap-[8px] text-secondary-900">
-            <img src="/images/upload_icon.svg" alt="menu icon" />
+            <ExportCurve size={18} color="#292d32" variant="Outline" />
             <span>Choose file</span>
           </div>
         </div>

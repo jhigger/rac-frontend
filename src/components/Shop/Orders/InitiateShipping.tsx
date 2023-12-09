@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { ArrowRight3, ExportCircle, Ship } from "iconsax-react";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import {
@@ -151,10 +152,7 @@ export const InitiateShippingButton = ({
       onClick={onClick}
       className="btn relative flex h-full w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img
-        src="/images/shipping status modal/ship_bold_icon.svg"
-        alt="ship bold icon"
-      />
+      <Ship size="18" variant="Bold" />
       <span className="label-lg text-white">Initiate Shipping</span>
     </button>
   );
@@ -483,21 +481,21 @@ export const ShipmentCostsSummary = ({
       <div className="flex flex-col justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_red_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-error-600" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               The total you are paying now includes only the Shipping fees and
               is to be paid upon clearing/arrival of your package
             </span>
           </div>
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_purple_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-primary-900" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               Prices and subtotals are displayed including taxes
             </span>
           </div>
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_purple_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-primary-900" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               Discounts are calculated based on prices and subtotals taken
               without considering taxes
             </span>
@@ -634,10 +632,7 @@ const Success = () => {
                     <a href="#" target="_blank" rel="noopener noreferrer">
                       <span className="inline-flex items-center gap-[5px] font-bold text-primary-600">
                         this link
-                        <img
-                          src="/images/export_circle_icon.svg"
-                          alt="export circle icon"
-                        />
+                        <ExportCircle color="#292D32" size={18} />
                       </span>
                     </a>
                   </span>

@@ -1,4 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
+import {
+  ArrowRight3,
+  ExportCircle,
+  Receipt2,
+  TickCircle,
+  Wallet,
+} from "iconsax-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import TextInput from "~/components/Forms/Inputs/TextInput";
@@ -109,10 +116,7 @@ export const NextButton = ({ text, next }: NextButtonProps) => {
       aria-label="Proceed"
       className="btn relative flex w-full min-w-[150px] flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img
-        src="/images/tick_circle_bold_icon.svg"
-        alt="tick circle bold icon"
-      />
+      <TickCircle size={18} variant="Bold" />
       <span className="body-lg text-white">{text}</span>
     </button>
   );
@@ -427,22 +431,22 @@ const CostsSummary = () => {
       <div className="flex flex-col items-center justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_red_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-error-600" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               The total you are paying now includes only the shop-for-me cost
               and excludes Shipment Cost which you are to pay upon
               arrival/clearing of your package
             </span>
           </div>
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_purple_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-primary-900" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               Prices and subtotals are displayed including taxes
             </span>
           </div>
           <div className="flex items-center gap-[10px]">
-            <img src="/images/arrow_right_purple_icon.svg" alt="arrow icon" />
-            <span className="label-md font-medium text-secondary-900">
+            <ArrowRight3 className="text-primary-900" variant="Bold" />
+            <span className="label-md w-fit font-medium text-secondary-900">
               Discounts are calculated based on prices and subtotals taken
               without considering taxes
             </span>
@@ -467,7 +471,7 @@ export const PayNowButton = () => {
       aria-label="Pay Now"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img src="/images/wallet_icon.svg" alt="wallet icon" />
+      <Wallet size={18} variant="Bold" />
       <span className="body-lg text-white">Pay Now</span>
     </button>
   );
@@ -668,10 +672,7 @@ const Success = () => {
                   <a href="#" target="_blank" rel="noopener noreferrer">
                     <span className="inline-flex items-center gap-[5px] font-bold text-primary-600">
                       this link
-                      <img
-                        src="/images/export_circle_icon.svg"
-                        alt="export circle icon"
-                      />
+                      <ExportCircle color="#292D32" size={18} />
                     </span>
                   </a>
                 </span>
@@ -694,12 +695,12 @@ export const AndLastly = () => {
           We have sent you details about your Order to your email address{" "}
           <span className="text-primary-900">rexofforex@gmail.com</span>
         </p>
-        <div className="max-w-[150px]">
+        <div className="w-max">
           <button
             aria-label="View Receipt"
             className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
           >
-            <img src="/images/receipt_icon.svg" alt="receipt icon" />
+            <Receipt2 size={18} className="text-primary-900" />
             <span className="body-lg whitespace-nowrap text-primary-600">
               View Receipt
             </span>
@@ -740,11 +741,9 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
                   key={`checkout-step-${i}`}
                   className="flex items-center gap-[10px]"
                 >
-                  <img
-                    src="/images/tick_circle_bold_icon.svg"
-                    alt="tick circle bold icon.svg"
-                    className="title-lg h-full rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white"
-                  />
+                  <span className="title-lg h-full rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white">
+                    <TickCircle size="24" variant="Bold" />
+                  </span>
                   <span className="headline-md">{title}</span>
                 </div>
               );
@@ -754,12 +753,9 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
               return (
                 <div
                   key={`checkout-step-${i}`}
-                  className="flex items-center gap-[10px] rounded-[20px] bg-gray-500 px-[10px] py-[12px]"
+                  className="flex items-center gap-[10px] rounded-[20px] bg-gray-200 px-[10px] py-[12px]"
                 >
-                  <img
-                    src="/images/tick_circle_bold_icon.svg"
-                    alt="tick circle bold icon.svg"
-                  />
+                  <TickCircle size="24" color="white" variant="Bold" />
                 </div>
               );
             }
@@ -784,7 +780,7 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
                   key={`checkout-step-${i}`}
                   className="flex items-center gap-[10px]"
                 >
-                  <span className="title-lg rounded-[20px] bg-gray-500 p-[10px] text-white">
+                  <span className="title-lg rounded-[20px] bg-gray-200 p-[10px] text-white">
                     {i + 1}
                   </span>
                 </div>
@@ -805,9 +801,9 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
                     key={`checkout-step-${i}`}
                     className="flex items-center gap-[10px]"
                   >
-                    <img
-                      src="/images/tick_circle_bold_icon.svg"
-                      alt="tick circle bold icon.svg"
+                    <TickCircle
+                      size="24"
+                      variant="Bold"
                       className="title-lg h-full rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white"
                     />
                   </div>
@@ -818,12 +814,9 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
                 return (
                   <div
                     key={`checkout-step-${i}`}
-                    className="flex items-center gap-[10px] rounded-[20px] bg-gray-500 px-[10px] py-[12px]"
+                    className="flex items-center gap-[10px] rounded-[20px] bg-gray-200 px-[10px] py-[12px]"
                   >
-                    <img
-                      src="/images/tick_circle_bold_icon.svg"
-                      alt="tick circle bold icon.svg"
-                    />
+                    <TickCircle size="24" color="white" variant="Bold" />
                   </div>
                 );
               }
@@ -847,7 +840,7 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
                     key={`checkout-step-${i}`}
                     className="flex items-center gap-[10px]"
                   >
-                    <span className="title-lg rounded-[20px] bg-gray-500 p-[10px] text-white">
+                    <span className="title-lg rounded-[20px] bg-gray-200 p-[10px] text-white">
                       {i + 1}
                     </span>
                   </div>

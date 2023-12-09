@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { Home2, User, Wallet3 } from "iconsax-react";
 import Link from "next/link";
 import { useAuthContext } from "~/contexts/AuthContext";
 import {
@@ -32,7 +33,7 @@ export const NavItem = ({ navItem, onClick }: NavItemProps) => {
         "bg-[url('/images/nav/nav_item_hover_bg.svg')]"
       }`}
     >
-      <img src={navItem.src} alt="nav item icon" className="p-[16px]" />
+      <span className="p-[16px]">{navItem.src}</span>
       <span className="body-lg text-gray-100">{navItem.title}</span>
     </button>
   );
@@ -44,7 +45,7 @@ export const TopNav = () => {
       <Link href="/">
         <NavItem
           navItem={{
-            src: "/images/nav/home_icon.svg",
+            src: <Home2 className="text-gray-400" />,
             title: "Home",
             href: "/",
           }}
@@ -62,7 +63,7 @@ export const TopNav = () => {
       <Link href="/billing">
         <NavItem
           navItem={{
-            src: "/images/nav/billing_icon.svg",
+            src: <Wallet3 className="text-gray-400" />,
             title: "Billing",
             href: "/billing",
           }}
@@ -89,7 +90,7 @@ export const BottomNav = () => {
       })}
       <NavItem
         navItem={{
-          src: "/images/top app bar/user_icon.svg",
+          src: <User className="text-gray-400" />,
           title: "Logout",
           href: "/",
         }}

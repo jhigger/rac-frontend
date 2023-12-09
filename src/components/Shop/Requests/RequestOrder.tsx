@@ -1,4 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
+import {
+  Add,
+  ArrowCircleLeft2,
+  ArrowCircleRight,
+  ArrowCircleRight2,
+  Bag,
+  ConvertCard,
+  Eye,
+  InfoCircle,
+  SaveAdd,
+  TickCircle,
+} from "iconsax-react";
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 import {
   Controller,
@@ -283,10 +295,10 @@ type SectionHeaderProps = { title: string; hr?: boolean };
 export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
   return (
     <div className="flex items-start gap-[10px]">
-      <img
-        src="/images/arrow_circle_right_bold_icon.svg"
-        alt="arrow circle right bold icon"
-        className="w-[20px]"
+      <ArrowCircleRight
+        size={20}
+        variant="Bold"
+        className="text-secondary-900"
       />
       <div className="flex w-full flex-col gap-[10px]">
         <h3 className="label-lg font-medium text-secondary-900">{title}</h3>
@@ -324,7 +336,7 @@ const SelectWarehouseOriginSection = () => {
 export const TooltipButton = () => {
   return (
     <button className="flex h-[24px] w-[24px] items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-      <img src="/images/tooltip_icon.svg" alt="tooltip icon" />
+      <InfoCircle className="text-neutral-500" />
     </button>
   );
 };
@@ -683,7 +695,7 @@ const AddMoreProperties = ({ onClick }: AddMoreProperties) => {
       aria-label="title}"
       className="btn relative flex h-[40px] w-max flex-row items-center justify-center gap-x-2 whitespace-nowrap rounded-[20px] px-[16px] py-2.5 text-sm font-medium tracking-[.00714em]"
     >
-      <img src="/images/add_more_icon.svg" alt="add more icon" />
+      <Add variant="Outline" className="text-gray-200" />
       <span className="body-lg text-primary-600">Add more properties</span>
     </button>
   );
@@ -698,10 +710,7 @@ const AddPropertyButton = ({ dataClose }: AddPropertyButtonProps) => {
       type="submit"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img
-        src="/images/arrow_right_bold_icon.svg"
-        alt="arrow right bold icon"
-      />
+      <ArrowCircleRight2 size={18} variant="Bold" />
       <span className="body-lg text-white">Proceed</span>
     </button>
   );
@@ -728,7 +737,7 @@ export const DeleteButtonIcon = ({ onClick }: DeleteButtonIconProps) => {
       aria-label="Delete"
       className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
     >
-      <img src="/images/delete_icon.svg" alt="delete icon" className="" />
+      <Bag variant="Bold" className="text-error-600" />
     </button>
   );
 };
@@ -744,7 +753,7 @@ export const DeleteItemButton = ({ onClick }: DeleteItemButtonProps) => {
       aria-label="Delete Item"
       className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-error-600 md:px-6"
     >
-      <img src="/images/delete_icon.svg" alt="delete icon" />
+      <Bag size={18} variant="Bold" className="text-error-600" />
       <span>Delete Item</span>
     </button>
   );
@@ -766,7 +775,7 @@ const PreviewItemButton = ({ index }: PreviewItemButtonProps) => {
       data-target={dataTarget}
       className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img src="/images/eye_bold_icon.svg" alt="eye bold icon" />
+      <Eye size={18} variant="Bold" />
       <span>Preview Item</span>
     </button>
   );
@@ -839,11 +848,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
               data-close={dataClose}
               className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
             >
-              <img
-                src="/images/arrow_right_bold_icon.svg"
-                alt="arrow left bold icon"
-                className="rotate-180"
-              />
+              <ArrowCircleLeft2 variant="Bold" />
               <span className="label-lg text-white">Back</span>
             </button>
           </div>
@@ -958,7 +963,7 @@ export const ChangeCurrencyButton = () => {
       aria-label="change currency"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-400 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-100 md:px-6"
     >
-      <img src="/images/change_currency_icon.svg" alt="change currency icon" />
+      <ConvertCard size={16} variant="Bold" />
       <span className="label-lg">Change Currency</span>
     </button>
   );
@@ -979,7 +984,7 @@ export const AddButton = ({ title, dataTarget, onClick }: AddButtonProps) => {
       aria-label={title}
       className="btn relative flex h-14 w-full flex-row items-center justify-center gap-x-2 rounded-[20px] bg-gray-700 px-8 py-2.5 text-sm font-medium tracking-[.00714em] text-white"
     >
-      <img src="/images/add_icon.svg" alt="add icon" />
+      <Add variant="Outline" className="text-gray-200" />
       <span className="body-lg text-neutral-100">{title}</span>
     </button>
   );
@@ -994,7 +999,7 @@ export const BackButton = ({ onClick }: BackButtonProps) => {
       aria-label="Back"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img src="/images/arrow_left_bold_icon.svg" alt="arrow left bold icon" />
+      <ArrowCircleLeft2 size={18} variant="Bold" className="text-primary-600" />
       <span className="body-lg text-primary-600">Back</span>
     </button>
   );
@@ -1013,7 +1018,7 @@ export const SaveAsDraftButton = () => {
       aria-label="Save as Draft"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-secondary-100 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img src="/images/save_as_draft_icon.svg" alt="save as draft icon" />
+      <SaveAdd size={18} variant="Bold" className="text-primary-600" />
       <span className="body-lg text-secondary-900">Save as Draft</span>
     </button>
   );
@@ -1028,10 +1033,7 @@ export const ProceedButton = ({ next }: ProceedButtonProps) => {
       aria-label="Proceed"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img
-        src="/images/arrow_right_bold_icon.svg"
-        alt="arrow right bold icon"
-      />
+      <ArrowCircleRight2 size={18} variant="Bold" />
       <span className="body-lg text-white">Proceed</span>
     </button>
   );
@@ -1046,10 +1048,7 @@ export const DoneButton = ({ handleFinish }: DoneButtonProps) => {
       aria-label="Done"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img
-        src="/images/tick_circle_bold_icon.svg"
-        alt="tick circle bold icon"
-      />
+      <TickCircle size={18} variant="Bold" />
       <span className="body-lg text-white">Done</span>
     </button>
   );

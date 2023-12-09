@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { ArrowSwapVertical, Security } from "iconsax-react";
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
 import { type ImportRequestPackageType } from "~/contexts/ImportContext";
@@ -126,10 +126,9 @@ export const RequestTableHead = ({ th }: RequestTableHeadProps) => {
             <th className="flex items-center gap-[20px] whitespace-nowrap border-0 p-0">
               {title}
               {sortIcon && (
-                <img
-                  src="/images/arrow_swap_icon.svg"
-                  alt="arrow swap icon"
-                  className="self-end"
+                <ArrowSwapVertical
+                  className="self-end text-neutral-500"
+                  size="20"
                 />
               )}
             </th>
@@ -304,7 +303,7 @@ const ProceedToCheckoutButton = ({
       data-close={dataClose}
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <img src="/images/checkout_icon.svg" alt="checkout icon" />
+      <Security size={18} variant="Bold" />
       <span className="label-lg text-white">Proceed to checkout</span>
     </button>
   );

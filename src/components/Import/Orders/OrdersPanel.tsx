@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { ArrowSwapVertical, More } from "iconsax-react";
 import Balancer from "react-wrap-balancer";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
@@ -125,10 +125,9 @@ export const OrderTableHead = ({ th }: OrderTableHeadProps) => {
             <th className="flex items-center gap-[20px] whitespace-nowrap border-0 p-0">
               {title}
               {sortIcon && (
-                <img
-                  src="/images/arrow_swap_icon.svg"
-                  alt="arrow swap icon"
-                  className="self-end"
+                <ArrowSwapVertical
+                  className="self-end text-neutral-500"
+                  size="20"
                 />
               )}
             </th>
@@ -196,7 +195,7 @@ export const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 <ShippingStatus id={orderId} status={shippingStatus} />
               </td>
               <td className="flex gap-[5px] border-0 p-0">
-                <img src="/images/more_bold_icon.svg" alt="more bold icon" />
+                <More size="20" variant="Bold" className="text-error-600" />
 
                 <p className="title-md">{shippingCost}</p>
               </td>

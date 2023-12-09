@@ -1,10 +1,22 @@
+import {
+  Calculator,
+  Car,
+  Celo,
+  ExportSquare,
+  Home2,
+  ImportSquare,
+  Routing2,
+  Setting3,
+  Shop,
+  Wallet3,
+} from "iconsax-react";
 import { useRouter } from "next/router";
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
-  useEffect,
 } from "react";
 
 export type NavContextType = {
@@ -32,19 +44,35 @@ const NAV_TITLES = [
 
 export type NavTitleType = (typeof NAV_TITLES)[number];
 
-export type NavItemType = { src: string; title: NavTitleType; href: string };
+export type NavItemType = {
+  src: JSX.Element;
+  title: NavTitleType;
+  href: string;
+};
 
 export const topNavItems: NavItemType[] = [
-  { src: "/images/nav/shop_icon.svg", title: "Shop for me", href: "/shop" },
-  { src: "/images/nav/export_icon.svg", title: "Export", href: "/export" },
-  { src: "/images/nav/import_icon.svg", title: "Import", href: "/import" },
   {
-    src: "/images/nav/auto_import_icon.svg",
+    src: <Shop className="text-gray-400" />,
+    title: "Shop for me",
+    href: "/shop",
+  },
+  {
+    src: <ExportSquare className="text-gray-400" />,
+    title: "Export",
+    href: "/export",
+  },
+  {
+    src: <ImportSquare className="text-gray-400" />,
+    title: "Import",
+    href: "/import",
+  },
+  {
+    src: <Car className="text-gray-400" />,
     title: "Auto Import",
     href: "/auto-import",
   },
   {
-    src: "/images/nav/tracking_icon.svg",
+    src: <Routing2 className="text-gray-400" />,
     title: "Tracking",
     href: "/tracking",
   },
@@ -52,21 +80,25 @@ export const topNavItems: NavItemType[] = [
 
 export const bottomNavItems: NavItemType[] = [
   {
-    src: "/images/nav/get_a_quote_icon.svg",
+    src: <Calculator className="text-gray-400" />,
     title: "Get a Quote",
     href: "/quote",
   },
-  { src: "/images/nav/help_icon.svg", title: "Help", href: "/help" },
+  { src: <Celo className="text-gray-400" />, title: "Help", href: "/help" },
   {
-    src: "/images/nav/settings_icon.svg",
+    src: <Setting3 className="text-gray-400" />,
     title: "Settings",
     href: "/settings",
   },
 ];
 
 export const navItems: NavItemType[] = [
-  { src: "/images/nav/home_icon.svg", title: "Home", href: "/" },
-  { src: "/images/nav/billing_icon.svg", title: "Billing", href: "/billing" },
+  { src: <Home2 className="text-gray-400" />, title: "Home", href: "/" },
+  {
+    src: <Wallet3 className="text-gray-400" />,
+    title: "Billing",
+    href: "/billing",
+  },
   ...topNavItems,
   ...bottomNavItems,
 ];

@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { SearchNormal1 } from "iconsax-react";
 import { type ChangeEventHandler, type HTMLInputTypeAttribute } from "react";
 
 type SearchInputProps = {
@@ -13,7 +13,11 @@ const SearchInput = ({ id, label, value, onChange }: SearchInputProps) => {
     <div className="relative flex w-full">
       <div className="relative z-0 w-full">
         <div className="absolute left-4 top-4 z-10">
-          <img src="/images/search_icon.svg" alt="search icon" />
+          <SearchNormal1
+            className="text-gray-500"
+            size="24"
+            variant="Outline"
+          />
         </div>
 
         <input

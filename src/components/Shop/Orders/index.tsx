@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { More } from "iconsax-react";
 import { type ShopItemType } from "~/contexts/ShopContext";
 
 type LabelIdProps = { label: string; id: string };
@@ -59,7 +60,7 @@ export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
 export const MoreButton = () => {
   return (
     <button className="flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-      <img src="/images/more_icon.svg" alt="more icon" />
+      <More className="text-error-600" />
     </button>
   );
 };

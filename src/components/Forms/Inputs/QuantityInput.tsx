@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import { AddSquare, MinusSquare } from "iconsax-react";
 import { useState, type ChangeEventHandler } from "react";
 
 type QuantityInputProps = {
@@ -30,7 +30,7 @@ const QuantityInput = ({ id, label }: QuantityInputProps) => {
           onClick={handleSubtract}
           className="absolute left-2 top-2 z-10 flex items-center justify-center rounded-[6.25rem] p-2 hover:bg-surface-300 focus:bg-surface-400"
         >
-          <img src="/images/minus_square_icon.svg" alt="menu icon" />
+          <MinusSquare size="24" color="#292d32" variant="Outline" />
         </button>
 
         <button
@@ -38,7 +38,7 @@ const QuantityInput = ({ id, label }: QuantityInputProps) => {
           onClick={handleAdd}
           className="absolute right-2 top-2 z-10 flex items-center justify-center rounded-[6.25rem] p-2 hover:bg-surface-300 focus:bg-surface-400"
         >
-          <img src="/images/add_square_icon.svg" alt="menu icon" />
+          <AddSquare size="24" color="#292d32" variant="Outline" />
         </button>
 
         <input

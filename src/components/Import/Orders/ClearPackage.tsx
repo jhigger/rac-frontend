@@ -77,7 +77,7 @@ const ClearPackage = () => {
       />
 
       {!isLastStep && (
-        <div className="flex w-full items-center gap-[10px] rounded-[20px]">
+        <div className="w-full md:w-max">
           <OrderTrackingId />
         </div>
       )}

@@ -86,7 +86,7 @@ const InitiateShipping = () => {
       />
 
       {!isLastStep && (
-        <div className="flex items-center gap-[10px] rounded-[20px] md:w-max">
+        <div className="w-full md:w-max">
           <LabelId label="Request ID" id="R78667" />
         </div>
       )}

@@ -723,6 +723,7 @@ export const CloseButton = ({ dataClose, onClick }: CloseButtonProps) => {
 export const CancelButton = ({ dataClose, onClick }: CloseButtonProps) => {
   return (
     <button
+      type="button"
       aria-label="Back"
       onClick={onClick}
       data-close={dataClose}

@@ -624,8 +624,7 @@ const AddPropertiesModal = ({
         data-close={dataClose}
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
+      <div
         className={`z-50 flex h-max w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px] ${maxWidth}`}
       >
         <div className="flex flex-col gap-[16px]">
@@ -677,10 +676,13 @@ const AddPropertiesModal = ({
         <div className="flex flex-row items-end justify-end">
           <div className="flex gap-[8px]">
             <CancelButton dataClose={dataClose} onClick={remove} />
-            <AddPropertyButton dataClose={dataClose} />
+            <AddPropertyButton
+              dataClose={dataClose}
+              onClick={handleSubmit(onSubmit)}
+            />
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
@@ -695,19 +697,20 @@ const AddMoreProperties = ({ onClick }: AddMoreProperties) => {
       aria-label="title}"
       className="btn relative flex h-[40px] w-max flex-row items-center justify-center gap-x-2 whitespace-nowrap rounded-[20px] px-[16px] py-2.5 text-sm font-medium tracking-[.00714em]"
     >
-      <Add variant="Outline" className="text-gray-200" />
+      <Add variant="Outline" className="text-primary-600" />
       <span className="body-lg text-primary-600">Add more properties</span>
     </button>
   );
 };
 
-type AddPropertyButtonProps = ModalCloseType;
+type AddPropertyButtonProps = ModalCloseType & { onClick: () => void };
 
-const AddPropertyButton = ({ dataClose }: AddPropertyButtonProps) => {
+const AddPropertyButton = ({ dataClose, onClick }: AddPropertyButtonProps) => {
   return (
     <button
+      onClick={onClick}
+      type="button"
       data-close={dataClose}
-      type="submit"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <ArrowCircleRight2 size={18} variant="Bold" />

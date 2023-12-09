@@ -21,7 +21,7 @@ export type AuthContextType = {
   user: UserType | null;
   loginError: AxiosError | null;
   handleLogin: (data: LoginInputs) => void;
-  handleLogout: () => Promise<void>;
+  handleLogout: () => void;
   handleRegister: (data: RegisterInputs) => Promise<void>;
 };
 
@@ -99,7 +99,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     setLoginInputs(inputs);
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     removeCookie("jwt");
   };
 

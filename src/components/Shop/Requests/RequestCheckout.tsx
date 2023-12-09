@@ -319,7 +319,6 @@ export const PaymentMethods = () => {
         <PaymentMethod
           title="Credit/Debit Cards - Pay with Dollar/US Cards"
           description="Valid for MasterCard and Visa Cards. Maximum allowed is $1,500"
-          checked
           expanded
         />
         <PaymentMethod
@@ -498,18 +497,18 @@ const PaymentMethod = ({
 
   return (
     <SectionContentLayout>
-      <div className="flex w-full flex-col gap-[20px] py-[10px] md:gap-[30px]">
-        <div className="col-span-full flex items-center gap-[10px] md:gap-[30px]">
+      <div className="flex w-full flex-col gap-[20px] py-[10px] md:gap-[34px]">
+        <div className="col-span-full flex items-center gap-[10px] md:gap-[14px]">
           <input
-            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-            name="radio"
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            name="payment method"
             type="radio"
-            value="male"
-            aria-label="Custom Billing Address"
+            value={title}
+            aria-label={title}
             checked={checked}
             onChange={onChange}
           />
-          <h4 className="title-md md:title-lg font-medium text-black">
+          <h4 className="title-md md:title-sm font-medium text-black">
             {title}
           </h4>
           <div className="flex flex-grow justify-end">
@@ -518,7 +517,9 @@ const PaymentMethod = ({
         </div>
 
         {open && (
-          <span className="body-md pl-[10px] text-gray-700">{description}</span>
+          <span className="body-md pl-[10px] text-neutral-700">
+            {description}
+          </span>
         )}
       </div>
     </SectionContentLayout>

@@ -9,23 +9,11 @@ const PageLayout = ({ children }: PageLayoutProps) => {
   return (
     <div className="relative flex">
       <nav className="fixed hidden h-full min-h-screen w-[266px] flex-col overflow-y-auto bg-brand py-[40px] md:flex">
-        <Welcome
-          {...{
-            id: "RAC45678",
-            name: "Rex",
-            src: "https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto",
-          }}
-        />
+        <Welcome />
         <TopNav />
         <BottomNav />
       </nav>
-      <SlideSheet
-        {...{
-          id: "RAC45678",
-          name: "Rex",
-          src: "https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto",
-        }}
-      />
+      <SlideSheet />
       <main className="w-full md:ml-[266px]">{children}</main>
     </div>
   );

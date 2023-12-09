@@ -326,7 +326,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
         </div>
 
         {!excluded.includes(status) && (
-          <div className="flex h-[164px] rounded-[20px] bg-primary-900 px-[20px] py-[10px] text-white">
+          <div className="flex rounded-[20px] bg-primary-900 px-[20px] py-[10px] text-white">
             <hr className="h-[65px] border-r border-solid border-white" />
             <div className="flex flex-col">
               <div className="flex flex-col gap-[1px] pl-[10px]">

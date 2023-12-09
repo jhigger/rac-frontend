@@ -72,6 +72,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           setLoginInputs(null);
           setIsRegistering(false);
           handleJWTCookie(userData.jwt);
+          console.log("redirecting to shop...");
           redirectTo("/shop");
           console.log("getting user requests...");
           const requestItems = await useFetchShopRequests(userData._id);
@@ -82,6 +83,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         console.log("token found, fetching user info...");
         return await useFetchUser().then(async (userData) => {
           console.log("user found");
+          console.log("redirecting to shop...");
+          redirectTo("/shop");
           console.log("getting user requests...");
           const requestItems = await useFetchShopRequests(userData._id);
           console.log("user requests:", requestItems);

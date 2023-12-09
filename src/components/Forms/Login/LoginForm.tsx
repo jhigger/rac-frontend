@@ -4,6 +4,7 @@ import { useAuthContext } from "~/contexts/AuthContext";
 import FormHeader from "../FormHeader";
 import PasswordInput from "../Inputs/PasswordInput";
 import TextInput from "../Inputs/TextInput";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 
 export type LoginInputs = {
   email: string;
@@ -11,7 +12,8 @@ export type LoginInputs = {
 };
 
 const LoginForm = () => {
-  const { loginError, handleLogin } = useAuthContext();
+  const { loginError, isAuthenticating, isFetchingUser, handleLogin } =
+    useAuthContext();
   const { register, handleSubmit } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
@@ -43,15 +45,20 @@ const LoginForm = () => {
             "Email or Password is incorrect"}
         </span>
       )}
-      <LoginButton />
+      <LoginButton disabled={isAuthenticating || isFetchingUser} />
     </form>
   );
 };
 
-const LoginButton = () => {
+type LoginButtonProps = { disabled: boolean };
+
+const LoginButton = ({ disabled }: LoginButtonProps) => {
   return (
-    <button className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md">
-      Login to your account
+    <button
+      disabled={disabled}
+      className="btn relative flex h-[40px] flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md"
+    >
+      {disabled ? <LoadingSpinner /> : "Login to your account"}
     </button>
   );
 };

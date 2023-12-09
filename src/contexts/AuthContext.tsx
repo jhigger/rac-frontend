@@ -19,7 +19,11 @@ import { type RegisterInputs } from "~/pages/register";
 
 export type AuthContextType = {
   user: UserType | null;
+  isAuthenticating: boolean;
+  isFetchingUser: boolean;
+  isRegistering: boolean;
   loginError: AxiosError | null;
+  registerError: string | null;
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => void;
   handleRegister: (data: RegisterInputs) => Promise<void>;
@@ -48,11 +52,13 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [loginInputs, setLoginInputs] = useState<LoginInputs | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [registerError, setRegisterError] = useState<string | null>(null);
 
   const {
     data: user,
-    isLoading,
-    isFetching,
+    isLoading: isAuthenticating,
+    isFetching: isFetchingUser,
     isRefetching,
     error: loginError,
     refetch,
@@ -64,6 +70,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         return await useLoginUser(loginInputs).then(async (userData) => {
           console.log("user logged in");
           setLoginInputs(null);
+          setIsRegistering(false);
           handleJWTCookie(userData.jwt);
           redirectTo("/shop");
           console.log("getting user requests...");
@@ -104,9 +111,19 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRegister = async (inputs: RegisterInputs) => {
+    setRegisterError(null);
+    setIsRegistering(true);
+    console.log("registering...");
     await useRegisterUser(inputs)
-      .then(() => setLoginInputs(inputs))
-      .catch((e) => console.error(e));
+      .then(() => {
+        setLoginInputs(inputs);
+      })
+      .catch((e: AxiosError) => {
+        const res = e.response as { data: { message: string } };
+        setRegisterError(res.data.message);
+        setIsRegistering(false);
+        console.log("register failed");
+      });
   };
 
   const redirectTo = (path: string) => {
@@ -123,13 +140,17 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value: AuthContextType = {
     user,
+    isAuthenticating,
+    isFetchingUser,
+    isRegistering,
     loginError,
+    registerError,
     handleLogin,
     handleLogout,
     handleRegister,
   };
 
-  if (isLoading || isFetching || isRefetching) return <LoadingScreen />;
+  if (router.asPath !== "/login" && isRefetching) return <LoadingScreen />;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

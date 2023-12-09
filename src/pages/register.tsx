@@ -4,6 +4,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
 import AccountForm from "~/components/Forms/Register/AccountForm";
 import AddressForm from "~/components/Forms/Register/AddressForm";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { useAuthContext } from "~/contexts/AuthContext";
@@ -40,9 +41,11 @@ const INITIAL_DATA: RegisterInputs = {
 };
 
 const register = () => {
-  const { user, handleRegister } = useAuthContext();
+  const { user, isRegistering, registerError, handleRegister } =
+    useAuthContext();
 
   if (user) return null;
+
   const { handleSubmit, ...form } = useForm<RegisterInputs>({
     defaultValues: INITIAL_DATA,
   });
@@ -66,10 +69,17 @@ const register = () => {
           className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]"
         >
           {step}
+
+          {registerError && (
+            <span className="text-error-600">{registerError}</span>
+          )}
           <div className="flex gap-4">
-            <BackButton {...{ back, isFirstStep }} />
+            {!isRegistering && <BackButton {...{ back, isFirstStep }} />}
             <ProceedButton {...{ next, isFirstStep }} />
-            <CreateAccountButton {...{ next, isLastStep }} />
+            <CreateAccountButton
+              {...{ next, isLastStep }}
+              disabled={isRegistering}
+            />
           </div>
           <TermsAndCondition isLastStep={isLastStep} />
         </form>
@@ -98,7 +108,7 @@ const BackButton = ({ back, isFirstStep }: BackButtonProps) => {
     <button
       type="button"
       onClick={back}
-      className="btn-outline relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600"
+      className="btn-outline relative flex h-[40px] flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600"
     >
       <ArrowLeft />
     </button>
@@ -121,21 +131,27 @@ const ProceedButton = ({ next, isFirstStep }: ProceedButtonProps) => {
   );
 };
 
-type CreateAccountButtonProps = { next: () => void; isLastStep: boolean };
+type CreateAccountButtonProps = {
+  next: () => void;
+  isLastStep: boolean;
+  disabled?: boolean;
+};
 
 const CreateAccountButton = ({
   next,
   isLastStep,
+  disabled,
 }: CreateAccountButtonProps) => {
   if (!isLastStep) return;
 
   return (
     <button
+      disabled={disabled}
       type="submit"
       onClick={next}
-      className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md"
+      className="btn relative flex h-[40px] flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md"
     >
-      Create My Account
+      {disabled ? <LoadingSpinner /> : "Create My Account"}
     </button>
   );
 };

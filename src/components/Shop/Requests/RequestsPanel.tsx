@@ -143,7 +143,7 @@ export const RequestTableHead = ({ th }: RequestTableHeadProps) => {
   );
 };
 
-type RequestTableBodyProps = {
+export type RequestTableBodyProps = {
   requestItems: ShopRequestPackageType[] | ImportRequestPackageType[];
 };
 
@@ -192,7 +192,7 @@ export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
   );
 };
 
-type RequestStatusProps = {
+export type RequestStatusProps = {
   id: string;
   status: ShopRequestPackageType["requestStatus"];
 };
@@ -234,7 +234,7 @@ export const RequestStatus = ({ id, status }: RequestStatusProps) => {
   );
 };
 
-type RequestStatusModalProps = {
+export type RequestStatusModalProps = {
   modalId: string;
   status: RequestStatusProps["status"];
 };
@@ -261,7 +261,7 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
       <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Request Status" />
 
-        <LabelId label="Request ID:" id="OD78667" />
+        <LabelId label="Request ID:" id="R78667" />
 
         <p className="title-lg text-neutral-900">{content[status]}</p>
 
@@ -287,7 +287,7 @@ export type ModalCloseType = { dataClose: string };
 
 type ProceedToCheckoutButtonProps = ModalCloseType;
 
-const ProceedToCheckoutButton = ({
+export const ProceedToCheckoutButton = ({
   dataClose,
 }: ProceedToCheckoutButtonProps) => {
   const { handleActiveAction } = useTabContext();

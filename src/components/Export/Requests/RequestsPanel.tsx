@@ -1,10 +1,10 @@
 import Balancer from "react-wrap-balancer";
+import { RequestTableBody } from "~/components/Import/Requests/RequestsPanel";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { TableFooter } from "~/components/Shop/Orders/OrdersPanel";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import {
-  RequestTableBody,
   RequestTableHead,
   tableHeads,
 } from "~/components/Shop/Requests/RequestsPanel";
@@ -31,15 +31,6 @@ const ExportRequestsPanel = () => {
       <TabContentLayout>
         <>{/* <RequestDetails /> */}</>
       </TabContentLayout>
-    );
-  }
-
-  if (activeAction === "proceed to checkout") {
-    return (
-      <>No UI</>
-      // <TabContentLayout>
-      //   <RequestCheckout />
-      // </TabContentLayout>
     );
   }
 

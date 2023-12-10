@@ -7,16 +7,20 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from "react";
+import AutoImportDraftsPanel from "~/components/AutoImport/Drafts/DraftsPanel";
+import AutoImportOrdersPanel from "~/components/AutoImport/Orders/OrdersPanel";
+import AutoImportRequestsPanel from "~/components/AutoImport/Requests/RequestsPanel";
+import ExportDraftsPanel from "~/components/Export/Drafts/DraftsPanel";
+import ExportOrdersPanel from "~/components/Export/Orders/OrdersPanel";
+import ExportRequestsPanel from "~/components/Export/Requests/RequestsPanel";
 import ImportDraftsPanel from "~/components/Import/Drafts/DraftsPanel";
 import ImportOrdersPanel from "~/components/Import/Orders/OrdersPanel";
 import ImportRequestsPanel from "~/components/Import/Requests/RequestsPanel";
 import ShopDraftsPanel from "~/components/Shop/Drafts/DraftsPanel";
 import ShopOrdersPanel from "~/components/Shop/Orders/OrdersPanel";
 import ShopRequestsPanel from "~/components/Shop/Requests/RequestsPanel";
+import { type ACTION_CONST, type TAB_IDS } from "~/constants";
 import { useNavContext, type NavTitleType } from "./NavigationContext";
-import ExportOrdersPanel from "~/components/Export/Orders/OrdersPanel";
-import ExportRequestsPanel from "~/components/Export/Requests/RequestsPanel";
-import ExportDraftsPanel from "~/components/Export/Drafts/DraftsPanel";
 
 export type TabContextType = {
   activeAction: ActionType | null;
@@ -31,20 +35,7 @@ export const TabContext = createContext<TabContextType>({} as TabContextType);
 
 export const useTabContext = () => useContext(TabContext);
 
-const ACTION_CONST = [
-  "proceed to checkout",
-  "order details",
-  "request details",
-  "draft details",
-  "request new order",
-  "initiate shipping",
-  "clear package",
-  "track",
-] as const;
-
 type ActionType = (typeof ACTION_CONST)[number];
-
-const TAB_IDS = ["orders", "requests", "drafts"] as const;
 
 type TabIdType = (typeof TAB_IDS)[number];
 
@@ -66,6 +57,14 @@ export const tabs: [AppBarTabType, ...AppBarTabType[]] = [
     ],
   },
   {
+    nav: "Export",
+    tabs: [
+      { id: "orders", title: "Orders", content: <ExportOrdersPanel /> },
+      { id: "requests", title: "Requests", content: <ExportRequestsPanel /> },
+      { id: "drafts", title: "Drafts", content: <ExportDraftsPanel /> },
+    ],
+  },
+  {
     nav: "Import",
     tabs: [
       { id: "orders", title: "Orders", content: <ImportOrdersPanel /> },
@@ -74,11 +73,15 @@ export const tabs: [AppBarTabType, ...AppBarTabType[]] = [
     ],
   },
   {
-    nav: "Export",
+    nav: "Auto Import",
     tabs: [
-      { id: "orders", title: "Orders", content: <ExportOrdersPanel /> },
-      { id: "requests", title: "Requests", content: <ExportRequestsPanel /> },
-      { id: "drafts", title: "Drafts", content: <ExportDraftsPanel /> },
+      { id: "orders", title: "Orders", content: <AutoImportOrdersPanel /> },
+      {
+        id: "requests",
+        title: "Requests",
+        content: <AutoImportRequestsPanel />,
+      },
+      { id: "drafts", title: "Drafts", content: <AutoImportDraftsPanel /> },
     ],
   },
 ];

@@ -24,3 +24,16 @@ export const SHOP_FOR_ME_STATUS = [
   "purchase in progress",
   "purchase completed",
 ] as const;
+
+export const ACTION_CONST = [
+  "proceed to checkout",
+  "order details",
+  "request details",
+  "draft details",
+  "request new order",
+  "initiate shipping",
+  "clear package",
+  "track",
+] as const;
+
+export const TAB_IDS = ["orders", "requests", "drafts"] as const;

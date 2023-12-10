@@ -41,8 +41,8 @@ const LoginForm = () => {
       </div>
       {loginError && (
         <span className="text-error-500">
-          {loginError.response?.status === 401 &&
-            "Email or Password is incorrect"}
+          {/* //todo: {loginError.response?.status === 401 &&
+            "Email or Password is incorrect"} */}
         </span>
       )}
       <LoginButton disabled={isAuthenticating || isFetchingUser} />

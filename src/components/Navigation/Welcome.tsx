@@ -16,7 +16,9 @@ const Welcome = () => {
           <span className="body-md">Welcome back,</span>
           <span>{user?.firstName}</span>
           <div className="body-lg flex gap-[10px]">
-            <span className="font-bold text-white">ID: RAC{"45678"}</span>
+            <span className="font-bold text-white">
+              ID: {user?.racId.toUpperCase()}
+            </span>
           </div>
         </div>
       </div>

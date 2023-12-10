@@ -7,12 +7,12 @@ const useLoginUser = async (inputs: LoginInputs) => {
     Accept: "*/*",
     "Content-Type": "application/json",
   };
+
   const reqOptions = {
     url: "https://rac-backend.onrender.com/api/users/auth",
     method: "POST",
     headers: headersList,
     data: inputs,
-    withCredentials: true,
   };
 
   const response = await axios.request(reqOptions);

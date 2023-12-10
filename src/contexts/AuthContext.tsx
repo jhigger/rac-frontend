@@ -46,6 +46,7 @@ export type UserType = {
   email: string;
   isAdmin: boolean;
   jwt: string;
+  racId: string;
 };
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
@@ -75,18 +76,19 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           console.log("redirecting to shop...");
           redirectTo("/shop");
           console.log("getting user requests...");
-          const requestItems = await useFetchShopRequests(userData._id);
+          const requestItems = await useFetchShopRequests(userData.jwt);
           console.log("user requests:", requestItems);
           return userData;
         });
       } else if (cookies.jwt) {
+        const token = cookies.jwt as string;
         console.log("token found, fetching user info...");
-        return await useFetchUser().then(async (userData) => {
+        return await useFetchUser(token).then(async (userData) => {
           console.log("user found");
           console.log("redirecting to shop...");
           redirectTo("/shop");
           console.log("getting user requests...");
-          const requestItems = await useFetchShopRequests(userData._id);
+          const requestItems = await useFetchShopRequests(token);
           console.log("user requests:", requestItems);
           return userData;
         });

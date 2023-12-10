@@ -44,8 +44,8 @@ const AutoImportRequestsPanel = () => {
       <div className="flex w-full flex-grow flex-col items-center justify-center gap-[30px]">
         <h2 className="title-lg max-w-[462px] text-center">
           <Balancer>
-            You have not requested for any import order before, would you like
-            to request for a new order?
+            You have not requested for any auto import order before, would you
+            like to request for a new order?
           </Balancer>
         </h2>
         <RequestOrderButton />

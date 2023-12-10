@@ -54,7 +54,7 @@ const AutoImportOrdersPanel = () => {
       <div className="flex w-full flex-grow flex-col items-center justify-center gap-[30px]">
         <h2 className="title-lg max-w-[462px] text-center">
           <Balancer>
-            You have not placed any import order before, would you like to
+            You have not placed any auto import order before, would you like to
             create a new order?
           </Balancer>
         </h2>

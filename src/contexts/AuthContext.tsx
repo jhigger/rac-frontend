@@ -74,9 +74,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           handleJWTCookie(userData.jwt);
           console.log("redirecting to shop...");
           redirectTo("/shop");
-          console.log("getting user requests...");
-          // const requestItems = await useFetchShopRequests();
-          // console.log("user requests:", requestItems);
           return userData;
         });
       } else if (cookies.jwt) {
@@ -85,9 +82,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           console.log("user found");
           console.log("redirecting to shop...");
           redirectTo("/shop");
-          console.log("getting user requests...");
-          // const requestItems = await useFetchShopRequests();
-          // console.log("user requests:", requestItems);
           return userData;
         });
       }

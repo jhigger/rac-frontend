@@ -11,7 +11,6 @@ import {
 import { useCookies } from "react-cookie";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 import LoadingScreen from "~/components/LoadingScreen";
-import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 import useFetchUser from "~/hooks/useFetchUser";
 import useLoginUser from "~/hooks/useLoginUser";
 import useRegisterUser from "~/hooks/useRegisterUser";
@@ -76,8 +75,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           console.log("redirecting to shop...");
           redirectTo("/shop");
           console.log("getting user requests...");
-          const requestItems = await useFetchShopRequests();
-          console.log("user requests:", requestItems);
+          // const requestItems = await useFetchShopRequests();
+          // console.log("user requests:", requestItems);
           return userData;
         });
       } else if (cookies.jwt) {
@@ -87,8 +86,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           console.log("redirecting to shop...");
           redirectTo("/shop");
           console.log("getting user requests...");
-          const requestItems = await useFetchShopRequests();
-          console.log("user requests:", requestItems);
+          // const requestItems = await useFetchShopRequests();
+          // console.log("user requests:", requestItems);
           return userData;
         });
       }

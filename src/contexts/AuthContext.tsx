@@ -102,7 +102,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleJWTCookie = (jwtCookie: string) => {
     const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + 7); // Set expiration to 7 days from now
+    expirationDate.setDate(expirationDate.getDate() + 1); // Set expiration to 1 day from now
     setCookie("jwt", jwtCookie, { expires: expirationDate });
   };
 

@@ -607,14 +607,14 @@ export const OrderTrackingId = () => {
   return (
     <div className="flex w-full flex-col items-center justify-center gap-[10px] md:flex-row">
       <div className="flex items-center gap-[10px]">
-        <LabelId label="Order ID:" id="OD78667" />
+        <LabelId label="Order ID" id="OD78667" />
         <ArrowCircleDown2 variant="Bold" className="text-gray-500 md:hidden" />
       </div>
       <ArrowCircleRight2
         variant="Bold"
         className="hidden text-gray-500 md:block"
       />
-      <LabelId label="Tracking ID:" id="SH78667" />
+      <LabelId label="Tracking ID" id="SH78667" />
     </div>
   );
 };

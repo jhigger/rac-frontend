@@ -25,7 +25,7 @@ import {
 import {
   AndLastly,
   CustomBillingAddress,
-  DefaultBillingAddress,
+  DefaultBillingAddressRadio,
   NextButton,
   PaymentMethods,
   StepIndex,
@@ -153,7 +153,7 @@ const BillingAddressStep = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Confirm your Billing Information" />
-        <DefaultBillingAddress />
+        <DefaultBillingAddressRadio />
         <CustomBillingAddress />
       </div>
     </div>

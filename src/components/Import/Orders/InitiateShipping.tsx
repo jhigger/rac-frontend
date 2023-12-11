@@ -18,7 +18,7 @@ import {
 } from "~/components/Shop/Orders/OrdersPanel";
 import {
   CustomBillingAddress,
-  DefaultBillingAddress,
+  DefaultBillingAddressRadio,
   NextButton,
   StepIndex,
   SubSectionTitle,
@@ -261,7 +261,7 @@ export const BillingAddressStep = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Confirm your Billing Information" />
-        <DefaultBillingAddress />
+        <DefaultBillingAddressRadio />
         <CustomBillingAddress />
       </div>
     </div>

@@ -27,6 +27,7 @@ import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { LabelId } from "~/components/Shop/Orders";
 import { AddressDetail } from "~/components/Shop/Orders/ClearPackage";
 import {
+  DefaultBillingAddress,
   DetailSection,
   type OrderItemProps,
 } from "~/components/Shop/Orders/InitiateShipping";
@@ -36,7 +37,7 @@ import {
 } from "~/components/Shop/Orders/OrdersPanel";
 import {
   CustomBillingAddress,
-  DefaultBillingAddress,
+  DefaultBillingAddressRadio,
   StepIndex,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
@@ -575,7 +576,7 @@ const Step2 = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Provide your Billing Information" />
-        <DefaultBillingAddress />
+        <DefaultBillingAddressRadio />
         <CustomBillingAddress />
       </div>
     </div>
@@ -613,11 +614,160 @@ const Step3 = () => {
       {fakeData.map((item, i) => {
         return <OrderItem key={item.requestId} index={i} />;
       })}
+      <SectionHeader title="Confirm your Shipping Details" />
+      <DestinationAddressDetails />
+      <SectionHeader title="Confirm your Billing Details" />
+      <DefaultBillingAddress />
     </div>
   );
 };
 
-const OrderItem = ({ index }: OrderItemProps) => {
+export const DestinationAddressDetails = () => {
+  const { open, toggle } = useAccordion(true);
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[20px] py-[10px]">
+        <div className="flex w-full items-center gap-[30px]">
+          <h4 className="title-md md:title-lg text-gray-700">
+            Destination/Shipping Address
+          </h4>
+          <div className="flex flex-grow justify-end">
+            <AccordionButton {...{ open, toggle }} />
+          </div>
+        </div>
+
+        {open && (
+          <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
+            <DetailSection
+              label="Receiver's First Name"
+              value="Malibu"
+              colSpanDesktop={4}
+            />
+            <DetailSection
+              label="Receiver's Last Name"
+              value="SHedrack"
+              colSpanDesktop={4}
+            />
+            <DetailSection
+              label="Contact Number"
+              value="+234 803 456 7845"
+              colSpanDesktop={4}
+            />
+            <DetailSection
+              label="Receiver's Email"
+              value="Malibushdrack@gmail.com"
+              colSpanDesktop={4}
+            />
+            <div className="col-span-2"></div>
+            <DetailSection
+              label="Destination Country"
+              value="Turkey"
+              colSpanMobile={1}
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="Destination State"
+              value="Istanbul"
+              colSpanMobile={1}
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="Destination City"
+              value="Cyprusic"
+              colSpanMobile={1}
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="Zip/postal Code"
+              value="98765"
+              colSpanMobile={1}
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="Receiver's Address"
+              value="No, 1osolo way, ikeja road, behind scaint merry"
+            />
+          </div>
+        )}
+      </div>
+    </SectionContentLayout>
+  );
+};
+
+const PickUpDetails = () => {
+  return (
+    <>
+      <span className="title-md md:title-lg text-primary-900">
+        Pickup Details
+      </span>
+      <HighlightedInfo text="Your Car will be picked up from this address" />
+      <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10 [&>*]:text-primary-900">
+        <AddressDetail
+          label="Contact's First Name"
+          value="Malibu"
+          colSpanDesktop={4}
+        />
+        <AddressDetail
+          label="Contact's Last Name"
+          value="SHedrack"
+          colSpanDesktop={4}
+        />
+        <AddressDetail
+          label="Contact Number"
+          value="+234 803 456 7845"
+          colSpanDesktop={4}
+        />
+        <AddressDetail
+          label="Contact Email"
+          value="Malibushdrack@gmail.com"
+          colSpanDesktop={4}
+        />
+        <AddressDetail
+          label="Street Address"
+          value="No, 1osolo way, ikeja road, behind scaint merry"
+        />
+        <AddressDetail
+          label="Location of the Car (Country)"
+          value="Turkey"
+          colSpanMobile={1}
+          colSpanDesktop={2}
+        />
+        <AddressDetail
+          label="Location of the Car (State)"
+          value="Istanbul"
+          colSpanMobile={1}
+          colSpanDesktop={2}
+        />
+        <AddressDetail
+          label="Location of the Car (City)"
+          value="Cyprusic"
+          colSpanMobile={1}
+          colSpanDesktop={2}
+        />
+        <AddressDetail
+          label="Zip/postal Code"
+          value="98765"
+          colSpanMobile={1}
+          colSpanDesktop={2}
+        />
+
+        <AddressDetail
+          label="Pick up Date"
+          value="10/02/2023"
+          colSpanDesktop={4}
+        />
+        <AddressDetail
+          label="Location Type"
+          value="Mosque"
+          colSpanDesktop={4}
+        />
+      </div>
+    </>
+  );
+};
+
+export const OrderItem = ({ index }: OrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -630,12 +780,18 @@ const OrderItem = ({ index }: OrderItemProps) => {
           <AccordionButton {...{ open, toggle }} />
         </div>
         {open && <OrderItemDetails />}
+        {index % 2 === 0 && (
+          <>
+            <hr className="block w-full border-dashed border-primary-600" />
+            <PickUpDetails />
+          </>
+        )}
       </div>
     </SectionContentLayout>
   );
 };
 
-const OrderItemDetails = () => {
+export const OrderItemDetails = () => {
   return (
     <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-12">
       <DetailSection
@@ -644,7 +800,7 @@ const OrderItemDetails = () => {
         colSpanDesktop={5}
       />
       <DetailSection label="Model" value="Designer Bags" colSpanDesktop={5} />
-      <DetailSection label="Production Year:" value="2022" colSpanDesktop={2} />
+      <DetailSection label="Production Year" value="2022" colSpanDesktop={2} />
       <DetailSection
         label="Car Value"
         value="$560,000,000.00"
@@ -668,13 +824,13 @@ const OrderItemDetails = () => {
         colSpanDesktop={2}
       />
       <DetailSection
-        label="Car Picture:"
+        label="Car Picture"
         value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
         image
         colSpanDesktop={5}
       />
       <DetailSection
-        label="Copy of the Car Title:"
+        label="Copy of the Car Title"
         value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
         image
         colSpanDesktop={5}
@@ -686,7 +842,7 @@ const OrderItemDetails = () => {
   );
 };
 
-const PackageOrigin = () => {
+export const PackageOrigin = () => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -760,7 +916,7 @@ const Step4 = () => {
   return (
     <div className="flex flex-col gap-[20px]">
       <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-        <LabelId label="Request ID:" id="R78667" />
+        <LabelId label="Request ID" id="R78667" />
       </div>
 
       <CongratulationImage text="You have just successfully requested an order for Auto Import service." />

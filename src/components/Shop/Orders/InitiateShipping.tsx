@@ -377,34 +377,51 @@ export const DefaultBillingAddress = () => {
         </div>
 
         {open && (
-          <div className="grid w-fit grid-cols-4 gap-[20px]">
+          <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
             <DetailSection
               label="First Name"
               value="Malibu"
-              colSpanDesktop={2}
+              colSpanDesktop={4}
             />
             <DetailSection
               label="Last Name"
               value="SHedrack"
-              colSpanDesktop={2}
+              colSpanDesktop={4}
             />
             <DetailSection
               label="Contact Number"
               value="+234 803 456 7845"
-              colSpanDesktop={2}
+              colSpanDesktop={4}
             />
             <DetailSection
               label="Email"
               value="Malibushdrack@gmail.com"
+              colSpanDesktop={4}
+            />
+            <div className="col-span-2"></div>
+            <DetailSection
+              label="Country"
+              value="Turkey"
+              colSpanMobile={1}
               colSpanDesktop={2}
             />
-            <DetailSection label="Country" value="Turkey" colSpanDesktop={1} />
-            <DetailSection label="State" value="Istanbul" colSpanDesktop={1} />
-            <DetailSection label="City" value="Cyprusic" colSpanDesktop={1} />
+            <DetailSection
+              label="State"
+              value="Istanbul"
+              colSpanMobile={1}
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="City"
+              value="Cyprusic"
+              colSpanMobile={1}
+              colSpanDesktop={2}
+            />
             <DetailSection
               label="Zip/postal Code"
               value="98765"
-              colSpanDesktop={1}
+              colSpanMobile={1}
+              colSpanDesktop={2}
             />
             <DetailSection
               label="Address"
@@ -542,7 +559,7 @@ export const Summary = () => {
   );
 };
 
-type ShippingMethodProps = {
+export type ShippingMethodProps = {
   expanded?: boolean;
   checked?: boolean;
   disabled?: boolean;

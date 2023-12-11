@@ -142,13 +142,13 @@ const BillingAddress = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <SectionHeader title="Provide your billing address" hr />
-      <DefaultBillingAddress />
+      <DefaultBillingAddressRadio />
       <CustomBillingAddress />
     </div>
   );
 };
 
-export const DefaultBillingAddress = () => {
+export const DefaultBillingAddressRadio = () => {
   const { open, toggle } = useAccordion(false);
 
   return (

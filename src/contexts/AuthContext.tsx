@@ -66,48 +66,36 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      redirectTo("/shop");
-      return {
-        _id: "657143f8c2c0961185969950",
-        firstName: "john",
-        lastName: "doe",
-        email: "asd@asd.asd",
-        isAdmin: false,
-        jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTcxNDNmOGMyYzA5NjExODU5Njk5NTAiLCJpYXQiOjE3MDIxODIzMzQsImV4cCI6MTcwNDc3NDMzNH0.yop_GH8syVzNN3osJrXcL65gdM-ai4tjtH1g3a01QRY",
-        countryCode: "375",
-        racId: "RAC362009",
-      };
-      // if (loginInputs) {
-      //   console.log("logging in...");
-      //   return await useLoginUser(loginInputs).then(async (userData) => {
-      //     console.log("user logged in");
-      //     setLoginInputs(null);
-      //     setIsRegistering(false);
-      //     handleJWTCookie(userData.jwt);
-      //     console.log("redirecting to shop...");
-      //     redirectTo("/shop");
-      //     console.log("getting user requests...");
-      //     const requestItems = await useFetchShopRequests(userData.jwt);
-      //     console.log("user requests:", requestItems);
-      //     return userData;
-      //   });
-      // } else if (cookies.jwt) {
-      //   const token = cookies.jwt as string;
-      //   console.log("token found, fetching user info...");
-      //   return await useFetchUser(token).then(async (userData) => {
-      //     console.log("user found");
-      //     console.log("redirecting to shop...");
-      //     redirectTo("/shop");
-      //     console.log("getting user requests...");
-      //     const requestItems = await useFetchShopRequests(token);
-      //     console.log("user requests:", requestItems);
-      //     return userData;
-      //   });
-      // }
+      if (loginInputs) {
+        console.log("logging in...");
+        return await useLoginUser(loginInputs).then(async (userData) => {
+          console.log("user logged in");
+          setLoginInputs(null);
+          setIsRegistering(false);
+          handleJWTCookie(userData.jwt);
+          console.log("redirecting to shop...");
+          redirectTo("/shop");
+          console.log("getting user requests...");
+          const requestItems = await useFetchShopRequests();
+          console.log("user requests:", requestItems);
+          return userData;
+        });
+      } else if (cookies.jwt) {
+        console.log("token found, fetching user info...");
+        return await useFetchUser().then(async (userData) => {
+          console.log("user found");
+          console.log("redirecting to shop...");
+          redirectTo("/shop");
+          console.log("getting user requests...");
+          const requestItems = await useFetchShopRequests();
+          console.log("user requests:", requestItems);
+          return userData;
+        });
+      }
 
-      // console.log("user logged out, redirecting to login page...");
-      // redirectTo("/login");
-      // return null;
+      console.log("user logged out, redirecting to login page...");
+      redirectTo("/login");
+      return null;
     },
     initialData: null,
   });

@@ -226,7 +226,7 @@ export const DetailSection = ({
   tooltip = false,
 }: DetailSectionProps) => (
   <div
-    className={`col-span-${colSpanMobile} flex flex-col justify-between text-gray-700 md:col-span-${colSpanDesktop}`}
+    className={`col-span-${colSpanMobile} flex flex-col justify-between gap-[5px] text-gray-700 md:col-span-${colSpanDesktop}`}
   >
     {tooltip ? (
       <LabelWithTooltip label={label} />

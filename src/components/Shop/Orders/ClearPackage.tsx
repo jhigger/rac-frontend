@@ -157,12 +157,20 @@ const DestinationShippingAddress = () => {
 type AddressDetail = {
   label: string;
   value: string;
-  colSpan?: number | "full";
+  colSpanMobile?: "full" | number;
+  colSpanDesktop?: "full" | number;
 };
 
-const AddressDetail = ({ label, value, colSpan = "full" }: AddressDetail) => {
+export const AddressDetail = ({
+  label,
+  value,
+  colSpanMobile = "full",
+  colSpanDesktop = "full",
+}: AddressDetail) => {
   return (
-    <div className={`col-span-full flex flex-col md:col-span-${colSpan}`}>
+    <div
+      className={`col-span-${colSpanMobile} flex flex-col gap-[5px] md:col-span-${colSpanDesktop}`}
+    >
       <span className="body-md h-[40px] max-w-[100px] text-primary-600">
         {label}:
       </span>
@@ -184,16 +192,36 @@ const DestinationAddressDetails = () => {
         <hr className="mx-[10px] flex-grow border-dashed border-primary-900" />
       </div>
       <div className="grid w-fit grid-cols-4 gap-[20px]">
-        <AddressDetail label="First Name" value="Malibu" colSpan={2} />
-        <AddressDetail label="Last Name" value="SHedrack" colSpan={2} />
+        <AddressDetail label="First Name" value="Malibu" colSpanDesktop={2} />
+        <AddressDetail label="Last Name" value="SHedrack" colSpanDesktop={2} />
         <AddressDetail
           label="Street Address"
           value="No, 1osolo way, ikeja road, behind scaint merry"
         />
-        <AddressDetail label="Country" value="Nigeria" colSpan={1} />
-        <AddressDetail label="State" value="Lagos" colSpan={1} />
-        <AddressDetail label="City" value="Ikeja" colSpan={1} />
-        <AddressDetail label="Zip/postal Code" value="98765" colSpan={1} />
+        <AddressDetail
+          label="Country"
+          value="Nigeria"
+          colSpanMobile={1}
+          colSpanDesktop={1}
+        />
+        <AddressDetail
+          label="State"
+          value="Lagos"
+          colSpanMobile={1}
+          colSpanDesktop={1}
+        />
+        <AddressDetail
+          label="City"
+          value="Ikeja"
+          colSpanMobile={1}
+          colSpanDesktop={1}
+        />
+        <AddressDetail
+          label="Zip/postal Code"
+          value="98765"
+          colSpanMobile={1}
+          colSpanDesktop={1}
+        />
       </div>
     </>
   );

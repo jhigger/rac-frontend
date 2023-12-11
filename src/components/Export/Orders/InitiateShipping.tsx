@@ -145,7 +145,7 @@ const BillingAddressStep = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
-        <SectionHeader title="Fill in the shipment Address" hr />
+        <SectionHeader title="Fill in the Shipment Address" hr />
         <div className="flex flex-col items-center gap-[30px] md:pl-[34px]">
           <FillInShippingAddress />
         </div>
@@ -160,7 +160,7 @@ const BillingAddressStep = () => {
   );
 };
 
-const FillInShippingAddress = () => {
+export const FillInShippingAddress = () => {
   const { register, getValues, setValue, watch } = useForm<RegisterInputs>();
   const { states, cities } = useStatesCities({ getValues, setValue, watch });
 

@@ -5,18 +5,18 @@ import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import SearchBar from "~/components/Shop/SearchBar";
 import { useAutoImportContext } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
+import RequestOrder from "./RequestOrder";
 
 const AutoImportRequestsPanel = () => {
   const { requestItems } = useAutoImportContext();
   const { activeAction } = useTabContext();
 
-  // todo:
   if (activeAction === "request new order") {
-    // return (
-    //   <TabContentLayout>
-    //     <RequestOrder />
-    //   </TabContentLayout>
-    // );
+    return (
+      <TabContentLayout>
+        <RequestOrder />
+      </TabContentLayout>
+    );
   }
 
   // todo:

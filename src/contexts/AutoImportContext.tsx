@@ -35,7 +35,7 @@ type AutoImportItemType = {
   value: string;
   condition: "Drivable";
   color: string;
-  millage: number;
+  mileage: number;
   vin: string;
   url: string;
   image: string;

@@ -14,6 +14,7 @@ import {
 import { shopDrafts, shopOrders, shopRequests } from "~/fake data";
 
 export type ShopContextType = {
+  clearDrafts: () => void;
   draftItems: ShopDraftPackageType[] | null;
   orderItems: ShopOrderPackageType[] | null;
   payNowAction: { action: () => void } | null;
@@ -87,6 +88,10 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     ShopRequestPackageType[] | null
   >(null);
 
+  const clearDrafts = () => {
+    setDraftPackages(null);
+  };
+
   const handleDrafts = () => {
     setDraftPackages(shopDrafts);
   };
@@ -112,6 +117,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const value: ShopContextType = {
+    clearDrafts,
     draftItems: draftPackages,
     orderItems: orderPackages,
     payNowAction,

@@ -30,7 +30,7 @@ import {
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
-const emptyValue: ExportRequestPackageType = {
+export const emptyValue: ExportRequestPackageType = {
   requestId: "",
   requestStatus: "not responded",
   requestDate: "",
@@ -49,7 +49,7 @@ const emptyValue: ExportRequestPackageType = {
   ],
 };
 
-type Inputs = {
+export type Inputs = {
   requestItems: ExportRequestPackageType[];
 };
 
@@ -95,7 +95,9 @@ const RequestOrder = () => {
             <LabelId label="Request:" id="R78667" />
           </div>
         )}
+
         {step}
+
         {isFirstStep && (
           <>
             <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
@@ -146,7 +148,7 @@ const RequestOrder = () => {
   );
 };
 
-const Step3 = ({ oops }: Step3Props) => {
+export const Step3 = ({ oops }: Step3Props) => {
   return (
     <div className="flex flex-col gap-[30px]">
       {oops ? (

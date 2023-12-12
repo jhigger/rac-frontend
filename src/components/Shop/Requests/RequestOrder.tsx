@@ -42,7 +42,7 @@ import { CancelButton } from "../Orders/OrdersPanel";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 
-const emptyValue: ShopOrderPackageType = {
+export const emptyValue: ShopOrderPackageType = {
   orderId: "",
   orderStatus: "not responded",
   orderDate: "",
@@ -66,7 +66,7 @@ const emptyValue: ShopOrderPackageType = {
   ],
 };
 
-type Inputs = {
+export type Inputs = {
   requestItems: ShopOrderPackageType[];
 };
 
@@ -104,7 +104,10 @@ const RequestOrderForm = () => {
         onSubmit={formMethods.handleSubmit(onSubmit)}
         className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
       >
+        <RequestFormHeader title="Requesting For New Shop For Me Service" />
+
         {step}
+
         {isFirstStep && (
           <>
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
@@ -147,7 +150,7 @@ const RequestOrderForm = () => {
   );
 };
 
-const RequestOrderStep1 = () => {
+export const RequestOrderStep1 = () => {
   const { control } = useFormContext<Inputs>();
   const { fields, append, remove } = useFieldArray<Inputs>({
     control,
@@ -163,7 +166,6 @@ const RequestOrderStep1 = () => {
   };
   return (
     <>
-      <RequestFormHeader title="Requesting For New Shop For Me Service" />
       <ImportantNotice />
       <SelectWarehouseOriginSection />
       <SectionHeader title="Fill in the Items details" />
@@ -187,10 +189,9 @@ const RequestOrderStep1 = () => {
   );
 };
 
-const RequestOrderStep2 = () => {
+export const RequestOrderStep2 = () => {
   return (
     <>
-      <RequestFormHeader title="Requesting For New Shop For Me Service" />
       <SectionContentLayout>
         <div className="flex w-full items-center justify-center gap-[5px] p-[10px]">
           <span className="headline-md">Request ID:</span>
@@ -266,12 +267,18 @@ const RequestOrderStep2 = () => {
   );
 };
 
-type RequestFormHeaderProps = { title: string };
+type RequestFormHeaderProps = { title: string; draft?: boolean };
 
-export const RequestFormHeader = ({ title }: RequestFormHeaderProps) => {
+export const RequestFormHeader = ({
+  title,
+  draft = false,
+}: RequestFormHeaderProps) => {
   return (
     <div className="rounded-[20px] border-[1px] border-dashed border-primary-600 px-[30px] py-[20px] text-primary-600">
-      <h2 className="headline-md">{title}</h2>
+      <h2 className="headline-md">
+        {draft && <span className="text-error-600">Draft - </span>}
+        {title}
+      </h2>
     </div>
   );
 };

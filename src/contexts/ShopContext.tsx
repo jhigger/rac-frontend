@@ -33,7 +33,7 @@ export const useShopContext = () => useContext(ShopContext);
 
 export type ShopItemType = {
   store: string;
-  urgentPurchase: string;
+  urgentPurchase: "Yes" | "No";
   url: string;
   name: string;
   originalCost: string;

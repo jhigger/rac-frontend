@@ -418,6 +418,12 @@ export const ItemDetailsSection = ({
                     options={
                       <>
                         <option value="" disabled hidden>
+                          Select one
+                        </option>
+                        <option value="Yes" disabled hidden>
+                          Yes
+                        </option>
+                        <option value="No" disabled hidden>
                           No
                         </option>
                       </>

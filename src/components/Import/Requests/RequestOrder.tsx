@@ -43,7 +43,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
-const emptyValue: ImportRequestPackageType = {
+export const emptyValue: ImportRequestPackageType = {
   requestId: "",
   requestStatus: "not responded",
   requestDate: "",
@@ -62,7 +62,7 @@ const emptyValue: ImportRequestPackageType = {
   ],
 };
 
-type Inputs = {
+export type Inputs = {
   requestItems: ImportRequestPackageType[];
 };
 
@@ -108,7 +108,9 @@ const RequestOrder = () => {
             <LabelId label="Request:" id="R78667" />
           </div>
         )}
+
         {step}
+
         {isFirstStep && (
           <>
             <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
@@ -367,7 +369,7 @@ const ItemDetailsSection = ({
 
 export type Step3Props = { oops: boolean };
 
-const Step3 = ({ oops }: Step3Props) => {
+export const Step3 = ({ oops }: Step3Props) => {
   return (
     <div className="flex flex-col gap-[30px]">
       {oops ? (

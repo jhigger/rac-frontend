@@ -14,6 +14,7 @@ import {
 import { importDrafts, importOrders, importRequests } from "~/fake data";
 
 export type ImportContextType = {
+  clearDrafts: () => void;
   draftItems: ImportDraftPackageType[] | null;
   orderItems: ImportOrderPackageType[] | null;
   payNowAction: { action: () => void } | null;
@@ -88,6 +89,10 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
     ImportRequestPackageType[] | null
   >(null);
 
+  const clearDrafts = () => {
+    setDraftPackages(null);
+  };
+
   const handleDrafts = () => {
     setDraftPackages(importDrafts);
   };
@@ -112,6 +117,7 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const value: ImportContextType = {
+    clearDrafts,
     draftItems: draftPackages,
     orderItems: orderPackages,
     payNowAction,

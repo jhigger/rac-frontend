@@ -137,7 +137,7 @@ const Step1 = () => {
   );
 };
 
-const OrderItem = ({ index }: OrderItemProps) => {
+export const OrderItem = ({ index }: OrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -414,7 +414,7 @@ const ShippingMethod = ({
   );
 };
 
-const PackageTable = () => {
+export const PackageTable = () => {
   const th = ["Items", "Car(s) color", "Car(s) value", "Pick up Cost"];
 
   return (

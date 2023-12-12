@@ -40,19 +40,19 @@ import {
 } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
+import ClearPackage from "./ClearPackage";
 import InitiateShipping from "./InitiateShipping";
 
 const AutoImportOrdersPanel = () => {
   const { orderItems } = useAutoImportContext();
   const { activeAction } = useTabContext();
 
-  // todo:
   if (activeAction === "clear package") {
-    // return (
-    //   <TabContentLayout>
-    //     <ClearPackage />
-    //   </TabContentLayout>
-    // );
+    return (
+      <TabContentLayout>
+        <ClearPackage />
+      </TabContentLayout>
+    );
   }
 
   if (activeAction === "initiate shipping") {

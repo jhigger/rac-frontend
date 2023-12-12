@@ -66,7 +66,7 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 import { type RegisterInputs } from "~/pages/register";
 
-const emptyValue: AutoImportRequestPackageType = {
+export const emptyValue: AutoImportRequestPackageType = {
   requestId: "",
   requestStatus: "not responded",
   requestDate: "",
@@ -88,7 +88,7 @@ const emptyValue: AutoImportRequestPackageType = {
   ],
 };
 
-type Inputs = {
+export type Inputs = {
   requestItems: AutoImportRequestPackageType[];
 };
 
@@ -97,7 +97,7 @@ const RequestOrder = () => {
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
-    { title: "Package Confirmation", content: <Step1 /> },
+    { title: "Package Details", content: <Step1 /> },
     {
       title: "Shipping & Billing Address",
       content: <Step2 />,
@@ -197,7 +197,7 @@ const RequestOrder = () => {
   );
 };
 
-const Step1 = () => {
+export const Step1 = () => {
   const { control } = useFormContext<Inputs>();
   const { fields, append, remove } = useFieldArray<Inputs>({
     control,
@@ -564,7 +564,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
   );
 };
 
-const Step2 = () => {
+export const Step2 = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
@@ -582,7 +582,7 @@ const Step2 = () => {
     </div>
   );
 };
-const Step3 = () => {
+export const Step3 = () => {
   const fakeData = [
     {
       requestId: "",
@@ -912,7 +912,7 @@ const OriginWarehouseAddress = () => {
   );
 };
 
-const Step4 = () => {
+export const Step4 = () => {
   return (
     <div className="flex flex-col gap-[20px]">
       <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">

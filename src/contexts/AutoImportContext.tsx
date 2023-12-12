@@ -13,6 +13,7 @@ import {
 import { autoImportOrders, autoImportRequests } from "~/fake data";
 
 export type AutoImportContextType = {
+  clearDrafts: () => void;
   draftItems: AutoImportDraftPackageType[] | null;
   orderItems: AutoImportOrderPackageType[] | null;
   payNowAction: { action: () => void } | null;
@@ -103,8 +104,12 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
     AutoImportRequestPackageType[] | null
   >(null);
 
-  const handleDrafts = () => {
+  const clearDrafts = () => {
     setDraftPackages(null);
+  };
+
+  const handleDrafts = () => {
+    setDraftPackages([]);
   };
 
   const handleOrders = () => {
@@ -129,6 +134,7 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const value: AutoImportContextType = {
+    clearDrafts,
     draftItems: draftPackages,
     orderItems: orderPackages,
     payNowAction,

@@ -10,7 +10,7 @@ import {
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { autoImportOrders } from "~/fake data";
+import { autoImportOrders, autoImportRequests } from "~/fake data";
 
 export type AutoImportContextType = {
   draftItems: AutoImportDraftPackageType[] | null;
@@ -118,7 +118,7 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestPackages(null);
+    setRequestPackages(autoImportRequests);
   };
 
   // testing purposes

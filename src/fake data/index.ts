@@ -1,4 +1,7 @@
-import { type AutoImportOrderPackageType } from "~/contexts/AutoImportContext";
+import {
+  type AutoImportOrderPackageType,
+  type AutoImportRequestPackageType,
+} from "~/contexts/AutoImportContext";
 import {
   type ImportDraftPackageType,
   type ImportOrderPackageType,
@@ -813,6 +816,51 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     trackingId: "SH08750",
     shippingStatus: "delivered",
     shippingCost: "$107.76",
+    items: [
+      {
+        brand: "asd",
+        model: "asd",
+        productionYear: "2023",
+        value: "$107.76",
+        condition: "Drivable",
+        color: "blue",
+        mileage: 0,
+        vin: "asdaasd123123",
+        url: "https://www.asd.com/asdasd",
+        image: images(1)[0]!,
+        carTitleCopy: images(1)[0]!,
+        description: "asdasdasdasd",
+      },
+    ],
+  },
+];
+
+export const autoImportRequests: AutoImportRequestPackageType[] = [
+  {
+    requestId: "OD08756",
+    requestStatus: "responded",
+    requestDate: "22-03-2023 13:05",
+    items: [
+      {
+        brand: "asd",
+        model: "asd",
+        productionYear: "2023",
+        value: "$107.76",
+        condition: "Drivable",
+        color: "blue",
+        mileage: 0,
+        vin: "asdaasd123123",
+        url: "https://www.asd.com/asdasd",
+        image: images(1)[0]!,
+        carTitleCopy: images(1)[0]!,
+        description: "asdasdasdasd",
+      },
+    ],
+  },
+  {
+    requestId: "OD08755",
+    requestStatus: "not responded",
+    requestDate: "22-03-2023 13:05",
     items: [
       {
         brand: "asd",

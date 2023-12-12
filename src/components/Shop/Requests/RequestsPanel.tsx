@@ -1,6 +1,7 @@
 import { ArrowSwapVertical, Security } from "iconsax-react";
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
+import { type ExportRequestPackageType } from "~/contexts/ExportContext";
 import { type ImportRequestPackageType } from "~/contexts/ImportContext";
 import {
   useShopContext,
@@ -144,7 +145,7 @@ export const RequestTableHead = ({ th }: RequestTableHeadProps) => {
 };
 
 export type RequestTableBodyProps = {
-  requestItems: ShopRequestPackageType[] | ImportRequestPackageType[];
+  requestItems: ShopRequestPackageType[] | ImportRequestPackageType[] | ExportRequestPackageType[];
 };
 
 export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {

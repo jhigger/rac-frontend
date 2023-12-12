@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import { useAuthContext } from "~/contexts/AuthContext";
 import FormHeader from "../FormHeader";
 import PasswordInput from "../Inputs/PasswordInput";
 import TextInput from "../Inputs/TextInput";
-import { LoadingSpinner } from "~/components/LoadingScreen";
 
 export type LoginInputs = {
   email: string;
@@ -39,10 +39,10 @@ const LoginForm = () => {
           {...register("password")}
         />
       </div>
-      {loginError && (
+      {loginError?.response && (
         <span className="text-error-500">
-          {/* //todo: {loginError.response?.status === 401 &&
-            "Email or Password is incorrect"} */}
+          {loginError.response.status === 401 &&
+            "Email or Password is incorrect"}
         </span>
       )}
       <LoginButton disabled={isAuthenticating || isFetchingUser} />

@@ -21,7 +21,7 @@ export type AuthContextType = {
   isAuthenticating: boolean;
   isFetchingUser: boolean;
   isRegistering: boolean;
-  loginError: AxiosError | null | Error;
+  loginError: AxiosError | null;
   registerError: string | null;
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => void;
@@ -62,7 +62,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     isRefetching,
     error: loginError,
     refetch,
-  } = useQuery({
+  } = useQuery<UserType | null, AxiosError>({
     queryKey: ["user"],
     queryFn: async () => {
       // redirectTo("/shop");

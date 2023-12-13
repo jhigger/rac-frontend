@@ -20,7 +20,7 @@ import {
   Step3,
   Step4,
   emptyValue,
-  type Inputs,
+  type AutoImportInputs,
 } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
@@ -48,13 +48,13 @@ const DraftDetails = () => {
   } = useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
 
-  const formMethods = useForm<Inputs>({
+  const formMethods = useForm<AutoImportInputs>({
     defaultValues: {
       requestItems: [emptyValue],
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
     console.log(data.requestItems);
     next();
   };

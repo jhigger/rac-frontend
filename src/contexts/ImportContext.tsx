@@ -37,9 +37,9 @@ type ImportItemType = {
   idNumber: string;
   deliveryStatus: string;
   deliveredBy: string;
-  originalCost: string;
+  originalCost: number;
   quantity: number;
-  images: string[];
+  image: string;
   description: string;
   properties?: {
     label: string;
@@ -63,7 +63,7 @@ export type ImportOrderPackageType = {
   orderDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
-  shippingCost: string;
+  shippingCost: number;
   items: ImportItemType[];
 };
 

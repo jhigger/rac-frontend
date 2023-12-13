@@ -7,9 +7,11 @@ import {
 } from "react";
 import {
   type ORDER_STATUS,
+  type ORIGINS,
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
   type SHOP_FOR_ME_STATUS,
+  type STORES,
 } from "~/constants";
 import { shopDrafts, shopOrders, shopRequests } from "~/fake data";
 
@@ -32,7 +34,7 @@ export const ShopContext = createContext<ShopContextType>(
 export const useShopContext = () => useContext(ShopContext);
 
 export type ShopItemType = {
-  store: string;
+  store: (typeof STORES)[number];
   urgent: boolean;
   url: string;
   name: string;
@@ -63,9 +65,9 @@ export type ShopOrderPackageType = {
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
-  shopForMeCost: string;
-  shippingCost: string;
-  originWarehouse: string;
+  shopForMeCost: number;
+  shippingCost: number;
+  originWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
 };
 

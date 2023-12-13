@@ -145,14 +145,17 @@ export const RequestTableHead = ({ th }: RequestTableHeadProps) => {
 };
 
 export type RequestTableBodyProps = {
-  requestItems: ShopRequestPackageType[] | ImportRequestPackageType[] | ExportRequestPackageType[];
+  requestItems:
+    | ShopRequestPackageType[]
+    | ImportRequestPackageType[]
+    | ExportRequestPackageType[];
 };
 
 export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
   return (
     <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {requestItems.map(({ items, requestId, requestStatus, requestDate }) => {
-        if (!items[0]?.images) return;
+        const images = items.map((item) => item.image);
 
         return (
           <tr
@@ -168,7 +171,7 @@ export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
               />
             </td>
             <td className="border-0 p-0">
-              <ImageColumn images={items[0].images} />
+              <ImageColumn images={images} />
             </td>
             <td className="border-0 p-0">
               <p className="label-lg md:title-md max-w-[100px] whitespace-nowrap">

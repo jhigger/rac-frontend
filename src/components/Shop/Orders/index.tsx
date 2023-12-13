@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { More } from "iconsax-react";
-import { type ShopItemType } from "~/contexts/ShopContext";
 
 type LabelIdProps = { label: string; id: string };
 
@@ -13,7 +12,7 @@ export const LabelId = ({ label, id }: LabelIdProps) => {
   );
 };
 
-type OrderItemImagesProps = Pick<ShopItemType, "images">;
+type OrderItemImagesProps = { images: string[] };
 
 export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
   return (

@@ -17,7 +17,7 @@ import {
   Step2,
   Step3,
   emptyValue,
-  type Inputs,
+  type ImportInputs,
 } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
@@ -30,13 +30,13 @@ const DraftDetails = () => {
   const { clearDrafts } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
-  const formMethods = useForm<Inputs>({
+  const formMethods = useForm<ImportInputs>({
     defaultValues: {
-      requestItems: [emptyValue],
+      requestItems: emptyValue,
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
     console.log(data.requestItems);
     next();
   };

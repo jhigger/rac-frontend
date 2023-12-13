@@ -31,6 +31,7 @@ import {
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
 import SearchBar from "~/components/Shop/SearchBar";
+import { type ExportOrderPackageType } from "~/contexts/ExportContext";
 import {
   useImportContext,
   type ImportOrderPackageType,
@@ -164,7 +165,7 @@ export const OrderTableHead = ({ th }: OrderTableHeadProps) => {
 };
 
 export type OrderTableBodyProps = {
-  orderItems: ImportOrderPackageType[];
+  orderItems: ImportOrderPackageType[] | ExportOrderPackageType[];
 };
 
 export const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
@@ -180,7 +181,7 @@ export const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
           shippingStatus,
           trackingId,
         }) => {
-          if (!items[0]?.images) return;
+          const images = items.map((item) => item.image);
 
           return (
             <tr
@@ -196,7 +197,7 @@ export const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 />
               </td>
               <td className="border-0 p-0">
-                <ImageColumn images={items[0].images} />
+                <ImageColumn images={images} />
               </td>
               <td className="border-0 p-0">
                 <p className="title-md whitespace-nowrap">{orderId}</p>

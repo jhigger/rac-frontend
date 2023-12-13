@@ -6,14 +6,18 @@ import {
   type Ref,
 } from "react";
 import { type UseFormGetValues, type UseFormSetValue } from "react-hook-form";
-import { type Inputs } from "~/components/Shop/Requests/RequestOrder";
+import { type ImportInputs } from "~/components/Import/Requests/RequestOrder";
+import { type ShopInputs } from "~/components/Shop/Requests/RequestOrder";
+
+type GetValueType = UseFormGetValues<ShopInputs | ImportInputs>;
+type SetValueType = UseFormSetValue<ShopInputs | ImportInputs>;
 
 type QuantityInputProps = {
   id: string;
   index: number;
   label: string;
-  setValue: UseFormSetValue<Inputs>;
-  getValues: UseFormGetValues<Inputs>;
+  getValues: GetValueType;
+  setValue: SetValueType;
   value?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;

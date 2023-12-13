@@ -34,7 +34,7 @@ type AutoImportItemType = {
   brand: string;
   model: string;
   productionYear: string;
-  value: string;
+  value: number;
   condition: "Drivable";
   color: string;
   mileage: number;
@@ -78,7 +78,7 @@ export type AutoImportOrderPackageType = {
   orderDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
-  shippingCost: string;
+  shippingCost: number;
   items: AutoImportItemType[];
 };
 

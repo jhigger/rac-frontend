@@ -49,12 +49,12 @@ export const emptyValue: ShopOrderPackageType = {
   trackingId: "",
   shippingStatus: "not started",
   shopForMeStatus: "purchase not started",
-  shopForMeCost: "",
-  shippingCost: "",
-  originWarehouse: "",
+  shopForMeCost: 0,
+  shippingCost: 0,
+  originWarehouse: "China Warehouse (Guangzhou city)",
   items: [
     {
-      store: "",
+      store: "Aliexpress",
       urgent: false,
       url: "item url",
       name: "Designer Bags",
@@ -67,7 +67,7 @@ export const emptyValue: ShopOrderPackageType = {
   ],
 };
 
-export type Inputs = {
+export type ShopInputs = {
   requestItems: ShopOrderPackageType;
 };
 
@@ -78,13 +78,13 @@ const RequestOrderForm = () => {
   const { handleRequests } = useShopContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
 
-  const formMethods = useForm<Inputs>({
+  const formMethods = useForm<ShopInputs>({
     defaultValues: {
       requestItems: emptyValue,
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
     data.requestItems.items.forEach((item, index) => {
       const value = item.urgent;
       formMethods.setValue(
@@ -158,8 +158,8 @@ const RequestOrderForm = () => {
 };
 
 export const RequestOrderStep1 = () => {
-  const { control } = useFormContext<Inputs>();
-  const { fields, append, remove } = useFieldArray<Inputs>({
+  const { control } = useFormContext<ShopInputs>();
+  const { fields, append, remove } = useFieldArray<ShopInputs>({
     control,
     name: "requestItems.items",
   });
@@ -322,7 +322,7 @@ export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
 };
 
 const SelectWarehouseOriginSection = () => {
-  const { register } = useFormContext<Inputs>();
+  const { register } = useFormContext<ShopInputs>();
 
   return (
     <>
@@ -375,7 +375,7 @@ export const ItemDetailsSection = ({
   expanded = false,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
-  const { register, getValues, setValue } = useFormContext<Inputs>();
+  const { register, getValues, setValue } = useFormContext<ShopInputs>();
   const { open, toggle } = useAccordion(expanded);
   const [filename, setFilename] = useState("");
 
@@ -549,7 +549,7 @@ type AddPropertiesSectionProps = { index: number };
 export const AddPropertiesSection = ({
   index = 0,
 }: AddPropertiesSectionProps) => {
-  const { setValue } = useFormContext<Inputs>();
+  const { setValue } = useFormContext<ShopInputs>();
   const [properties, setProperties] = useState<PropertyType[]>([]);
 
   const handleProperties = (newProperties: PropertyType[]) => {

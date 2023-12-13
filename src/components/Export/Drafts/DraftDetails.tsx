@@ -14,7 +14,7 @@ import {
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
-import { Step3, emptyValue, type Inputs } from "../Requests/RequestOrder";
+import { Step3, emptyValue, type ExportInputs } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
   const [oops] = useState(false);
@@ -26,13 +26,13 @@ const DraftDetails = () => {
   const { clearDrafts } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
-  const formMethods = useForm<Inputs>({
+  const formMethods = useForm<ExportInputs>({
     defaultValues: {
-      requestItems: [emptyValue],
+      requestItems: emptyValue,
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<ExportInputs> = async (data) => {
     console.log(data.requestItems);
     next();
   };

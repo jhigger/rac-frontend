@@ -4,7 +4,6 @@ import {
   useFieldArray,
   useForm,
   useFormContext,
-  type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
 import AccordionButton from "~/components/Forms/AccordionButton";
@@ -49,21 +48,21 @@ export const emptyValue: ImportRequestPackageType = {
   requestDate: "",
   items: [
     {
-      images: [],
+      image: "",
       name: "",
       idType: "Tracking ID",
       idNumber: "",
       deliveryStatus: "",
       deliveredBy: "",
-      originalCost: "",
-      quantity: 0,
+      originalCost: 1,
+      quantity: 1,
       description: "",
     },
   ],
 };
 
-export type Inputs = {
-  requestItems: ImportRequestPackageType[];
+export type ImportInputs = {
+  requestItems: ImportRequestPackageType;
 };
 
 const RequestOrder = () => {
@@ -74,13 +73,13 @@ const RequestOrder = () => {
   const { handleRequests } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
-  const formMethods = useForm<Inputs>({
+  const formMethods = useForm<ImportInputs>({
     defaultValues: {
-      requestItems: [emptyValue],
+      requestItems: emptyValue,
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
     // handleRequests();
     console.log(data.requestItems);
     next();
@@ -177,14 +176,14 @@ export const Step1 = () => {
 };
 
 export const Step2 = () => {
-  const { control } = useFormContext<Inputs>();
-  const { fields, append, remove } = useFieldArray<Inputs>({
+  const { control } = useFormContext<ImportInputs>();
+  const { fields, append, remove } = useFieldArray<ImportInputs>({
     control,
-    name: "requestItems",
+    name: "requestItems.items",
   });
 
   const handleAddMore = () => {
-    append(emptyValue);
+    append(emptyValue.items);
   };
 
   const handleRemove = (index: number) => {
@@ -203,7 +202,6 @@ export const Step2 = () => {
               key={field.id}
               index={i}
               handleRemoveItem={() => handleRemove(i)}
-              fields={fields}
               expanded
             />
           );
@@ -220,21 +218,14 @@ type ItemDetailsSectionProps = {
   index: number;
   expanded?: boolean;
   handleRemoveItem: () => void;
-  fields: FieldArrayWithId<
-    Inputs,
-    | "requestItems"
-    | `requestItems.${number}.items`
-    | `requestItems.${number}.items.${number}.properties`,
-    "id"
-  >[];
 };
 
 const ItemDetailsSection = ({
-  // fields // todo: register form fields
   index,
   expanded = false,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
+  const { register, getValues, setValue } = useFormContext<ImportInputs>();
   const { open, toggle } = useAccordion(expanded);
   const [filename, setFilename] = useState("");
 
@@ -323,7 +314,16 @@ const ItemDetailsSection = ({
                 </div>
 
                 <div className="col-span-full md:col-span-4">
-                  <QuantityInput id={`quantity-${index}`} label={"Quantity"} />
+                  <QuantityInput
+                    id={`quantity-${index}`}
+                    label={"Quantity"}
+                    {...register(`requestItems.items.${index}.quantity`, {
+                      valueAsNumber: true,
+                    })}
+                    setValue={setValue}
+                    getValues={getValues}
+                    index={index}
+                  />
                 </div>
 
                 <div className="col-span-full">

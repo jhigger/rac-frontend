@@ -75,7 +75,7 @@ export const emptyValue: AutoImportRequestPackageType = {
       brand: "",
       model: "",
       productionYear: "",
-      value: "",
+      value: 0,
       condition: "Drivable",
       color: "",
       mileage: 0,
@@ -88,7 +88,7 @@ export const emptyValue: AutoImportRequestPackageType = {
   ],
 };
 
-export type Inputs = {
+export type AutoImportInputs = {
   requestItems: AutoImportRequestPackageType[];
 };
 
@@ -117,13 +117,13 @@ const RequestOrder = () => {
   } = useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
 
-  const formMethods = useForm<Inputs>({
+  const formMethods = useForm<AutoImportInputs>({
     defaultValues: {
       requestItems: [emptyValue],
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
     // handleRequests();
     console.log(data.requestItems);
     next();
@@ -198,8 +198,8 @@ const RequestOrder = () => {
 };
 
 export const Step1 = () => {
-  const { control } = useFormContext<Inputs>();
-  const { fields, append, remove } = useFieldArray<Inputs>({
+  const { control } = useFormContext<AutoImportInputs>();
+  const { fields, append, remove } = useFieldArray<AutoImportInputs>({
     control,
     name: "requestItems",
   });
@@ -265,7 +265,7 @@ type ItemDetailsSectionProps = {
   expanded?: boolean;
   handleRemoveItem: (index: number) => void;
   fields: FieldArrayWithId<
-    Inputs,
+    AutoImportInputs,
     | "requestItems"
     | `requestItems.${number}.items`
     | `requestItems.${number}.items.${number}.properties`,
@@ -593,7 +593,7 @@ export const Step3 = () => {
           brand: "",
           model: "",
           productionYear: "",
-          value: "",
+          value: 0,
           condition: "Drivable",
           color: "",
           mileage: 0,

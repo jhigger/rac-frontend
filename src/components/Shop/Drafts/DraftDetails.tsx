@@ -12,7 +12,7 @@ import {
   RequestOrderStep2,
   SaveAsDraftButton,
   emptyValue,
-  type Inputs,
+  type ShopInputs,
 } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
@@ -22,13 +22,13 @@ const DraftDetails = () => {
   const { clearDrafts } = useShopContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
 
-  const formMethods = useForm<Inputs>({
+  const formMethods = useForm<ShopInputs>({
     defaultValues: {
-      requestItems: [emptyValue],
+      requestItems: emptyValue,
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
     console.log(data.requestItems);
     next();
   };

@@ -36,21 +36,21 @@ export const emptyValue: ExportRequestPackageType = {
   requestDate: "",
   items: [
     {
-      images: [],
+      image: "",
       name: "",
       idType: "Tracking ID",
       idNumber: "",
       deliveryStatus: "",
       deliveredBy: "",
-      originalCost: "",
-      quantity: 0,
+      originalCost: 1,
+      quantity: 1,
       description: "",
     },
   ],
 };
 
-export type Inputs = {
-  requestItems: ExportRequestPackageType[];
+export type ExportInputs = {
+  requestItems: ExportRequestPackageType;
 };
 
 const RequestOrder = () => {
@@ -61,13 +61,13 @@ const RequestOrder = () => {
   const { handleRequests } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
-  const formMethods = useForm<Inputs>({
+  const formMethods = useForm<ExportInputs>({
     defaultValues: {
-      requestItems: [emptyValue],
+      requestItems: emptyValue,
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<ExportInputs> = async (data) => {
     // handleRequests();
     console.log(data.requestItems);
     next();

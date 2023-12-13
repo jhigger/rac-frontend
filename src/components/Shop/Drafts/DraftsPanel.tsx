@@ -7,9 +7,9 @@ import RequestOrderButton from "../RequestOrderButton";
 import DraftDetails from "./DraftDetails";
 
 const DraftsPanel = () => {
-  const { draftItems } = useShopContext();
+  const { draftPackages } = useShopContext();
 
-  if (draftItems) {
+  if (draftPackages.length > 0) {
     return (
       <TabContentLayout>
         <DraftDetails />

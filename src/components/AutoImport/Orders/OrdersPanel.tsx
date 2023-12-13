@@ -72,7 +72,7 @@ const AutoImportOrdersPanel = () => {
     // );
   }
 
-  if (orderItems) {
+  if (orderItems.length > 0) {
     return (
       <TabContentLayout>
         <SearchBar />

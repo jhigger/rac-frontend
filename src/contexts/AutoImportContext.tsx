@@ -14,10 +14,10 @@ import { autoImportOrders, autoImportRequests } from "~/fake data";
 
 export type AutoImportContextType = {
   clearDrafts: () => void;
-  draftItems: AutoImportDraftPackageType[] | null;
-  orderItems: AutoImportOrderPackageType[] | null;
+  draftItems: AutoImportDraftPackageType[];
+  orderItems: AutoImportOrderPackageType[];
   payNowAction: { action: () => void } | null;
-  requestItems: AutoImportRequestPackageType[] | null;
+  requestItems: AutoImportRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
   handlePayNowAction: (action: AutoImportContextType["payNowAction"]) => void;
@@ -68,9 +68,7 @@ export type AutoImportOrderPackageInput = {
   items: AutoImportItemType[];
 };
 
-export type AutoImportDraftPackageType = AutoImportOrderPackageInput & {
-  draftDate: string;
-};
+export type AutoImportDraftPackageType = AutoImportOrderPackageInput;
 
 export type AutoImportOrderPackageType = {
   orderId: string;
@@ -93,19 +91,19 @@ export type PropertyType = { label: string; value: string | undefined };
 
 const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   const [draftPackages, setDraftPackages] = useState<
-    AutoImportDraftPackageType[] | null
-  >(null);
+    AutoImportDraftPackageType[]
+  >([]);
   const [orderPackages, setOrderPackages] = useState<
-    AutoImportOrderPackageType[] | null
-  >(null);
+    AutoImportOrderPackageType[]
+  >([]);
   const [payNowAction, setPayNowAction] =
     useState<AutoImportContextType["payNowAction"]>(null);
   const [requestPackages, setRequestPackages] = useState<
-    AutoImportRequestPackageType[] | null
-  >(null);
+    AutoImportRequestPackageType[]
+  >([]);
 
   const clearDrafts = () => {
-    setDraftPackages(null);
+    setDraftPackages([]);
   };
 
   const handleDrafts = () => {

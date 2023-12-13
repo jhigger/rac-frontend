@@ -26,7 +26,7 @@ import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
 
 const RequestsPanel = () => {
-  const { requestItems } = useShopContext();
+  const { requestPackages } = useShopContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
@@ -53,7 +53,7 @@ const RequestsPanel = () => {
     );
   }
 
-  if (requestItems) {
+  if (requestPackages.length > 0) {
     return (
       <TabContentLayout>
         <SearchBar />
@@ -79,9 +79,7 @@ const RequestsPanel = () => {
 };
 
 const RequestsTable = () => {
-  const { requestItems } = useShopContext();
-
-  if (!requestItems) return;
+  const { requestPackages } = useShopContext();
 
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[10px] md:p-[20px]">
@@ -89,7 +87,7 @@ const RequestsTable = () => {
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
             <RequestTableHead th={tableHeads} />
-            <RequestTableBody requestItems={requestItems} />
+            <RequestTableBody requestItems={requestPackages} />
           </table>
         </div>
       </div>

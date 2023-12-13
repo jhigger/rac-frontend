@@ -16,10 +16,8 @@ import {
 } from "../Requests/RequestOrder";
 
 const OrderDetails = () => {
-  const { orderItems } = useShopContext();
+  const { orderPackages } = useShopContext();
   const { handleActiveAction } = useTabContext();
-
-  if (!orderItems) return;
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -33,7 +31,7 @@ const OrderDetails = () => {
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
-        {orderItems.map((item, i) => {
+        {orderPackages.map((item, i) => {
           return <Item key={item.orderId} index={i} />;
         })}
       </div>

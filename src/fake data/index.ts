@@ -323,7 +323,6 @@ export const shopRequests: ShopRequestPackageType[] = [
 
 export const shopDrafts: ShopDraftPackageType[] = [
   {
-    draftDate: "22-03-2023 13:05",
     origin: "origin",
     items: [
       {
@@ -625,7 +624,6 @@ export const importRequests: ImportRequestPackageType[] = [
 
 export const importDrafts: ImportDraftPackageType[] = [
   {
-    draftDate: "22-03-2023 13:05",
     origin: "origin",
     packageDeliveryStatus: "not started",
     items: [
@@ -643,7 +641,6 @@ export const importDrafts: ImportDraftPackageType[] = [
     ],
   },
   {
-    draftDate: "22-03-2023 13:05",
     origin: "origin",
     packageDeliveryStatus: "not started",
     items: [

@@ -38,7 +38,7 @@ import {
 export type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
-  const { orderItems, handlePayNowAction } = useShopContext();
+  const { orderPackages, handlePayNowAction } = useShopContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -55,7 +55,7 @@ const RequestCheckout = () => {
     useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
 
-  if (!orderItems) return;
+  if (orderPackages.length > 0) return;
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -123,15 +123,13 @@ export const NextButton = ({ text, next }: NextButtonProps) => {
 };
 
 const PackageConfirmation = () => {
-  const { requestItems } = useShopContext();
-
-  if (!requestItems) return;
+  const { requestPackages } = useShopContext();
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {requestItems.map((item, i) => {
+      {requestPackages.map((item, i) => {
         return <Item key={item.requestId} index={i} />;
       })}
     </div>

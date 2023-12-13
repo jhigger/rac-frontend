@@ -15,10 +15,10 @@ import { importDrafts, importOrders, importRequests } from "~/fake data";
 
 export type ExportContextType = {
   clearDrafts: () => void;
-  draftItems: ExportDraftPackageType[] | null;
-  orderItems: ExportOrderPackageType[] | null;
+  draftItems: ExportDraftPackageType[];
+  orderItems: ExportOrderPackageType[];
   payNowAction: { action: () => void } | null;
-  requestItems: ExportRequestPackageType[] | null;
+  requestItems: ExportRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
   handlePayNowAction: (action: ExportContextType["payNowAction"]) => void;
@@ -53,9 +53,7 @@ export type ExportOrderPackageInput = {
   items: ExportItemType[];
 };
 
-export type ExportDraftPackageType = ExportOrderPackageInput & {
-  draftDate: string;
-};
+export type ExportDraftPackageType = ExportOrderPackageInput;
 
 export type ExportOrderPackageType = {
   orderId: string;
@@ -77,20 +75,20 @@ export type ExportRequestPackageType = {
 export type PropertyType = { label: string; value: string | undefined };
 
 const ExportContextProvider = ({ children }: { children: ReactNode }) => {
-  const [draftPackages, setDraftPackages] = useState<
-    ExportDraftPackageType[] | null
-  >(null);
-  const [orderPackages, setOrderPackages] = useState<
-    ExportOrderPackageType[] | null
-  >(null);
+  const [draftPackages, setDraftPackages] = useState<ExportDraftPackageType[]>(
+    [],
+  );
+  const [orderPackages, setOrderPackages] = useState<ExportOrderPackageType[]>(
+    [],
+  );
   const [payNowAction, setPayNowAction] =
     useState<ExportContextType["payNowAction"]>(null);
   const [requestPackages, setRequestPackages] = useState<
-    ExportRequestPackageType[] | null
-  >(null);
+    ExportRequestPackageType[]
+  >([]);
 
   const clearDrafts = () => {
-    setDraftPackages(null);
+    setDraftPackages([]);
   };
 
   const handleDrafts = () => {

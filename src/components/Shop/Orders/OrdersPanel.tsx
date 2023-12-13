@@ -32,7 +32,7 @@ import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const OrdersPanel = () => {
-  const { orderItems } = useShopContext();
+  const { orderPackages } = useShopContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "clear package") {
@@ -59,7 +59,7 @@ const OrdersPanel = () => {
     );
   }
 
-  if (orderItems) {
+  if (orderPackages.length > 0) {
     return (
       <TabContentLayout>
         <SearchBar />
@@ -85,9 +85,7 @@ const OrdersPanel = () => {
 };
 
 const OrdersTable = () => {
-  const { orderItems } = useShopContext();
-
-  if (!orderItems) return;
+  const { orderPackages } = useShopContext();
 
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
@@ -95,7 +93,7 @@ const OrdersTable = () => {
         <div className="overflow-x-scroll ">
           <table className="relative w-full min-w-max table-auto text-left">
             <OrderTableHead th={tableHeads} />
-            <OrderTableBody orderItems={orderItems} />
+            <OrderTableBody orderItems={orderPackages} />
           </table>
         </div>
       </div>

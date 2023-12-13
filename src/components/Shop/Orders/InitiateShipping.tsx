@@ -171,15 +171,13 @@ export const InitiateShippingButton = ({
 };
 
 export const PackageConfirmation = () => {
-  const { orderItems } = useShopContext();
-
-  if (!orderItems) return;
+  const { orderPackages } = useShopContext();
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderItems.map((item, i) => {
+      {orderPackages.map((item, i) => {
         return <OrderItem key={item.orderId} index={i} />;
       })}
     </div>

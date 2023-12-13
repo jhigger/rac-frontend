@@ -15,10 +15,10 @@ import { importDrafts, importOrders, importRequests } from "~/fake data";
 
 export type ImportContextType = {
   clearDrafts: () => void;
-  draftItems: ImportDraftPackageType[] | null;
-  orderItems: ImportOrderPackageType[] | null;
+  draftItems: ImportDraftPackageType[];
+  orderItems: ImportOrderPackageType[];
   payNowAction: { action: () => void } | null;
-  requestItems: ImportRequestPackageType[] | null;
+  requestItems: ImportRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
   handlePayNowAction: (action: ImportContextType["payNowAction"]) => void;
@@ -53,9 +53,7 @@ export type ImportOrderPackageInput = {
   items: ImportItemType[];
 };
 
-export type ImportDraftPackageType = ImportOrderPackageInput & {
-  draftDate: string;
-};
+export type ImportDraftPackageType = ImportOrderPackageInput;
 
 export type ImportOrderPackageType = {
   orderId: string;
@@ -77,20 +75,20 @@ export type ImportRequestPackageType = {
 export type PropertyType = { label: string; value: string | undefined };
 
 const ImportContextProvider = ({ children }: { children: ReactNode }) => {
-  const [draftPackages, setDraftPackages] = useState<
-    ImportDraftPackageType[] | null
-  >(null);
-  const [orderPackages, setOrderPackages] = useState<
-    ImportOrderPackageType[] | null
-  >(null);
+  const [draftPackages, setDraftPackages] = useState<ImportDraftPackageType[]>(
+    [],
+  );
+  const [orderPackages, setOrderPackages] = useState<ImportOrderPackageType[]>(
+    [],
+  );
   const [payNowAction, setPayNowAction] =
     useState<ImportContextType["payNowAction"]>(null);
   const [requestPackages, setRequestPackages] = useState<
-    ImportRequestPackageType[] | null
-  >(null);
+    ImportRequestPackageType[]
+  >([]);
 
   const clearDrafts = () => {
-    setDraftPackages(null);
+    setDraftPackages([]);
   };
 
   const handleDrafts = () => {

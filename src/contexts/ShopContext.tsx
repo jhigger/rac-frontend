@@ -17,10 +17,10 @@ import { shopDrafts, shopOrders, shopRequests } from "~/fake data";
 
 export type ShopContextType = {
   clearDrafts: () => void;
-  draftItems: ShopDraftPackageType[] | null;
-  orderItems: ShopOrderPackageType[] | null;
+  draftPackages: ShopDraftPackageType[];
+  orderPackages: ShopOrderPackageType[];
   payNowAction: { action: () => void } | null;
-  requestItems: ShopRequestPackageType[] | null;
+  requestPackages: ShopRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
   handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
@@ -54,9 +54,7 @@ export type ShopOrderPackageInput = {
   items: ShopItemType[];
 };
 
-export type ShopDraftPackageType = ShopOrderPackageInput & {
-  draftDate: string;
-};
+export type ShopDraftPackageType = ShopOrderPackageInput;
 
 export type ShopOrderPackageType = {
   orderId: string;
@@ -79,20 +77,20 @@ export type ShopRequestPackageType = {
 };
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
-  const [draftPackages, setDraftPackages] = useState<
-    ShopDraftPackageType[] | null
-  >(null);
-  const [orderPackages, setOrderPackages] = useState<
-    ShopOrderPackageType[] | null
-  >(null);
+  const [draftPackages, setDraftPackages] = useState<ShopDraftPackageType[]>(
+    [],
+  );
+  const [orderPackages, setOrderPackages] = useState<ShopOrderPackageType[]>(
+    [],
+  );
   const [payNowAction, setPayNowAction] =
     useState<ShopContextType["payNowAction"]>(null);
   const [requestPackages, setRequestPackages] = useState<
-    ShopRequestPackageType[] | null
-  >(null);
+    ShopRequestPackageType[]
+  >([]);
 
   const clearDrafts = () => {
-    setDraftPackages(null);
+    setDraftPackages([]);
   };
 
   const handleDrafts = () => {
@@ -121,10 +119,10 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value: ShopContextType = {
     clearDrafts,
-    draftItems: draftPackages,
-    orderItems: orderPackages,
+    draftPackages,
+    orderPackages,
     payNowAction,
-    requestItems: requestPackages,
+    requestPackages,
     handleDrafts,
     handleOrders,
     handlePayNowAction,

@@ -5,6 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useCookies } from "react-cookie";
 import {
   type ORDER_STATUS,
   type ORIGINS,
@@ -13,7 +14,8 @@ import {
   type SHOP_FOR_ME_STATUS,
   type STORES,
 } from "~/constants";
-import { shopDrafts, shopOrders, shopRequests } from "~/fake data";
+import { shopDrafts, shopOrders } from "~/fake data";
+import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 
 export type ShopContextType = {
   clearDrafts: () => void;
@@ -77,17 +79,22 @@ export type ShopRequestPackageType = {
 };
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
+  const [cookies] = useCookies(["jwt"]);
+  const token = cookies.jwt as string;
+
   const [draftPackages, setDraftPackages] = useState<ShopDraftPackageType[]>(
     [],
   );
+
   const [orderPackages, setOrderPackages] = useState<ShopOrderPackageType[]>(
     [],
   );
+
   const [payNowAction, setPayNowAction] =
     useState<ShopContextType["payNowAction"]>(null);
-  const [requestPackages, setRequestPackages] = useState<
-    ShopRequestPackageType[]
-  >([]);
+
+  const { data: requestPackages, refetch: refetchOrderPackages } =
+    useFetchShopRequests(token);
 
   const clearDrafts = () => {
     setDraftPackages([]);
@@ -106,13 +113,11 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestPackages(shopRequests);
+    void refetchOrderPackages();
   };
 
   // testing purposes
   useEffect(() => {
-    handleRequests();
-    // todo: if (user) void useFetchShopRequests(user._id);
     handleOrders();
     handleDrafts();
   }, []);

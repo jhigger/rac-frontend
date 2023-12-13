@@ -7,16 +7,16 @@ import AddressForm from "~/components/Forms/Register/AddressForm";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { useAuthContext } from "~/contexts/AuthContext";
+import { type RegisterType, useAuthContext } from "~/contexts/AuthContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
 export type RegisterInputs = {
-  country: string;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
+  country: string;
   state: string;
   city: string;
   streetAddress: string;
@@ -26,12 +26,12 @@ export type RegisterInputs = {
 };
 
 const INITIAL_DATA: RegisterInputs = {
-  country: "",
   firstName: "",
   lastName: "",
   email: "",
   password: "",
   confirmPassword: "",
+  country: "",
   state: "",
   city: "",
   streetAddress: "",
@@ -56,7 +56,24 @@ const register = () => {
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     if (!isLastStep) return next();
 
-    await handleRegister(data);
+    const registerData: RegisterType = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      contactAddress: [
+        {
+          country: data.country,
+          state: data.state,
+          city: data.city,
+          streetAddress: data.streetAddress,
+          countryCode: data.countryCode,
+          phoneNumber: data.phoneNumber,
+          postalCode: data.zipPostalCode,
+        },
+      ],
+    };
+    await handleRegister(registerData);
   };
 
   return (

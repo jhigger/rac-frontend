@@ -1,8 +1,7 @@
 import axios from "axios";
-import { type UserType } from "~/contexts/AuthContext";
-import { type RegisterInputs } from "~/pages/register";
+import { type RegisterType, type UserType } from "~/contexts/AuthContext";
 
-const useRegisterUser = async (inputs: RegisterInputs) => {
+const useRegisterUser = async (inputs: RegisterType) => {
   const headersList = {
     Accept: "*/*",
     "Content-Type": "application/json",

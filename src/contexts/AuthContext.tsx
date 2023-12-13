@@ -14,7 +14,6 @@ import LoadingScreen from "~/components/LoadingScreen";
 import useFetchUser from "~/hooks/useFetchUser";
 import useLoginUser from "~/hooks/useLoginUser";
 import useRegisterUser from "~/hooks/useRegisterUser";
-import { type RegisterInputs } from "~/pages/register";
 
 export type AuthContextType = {
   user: UserType | null;
@@ -25,7 +24,7 @@ export type AuthContextType = {
   registerError: string | null;
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => void;
-  handleRegister: (data: RegisterInputs) => Promise<void>;
+  handleRegister: (data: RegisterType) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -33,10 +32,6 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 export const useAuthContext = () => useContext(AuthContext);
-
-// const ACCESS_LEVEL = ["user", "admin"] as const;
-
-// type AccessLevelType = (typeof ACCESS_LEVEL)[number];
 
 export type UserType = {
   _id: string;
@@ -46,6 +41,22 @@ export type UserType = {
   isAdmin: boolean;
   jwt: string;
   racId: string;
+};
+
+export type RegisterType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  contactAddress: {
+    country: string;
+    state: string;
+    city: string;
+    streetAddress: string;
+    countryCode: string;
+    phoneNumber: string;
+    postalCode: string;
+  }[];
 };
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
@@ -119,7 +130,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     removeCookie("jwt");
   };
 
-  const handleRegister = async (inputs: RegisterInputs) => {
+  const handleRegister = async (inputs: RegisterType) => {
     setRegisterError(null);
     setIsRegistering(true);
     console.log("registering...");

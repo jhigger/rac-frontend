@@ -1,25 +1,39 @@
 import { AddSquare, MinusSquare } from "iconsax-react";
-import { useState, type ChangeEventHandler } from "react";
+import {
+  forwardRef,
+  type ChangeEventHandler,
+  type FocusEventHandler,
+  type Ref,
+} from "react";
+import { type UseFormGetValues, type UseFormSetValue } from "react-hook-form";
+import { type Inputs } from "~/components/Shop/Requests/RequestOrder";
 
 type QuantityInputProps = {
   id: string;
+  index: number;
   label: string;
-  value?: string;
+  setValue: UseFormSetValue<Inputs>;
+  getValues: UseFormGetValues<Inputs>;
+  value?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-const QuantityInput = ({ id, label }: QuantityInputProps) => {
-  const [quantity, setQuantity] = useState(0);
-
+const QuantityInput = (
+  { id, index, label, setValue, getValues, ...props }: QuantityInputProps,
+  ref: Ref<HTMLInputElement>,
+) => {
   const handleSubtract = () => {
-    setQuantity((prev) => {
-      if (prev <= 0) return prev;
-      return --prev;
-    });
+    const prev = getValues(`requestItems.items.${index}.quantity`) ?? 0;
+    if (prev <= 1) return;
+    const value = prev - 1;
+    setValue(`requestItems.items.${index}.quantity`, value);
   };
 
   const handleAdd = () => {
-    setQuantity((prev) => ++prev);
+    const prev = getValues(`requestItems.items.${index}.quantity`) ?? 0;
+    const value = prev + 1;
+    setValue(`requestItems.items.${index}.quantity`, value);
   };
 
   return (
@@ -42,6 +56,7 @@ const QuantityInput = ({ id, label }: QuantityInputProps) => {
         </button>
 
         <input
+          ref={ref}
           type="number"
           step="1"
           aria-label={label}
@@ -49,7 +64,7 @@ const QuantityInput = ({ id, label }: QuantityInputProps) => {
           id={id}
           className="relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-14 py-2 text-center leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
           placeholder=" "
-          value={quantity}
+          {...props}
           readOnly
         />
 
@@ -64,4 +79,4 @@ const QuantityInput = ({ id, label }: QuantityInputProps) => {
   );
 };
 
-export default QuantityInput;
+export default forwardRef(QuantityInput);

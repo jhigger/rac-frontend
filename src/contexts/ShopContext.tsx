@@ -33,13 +33,13 @@ export const useShopContext = () => useContext(ShopContext);
 
 export type ShopItemType = {
   store: string;
-  urgentPurchase: "Yes" | "No";
+  urgent: boolean;
   url: string;
   name: string;
-  originalCost: string;
+  originalCost: number;
   quantity: number;
-  shippingCost: string;
-  images: string[];
+  shippingCost: number;
+  image: string;
   description: string;
   properties?: {
     label: string;
@@ -65,6 +65,7 @@ export type ShopOrderPackageType = {
   shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
   shopForMeCost: string;
   shippingCost: string;
+  originWarehouse: string;
   items: ShopItemType[];
 };
 

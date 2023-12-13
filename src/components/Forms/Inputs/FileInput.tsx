@@ -1,15 +1,26 @@
 import { ExportCurve } from "iconsax-react";
-import { type ChangeEventHandler, type HTMLInputTypeAttribute } from "react";
+import {
+  forwardRef,
+  type ChangeEventHandler,
+  type FocusEventHandler,
+  type HTMLInputTypeAttribute,
+  type Ref,
+} from "react";
 
 type FileInputProps = {
   id: string;
   label: string;
+  accept?: string;
   type?: HTMLInputTypeAttribute;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
-const FileInput = ({ id, label, value, onChange }: FileInputProps) => {
+const FileInput = (
+  { accept = "image/*", id, label, value, ...props }: FileInputProps,
+  ref: Ref<HTMLInputElement>,
+) => {
   let filename;
   if (value) {
     if (value.length > 0) {
@@ -18,12 +29,12 @@ const FileInput = ({ id, label, value, onChange }: FileInputProps) => {
   }
 
   const shortenFileName = (filename: string | undefined, length: number) => {
-    return (
-      filename &&
-      `${filename.slice(0, length)}...${filename.slice(
-        filename.length - length,
-      )}`
-    );
+    if (!filename) return;
+    if (filename.length <= length + 10) return filename;
+
+    return `${filename.slice(0, length)}...${filename.slice(
+      filename.length - length,
+    )}`;
   };
 
   return (
@@ -37,11 +48,13 @@ const FileInput = ({ id, label, value, onChange }: FileInputProps) => {
       <div className="btn-segmented inline-flex w-full flex-row items-center">
         <div className="segmented-item active btn-outline relative inline-flex h-10 w-1/2 flex-row items-center justify-center gap-x-2 !rounded-l-[4px] border border-gray-500 bg-primary-100 py-2.5 [&.active]:bg-secondary-100">
           <input
+            ref={ref}
             type="file"
+            accept={accept}
             aria-label={label}
             name={id}
             id={id}
-            onChange={onChange}
+            {...props}
             className="absolute inset-0 z-10 cursor-pointer opacity-0"
           />
           <div className="label-lg flex items-center gap-[8px] text-secondary-900">
@@ -65,4 +78,4 @@ const FileInput = ({ id, label, value, onChange }: FileInputProps) => {
   );
 };
 
-export default FileInput;
+export default forwardRef(FileInput);

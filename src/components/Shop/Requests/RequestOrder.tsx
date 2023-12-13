@@ -18,9 +18,9 @@ import {
   useFieldArray,
   useForm,
   useFormContext,
-  type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
+import { ORIGINS, STORES } from "~/constants";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
   useShopContext,
@@ -51,23 +51,24 @@ export const emptyValue: ShopOrderPackageType = {
   shopForMeStatus: "purchase not started",
   shopForMeCost: "",
   shippingCost: "",
+  originWarehouse: "",
   items: [
     {
       store: "",
-      urgentPurchase: "No",
-      url: "",
+      urgent: false,
+      url: "item url",
       name: "Designer Bags",
-      originalCost: "",
+      originalCost: 1,
       quantity: 1,
-      shippingCost: "",
-      images: [],
+      shippingCost: 1,
+      image: "",
       description: "",
     },
   ],
 };
 
 export type Inputs = {
-  requestItems: ShopOrderPackageType[];
+  requestItems: ShopOrderPackageType;
 };
 
 const RequestOrderForm = () => {
@@ -79,13 +80,19 @@ const RequestOrderForm = () => {
 
   const formMethods = useForm<Inputs>({
     defaultValues: {
-      requestItems: [emptyValue],
+      requestItems: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // handleRequests();
-    console.log(data.requestItems);
+    data.requestItems.items.forEach((item, index) => {
+      const value = item.urgent;
+      formMethods.setValue(
+        `requestItems.items.${index}.urgent`,
+        Boolean(Number(value)),
+      );
+    });
+    console.log(formMethods.getValues().requestItems);
     next();
   };
 
@@ -154,11 +161,11 @@ export const RequestOrderStep1 = () => {
   const { control } = useFormContext<Inputs>();
   const { fields, append, remove } = useFieldArray<Inputs>({
     control,
-    name: "requestItems",
+    name: "requestItems.items",
   });
 
   const handleAddMore = () => {
-    append(emptyValue);
+    append(emptyValue.items);
   };
 
   const handleRemove = (index: number) => {
@@ -176,7 +183,6 @@ export const RequestOrderStep1 = () => {
               key={field.id}
               index={i}
               handleRemoveItem={() => handleRemove(i)}
-              fields={fields}
               expanded
             />
           );
@@ -316,6 +322,8 @@ export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
 };
 
 const SelectWarehouseOriginSection = () => {
+  const { register } = useFormContext<Inputs>();
+
   return (
     <>
       <SectionHeader
@@ -331,8 +339,16 @@ const SelectWarehouseOriginSection = () => {
               <option value="" disabled hidden>
                 Select Origin
               </option>
+              {ORIGINS.map((origin) => {
+                return (
+                  <option key={origin} value={origin}>
+                    {origin}
+                  </option>
+                );
+              })}
             </>
           }
+          {...register("requestItems.originWarehouse")}
         />
         <TooltipButton />
       </div>
@@ -352,21 +368,14 @@ type ItemDetailsSectionProps = {
   index: number;
   expanded?: boolean;
   handleRemoveItem: (index: number) => void;
-  fields: FieldArrayWithId<
-    Inputs,
-    | "requestItems"
-    | `requestItems.${number}.items`
-    | `requestItems.${number}.items.${number}.properties`,
-    "id"
-  >[];
 };
 
 export const ItemDetailsSection = ({
-  // fields // todo: register form fields
   index,
   expanded = false,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
+  const { register, getValues, setValue } = useFormContext<Inputs>();
   const { open, toggle } = useAccordion(expanded);
   const [filename, setFilename] = useState("");
 
@@ -374,7 +383,15 @@ export const ItemDetailsSection = ({
     const files = e.target.files;
     if (!files) return;
     if (!files[0]) return;
+
     setFilename(files[0].name);
+    // todo:
+    // const reader = new FileReader();
+    // reader.onloadend = () => console.log(reader.result);
+    // reader.readAsDataURL(files[0]);
+
+    const formData = new FormData();
+    formData.append("img", files[0] as Blob);
   };
 
   return (
@@ -405,8 +422,16 @@ export const ItemDetailsSection = ({
                         <option value="" disabled hidden>
                           Select a Store
                         </option>
+                        {STORES.map((store) => {
+                          return (
+                            <option key={store} value={store}>
+                              {store}
+                            </option>
+                          );
+                        })}
                       </>
                     }
+                    {...register(`requestItems.items.${index}.store`)}
                   />
                   <TooltipButton />
                 </div>
@@ -417,55 +442,58 @@ export const ItemDetailsSection = ({
                     label={"Urgent Purchase"}
                     options={
                       <>
-                        <option value="" disabled hidden>
-                          Select one
-                        </option>
-                        <option value="Yes" disabled hidden>
-                          Yes
-                        </option>
-                        <option value="No" disabled hidden>
-                          No
-                        </option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
                       </>
                     }
+                    {...register(`requestItems.items.${index}.urgent`)}
                   />
                   <TooltipButton />
                 </div>
 
                 <div className="col-span-full">
-                  <TextInput id={`itemUrl-${index}`} label={"Item URL"} />
+                  <TextInput
+                    id={`itemUrl-${index}`}
+                    label={"Item URL"}
+                    {...register(`requestItems.items.${index}.url`)}
+                  />
                 </div>
 
                 <div className="col-span-full">
-                  <TextInput id={`itemName-${index}`} label={"Item Name"} />
+                  <TextInput
+                    id={`itemName-${index}`}
+                    label={"Item Name"}
+                    {...register(`requestItems.items.${index}.name`)}
+                  />
                 </div>
 
                 <div className="col-span-full md:col-span-8">
                   <CurrencyInput
                     id={`itemOriginalCost-${index}`}
                     label={"Item Original Cost"}
+                    {...register(`requestItems.items.${index}.originalCost`)}
                   />
                 </div>
 
                 <div className="col-span-full md:col-span-4">
-                  <QuantityInput id={`quantity-${index}`} label={"Quantity"} />
+                  <QuantityInput
+                    id={`quantity-${index}`}
+                    label={"Quantity"}
+                    {...register(`requestItems.items.${index}.quantity`, {
+                      valueAsNumber: true,
+                    })}
+                    setValue={setValue}
+                    getValues={getValues}
+                    index={index}
+                  />
                 </div>
 
                 <div className="col-span-full">
-                  <div className="md:hidden">
-                    <CurrencyInput
-                      id={`totalShippingCost-${index}`}
-                      label={"T. Sh. cost to your w.h & Sales Tax"}
-                    />
-                  </div>
-                  <div className="hidden md:block">
-                    <CurrencyInput
-                      id={`totalShippingCost-${index}`}
-                      label={
-                        "Total shipping cost to your warehouse & Sales Tax"
-                      }
-                    />
-                  </div>
+                  <CurrencyInput
+                    id={`shippingCost-${index}`}
+                    label={"Total shipping cost to your warehouse & Sales Tax"}
+                    {...register(`requestItems.items.${index}.shippingCost`)}
+                  />
                 </div>
 
                 <div className="col-span-full">
@@ -473,7 +501,9 @@ export const ItemDetailsSection = ({
                     id={`itemPicture-${index}`}
                     label={"Upload Item Picture"}
                     value={filename}
-                    onChange={handleChange}
+                    {...register(`requestItems.items.${index}.image`, {
+                      onChange: handleChange,
+                    })}
                   />
                 </div>
 
@@ -481,6 +511,7 @@ export const ItemDetailsSection = ({
                   <TextAreaInput
                     id={`additionalItemDescription-${index}`}
                     label={"Additional Item Description"}
+                    {...register(`requestItems.items.${index}.description`)}
                   />
                 </div>
 
@@ -511,19 +542,23 @@ export const ItemDetailsSection = ({
   );
 };
 
-type PropertyType = { label: string; value: string | undefined };
+type PropertyType = { label: string; value: string };
 
 type AddPropertiesSectionProps = { index: number };
 
 export const AddPropertiesSection = ({
   index = 0,
 }: AddPropertiesSectionProps) => {
-  const [properties, setProperties] = useState<PropertyType[] | null>(null);
+  const { setValue } = useFormContext<Inputs>();
+  const [properties, setProperties] = useState<PropertyType[]>([]);
 
   const handleProperties = (newProperties: PropertyType[]) => {
-    if (!properties) return setProperties(newProperties);
-    setProperties((prev) => [...prev!, ...newProperties]);
+    setProperties((prev) => [...prev, ...newProperties]);
   };
+
+  useEffect(() => {
+    setValue(`requestItems.items.${index}.properties`, properties);
+  }, [properties]);
 
   return (
     <>
@@ -560,7 +595,7 @@ const PropertyFields = ({ properties }: PropertyFieldsProps) => {
 
 type AddCustomPropertyButtonProps = {
   id: string;
-  properties: PropertyType[] | null;
+  properties: PropertyType[];
   handleProperties: (p: PropertyType[]) => void;
 };
 

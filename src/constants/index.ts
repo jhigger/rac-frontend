@@ -37,3 +37,19 @@ export const ACTION_CONST = [
 ] as const;
 
 export const TAB_IDS = ["orders", "requests", "drafts"] as const;
+
+export const ORIGINS = [
+  "Nigeria Warehouse (Lagos)",
+  "US Warehouse (Richmond Texas)",
+  "UK Warehouse (London)",
+  "Dubai Warehouse",
+  "China Warehouse (Guangzhou city)",
+] as const;
+
+export const STORES = [
+  "Amazon",
+  "Ebay",
+  "Aliexpress",
+  "Walmart",
+  "Others",
+] as const;

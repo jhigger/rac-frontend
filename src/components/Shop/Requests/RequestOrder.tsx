@@ -838,6 +838,8 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
   const id = `preview-item-${index}`;
   const dataClose = `#${id}`;
 
+  // const { getValues } = useFormContext<Inputs>(); // todo: add values to preview
+
   return (
     <div
       id={id}

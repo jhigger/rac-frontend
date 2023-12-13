@@ -176,7 +176,7 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
           shopForMeStatus,
           shopForMeCost,
         }) => {
-          if (!items[0]?.images) return;
+          const images = items.map((item) => item.image);
 
           return (
             <tr
@@ -192,7 +192,7 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 />
               </td>
               <td className="border-0 p-0">
-                <ImageColumn images={items[0].images} />
+                <ImageColumn images={images} />
               </td>
               <td className="border-0 p-0">
                 <p className="title-md whitespace-nowrap">{orderId}</p>

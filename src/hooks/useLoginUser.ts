@@ -13,7 +13,6 @@ const useLoginUser = async (inputs: LoginInputs) => {
     method: "POST",
     headers: headersList,
     data: inputs,
-    withCredentials: true,
   };
 
   const response = await axios.request(reqOptions);

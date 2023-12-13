@@ -5,7 +5,7 @@ const useFetchUser = async (token: string) => {
   const headersList = {
     Accept: "*/*",
     "Content-Type": "application/json",
-    Authorization: "bearer " + token,
+    Authorization: "Bearer " + token,
   };
 
   const reqOptions = {

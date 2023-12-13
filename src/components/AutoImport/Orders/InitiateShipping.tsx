@@ -301,9 +301,9 @@ const CostsSummary = () => {
           <div className="flex items-center gap-[10px]">
             <ArrowRight3 className="text-error-600" variant="Bold" />
             <span className="label-md w-fit font-medium text-secondary-900">
-              The total you are paying now includes only the shop-for-me cost
-              and excludes Shipment Cost which you are to pay upon
-              arrival/clearing of your package
+              The total you are paying now includes Shipping fees but excludes
+              port handling and clearing fees (would be paid upon arrival of
+              car(s) to the Port in Nigeria)
             </span>
           </div>
           <div className="flex items-center gap-[10px]">

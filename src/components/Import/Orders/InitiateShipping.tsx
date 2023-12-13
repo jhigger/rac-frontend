@@ -352,7 +352,7 @@ export const PackageTable = () => {
 
   return (
     <div className="overflow-x-auto ">
-      <table className="relative w-max table-auto text-left">
+      <table className="relative min-w-max table-auto text-left">
         <PackageTableHead th={th} />
         <PackageTableBody />
         <Totals />

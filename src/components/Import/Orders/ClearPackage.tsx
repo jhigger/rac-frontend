@@ -243,8 +243,7 @@ const ShipmentCostsSummary = ({
           <div className="flex items-center gap-[10px]">
             <ArrowRight3 className="text-error-600" variant="Bold" />
             <span className="label-md w-fit font-medium text-secondary-900">
-              The total you are paying now includes only the Shipping fees and
-              is to be paid upon clearing/arrival of your package
+              The total you are paying now includes only the Shipping fees
             </span>
           </div>
           <div className="flex items-center gap-[10px]">

@@ -76,17 +76,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   } = useQuery<UserType | null, AxiosError>({
     queryKey: ["user"],
     queryFn: async () => {
-      // redirectTo("/shop");
-      // return {
-      //   _id: "657143f8c2c0961185969950",
-      //   firstName: "john",
-      //   lastName: "doe",
-      //   email: "asd@asd.asd",
-      //   isAdmin: false,
-      //   jwt: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTcxNDNmOGMyYzA5NjExODU5Njk5NTAiLCJpYXQiOjE3MDIxODIzMzQsImV4cCI6MTcwNDc3NDMzNH0.yop_GH8syVzNN3osJrXcL65gdM-ai4tjtH1g3a01QRY",
-      //   countryCode: "375",
-      //   racId: "RAC362009",
-      // };
       if (loginInputs) {
         console.log("logging in...");
         return await useLoginUser(loginInputs).then(async (userData) => {

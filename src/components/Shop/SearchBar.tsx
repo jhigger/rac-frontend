@@ -61,7 +61,7 @@ const FilterButton = () => {
 
       {open && (
         <div className="absolute left-0 top-2 z-50 h-40 w-40 flex-col rounded-[20px] bg-surface-200 p-2 shadow-md md:top-16">
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <label className="flex items-center gap-[16px]">
               <input
                 type="checkbox"
@@ -71,16 +71,14 @@ const FilterButton = () => {
               <span className="body-lg text-neutral900">Order Status</span>
             </label>
           </div>
-
-          {/* // todo: filter */}
-
           <button
             onClick={toggle}
             aria-label="apply filter"
             className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
           >
             <span className="body-lg text-white">Apply Filter</span>
-          </button>
+          </button> */}
+          TODO:
         </div>
       )}
     </div>

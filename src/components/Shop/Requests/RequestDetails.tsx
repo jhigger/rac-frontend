@@ -4,7 +4,7 @@ import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
-import { LabelId, RespondedStatus, UnprocessedStatus } from "../Orders";
+import { LabelId, NotRespondedStatus, RespondedStatus } from "../Orders";
 import { DetailSection } from "../Orders/InitiateShipping";
 import {
   BackButton,
@@ -20,7 +20,7 @@ const RequestDetails = () => {
 
   if (viewIndex === null) return;
 
-  const requestPackage = requestPackages[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
   if (!requestPackage) return;
 
@@ -333,14 +333,10 @@ export const PackageOrigin = () => {
                 text="Your Items will be delivered here after we help you purchase your them
         and they will be shipped from here to our pickup office in Nigeria"
               />
-              <div className="flex flex-col gap-[5px]">
-                <span className="body-md text-gray-700">
-                  Country of Purchase:
-                </span>
-                <span className="title-md md:title-lg font-medium text-neutral-900">
-                  United States (Houston - warehouse)
-                </span>
-              </div>
+              <DetailSection
+                label="Country of Purchase"
+                value="United States (Houston - warehouse)"
+              />
             </>
           )}
         </div>
@@ -361,7 +357,7 @@ export const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
 
 export const requestStatuses = {
   Responded: <RespondedStatus />,
-  "Not Responded": <UnprocessedStatus />,
+  "Not Responded": <NotRespondedStatus />,
 };
 
 export type RequestInformationProps = ProceedButtonProps & {
@@ -386,18 +382,17 @@ export const RequestInformation = ({
             <AccordionButton {...{ open, toggle }} />
           </div>
           {open && (
-            <div className="flex w-max flex-col gap-[15px]">
-              <div className="col-span-1 flex flex-col gap-[15px]">
-                <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Order Request Date:</span>
-                  <span className="title-lg text-neutral-900">{info.date}</span>
-                </div>
-                <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Shop for me status:</span>
-                  <span className="title-lg text-neutral-900">
-                    {requestStatuses[info.status]}
-                  </span>
-                </div>
+            <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+              <div className="md:col-span-2">
+                <DetailSection label="Request Date" value={info.date} />
+              </div>
+              <div className="md:col-span-2">
+                <DetailSection
+                  label="Request Status"
+                  value={requestStatuses[info.status]}
+                />
+              </div>
+              <div className="flex w-max items-center md:col-span-4">
                 {info.status === "Responded" && (
                   <ProceedToCheckoutButton onClick={onClick} />
                 )}

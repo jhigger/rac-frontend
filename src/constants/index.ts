@@ -20,9 +20,9 @@ export const REQUEST_STATUS = ["Responded", "Not Responded"] as const;
 export const ID_TYPE = ["Order ID", "Tracking ID", "Shipping ID"] as const;
 
 export const SHOP_FOR_ME_STATUS = [
-  "purchase not started",
-  "purchase in progress",
-  "purchase completed",
+  "Arrived Origin Warehouse",
+  "Not Arrived Origin Warehouse",
+  "Sorted Out",
 ] as const;
 
 export const ACTION_CONST = [

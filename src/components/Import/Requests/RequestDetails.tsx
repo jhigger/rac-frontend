@@ -26,7 +26,7 @@ const RequestDetails = () => {
 
   if (viewIndex === null) return;
 
-  const requestPackage = requestItems[viewIndex];
+  const requestPackage = requestItems?.[viewIndex];
 
   if (!requestPackage) return;
 

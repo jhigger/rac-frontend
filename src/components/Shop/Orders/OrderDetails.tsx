@@ -1,7 +1,18 @@
+import { shippingStatuses } from "~/components/Import/Orders/OrderDetails";
+import { type SHIPPING_STATUS, type SHOP_FOR_ME_STATUS } from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
-import { LabelId, UnprocessedStatus } from ".";
+import {
+  ArrivedOriginWarehouseStatus,
+  DetailsClearPackageButton,
+  DetailsClearedButton,
+  DetailsDeliveredButton,
+  DetailsInitiateShippingButton,
+  NotArrivedOriginWarehouseStatus,
+  ProcessedStatus,
+  SortedOutStatus,
+} from ".";
 import AccordionButton from "../../Forms/AccordionButton";
 import {
   BillingDetails,
@@ -14,10 +25,18 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "../Requests/RequestOrder";
+import { DetailSection } from "./InitiateShipping";
+import { OrderTrackingId } from "./OrdersPanel";
 
 const OrderDetails = () => {
   const { orderPackages } = useShopContext();
-  const { handleActiveAction } = useTabContext();
+  const { viewIndex, handleActiveAction } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -25,9 +44,20 @@ const OrderDetails = () => {
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      <RequestFormHeader title="Shop For Me Order Request Details" />
-      <LabelId label="Request ID" id="R78667" />
-      <OrderInformation />
+      <RequestFormHeader title="Shop For Me Order Details" />
+      <div className="w-full md:w-max">
+        <OrderTrackingId
+          orderId={orderPackage.orderId}
+          trackingId={orderPackage.trackingId}
+        />
+      </div>
+      <OrderInformation
+        info={{
+          date: orderPackage.orderDate.toLocaleString(),
+          shopForMeStatus: orderPackage.shopForMeStatus,
+          shippingStatus: orderPackage.shippingStatus,
+        }}
+      />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
@@ -43,7 +73,15 @@ const OrderDetails = () => {
   );
 };
 
-const OrderInformation = () => {
+type OrderInformationProps = {
+  info: {
+    date: string;
+    shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
+    shippingStatus: (typeof SHIPPING_STATUS)[number];
+  };
+};
+
+const OrderInformation = ({ info }: OrderInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -58,18 +96,39 @@ const OrderInformation = () => {
             <AccordionButton {...{ open, toggle }} />
           </div>
           {open && (
-            <div className="flex w-max flex-col gap-[15px]">
-              <div className="col-span-1 flex flex-col gap-[15px]">
-                <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Order Request Date:</span>
-                  <span className="title-lg text-neutral-900">12/02/2023</span>
-                </div>
-                <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Shop for me status:</span>
-                  <span className="title-lg text-neutral-900">
-                    <UnprocessedStatus />
-                  </span>
-                </div>
+            <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+              <div className="md:col-span-2">
+                <DetailSection label="Order Request Date" value={info.date} />
+              </div>
+              <div className="md:col-span-2">
+                <DetailSection
+                  label="Order Status"
+                  value={<ProcessedStatus />}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <DetailSection
+                  label="Shop For Me Status"
+                  value={shopForMeStatuses[info.shopForMeStatus]}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <DetailSection
+                  label="Shipping Status"
+                  value={shippingStatuses[info.shippingStatus]}
+                />
+              </div>
+              <div className="flex w-max items-center md:col-span-4">
+                {info.shippingStatus === "ready for shipping" && (
+                  <DetailsInitiateShippingButton />
+                )}
+                {info.shippingStatus === "arrived destination" && (
+                  <DetailsClearPackageButton />
+                )}
+                {info.shippingStatus === "cleared" && <DetailsClearedButton />}
+                {info.shippingStatus === "delivered" && (
+                  <DetailsDeliveredButton />
+                )}
               </div>
             </div>
           )}
@@ -77,6 +136,12 @@ const OrderInformation = () => {
       </SectionContentLayout>
     </div>
   );
+};
+
+export const shopForMeStatuses = {
+  "Arrived Origin Warehouse": <ArrivedOriginWarehouseStatus />,
+  "Not Arrived Origin Warehouse": <NotArrivedOriginWarehouseStatus />,
+  "Sorted Out": <SortedOutStatus />,
 };
 
 export default OrderDetails;

@@ -34,7 +34,7 @@ const OrderDetails = () => {
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderItems[viewIndex];
+  const orderPackage = orderItems?.[viewIndex];
 
   if (!orderPackage) return;
 

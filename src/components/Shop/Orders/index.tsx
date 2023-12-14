@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { ClipboardTick, More } from "iconsax-react";
+import { ClipboardTick, More, Ship } from "iconsax-react";
 import { useTabContext } from "~/contexts/TabContext";
 
 type LabelIdProps = { label: string; id: string };
@@ -204,6 +204,40 @@ export const ShipmentNotStartedStatus = () => {
   );
 };
 
+export const SortedOutStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
+
+      <span className="label-lg font-bold text-primary-600">Sorted Out</span>
+    </div>
+  );
+};
+
+export const NotArrivedOriginWarehouseStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="border-3 h-[12px] w-[12px] rounded-full border-primary-900 bg-transparent"></div>
+
+      <span className="label-lg font-bold text-primary-600">
+        Not Arrived Origin Warehouse
+      </span>
+    </div>
+  );
+};
+
+export const ArrivedOriginWarehouseStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
+
+      <span className="label-lg font-bold text-primary-600">
+        Arrived Origin Warehouse
+      </span>
+    </div>
+  );
+};
+
 export const DetailsClearPackageButton = () => {
   const { handleActiveAction, handleTabChange } = useTabContext();
 
@@ -219,6 +253,25 @@ export const DetailsClearPackageButton = () => {
     >
       <ClipboardTick className="text-primary-900" />
       <span className="label-lg text-primary-600">Clear Package</span>
+    </button>
+  );
+};
+
+export const DetailsInitiateShippingButton = () => {
+  const { handleActiveAction, handleTabChange } = useTabContext();
+
+  const onClick = () => {
+    handleTabChange("orders");
+    handleActiveAction("initiate shipping");
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-transparent px-4 py-2.5 text-sm font-medium tracking-[.00714em] md:px-6"
+    >
+      <Ship className="text-primary-900" />
+      <span className="label-lg text-primary-600">Initiate shipping</span>
     </button>
   );
 };

@@ -438,7 +438,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
         <RequestFormHeader title="Shipping Status" />
 
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
 
         {!excluded.includes(status) && (
@@ -607,18 +607,23 @@ export const StepDescription = ({
   );
 };
 
-export const OrderTrackingId = () => {
+type OrderTrackingIdProps = { orderId: string; trackingId: string };
+
+export const OrderTrackingId = ({
+  orderId,
+  trackingId,
+}: OrderTrackingIdProps) => {
   return (
     <div className="flex w-full flex-col items-center justify-center gap-[10px] md:flex-row">
       <div className="flex items-center gap-[10px]">
-        <LabelId label="Order ID" id="OD78667" />
+        <LabelId label="Order ID" id={orderId} />
         <ArrowCircleDown2 variant="Bold" className="text-gray-500 md:hidden" />
       </div>
       <ArrowCircleRight2
         variant="Bold"
         className="hidden text-gray-500 md:block"
       />
-      <LabelId label="Tracking ID" id="SH78667" />
+      <LabelId label="Tracking ID" id={trackingId} />
     </div>
   );
 };

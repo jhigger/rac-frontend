@@ -7,7 +7,7 @@ import {
 import {
   HighlightedInfo,
   requestStatuses,
-  type OrderInformationProps,
+  type RequestInformationProps,
 } from "~/components/Shop/Requests/RequestDetails";
 import {
   BackButton,
@@ -66,7 +66,7 @@ const RequestDetails = () => {
   );
 };
 
-const OrderInformation = ({ info, onClick }: OrderInformationProps) => {
+const OrderInformation = ({ info, onClick }: RequestInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -105,7 +105,7 @@ const OrderInformation = ({ info, onClick }: OrderInformationProps) => {
   );
 };
 
-const PackageOrigin = () => {
+export const PackageOrigin = () => {
   const { open, toggle } = useAccordion(true);
 
   return (

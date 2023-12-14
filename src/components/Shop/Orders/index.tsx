@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { More } from "iconsax-react";
+import { ClipboardTick, More } from "iconsax-react";
+import { useTabContext } from "~/contexts/TabContext";
 
 type LabelIdProps = { label: string; id: string };
 
@@ -83,10 +84,20 @@ export const MoreButton = ({ handleViewDetails }: MoreButtonProps) => {
   );
 };
 
-export const UnprocessedStatus = () => {
+export const RespondedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
+
+      <span className="label-lg font-bold text-primary-600">Responded</span>
+    </div>
+  );
+};
+
+export const NotRespondedStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">Not Responded</span>
     </div>
@@ -103,12 +114,135 @@ export const ProcessedStatus = () => {
   );
 };
 
-export const RespondedStatus = () => {
+export const ProcessingStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-white"></div>
+      <div className="h-[12px] w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
 
-      <span className="label-lg font-bold text-primary-600">Responded</span>
+      <span className="label-lg font-bold text-primary-600">Processed</span>
     </div>
+  );
+};
+
+export const UnprocessedStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
+
+      <span className="label-lg font-bold text-primary-600">Unprocessed</span>
+    </div>
+  );
+};
+
+export const ArrivedClearStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
+
+      <span className="label-lg font-bold text-primary-600">
+        Arrived Destination
+      </span>
+    </div>
+  );
+};
+
+export const ArrivedClearedDeliveredStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
+
+      <span className="label-lg font-bold text-primary-600">
+        Arrived Destination
+      </span>
+    </div>
+  );
+};
+
+export const CancelledStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-error-600"></div>
+
+      <span className="label-lg font-bold text-primary-600">Cancelled</span>
+    </div>
+  );
+};
+
+export const SixDaysStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="border-3 h-[12px] w-[12px] rounded-full border-primary-900 bg-transparent"></div>
+
+      <span className="label-lg font-bold text-primary-600">
+        6 days to arrive destination
+      </span>
+    </div>
+  );
+};
+
+export const ShipmentProcessingStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-transparent"></div>
+
+      <span className="label-lg font-bold text-primary-600">
+        Shipment Processing
+      </span>
+    </div>
+  );
+};
+
+export const ShipmentNotStartedStatus = () => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <div className="h-[12px] w-[12px] rounded-full border-[1px] border-primary-900 bg-transparent"></div>
+
+      <span className="label-lg font-bold text-gray-500">
+        Shipment Not Started
+      </span>
+    </div>
+  );
+};
+
+export const DetailsClearPackageButton = () => {
+  const { handleActiveAction, handleTabChange } = useTabContext();
+
+  const onClick = () => {
+    handleTabChange("orders");
+    handleActiveAction("clear package");
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-transparent px-4 py-2.5 text-sm font-medium tracking-[.00714em] md:px-6"
+    >
+      <ClipboardTick className="text-primary-900" />
+      <span className="label-lg text-primary-600">Clear Package</span>
+    </button>
+  );
+};
+
+export const DetailsClearedButton = () => {
+  return (
+    <button
+      disabled
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-transparent px-4 py-2.5 text-sm font-medium tracking-[.00714em] md:px-6"
+    >
+      <ClipboardTick />
+      <span className="label-lg">Cleared</span>
+    </button>
+  );
+};
+
+export const DetailsDeliveredButton = () => {
+  return (
+    <button
+      disabled
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-transparent px-4 py-2.5 text-sm font-medium tracking-[.00714em] md:px-6"
+    >
+      <ClipboardTick />
+      <span className="label-lg">Delivered</span>
+    </button>
   );
 };

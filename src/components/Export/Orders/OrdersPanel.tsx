@@ -264,7 +264,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
         <RequestFormHeader title="Shipping Status" />
 
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
 
         {!excluded.includes(status) && (

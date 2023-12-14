@@ -70,12 +70,12 @@ const ClearPackage = () => {
 
       {!isLastStep && (
         <div className="w-full md:w-max">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
       )}
       {isLastStep && (
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
       )}
 

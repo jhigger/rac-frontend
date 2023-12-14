@@ -40,6 +40,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping from "./InitiateShipping";
+import OrderDetails from "./OrderDetails";
 
 const ImportOrdersPanel = () => {
   const { orderItems } = useImportContext();
@@ -61,13 +62,12 @@ const ImportOrdersPanel = () => {
     );
   }
 
-  // todo:
   if (activeAction === "order details") {
-    // return (
-    //   <TabContentLayout>
-    //     <OrderDetails />
-    //   </TabContentLayout>
-    // );
+    return (
+      <TabContentLayout>
+        <OrderDetails />
+      </TabContentLayout>
+    );
   }
 
   if (Array.isArray(orderItems) && orderItems.length > 0) {
@@ -169,24 +169,28 @@ export type OrderTableBodyProps = {
 };
 
 export const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
-  const { handleActiveAction } = useTabContext();
+  const { handleActiveAction, handleViewIndex } = useTabContext();
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (index: number) => {
+    handleViewIndex(index);
     handleActiveAction("order details");
   };
 
   return (
     <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {orderItems.map(
-        ({
-          items,
-          orderId,
-          orderStatus,
-          orderDate,
-          shippingCost,
-          shippingStatus,
-          trackingId,
-        }) => {
+        (
+          {
+            items,
+            orderId,
+            orderStatus,
+            orderDate,
+            shippingCost,
+            shippingStatus,
+            trackingId,
+          },
+          i,
+        ) => {
           const images = items.map((item) => item.image);
 
           return (
@@ -228,7 +232,7 @@ export const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 <p className="title-md">{shippingCost}</p>
               </td>
               <td className="border-0 p-0">
-                <MoreButton handleViewDetails={handleViewDetails} />
+                <MoreButton handleViewDetails={() => handleViewDetails(i)} />
               </td>
             </tr>
           );
@@ -329,7 +333,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
         <RequestFormHeader title="Shipping Status" />
 
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
 
         {!excluded.includes(status) && (

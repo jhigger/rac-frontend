@@ -75,12 +75,12 @@ const ClearPackage = () => {
 
       {!isLastStep && (
         <div className="w-full md:w-max">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
       )}
       {isLastStep && (
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
       )}
 
@@ -123,7 +123,7 @@ export const BillingDetailsConfirmation = () => {
   );
 };
 
-const DestinationShippingAddress = () => {
+export const DestinationShippingAddress = () => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -191,9 +191,9 @@ const DestinationAddressDetails = () => {
 
         <hr className="mx-[10px] flex-grow border-dashed border-primary-900" />
       </div>
-      <div className="grid w-fit grid-cols-4 gap-[20px]">
-        <AddressDetail label="First Name" value="Malibu" colSpanDesktop={2} />
-        <AddressDetail label="Last Name" value="SHedrack" colSpanDesktop={2} />
+      <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
+        <AddressDetail label="First Name" value="Malibu" colSpanDesktop={4} />
+        <AddressDetail label="Last Name" value="SHedrack" colSpanDesktop={4} />
         <AddressDetail
           label="Street Address"
           value="No, 1osolo way, ikeja road, behind scaint merry"
@@ -202,25 +202,25 @@ const DestinationAddressDetails = () => {
           label="Country"
           value="Nigeria"
           colSpanMobile={1}
-          colSpanDesktop={1}
+          colSpanDesktop={2}
         />
         <AddressDetail
           label="State"
           value="Lagos"
           colSpanMobile={1}
-          colSpanDesktop={1}
+          colSpanDesktop={2}
         />
         <AddressDetail
           label="City"
           value="Ikeja"
           colSpanMobile={1}
-          colSpanDesktop={1}
+          colSpanDesktop={2}
         />
         <AddressDetail
           label="Zip/postal Code"
           value="98765"
           colSpanMobile={1}
-          colSpanDesktop={1}
+          colSpanDesktop={2}
         />
       </div>
     </>

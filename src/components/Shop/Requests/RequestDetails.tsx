@@ -39,7 +39,7 @@ const RequestDetails = () => {
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
       <LabelId label="Request ID" id={requestPackage.requestId} />
-      <OrderInformation
+      <RequestInformation
         info={{ date: requestPackage.requestDate.toLocaleString(), status }}
         onClick={handleProceed}
       />
@@ -364,11 +364,14 @@ export const requestStatuses = {
   "Not Responded": <UnprocessedStatus />,
 };
 
-export type OrderInformationProps = ProceedButtonProps & {
+export type RequestInformationProps = ProceedButtonProps & {
   info: { date: string; status: (typeof REQUEST_STATUS)[number] };
 };
 
-export const OrderInformation = ({ info, onClick }: OrderInformationProps) => {
+export const RequestInformation = ({
+  info,
+  onClick,
+}: RequestInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (

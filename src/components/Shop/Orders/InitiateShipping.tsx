@@ -66,12 +66,12 @@ const InitiateShipping = () => {
 
       {!isLastStep && (
         <div className="w-full md:w-max">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
       )}
       {isLastStep && (
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId />
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
       )}
 
@@ -208,7 +208,7 @@ const OrderItem = ({ index }: OrderItemProps) => {
 
 export type DetailSectionProps = {
   label: string;
-  value: string;
+  value: string | JSX.Element;
   colSpanMobile?: "full" | number;
   colSpanDesktop?: "full" | number;
   image?: boolean;
@@ -234,7 +234,7 @@ export const DetailSection = ({
     {image ? (
       <span className="title-lg text-neutral-900">
         <img
-          src={value}
+          src={image && (value as string)}
           alt=""
           className="w-[220px] rounded-[20px] bg-center object-cover"
         />

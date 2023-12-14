@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { More } from "iconsax-react";
+import useAccordion from "~/hooks/useAccordion";
 
 type LabelIdProps = { label: string; id: string };
 
@@ -56,11 +57,35 @@ export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
   );
 };
 
-export const MoreButton = () => {
+type MoreButtonProps = { handleViewDetails: () => void };
+
+export const MoreButton = ({ handleViewDetails }: MoreButtonProps) => {
+  const { open, toggle } = useAccordion(false);
+
+  const onClick = () => {
+    toggle();
+    handleViewDetails();
+  };
+
   return (
-    <button className="flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-      <More className="text-error-600" />
-    </button>
+    <div className="relative inline-block">
+      <button
+        onClick={toggle}
+        className="flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
+      >
+        <More className="text-error-600" />
+      </button>
+
+      {open && (
+        <ul className="absolute right-0 top-12 z-50 inline-flex min-w-[200px] flex-col items-center justify-center rounded-[10px] bg-surface-200 shadow-md">
+          <li className="w-full">
+            <button className="w-full px-4 py-2" onClick={onClick}>
+              View Details
+            </button>
+          </li>
+        </ul>
+      )}
+    </div>
   );
 };
 

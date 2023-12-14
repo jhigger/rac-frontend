@@ -1,21 +1,22 @@
 import { ExportSquare, FtxToken, ImportSquare } from "iconsax-react";
-import { useEffect } from "react";
+import { useNavContext } from "~/contexts/NavigationContext";
 import { useTabContext } from "~/contexts/TabContext";
-import tailmater from "~/js/tailmater";
+import useAccordion from "~/hooks/useAccordion";
 import SearchInput from "../Forms/Inputs/SearchInput";
 
 const SearchBar = () => {
+  const { activeTab } = useTabContext();
+  const { activeNav } = useNavContext();
+  const page = activeNav.split(" ").join("-").toLowerCase();
+
   return (
     <>
       <div className="mb-[59px] hidden gap-[20px] sm:flex">
         <div className="w-max">
-          <FilterButton modalId="desktopFilter" />
+          <FilterButton />
         </div>
         <div className="w-max sm:w-full md:w-max">
-          <SearchInput
-            id="search_input"
-            label="Search for users with any related keyword"
-          />
+          <SearchInput id={`${page}-${activeTab}-desktopSearch`} />
         </div>
         <div className="flex flex-grow justify-end">
           <div className="w-max">
@@ -26,13 +27,10 @@ const SearchBar = () => {
       {/* for mobile version */}
       <div className="mb-[20px] flex flex-col items-center gap-[9px] sm:hidden">
         <div className="w-full">
-          <SearchInput
-            id="search_input"
-            label="Search for users with any related keyword"
-          />
+          <SearchInput id={`${page}-${activeTab}-mobileSearch`} />
         </div>
         <div className="flex w-full justify-between gap-[20px]">
-          <FilterButton modalId="mobileFilter" />
+          <FilterButton />
           <div className="w-full">
             <RequestNewOrderButton />
           </div>
@@ -42,20 +40,13 @@ const SearchBar = () => {
   );
 };
 
-type FilterButtonProps = { modalId: string };
-
-const FilterButton = ({ modalId }: FilterButtonProps) => {
-  const dataTarget = `#${modalId}`;
-
-  useEffect(() => {
-    tailmater();
-  }, []);
+const FilterButton = () => {
+  const { open, toggle } = useAccordion(false);
 
   return (
     <div className="relative inline-block">
       <button
-        data-type="dropdown"
-        data-target={dataTarget}
+        onClick={toggle}
         aria-label="Filter"
         className="btn relative flex h-14 w-14 flex-row items-center justify-center gap-x-[12px] rounded-[20px] bg-brand p-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 sm:p-4 md:w-full"
       >
@@ -68,13 +59,30 @@ const FilterButton = ({ modalId }: FilterButtonProps) => {
         </div>
       </button>
 
-      <div
-        id={modalId}
-        role="dropdownmenu"
-        className="duration-400 invisible absolute left-0 top-2 z-[100] h-40 w-40 flex-col rounded-[20px] bg-surface-200 p-2 opacity-0 shadow-md transition ease-in-out md:top-16 [&.show]:!visible [&.show]:!opacity-100"
-      >
-        TODO: Filter
-      </div>
+      {open && (
+        <div className="absolute left-0 top-2 z-50 h-40 w-40 flex-col rounded-[20px] bg-surface-200 p-2 shadow-md md:top-16">
+          <div className="mb-6">
+            <label className="flex items-center gap-[16px]">
+              <input
+                type="checkbox"
+                name="orderStatus"
+                className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+              />
+              <span className="body-lg text-neutral900">Order Status</span>
+            </label>
+          </div>
+
+          {/* // todo: filter */}
+
+          <button
+            onClick={toggle}
+            aria-label="apply filter"
+            className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+          >
+            <span className="body-lg text-white">Apply Filter</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

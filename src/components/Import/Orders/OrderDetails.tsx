@@ -6,7 +6,6 @@ import {
   DetailsClearPackageButton,
   DetailsClearedButton,
   DetailsDeliveredButton,
-  LabelId,
   ProcessedStatus,
   ShipmentNotStartedStatus,
   ShipmentProcessingStatus,
@@ -46,9 +45,11 @@ const OrderDetails = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
-      <LabelId label="Order ID" id={orderPackage.orderId} />
       <div className="w-full md:w-max">
-        <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
+        <OrderTrackingId
+          orderId={orderPackage.orderId}
+          trackingId={orderPackage.trackingId}
+        />
       </div>
       <OrderInformation
         info={{
@@ -104,11 +105,11 @@ const PackageOrigin = () => {
   );
 };
 
-export type RequestInformationProps = {
+export type OrderInformationProps = {
   info: { date: string; status: (typeof SHIPPING_STATUS)[number] };
 };
 
-const OrderInformation = ({ info }: RequestInformationProps) => {
+const OrderInformation = ({ info }: OrderInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -143,7 +144,7 @@ const OrderInformation = ({ info }: RequestInformationProps) => {
                 {info.status === "arrived destination" && (
                   <DetailsClearPackageButton />
                 )}
-                {info.status === "cleared" && <DetailsClearedButton />}{" "}
+                {info.status === "cleared" && <DetailsClearedButton />}
                 {info.status === "delivered" && <DetailsDeliveredButton />}
               </div>
             </div>

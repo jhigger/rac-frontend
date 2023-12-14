@@ -29,7 +29,7 @@ const useFetchShopRequests = (
           requestId: request.requestId,
           requestStatus:
             request.requestStatus as ShopRequestPackageType["requestStatus"],
-          requestDate: new Date(request.createdAt).toLocaleString(),
+          requestDate: new Date(request.createdAt),
           items: request.requestItems.map((item) => {
             const requestItem: ShopItemType = {
               store: item.store as ShopItemType["store"],

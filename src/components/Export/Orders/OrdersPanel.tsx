@@ -149,7 +149,7 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
               </td>
               <td className="border-0 p-0">
                 <p className="label-lg whitespace-nowrap text-neutral-900">
-                  {orderDate}
+                  {orderDate.toLocaleString()}
                 </p>
               </td>
               <td className="border-0 p-0">

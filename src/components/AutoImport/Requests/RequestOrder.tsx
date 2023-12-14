@@ -68,8 +68,8 @@ import { type RegisterInputs } from "~/pages/register";
 
 export const emptyValue: AutoImportRequestPackageType = {
   requestId: "",
-  requestStatus: "not responded",
-  requestDate: "",
+  requestStatus: "Not Responded",
+  requestDate: new Date(),
   items: [
     {
       brand: "",
@@ -586,8 +586,8 @@ export const Step3 = () => {
   const fakeData = [
     {
       requestId: "",
-      requestStatus: "not responded",
-      requestDate: "",
+      requestStatus: "Not Responded",
+      requestDate: new Date(),
       items: [
         {
           brand: "",

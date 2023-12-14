@@ -19,7 +19,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08751",
     shippingStatus: "not started",
     shopForMeStatus: "purchase not started",
@@ -43,7 +43,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "not responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     shopForMeStatus: "purchase in progress",
@@ -67,7 +67,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     shopForMeStatus: "purchase completed",
@@ -91,7 +91,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     shopForMeStatus: "purchase completed",
@@ -115,7 +115,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "not responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08755",
     shippingStatus: "processing",
     shopForMeStatus: "purchase completed",
@@ -139,7 +139,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     shopForMeStatus: "purchase completed",
@@ -163,7 +163,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     shopForMeStatus: "purchase completed",
@@ -187,7 +187,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     shopForMeStatus: "purchase completed",
@@ -213,8 +213,8 @@ export const shopOrders: ShopOrderPackageType[] = [
 export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "OD08751",
-    requestStatus: "not responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
     items: [
       {
         store: "Amazon",
@@ -231,8 +231,8 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "OD08752",
-    requestStatus: "responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Responded",
+    requestDate: new Date(),
     items: [
       {
         store: "Amazon",
@@ -249,8 +249,8 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "OD08753",
-    requestStatus: "not responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
     items: [
       {
         store: "Amazon",
@@ -267,8 +267,8 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "OD08754",
-    requestStatus: "responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Responded",
+    requestDate: new Date(),
     items: [
       {
         store: "Amazon",
@@ -285,8 +285,8 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "OD08755",
-    requestStatus: "not responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
     items: [
       {
         store: "Amazon",
@@ -303,8 +303,8 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "OD08756",
-    requestStatus: "responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Responded",
+    requestDate: new Date(),
     items: [
       {
         store: "Amazon",
@@ -344,7 +344,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08751",
     shippingStatus: "not started",
     shippingCost: 107.76,
@@ -365,7 +365,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "not responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     shippingCost: 107.76,
@@ -386,7 +386,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     shippingCost: 107.76,
@@ -407,7 +407,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     shippingCost: 107.76,
@@ -428,7 +428,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "not responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08755",
     shippingStatus: "processing",
     shippingCost: 107.76,
@@ -449,7 +449,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     shippingCost: 107.76,
@@ -470,7 +470,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     shippingCost: 107.76,
@@ -491,7 +491,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "responded",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     shippingCost: 107.76,
@@ -514,8 +514,8 @@ export const importOrders: ImportOrderPackageType[] = [
 export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "OD08751",
-    requestStatus: "not responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
     items: [
       {
         name: "Designer Bags",
@@ -532,8 +532,8 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "OD08752",
-    requestStatus: "responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Responded",
+    requestDate: new Date(),
     items: [
       {
         name: "Designer Bags",
@@ -550,8 +550,8 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "OD08753",
-    requestStatus: "not responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
     items: [
       {
         name: "Designer Bags",
@@ -568,8 +568,8 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "OD08754",
-    requestStatus: "responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Responded",
+    requestDate: new Date(),
     items: [
       {
         name: "Designer Bags",
@@ -586,8 +586,8 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "OD08755",
-    requestStatus: "not responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
     items: [
       {
         name: "Designer Bags",
@@ -604,8 +604,8 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "OD08756",
-    requestStatus: "responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Responded",
+    requestDate: new Date(),
     items: [
       {
         name: "Designer Bags",
@@ -663,7 +663,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08756",
     shippingStatus: "not started",
     shippingCost: 107.76,
@@ -687,7 +687,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08755",
     shippingStatus: "ready for shipping",
     shippingCost: 107.76,
@@ -711,7 +711,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08754",
     shippingStatus: "cleared",
     shippingCost: 107.76,
@@ -735,7 +735,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08753",
     shippingStatus: "processing",
     shippingCost: 107.76,
@@ -760,7 +760,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08752",
     shippingStatus: "in transit",
     shippingCost: 107.76,
@@ -785,7 +785,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08751",
     shippingStatus: "arrived destination",
     shippingCost: 107.76,
@@ -809,7 +809,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08750",
     orderStatus: "processed",
-    orderDate: "22-03-2023 13:05",
+    orderDate: new Date(),
     trackingId: "SH08750",
     shippingStatus: "delivered",
     shippingCost: 107.76,
@@ -835,8 +835,8 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
 export const autoImportRequests: AutoImportRequestPackageType[] = [
   {
     requestId: "OD08756",
-    requestStatus: "responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Responded",
+    requestDate: new Date(),
     items: [
       {
         brand: "asd",
@@ -856,8 +856,8 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
   },
   {
     requestId: "OD08755",
-    requestStatus: "not responded",
-    requestDate: "22-03-2023 13:05",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
     items: [
       {
         brand: "asd",

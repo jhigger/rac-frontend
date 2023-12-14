@@ -129,7 +129,7 @@ export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
             </td>
             <td className="border-0 p-0">
               <p className="label-lg whitespace-nowrap text-neutral-900">
-                {requestDate}
+                {requestDate.toLocaleString()}
               </p>
             </td>
             <td className="border-0 p-0">

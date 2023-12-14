@@ -44,8 +44,8 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 
 export const emptyValue: ImportRequestPackageType = {
   requestId: "",
-  requestStatus: "not responded",
-  requestDate: "",
+  requestStatus: "Not Responded",
+  requestDate: new Date(),
   items: [
     {
       image: "",

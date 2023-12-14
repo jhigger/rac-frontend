@@ -53,3 +53,5 @@ export const STORES = [
   "Walmart",
   "Others",
 ] as const;
+
+export const CONDITIONS = ["Drivable", "Not Drivable"] as const;

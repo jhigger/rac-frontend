@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import {
+  type CONDITIONS,
   type ORDER_STATUS,
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
@@ -35,7 +36,7 @@ type AutoImportItemType = {
   model: string;
   productionYear: string;
   value: number;
-  condition: "Drivable";
+  condition: (typeof CONDITIONS)[number];
   color: string;
   mileage: number;
   vin: string;
@@ -73,7 +74,7 @@ export type AutoImportDraftPackageType = AutoImportOrderPackageInput;
 export type AutoImportOrderPackageType = {
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
-  orderDate: string;
+  orderDate: Date;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shippingCost: number;
@@ -83,7 +84,7 @@ export type AutoImportOrderPackageType = {
 export type AutoImportRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
-  requestDate: string;
+  requestDate: Date;
   items: AutoImportItemType[];
 };
 

@@ -45,7 +45,7 @@ import { type ModalCloseType } from "./RequestsPanel";
 export const emptyValue: ShopOrderPackageType = {
   orderId: "",
   orderStatus: "not responded",
-  orderDate: "",
+  orderDate: new Date(),
   trackingId: "",
   shippingStatus: "not started",
   shopForMeStatus: "purchase not started",

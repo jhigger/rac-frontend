@@ -67,7 +67,7 @@ export type ExportOrderPackageType = {
 export type ExportRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
-  requestDate: string;
+  requestDate: Date;
   items: ExportItemType[];
 };
 

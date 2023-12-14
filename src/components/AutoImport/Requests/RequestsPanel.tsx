@@ -162,8 +162,8 @@ const RequestStatus = ({ id, status }: RequestStatusProps) => {
   const dataTarget = `#${modalId}`;
 
   const buttonStyles = {
-    "not responded": "bg-gray-200 text-gray-700",
-    responded: "bg-brand-orange text-white",
+    "Not Responded": "bg-gray-200 text-gray-700",
+    Responded: "bg-brand-orange text-white",
   };
 
   const buttonStyle = buttonStyles[status];
@@ -187,9 +187,9 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
   const dataClose = `#${modalId}`;
 
   const content = {
-    "not responded":
+    "Not Responded":
       "Your request has not be responded to yet. Kindly check back later.",
-    responded:
+    Responded:
       "Your request has been responded to. Kindly proceed to checkout.",
   };
 
@@ -211,10 +211,10 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
 
         <div className="flex flex-row items-end justify-end">
           <div className="w-max whitespace-nowrap">
-            {status === "not responded" && (
+            {status === "Not Responded" && (
               <CloseButton dataClose={dataClose} />
             )}
-            {status === "responded" && (
+            {status === "Responded" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
                 <InitiateShippingButton dataClose={dataClose} />

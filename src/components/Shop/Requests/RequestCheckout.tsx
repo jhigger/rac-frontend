@@ -38,7 +38,7 @@ import {
 export type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
-  const { orderPackages, handlePayNowAction } = useShopContext();
+  const { handlePayNowAction } = useShopContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -54,8 +54,6 @@ const RequestCheckout = () => {
   const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
     useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
-
-  if (orderPackages.length > 0) return;
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -77,7 +75,7 @@ const RequestCheckout = () => {
         length={steps.length}
         title={currentTitle}
       />
-      {!isLastStep && <LabelId label="Request ID:" id="R78667" />}
+      {!isLastStep && <LabelId label="Request ID" id="R78667" />}
       {isLastStep && (
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
           <OrderTrackingId />

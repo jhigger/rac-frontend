@@ -153,7 +153,7 @@ export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
   const { handleActiveAction } = useTabContext();
 
   const handleViewDetails = () => {
-    handleActiveAction("order details");
+    handleActiveAction("request details");
   };
 
   return (
@@ -221,8 +221,8 @@ export const RequestStatus = ({ id, status }: RequestStatusProps) => {
   const dataTarget = `#${modalId}`;
 
   const buttonStyles = {
-    "not responded": "bg-gray-200 text-gray-700",
-    responded: "bg-brand-orange text-white",
+    "Not Responded": "bg-gray-200 text-gray-700",
+    Responded: "bg-brand-orange text-white",
   };
 
   const buttonStyle = buttonStyles[status];
@@ -251,9 +251,9 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
   const dataClose = `#${modalId}`;
 
   const content = {
-    "not responded":
+    "Not Responded":
       "Your request has not be responded to yet. Kindly check back later.",
-    responded:
+    Responded:
       "Your request has been responded to. Kindly proceed to checkout.",
   };
 
@@ -269,16 +269,16 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
       <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Request Status" />
 
-        <LabelId label="Request ID:" id="R78667" />
+        <LabelId label="Request ID" id="R78667" />
 
         <p className="title-lg text-neutral-900">{content[status]}</p>
 
         <div className="flex flex-row items-end justify-end">
           <div className="w-max whitespace-nowrap">
-            {status === "not responded" && (
+            {status === "Not Responded" && (
               <CloseButton dataClose={dataClose} />
             )}
-            {status === "responded" && (
+            {status === "Responded" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
                 <ProceedToCheckoutButton dataClose={dataClose} />

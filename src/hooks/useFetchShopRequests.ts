@@ -27,7 +27,8 @@ const useFetchShopRequests = (
       (request) => {
         const requestPackage: ShopRequestPackageType = {
           requestId: request.requestId,
-          requestStatus: "not responded", // todo: missing requestStatus column
+          requestStatus:
+            request.requestStatus as ShopRequestPackageType["requestStatus"],
           requestDate: new Date(request.createdAt).toLocaleString(),
           items: request.requestItems.map((item) => {
             const requestItem: ShopItemType = {
@@ -73,20 +74,24 @@ const useFetchShopRequests = (
   return query;
 };
 
-interface Main {
+export interface Main {
   success: boolean;
   totalrequests: number;
   sfmRequests: SfmRequest[];
 }
 
-interface SfmRequest {
+export interface SfmRequest {
+  requestStatus: string;
+  orderStatus: string;
+  ShippingStatus: string;
+  shopForMeStatus: string;
   _id: string;
   user: string;
-  sfmType: string;
+  sfmType?: string;
   origin: string;
   requestItems: RequestItem[];
-  contactAddress: [];
-  sfmRequestApproved: boolean;
+  contactAddress?: unknown[];
+  sfmRequestApproved?: boolean;
   sfmPaymentPaid: boolean;
   processingFeePaid: boolean;
   requestId: string;
@@ -95,9 +100,10 @@ interface SfmRequest {
   createdAt: Date;
   updatedAt: Date;
   __v: number;
+  shippingAddress: unknown[];
 }
 
-interface RequestItem {
+export interface RequestItem {
   store: string;
   itemUrl: string;
   itemName: string;

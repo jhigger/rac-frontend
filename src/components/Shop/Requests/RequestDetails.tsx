@@ -15,20 +15,21 @@ import { ConvertCard, Security, Wallet } from "iconsax-react";
 
 const RequestDetails = () => {
   const { orderPackages } = useShopContext();
-  const { handleActiveAction } = useTabContext();
+  const { handleActiveAction, handleTabChange } = useTabContext();
 
   const handleBack = () => {
     handleActiveAction(null);
   };
 
   const handleProceed = () => {
+    handleTabChange("requests");
     handleActiveAction("proceed to checkout");
   };
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
-      <LabelId label="Request ID:" id="R78667" />
+      <LabelId label="Request ID" id="R78667" />
       <OrderInformation onClick={handleProceed} />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />

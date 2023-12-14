@@ -9,7 +9,7 @@ import DraftDetails from "./DraftDetails";
 const DraftsPanel = () => {
   const { draftPackages } = useShopContext();
 
-  if (draftPackages.length > 0) {
+  if (Array.isArray(draftPackages) && draftPackages.length > 0) {
     return (
       <TabContentLayout>
         <DraftDetails />

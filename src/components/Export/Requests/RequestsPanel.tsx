@@ -34,7 +34,7 @@ const ExportRequestsPanel = () => {
     );
   }
 
-  if (requestItems) {
+  if (Array.isArray(requestItems) && requestItems.length > 0) {
     return (
       <TabContentLayout>
         <SearchBar />

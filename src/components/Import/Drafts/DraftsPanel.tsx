@@ -9,7 +9,7 @@ import DraftDetails from "./DraftDetails";
 const ImportDraftsPanel = () => {
   const { draftItems } = useImportContext();
 
-  if (draftItems) {
+  if (Array.isArray(draftItems) && draftItems.length > 0) {
     return (
       <TabContentLayout>
         <DraftDetails />

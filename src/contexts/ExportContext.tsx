@@ -11,7 +11,6 @@ import {
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { importDrafts, importOrders, importRequests } from "~/fake data";
 
 export type ExportContextType = {
   clearDrafts: () => void;
@@ -92,11 +91,11 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleDrafts = () => {
-    setDraftPackages(importDrafts);
+    setDraftPackages([]);
   };
 
   const handleOrders = () => {
-    setOrderPackages(importOrders);
+    setOrderPackages([]);
   };
 
   const handlePayNowAction = (action: ExportContextType["payNowAction"]) => {
@@ -104,7 +103,7 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestPackages(importRequests);
+    setRequestPackages([]);
   };
 
   // testing purposes

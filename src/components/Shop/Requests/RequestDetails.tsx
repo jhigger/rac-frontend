@@ -1,8 +1,10 @@
+import { ConvertCard, Security, Wallet } from "iconsax-react";
+import { type REQUEST_STATUS } from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
-import { LabelId, RespondedStatus } from "../Orders";
+import { LabelId, RespondedStatus, UnprocessedStatus } from "../Orders";
 import { DetailSection } from "../Orders/InitiateShipping";
 import {
   BackButton,
@@ -11,11 +13,18 @@ import {
   SectionHeader,
   TooltipButton,
 } from "./RequestOrder";
-import { ConvertCard, Security, Wallet } from "iconsax-react";
 
 const RequestDetails = () => {
-  const { orderPackages } = useShopContext();
-  const { handleActiveAction, handleTabChange } = useTabContext();
+  const { requestPackages } = useShopContext();
+  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const requestPackage = requestPackages[viewIndex];
+
+  if (!requestPackage) return;
+
+  const status = requestPackage.requestStatus ?? "Not Responded";
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -29,19 +38,22 @@ const RequestDetails = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
-      <LabelId label="Request ID" id="R78667" />
-      <OrderInformation onClick={handleProceed} />
+      <LabelId label="Request ID" id={requestPackage.requestId} />
+      <OrderInformation
+        info={{ date: requestPackage.requestDate.toLocaleString(), status }}
+        onClick={handleProceed}
+      />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
-        {orderPackages.map((item, i) => {
-          return <Item key={item.orderId} index={i} />;
+        {requestPackage.items.map((item, i) => {
+          return <Item key={i} index={i} />;
         })}
       </div>
       <BillingDetails />
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        <ProceedButton onClick={handleProceed} />
+        {status === "Responded" && <CheckoutButton onClick={handleProceed} />}
       </div>
     </div>
   );
@@ -49,7 +61,7 @@ const RequestDetails = () => {
 
 type ProceedButtonProps = { onClick: () => void };
 
-const ProceedButton = ({ onClick }: ProceedButtonProps) => {
+const CheckoutButton = ({ onClick }: ProceedButtonProps) => {
   return (
     <button
       onClick={onClick}
@@ -345,7 +357,16 @@ export const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
   );
 };
 
-const OrderInformation = ({ onClick }: ProceedButtonProps) => {
+const requestStatuses = {
+  Responded: <RespondedStatus />,
+  "Not Responded": <UnprocessedStatus />,
+};
+
+type OrderInformationProps = ProceedButtonProps & {
+  info: { date: string; status: (typeof REQUEST_STATUS)[number] };
+};
+
+const OrderInformation = ({ info, onClick }: OrderInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -364,15 +385,17 @@ const OrderInformation = ({ onClick }: ProceedButtonProps) => {
               <div className="col-span-1 flex flex-col gap-[15px]">
                 <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
                   <span className="body-md">Order Request Date:</span>
-                  <span className="title-lg text-neutral-900">12/02/2023</span>
+                  <span className="title-lg text-neutral-900">{info.date}</span>
                 </div>
                 <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
                   <span className="body-md">Shop for me status:</span>
                   <span className="title-lg text-neutral-900">
-                    <RespondedStatus />
+                    {requestStatuses[info.status]}
                   </span>
                 </div>
-                <ProceedToCheckoutButton onClick={onClick} />
+                {info.status === "Responded" && (
+                  <ProceedToCheckoutButton onClick={onClick} />
+                )}
               </div>
             </div>
           )}

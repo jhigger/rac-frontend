@@ -27,8 +27,10 @@ export type TabContextType = {
   activeTab: AppBarTabType["tabs"][number]["id"] | null;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<Array<HTMLButtonElement | null>>;
+  viewIndex: number | null;
   handleActiveAction: (action: ActionType | null) => void;
   handleTabChange: (tab: TabIdType) => void;
+  handleViewIndex: (index: number | null) => void;
 };
 
 export const TabContext = createContext<TabContextType>({} as TabContextType);
@@ -100,14 +102,18 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const { activeNav } = useNavContext();
 
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
+
   const [activeTab, setActiveTab] = useState<
     AppBarTabType["tabs"][number]["id"] | null
   >(getFirstTab(activeNav));
+
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
 
   const handleActiveAction = (action: ActionType | null) => {
     setActiveAction(action);
   };
+
+  const [viewIndex, setViewIndex] = useState<number | null>(null);
 
   const handleTabChange = (tabId: TabIdType | null) => {
     let clickedTabIndex = 0;
@@ -126,8 +132,13 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
     reset();
   };
 
+  const handleViewIndex = (index: number | null) => {
+    setViewIndex(index);
+  };
+
   const reset = () => {
     setActiveAction(null);
+    setViewIndex(null);
   };
 
   useEffect(() => {
@@ -135,12 +146,14 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   }, [activeNav]);
 
   const value: TabContextType = {
+    viewIndex,
     activeAction,
     activeTab,
     tabs,
     tabsRef,
     handleActiveAction,
     handleTabChange,
+    handleViewIndex,
   };
 
   return <TabContext.Provider value={value}>{children}</TabContext.Provider>;

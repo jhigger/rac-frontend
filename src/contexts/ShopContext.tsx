@@ -18,11 +18,11 @@ import { shopDrafts, shopOrders } from "~/fake data";
 import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 
 export type ShopContextType = {
-  clearDrafts: () => void;
   draftPackages: ShopDraftPackageType[];
   orderPackages: ShopOrderPackageType[];
   payNowAction: { action: () => void } | null;
   requestPackages: ShopRequestPackageType[];
+  clearDrafts: () => void;
   handleDrafts: () => void;
   handleOrders: () => void;
   handlePayNowAction: (action: ShopContextType["payNowAction"]) => void;
@@ -74,7 +74,7 @@ export type ShopOrderPackageType = {
 export type ShopRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
-  requestDate: string;
+  requestDate: Date;
   items: ShopItemType[];
 };
 
@@ -123,11 +123,11 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const value: ShopContextType = {
-    clearDrafts,
     draftPackages,
     orderPackages,
     payNowAction,
     requestPackages,
+    clearDrafts,
     handleDrafts,
     handleOrders,
     handlePayNowAction,

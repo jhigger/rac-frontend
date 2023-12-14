@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { More } from "iconsax-react";
-import useAccordion from "~/hooks/useAccordion";
 
 type LabelIdProps = { label: string; id: string };
 
@@ -60,31 +59,26 @@ export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
 type MoreButtonProps = { handleViewDetails: () => void };
 
 export const MoreButton = ({ handleViewDetails }: MoreButtonProps) => {
-  const { open, toggle } = useAccordion(false);
-
   const onClick = () => {
-    toggle();
     handleViewDetails();
   };
 
   return (
-    <div className="relative inline-block">
-      <button
-        onClick={toggle}
-        className="flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
-      >
+    <div className="group relative inline-block">
+      <button className="peer flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
         <More className="text-error-600" />
       </button>
 
-      {open && (
-        <ul className="absolute right-0 top-12 z-50 inline-flex min-w-[200px] flex-col items-center justify-center rounded-[10px] bg-surface-200 shadow-md">
-          <li className="w-full">
-            <button className="w-full px-4 py-2" onClick={onClick}>
-              View Details
-            </button>
-          </li>
-        </ul>
-      )}
+      <ul className="invisible absolute right-0 top-12 z-50 inline-flex min-w-[200px] flex-col items-center justify-center rounded-[10px] bg-surface-200 shadow-md group-focus-within:visible peer-focus:visible">
+        <li className="w-full">
+          <button
+            className="relative w-full rounded-[10px] px-4 py-2 hover:bg-secondary-100 hover:bg-opacity-30"
+            onClick={onClick}
+          >
+            View Details
+          </button>
+        </li>
+      </ul>
     </div>
   );
 };

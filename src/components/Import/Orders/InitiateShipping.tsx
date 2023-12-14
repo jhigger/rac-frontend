@@ -26,7 +26,6 @@ import {
   type PackageTableHeadProps,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
-import { PackageOrigin } from "~/components/Shop/Requests/RequestDetails";
 import {
   BackButton,
   SectionContentLayout,
@@ -167,6 +166,36 @@ const PackageConfirmation = () => {
         return <OrderItem key={item.orderId} index={i} />;
       })}
     </div>
+  );
+};
+
+const PackageOrigin = () => {
+  const { open, toggle } = useAccordion(true);
+
+  return (
+    <>
+      <SectionHeader title="Package Details" />
+      <SectionContentLayout>
+        <div className="flex w-full flex-col gap-[30px]">
+          <div className="flex w-full items-center justify-between">
+            <h4 className="title-md md:title-lg text-gray-700">
+              Package Origin
+            </h4>
+            <AccordionButton {...{ open, toggle }} />
+          </div>
+          {open && (
+            <>
+              <div className="flex flex-col gap-[5px]">
+                <DetailSection
+                  label="Origin warehouse"
+                  value="Nigeria (Lagos - warehouse)"
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </SectionContentLayout>
+    </>
   );
 };
 

@@ -53,7 +53,9 @@ const RequestDetails = () => {
       <BillingDetails />
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        {status === "Responded" && <CheckoutButton onClick={handleProceed} />}
+        {status === "Responded" && (
+          <RedProceedToCheckoutButton onClick={handleProceed} />
+        )}
       </div>
     </div>
   );
@@ -61,7 +63,7 @@ const RequestDetails = () => {
 
 type ProceedButtonProps = { onClick: () => void };
 
-const CheckoutButton = ({ onClick }: ProceedButtonProps) => {
+export const RedProceedToCheckoutButton = ({ onClick }: ProceedButtonProps) => {
   return (
     <button
       onClick={onClick}
@@ -357,16 +359,16 @@ export const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
   );
 };
 
-const requestStatuses = {
+export const requestStatuses = {
   Responded: <RespondedStatus />,
   "Not Responded": <UnprocessedStatus />,
 };
 
-type OrderInformationProps = ProceedButtonProps & {
+export type OrderInformationProps = ProceedButtonProps & {
   info: { date: string; status: (typeof REQUEST_STATUS)[number] };
 };
 
-const OrderInformation = ({ info, onClick }: OrderInformationProps) => {
+export const OrderInformation = ({ info, onClick }: OrderInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -405,9 +407,28 @@ const OrderInformation = ({ info, onClick }: OrderInformationProps) => {
   );
 };
 
+export const ProceedToCheckoutButton = ({
+  onClick,
+}: ProceedToCheckoutButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      aria-label="Take Action Now"
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
+    >
+      <Security size={18} className="text-primary-900" />
+      <span className="label-lg whitespace-nowrap text-primary-600">
+        Proceed to Checkout
+      </span>
+    </button>
+  );
+};
+
 type ProceedToCheckoutButtonProps = { onClick?: () => void };
 
-const ProceedToCheckoutButton = ({ onClick }: ProceedToCheckoutButtonProps) => {
+export const ModalProceedToCheckoutButton = ({
+  onClick,
+}: ProceedToCheckoutButtonProps) => {
   return (
     <button
       onClick={onClick}

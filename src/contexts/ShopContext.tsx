@@ -126,7 +126,6 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
 
   // testing purposes
   useEffect(() => {
-    handleOrders();
     handleDrafts();
   }, []);
 

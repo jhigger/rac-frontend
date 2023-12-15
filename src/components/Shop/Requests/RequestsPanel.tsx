@@ -1,6 +1,7 @@
 import { ArrowSwapVertical, Security } from "iconsax-react";
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
+import { capitalizeWords } from "~/Utils";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import { type ExportRequestPackageType } from "~/contexts/ExportContext";
 import { type ImportRequestPackageType } from "~/contexts/ImportContext";
@@ -220,13 +221,6 @@ export type RequestStatusProps = {
 };
 
 export const RequestStatus = ({ id, status }: RequestStatusProps) => {
-  const capitalizedWords = status
-    .split(" ")
-    .map((word) => {
-      return word.slice(0, 1).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
-
   useEffect(() => {
     tailmater();
   }, []);
@@ -246,10 +240,10 @@ export const RequestStatus = ({ id, status }: RequestStatusProps) => {
       <button
         data-type="dialogs"
         data-target={dataTarget}
-        aria-label={capitalizedWords}
+        aria-label={capitalizeWords(status)}
         className={`btn relative w-full rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
       >
-        {capitalizedWords}
+        {capitalizeWords(status)}
       </button>
       <RequestStatusModal {...{ modalId, status }} />
     </>

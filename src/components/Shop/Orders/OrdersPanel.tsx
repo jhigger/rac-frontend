@@ -31,6 +31,7 @@ import SearchBar from "../SearchBar";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
+import { capitalizeWords } from "~/Utils";
 
 const OrdersPanel = () => {
   const { orderPackages, isFetchingOrderPackages } = useShopContext();
@@ -217,7 +218,9 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 <p className="title-md whitespace-nowrap">{orderId}</p>
               </td>
               <td className="border-0 p-0">
-                <p className="title-md whitespace-nowrap">{orderStatus}</p>
+                <p className="title-md whitespace-nowrap">
+                  {capitalizeWords(orderStatus)}
+                </p>
               </td>
               <td className="border-0 p-0">
                 <p className="label-lg whitespace-nowrap text-neutral-900">
@@ -234,7 +237,9 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 />
               </td>
               <td className="border-0 p-0">
-                <p className="title-md whitespace-nowrap">{shopForMeStatus}</p>
+                <p className="title-md whitespace-nowrap">
+                  {capitalizeWords(shopForMeStatus)}
+                </p>
               </td>
               <td className="flex gap-[5px] border-0 p-0">
                 <TickSquare
@@ -349,13 +354,6 @@ export type ShippingStatusProps = {
 };
 
 export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
-  const capitalizedWords = status
-    .split(" ")
-    .map((word) => {
-      return word.slice(0, 1).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
-
   useEffect(() => {
     tailmater();
   }, []);
@@ -381,10 +379,10 @@ export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
       <button
         data-type="dialogs"
         data-target={dataTarget}
-        aria-label={capitalizedWords}
+        aria-label={capitalizeWords(status)}
         className={`btn relative w-full rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
       >
-        {capitalizedWords}
+        {capitalizeWords(status)}
       </button>
       <ShippingStatusModal {...{ modalId, status }} />
     </>

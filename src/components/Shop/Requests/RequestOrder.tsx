@@ -48,7 +48,7 @@ export const emptyValue: ShopOrderPackageType = {
   orderDate: new Date(),
   trackingId: "",
   shippingStatus: "not started",
-  shopForMeStatus: "purchase not started",
+  shopForMeStatus: "Purchase not started",
   shopForMeCost: 0,
   shippingCost: 0,
   originWarehouse: "China Warehouse (Guangzhou city)",

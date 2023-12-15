@@ -105,24 +105,28 @@ const OrdersTable = () => {
 };
 
 const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
-  const { handleActiveAction } = useTabContext();
+  const { handleActiveAction, handleViewIndex } = useTabContext();
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (index: number) => {
+    handleViewIndex(index);
     handleActiveAction("order details");
   };
 
   return (
     <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
       {orderItems.map(
-        ({
-          items,
-          orderId,
-          orderStatus,
-          orderDate,
-          shippingCost,
-          shippingStatus,
-          trackingId,
-        }) => {
+        (
+          {
+            items,
+            orderId,
+            orderStatus,
+            orderDate,
+            shippingCost,
+            shippingStatus,
+            trackingId,
+          },
+          i,
+        ) => {
           const images = items.map((item) => item.image);
 
           return (
@@ -164,7 +168,7 @@ const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
                 <p className="title-md">{shippingCost}</p>
               </td>
               <td className="border-0 p-0">
-                <MoreButton handleViewDetails={handleViewDetails} />
+                <MoreButton handleViewDetails={() => handleViewDetails(i)} />
               </td>
             </tr>
           );

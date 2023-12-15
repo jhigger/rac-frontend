@@ -139,9 +139,9 @@ const OrderInformation = ({ info }: OrderInformationProps) => {
 };
 
 export const shopForMeStatuses = {
-  "Arrived Origin Warehouse": <ArrivedOriginWarehouseStatus />,
-  "Not Arrived Origin Warehouse": <NotArrivedOriginWarehouseStatus />,
-  "Sorted Out": <SortedOutStatus />,
+  "Purchase in progress": <ArrivedOriginWarehouseStatus />,
+  "Purchase not started": <NotArrivedOriginWarehouseStatus />,
+  "Purchase completed": <SortedOutStatus />,
 };
 
 export default OrderDetails;

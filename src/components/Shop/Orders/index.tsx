@@ -87,7 +87,7 @@ export const MoreButton = ({ handleViewDetails }: MoreButtonProps) => {
 export const RespondedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">Responded</span>
     </div>
@@ -97,7 +97,7 @@ export const RespondedStatus = () => {
 export const NotRespondedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">Not Responded</span>
     </div>
@@ -107,7 +107,7 @@ export const NotRespondedStatus = () => {
 export const ProcessedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
 
       <span className="label-lg font-bold text-primary-600">Processed</span>
     </div>
@@ -117,7 +117,7 @@ export const ProcessedStatus = () => {
 export const ProcessingStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">Processed</span>
     </div>
@@ -127,7 +127,7 @@ export const ProcessingStatus = () => {
 export const UnprocessedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-2 border-error-600 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">Unprocessed</span>
     </div>
@@ -137,7 +137,7 @@ export const UnprocessedStatus = () => {
 export const ArrivedClearStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">
         Arrived Destination
@@ -149,7 +149,7 @@ export const ArrivedClearStatus = () => {
 export const ArrivedClearedDeliveredStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
 
       <span className="label-lg font-bold text-primary-600">
         Arrived Destination
@@ -161,7 +161,7 @@ export const ArrivedClearedDeliveredStatus = () => {
 export const CancelledStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-error-600 bg-error-600"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-2 border-error-600 bg-error-600"></div>
 
       <span className="label-lg font-bold text-primary-600">Cancelled</span>
     </div>
@@ -171,7 +171,7 @@ export const CancelledStatus = () => {
 export const SixDaysStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="border-3 h-[12px] w-[12px] rounded-full border-primary-900 bg-transparent"></div>
+      <div className="border-3 min-h-[12px] min-w-[12px] rounded-full border-primary-900 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">
         6 days to arrive destination
@@ -183,7 +183,7 @@ export const SixDaysStatus = () => {
 export const ShipmentProcessingStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-2 border-primary-900 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">
         Shipment Processing
@@ -195,7 +195,7 @@ export const ShipmentProcessingStatus = () => {
 export const ShipmentNotStartedStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-[1px] border-primary-900 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-[1px] border-primary-900 bg-transparent"></div>
 
       <span className="label-lg font-bold text-gray-500">
         Shipment Not Started
@@ -207,7 +207,7 @@ export const ShipmentNotStartedStatus = () => {
 export const SortedOutStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-2 border-primary-900 bg-primary-900"></div>
 
       <span className="label-lg font-bold text-primary-600">Sorted Out</span>
     </div>
@@ -217,7 +217,7 @@ export const SortedOutStatus = () => {
 export const NotArrivedOriginWarehouseStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="border-3 h-[12px] w-[12px] rounded-full border-primary-900 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-[3px] border-primary-900 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">
         Not Arrived Origin Warehouse
@@ -229,7 +229,7 @@ export const NotArrivedOriginWarehouseStatus = () => {
 export const ArrivedOriginWarehouseStatus = () => {
   return (
     <div className="flex items-center gap-[10px]">
-      <div className="h-[12px] w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
+      <div className="min-h-[12px] min-w-[12px] rounded-full border-4 border-primary-900 bg-transparent"></div>
 
       <span className="label-lg font-bold text-primary-600">
         Arrived Origin Warehouse

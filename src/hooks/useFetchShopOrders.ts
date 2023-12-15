@@ -5,6 +5,7 @@ import {
   type ShopOrderPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
+import { shopOrders } from "~/fake data";
 
 const useFetchShopOrders = (
   token: string,
@@ -68,8 +69,9 @@ const useFetchShopOrders = (
     queryKey: ["shopOrders"],
     queryFn: async () => {
       console.log("fetching user order packages");
-      const res = await handleFetch();
-      const packages = res;
+      // const res = await handleFetch();
+      // const packages = res;
+      const packages = shopOrders;
       if (packages.length > 0) {
         console.log("user order packages: ", packages);
         return packages;

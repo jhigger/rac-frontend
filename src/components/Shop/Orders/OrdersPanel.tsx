@@ -14,6 +14,7 @@ import {
 } from "iconsax-react";
 import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import {
   useShopContext,
   type ShopOrderPackageType,
@@ -32,8 +33,18 @@ import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const OrdersPanel = () => {
-  const { orderPackages } = useShopContext();
+  const { orderPackages, isFetchingOrderPackages } = useShopContext();
   const { activeAction } = useTabContext();
+
+  if (isFetchingOrderPackages) {
+    return (
+      <TabContentLayout>
+        <div className="flex h-full items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      </TabContentLayout>
+    );
+  }
 
   if (activeAction === "clear package") {
     return (

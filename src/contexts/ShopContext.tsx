@@ -14,7 +14,8 @@ import {
   type SHOP_FOR_ME_STATUS,
   type STORES,
 } from "~/constants";
-import { shopDrafts, shopOrders } from "~/fake data";
+import { shopDrafts } from "~/fake data";
+import useFetchShopOrders from "~/hooks/useFetchShopOrders";
 import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 
 export type ShopContextType = {
@@ -22,6 +23,7 @@ export type ShopContextType = {
   orderPackages: ShopOrderPackageType[];
   payNowAction: { action: () => void } | null;
   requestPackages: ShopRequestPackageType[];
+  isFetchingOrderPackages: boolean;
   isFetchingRequestPackages: boolean;
   clearDrafts: () => void;
   handleDrafts: () => void;
@@ -87,9 +89,11 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     [],
   );
 
-  const [orderPackages, setOrderPackages] = useState<ShopOrderPackageType[]>(
-    [],
-  );
+  const {
+    data: orderPackages,
+    isFetching: isFetchingOrderPackages,
+    refetch: refetchOrderPackages,
+  } = useFetchShopOrders(token);
 
   const [payNowAction, setPayNowAction] =
     useState<ShopContextType["payNowAction"]>(null);
@@ -97,7 +101,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const {
     data: requestPackages,
     isFetching: isFetchingRequestPackages,
-    refetch: refetchOrderPackages,
+    refetch: refetchRequestPackages,
   } = useFetchShopRequests(token);
 
   const clearDrafts = () => {
@@ -109,7 +113,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleOrders = () => {
-    setOrderPackages(shopOrders);
+    void refetchOrderPackages();
   };
 
   const handlePayNowAction = (action: ShopContextType["payNowAction"]) => {
@@ -117,7 +121,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    void refetchOrderPackages();
+    void refetchRequestPackages();
   };
 
   // testing purposes
@@ -131,6 +135,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     orderPackages,
     payNowAction,
     requestPackages,
+    isFetchingOrderPackages,
     isFetchingRequestPackages,
     clearDrafts,
     handleDrafts,

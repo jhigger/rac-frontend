@@ -72,6 +72,11 @@ export type ShopInputs = {
 };
 
 const RequestOrderForm = () => {
+  // const { user } = useAuthContext();
+  // const token = user?.jwt ?? "";
+
+  // const { error, isSuccess, status, mutateAsync } = useSubmitShopRequest(token);
+
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
 
@@ -85,14 +90,19 @@ const RequestOrderForm = () => {
   });
 
   const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
-    data.requestItems.items.forEach((item, index) => {
+    data.requestItems.items.every((item, index) => {
       const value = item.urgent;
       formMethods.setValue(
         `requestItems.items.${index}.urgent`,
         Boolean(Number(value)),
       );
     });
-    console.log(formMethods.getValues().requestItems);
+
+    // console.log("submitting user package...");
+    // await mutateAsync(formMethods.getValues().requestItems);
+    // console.log(status);
+    // console.log(error);
+    // if (isSuccess) next();
     next();
   };
 
@@ -385,13 +395,6 @@ export const ItemDetailsSection = ({
     if (!files[0]) return;
 
     setFilename(files[0].name);
-    // todo:
-    // const reader = new FileReader();
-    // reader.onloadend = () => console.log(reader.result);
-    // reader.readAsDataURL(files[0]);
-
-    const formData = new FormData();
-    formData.append("img", files[0] as Blob);
   };
 
   return (

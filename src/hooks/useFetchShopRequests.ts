@@ -4,10 +4,13 @@ import {
   type ShopItemType,
   type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
+import { useTabContext } from "~/contexts/TabContext";
 
 const useFetchShopRequests = (
   token: string,
 ): DefinedUseQueryResult<ShopRequestPackageType[], AxiosError> => {
+  const { activeTab } = useTabContext();
+
   const handleFetch = async () => {
     const headersList = {
       Accept: "*/*",
@@ -69,6 +72,7 @@ const useFetchShopRequests = (
       return [];
     },
     initialData: [],
+    enabled: activeTab === "requests",
   });
 
   return query;

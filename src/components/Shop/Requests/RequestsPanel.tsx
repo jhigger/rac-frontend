@@ -1,6 +1,7 @@
 import { ArrowSwapVertical, Security } from "iconsax-react";
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import { type ExportRequestPackageType } from "~/contexts/ExportContext";
 import { type ImportRequestPackageType } from "~/contexts/ImportContext";
 import {
@@ -26,8 +27,18 @@ import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
 
 const RequestsPanel = () => {
-  const { requestPackages } = useShopContext();
+  const { requestPackages, isFetchingRequestPackages } = useShopContext();
   const { activeAction } = useTabContext();
+
+  if (isFetchingRequestPackages) {
+    return (
+      <TabContentLayout>
+        <div className="flex h-full items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      </TabContentLayout>
+    );
+  }
 
   if (activeAction === "request new order") {
     return (

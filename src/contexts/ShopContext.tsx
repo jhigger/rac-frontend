@@ -22,6 +22,7 @@ export type ShopContextType = {
   orderPackages: ShopOrderPackageType[];
   payNowAction: { action: () => void } | null;
   requestPackages: ShopRequestPackageType[];
+  isFetchingRequestPackages: boolean;
   clearDrafts: () => void;
   handleDrafts: () => void;
   handleOrders: () => void;
@@ -93,8 +94,11 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [payNowAction, setPayNowAction] =
     useState<ShopContextType["payNowAction"]>(null);
 
-  const { data: requestPackages, refetch: refetchOrderPackages } =
-    useFetchShopRequests(token);
+  const {
+    data: requestPackages,
+    isFetching: isFetchingRequestPackages,
+    refetch: refetchOrderPackages,
+  } = useFetchShopRequests(token);
 
   const clearDrafts = () => {
     setDraftPackages([]);
@@ -127,6 +131,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     orderPackages,
     payNowAction,
     requestPackages,
+    isFetchingRequestPackages,
     clearDrafts,
     handleDrafts,
     handleOrders,

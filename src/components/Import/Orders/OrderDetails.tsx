@@ -44,7 +44,7 @@ const OrderDetails = () => {
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      <RequestFormHeader title="Shop For Me Order Request Details" />
+      <RequestFormHeader title="Import Order Details" />
       <div className="w-full md:w-max">
         <OrderTrackingId
           orderId={orderPackage.orderId}

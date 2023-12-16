@@ -11,7 +11,7 @@ const SearchBar = () => {
 
   return (
     <>
-      <div className="mb-[59px] hidden gap-[20px] sm:flex">
+      <div className="mb-[20px] hidden gap-[20px] sm:flex">
         <div className="w-max">
           <FilterButton />
         </div>

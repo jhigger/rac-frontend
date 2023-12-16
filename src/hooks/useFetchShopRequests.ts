@@ -43,7 +43,7 @@ const useFetchShopRequests = (
               originalCost: item.cost,
               quantity: item.qty,
               shippingCost: item.shippingCost,
-              image: "https://placehold.co/500x500/cac4d0/1d192b?text=Image", // todo: update
+              image: item.itemImage,
               description: item.description,
             };
 

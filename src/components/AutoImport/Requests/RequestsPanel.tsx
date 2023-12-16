@@ -25,6 +25,7 @@ import {
 } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
+import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
 
 const AutoImportRequestsPanel = () => {
@@ -39,11 +40,10 @@ const AutoImportRequestsPanel = () => {
     );
   }
 
-  // todo:
   if (activeAction === "request details") {
     return (
       <TabContentLayout>
-        <>{/* <RequestDetails /> */}</>
+        <RequestDetails />
       </TabContentLayout>
     );
   }

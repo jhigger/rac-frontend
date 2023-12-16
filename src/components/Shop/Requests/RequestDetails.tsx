@@ -408,9 +408,16 @@ export const RequestInformation = ({
 export const ProceedToCheckoutButton = ({
   onClick,
 }: ProceedToCheckoutButtonProps) => {
+  const { handleActiveAction, handleTabChange } = useTabContext();
+
+  const handleClick = () => {
+    handleTabChange("orders");
+    handleActiveAction("proceed to checkout");
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={onClick ?? handleClick}
       aria-label="Take Action Now"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
     >

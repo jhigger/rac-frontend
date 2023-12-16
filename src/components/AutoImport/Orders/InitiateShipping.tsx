@@ -161,7 +161,7 @@ export const OrderItem = ({ index }: OrderItemProps) => {
   );
 };
 
-const PickUpDetails = () => {
+export const PickUpDetails = () => {
   return (
     <>
       <span className="title-md md:title-lg text-gray-700">Pickup Details</span>

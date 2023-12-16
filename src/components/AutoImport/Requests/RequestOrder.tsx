@@ -872,7 +872,7 @@ export const PackageOrigin = () => {
   );
 };
 
-const OriginWarehouseAddress = () => {
+export const OriginWarehouseAddress = () => {
   return (
     <>
       <div className="flex items-center">

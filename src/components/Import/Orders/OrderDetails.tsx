@@ -6,6 +6,7 @@ import {
   DetailsClearPackageButton,
   DetailsClearedButton,
   DetailsDeliveredButton,
+  DetailsInitiateShippingButton,
   ProcessedStatus,
   ShipmentNotStartedStatus,
   ShipmentProcessingStatus,
@@ -71,7 +72,7 @@ const OrderDetails = () => {
       <DefaultBillingAddress />
       <PaymentsInformation />
       <div className="flex w-max gap-[10px] whitespace-nowrap">
-        <BackButton onClick={handleBack} />P
+        <BackButton onClick={handleBack} />
       </div>
     </div>
   );
@@ -97,12 +98,12 @@ const PaymentsInformation = () => {
                 <DetailSection
                   label="Total Shipment Cost"
                   value="$234,000.00"
-                  colSpanDesktop={5}
+                  colSpanDesktop={4}
                 />
                 <DetailSection
                   label="Payment Status"
                   value="Unpaid"
-                  colSpanDesktop={5}
+                  colSpanDesktop={4}
                 />
               </div>
             </div>
@@ -147,7 +148,7 @@ export type OrderInformationProps = {
   info: { date: string; status: (typeof SHIPPING_STATUS)[number] };
 };
 
-export const OrderInformation = ({ info }: OrderInformationProps) => {
+const OrderInformation = ({ info }: OrderInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -179,6 +180,9 @@ export const OrderInformation = ({ info }: OrderInformationProps) => {
                 />
               </div>
               <div className="flex w-max items-center md:col-span-4">
+                {info.status === "ready for shipping" && (
+                  <DetailsInitiateShippingButton />
+                )}
                 {info.status === "arrived destination" && (
                   <DetailsClearPackageButton />
                 )}

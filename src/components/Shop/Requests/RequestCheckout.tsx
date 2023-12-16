@@ -402,12 +402,14 @@ const Summary = () => {
   );
 };
 
-export const TotalCost = () => {
+type TotalCostProps = { total?: number };
+
+export const TotalCost = ({ total }: TotalCostProps) => {
   return (
     <div className="mt-[10px] flex flex-col items-start justify-between gap-[20px] md:flex-row md:items-end">
       <div className="flex flex-col gap-[5px]">
         <span className="label-lg">Total:</span>
-        <span className="title-lg">$126.66</span>
+        <span className="title-lg">${total}</span>
       </div>
       <div className="flex flex-col items-start justify-center gap-[10px] md:items-center">
         <span className="body-md text-primary-100">

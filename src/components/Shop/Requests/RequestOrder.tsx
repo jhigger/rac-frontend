@@ -11,7 +11,13 @@ import {
   SaveAdd,
   TickCircle,
 } from "iconsax-react";
-import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type ReactNode,
+} from "react";
 import {
   Controller,
   FormProvider,
@@ -841,7 +847,22 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
   const id = `preview-item-${index}`;
   const dataClose = `#${id}`;
 
-  // const { getValues } = useFormContext<Inputs>(); // todo: add values to preview
+  const { getValues, watch } = useFormContext<ShopInputs>();
+  const ref = useRef<HTMLImageElement>(null);
+
+  const handleGetImage = () => {
+    const files = getValues(`requestItems.items.${index}.image`);
+    if (!files ?? files[0]) return;
+
+    const src = URL.createObjectURL(files[0] as unknown as Blob);
+    if (ref.current) {
+      ref.current.setAttribute("src", src);
+    }
+  };
+
+  useEffect(() => {
+    handleGetImage();
+  }, [watch(`requestItems.items.${index}.image`)]);
 
   return (
     <div
@@ -857,6 +878,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2">
           <div className="col-span-1 flex flex-col gap-[30px] text-2xl font-normal text-gray-900">
             <img
+              ref={ref}
               src="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
               alt=""
               className="aspect-square rounded-[20px] bg-center object-cover"
@@ -866,34 +888,42 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
                 Item Name:
               </label>
               <span id="item-name" className="title-lg text-neutral-900">
-                SteelSeries Rival 5 Gaming Mouse with PrismSync RGB Lighting and
-                9.....
+                {getValues(`requestItems.items.${index}.name`)}
               </span>
             </div>
           </div>
           <div className="col-span-1 flex flex-col gap-[10px] text-sm leading-5 tracking-[0.25px]">
-            <ItemPreviewDetails />
+            <ItemPreviewDetails index={index} />
 
             <div className="flex flex-col gap-[20px] rounded-[20px] bg-secondary-600 px-[24px] py-[20px] text-primary-10">
               <span className="title-lg">Shop For Me Costs</span>
               <div className="flex flex-col gap-[10px]">
                 <div className="label-lg flex justify-between">
                   <span>Urgent Purchase Cost:</span>
-                  <span>₦0.00</span>
+                  <span>
+                    $
+                    {(getValues(
+                      `requestItems.items.${index}.urgent`,
+                    ) as unknown as string) === "Yes"
+                      ? 999
+                      : 0}
+                  </span>
                 </div>
                 <hr className="bg-gray-200" />
                 <div className="flex justify-between">
                   <span>Cost of Item from Store</span>
-                  <span>₦189,000.00</span>
+                  <span>
+                    ${getValues(`requestItems.items.${index}.originalCost`)}
+                  </span>
                 </div>
                 <hr className="bg-gray-200" />
                 <div className="flex justify-between">
                   <span>Processing Fee:</span>
-                  <span>₦28,000.00</span>
+                  <span>$999</span>
                 </div>
                 <hr className="bg-gray-200" />
               </div>
-              <TotalCost />
+              <TotalCost total={1000} />
             </div>
           </div>
         </div>
@@ -914,34 +944,24 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
   );
 };
 
-const ItemPreviewDetails = () => {
+type ItemPreviewDetailsProps = { index: number };
+
+const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
+  const { getValues } = useFormContext<ShopInputs>();
+
   return (
     <div className="flex flex-col gap-[10px] overflow-y-auto rounded-[10px] bg-surface-500 px-[20px] py-[20px] md:max-h-[250px] md:gap-[20px] md:px-[24px] ">
-      <div className="flex flex-col gap-[10px] md:flex-row md:justify-between">
-        <div className="flex flex-col px-[14px]">
-          <label className="body-md text-neutral-700">Item Color:</label>
-          <span
-            id="item-name"
-            className="title-md md:title-lg text-neutral-900"
-          >
-            Amstel white
-          </span>
-        </div>
-        <div className="flex flex-col px-[14px]">
-          <label className="body-md text-neutral-700">Item Quantity:</label>
-          <span
-            id="item-name"
-            className="title-md md:title-lg text-neutral-900"
-          >
-            2
-          </span>
-        </div>
+      <div className="flex flex-col px-[14px]">
+        <label className="body-md text-neutral-700">Item Quantity:</label>
+        <span id="item-name" className="title-md md:title-lg text-neutral-900">
+          {getValues(`requestItems.items.${index}.quantity`)}
+        </span>
       </div>
 
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Country Of Purchase:</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          United States (Houston - warehouse)
+          {getValues(`requestItems.originWarehouse`)}
         </span>
       </div>
 
@@ -951,7 +971,7 @@ const ItemPreviewDetails = () => {
           id="item-name"
           className="title-md md:title-lg text-error-600 underline"
         >
-          https://a.co/d/gNEGYFM
+          {getValues(`requestItems.items.${index}.url`)}
         </span>
       </div>
 
@@ -960,18 +980,18 @@ const ItemPreviewDetails = () => {
           Cost of item from Store:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          $567.00
+          ${getValues(`requestItems.items.${index}.originalCost`)}
         </span>
       </div>
 
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Store</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          Amamzon
+          {getValues(`requestItems.items.${index}.store`)}
         </span>
       </div>
 
-      <div className="flex flex-col px-[14px]">
+      {/* <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Length:</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
           76in
@@ -990,14 +1010,14 @@ const ItemPreviewDetails = () => {
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
           89in
         </span>
-      </div>
+      </div> */}
 
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">
           Total Shipping Cost to your Warehouse & Sales Tax:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          $456.00
+          ${getValues(`requestItems.items.${index}.shippingCost`)}
         </span>
       </div>
 
@@ -1006,7 +1026,7 @@ const ItemPreviewDetails = () => {
           Additional Item Description:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          $456.00
+          {getValues(`requestItems.items.${index}.description`)}
         </span>
       </div>
     </div>

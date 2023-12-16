@@ -1,5 +1,8 @@
 import AccordionButton from "~/components/Forms/AccordionButton";
-import { LabelId } from "~/components/Shop/Orders";
+import {
+  DetailsInitiateShippingButton,
+  LabelId,
+} from "~/components/Shop/Orders";
 import {
   DetailSection,
   InitiateShippingButton,
@@ -66,7 +69,7 @@ const RequestDetails = () => {
   );
 };
 
-const OrderInformation = ({ info, onClick }: RequestInformationProps) => {
+export const OrderInformation = ({ info }: RequestInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -81,20 +84,19 @@ const OrderInformation = ({ info, onClick }: RequestInformationProps) => {
             <AccordionButton {...{ open, toggle }} />
           </div>
           {open && (
-            <div className="flex w-max flex-col gap-[15px]">
-              <div className="col-span-1 flex flex-col gap-[15px]">
-                <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Order Request Date:</span>
-                  <span className="title-lg text-neutral-900">{info.date}</span>
-                </div>
-                <div className="label-lg grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Shop for me status:</span>
-                  <span className="title-lg text-neutral-900">
-                    {requestStatuses[info.status]}
-                  </span>
-                </div>
+            <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+              <div className="md:col-span-2">
+                <DetailSection label="Order Request Date" value={info.date} />
+              </div>
+              <div className="md:col-span-2">
+                <DetailSection
+                  label="Request Status"
+                  value={requestStatuses[info.status]}
+                />
+              </div>
+              <div className="flex w-max items-center md:col-span-4">
                 {info.status === "Responded" && (
-                  <InitiateShippingButton onClick={onClick} />
+                  <DetailsInitiateShippingButton />
                 )}
               </div>
             </div>

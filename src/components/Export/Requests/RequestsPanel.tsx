@@ -12,6 +12,7 @@ import SearchBar from "~/components/Shop/SearchBar";
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import RequestOrder from "./RequestOrder";
+import RequestDetails from "./RequestDetails";
 
 const ExportRequestsPanel = () => {
   const { requestItems } = useExportContext();
@@ -25,11 +26,10 @@ const ExportRequestsPanel = () => {
     );
   }
 
-  // todo:
   if (activeAction === "request details") {
     return (
       <TabContentLayout>
-        <>{/* <RequestDetails /> */}</>
+        <RequestDetails />
       </TabContentLayout>
     );
   }

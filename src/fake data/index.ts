@@ -3,6 +3,11 @@ import {
   type AutoImportRequestPackageType,
 } from "~/contexts/AutoImportContext";
 import {
+  type ExportDraftPackageType,
+  type ExportOrderPackageType,
+  type ExportRequestPackageType,
+} from "~/contexts/ExportContext";
+import {
   type ImportDraftPackageType,
   type ImportOrderPackageType,
   type ImportRequestPackageType,
@@ -623,6 +628,325 @@ export const importRequests: ImportRequestPackageType[] = [
 ];
 
 export const importDrafts: ImportDraftPackageType[] = [
+  {
+    origin: "origin",
+    packageDeliveryStatus: "not started",
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    origin: "origin",
+    packageDeliveryStatus: "not started",
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+];
+
+export const exportOrders: ExportOrderPackageType[] = [
+  {
+    orderId: "OD08751",
+    orderStatus: "processed",
+    orderDate: new Date(),
+    trackingId: "SH08751",
+    shippingStatus: "not started",
+    shippingCost: 107.76,
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 0,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    orderId: "OD08752",
+    orderStatus: "not responded",
+    orderDate: new Date(),
+    trackingId: "SH08752",
+    shippingStatus: "arrived destination",
+    shippingCost: 107.76,
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 0,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    orderId: "OD08753",
+    orderStatus: "responded",
+    orderDate: new Date(),
+    trackingId: "SH08753",
+    shippingStatus: "ready for shipping",
+    shippingCost: 107.76,
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 0,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    orderId: "OD08754",
+    orderStatus: "processed",
+    orderDate: new Date(),
+    trackingId: "SH08754",
+    shippingStatus: "in transit",
+    shippingCost: 107.76,
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 0,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    orderId: "OD08755",
+    orderStatus: "not responded",
+    orderDate: new Date(),
+    trackingId: "SH08755",
+    shippingStatus: "processing",
+    shippingCost: 107.76,
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 0,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    orderId: "OD08756",
+    orderStatus: "responded",
+    orderDate: new Date(),
+    trackingId: "SH08756",
+    shippingStatus: "cleared",
+    shippingCost: 107.76,
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 0,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    orderId: "OD08757",
+    orderStatus: "responded",
+    orderDate: new Date(),
+    trackingId: "SH08757",
+    shippingStatus: "cancelled",
+    shippingCost: 107.76,
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 0,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    orderId: "OD08758",
+    orderStatus: "responded",
+    orderDate: new Date(),
+    trackingId: "SH08758",
+    shippingStatus: "delivered",
+    shippingCost: 107.76,
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 0,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+];
+
+export const exportRequests: ExportRequestPackageType[] = [
+  {
+    requestId: "OD08751",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    requestId: "OD08752",
+    requestStatus: "Responded",
+    requestDate: new Date(),
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    requestId: "OD08753",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    requestId: "OD08754",
+    requestStatus: "Responded",
+    requestDate: new Date(),
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    requestId: "OD08755",
+    requestStatus: "Not Responded",
+    requestDate: new Date(),
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+  {
+    requestId: "OD08756",
+    requestStatus: "Responded",
+    requestDate: new Date(),
+    items: [
+      {
+        name: "Designer Bags",
+        idType: "Tracking ID",
+        idNumber: "123456789",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: src,
+        description: "",
+      },
+    ],
+  },
+];
+
+export const exportDrafts: ExportDraftPackageType[] = [
   {
     origin: "origin",
     packageDeliveryStatus: "not started",

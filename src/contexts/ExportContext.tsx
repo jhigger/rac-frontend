@@ -11,6 +11,7 @@ import {
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
+import { exportDrafts, exportOrders, exportRequests } from "~/fake data";
 
 export type ExportContextType = {
   clearDrafts: () => void;
@@ -57,7 +58,7 @@ export type ExportDraftPackageType = ExportOrderPackageInput;
 export type ExportOrderPackageType = {
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
-  orderDate: string;
+  orderDate: Date;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shippingCost: number;
@@ -91,11 +92,11 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleDrafts = () => {
-    setDraftPackages([]);
+    setDraftPackages(exportDrafts);
   };
 
   const handleOrders = () => {
-    setOrderPackages([]);
+    setOrderPackages(exportOrders);
   };
 
   const handlePayNowAction = (action: ExportContextType["payNowAction"]) => {
@@ -103,7 +104,7 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestPackages([]);
+    setRequestPackages(exportRequests);
   };
 
   // testing purposes

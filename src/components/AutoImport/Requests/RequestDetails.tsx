@@ -79,7 +79,7 @@ const RequestDetails = () => {
   );
 };
 
-const PaymentsInformation = () => {
+export const PaymentsInformation = () => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -162,7 +162,7 @@ const OrderInformation = ({ info }: RequestInformationProps) => {
   );
 };
 
-const PackageOrigin = () => {
+export const PackageOrigin = () => {
   const { open, toggle } = useAccordion(true);
 
   return (

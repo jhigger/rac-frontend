@@ -42,6 +42,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping from "./InitiateShipping";
+import OrderDetails from "./OrderDetails";
 
 const AutoImportOrdersPanel = () => {
   const { orderItems } = useAutoImportContext();
@@ -63,13 +64,12 @@ const AutoImportOrdersPanel = () => {
     );
   }
 
-  // todo:
   if (activeAction === "order details") {
-    // return (
-    //   <TabContentLayout>
-    //     <OrderDetails />
-    //   </TabContentLayout>
-    // );
+    return (
+      <TabContentLayout>
+        <OrderDetails />
+      </TabContentLayout>
+    );
   }
 
   if (Array.isArray(orderItems) && orderItems.length > 0) {

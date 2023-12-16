@@ -1,14 +1,11 @@
 import { ExportSquare, FtxToken, ImportSquare } from "iconsax-react";
-import { useNavContext } from "~/contexts/NavigationContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import SearchInput from "../Forms/Inputs/SearchInput";
 
-const SearchBar = () => {
-  const { activeTab } = useTabContext();
-  const { activeNav } = useNavContext();
-  const page = activeNav.split(" ").join("-").toLowerCase();
+type SearchBarProps = { id?: string };
 
+const SearchBar = ({ id }: SearchBarProps) => {
   return (
     <>
       <div className="mb-[20px] hidden gap-[20px] sm:flex">
@@ -16,7 +13,7 @@ const SearchBar = () => {
           <FilterButton />
         </div>
         <div className="w-max sm:w-full md:w-max">
-          <SearchInput id={`${page}-${activeTab}-desktopSearch`} />
+          <SearchInput id={`${id}-desktopSearch`} />
         </div>
         <div className="flex flex-grow justify-end">
           <div className="w-max">
@@ -27,7 +24,7 @@ const SearchBar = () => {
       {/* for mobile version */}
       <div className="mb-[20px] flex flex-col items-center gap-[9px] sm:hidden">
         <div className="w-full">
-          <SearchInput id={`${page}-${activeTab}-mobileSearch`} />
+          <SearchInput id={`${id}-mobileSearch`} />
         </div>
         <div className="flex w-full justify-between gap-[20px]">
           <FilterButton />

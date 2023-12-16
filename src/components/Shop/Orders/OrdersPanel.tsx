@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
+import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
 import {
   ArrowCircleDown2,
   ArrowCircleRight2,
   ArrowSquareLeft,
   ArrowSquareRight,
-  ArrowSwapVertical,
   ClipboardTick,
   CloseCircle,
   ExportCircle,
@@ -14,6 +14,7 @@ import {
 } from "iconsax-react";
 import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
+import { capitalizeWords } from "~/Utils";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import {
   useShopContext,
@@ -31,7 +32,7 @@ import SearchBar from "../SearchBar";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
-import { capitalizeWords } from "~/Utils";
+import OrderTable from "./OrderTable";
 
 const OrdersPanel = () => {
   const { orderPackages, isFetchingOrderPackages } = useShopContext();
@@ -74,7 +75,7 @@ const OrdersPanel = () => {
   if (Array.isArray(orderPackages) && orderPackages.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar />
+        <SearchBar id="shopOrders" />
         <OrdersTable />
         <NeedHelpFAB />
       </TabContentLayout>
@@ -101,176 +102,123 @@ const OrdersTable = () => {
 
   return (
     <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
-      <div className="flex flex-col gap-[20px]">
-        <div className="overflow-x-scroll ">
-          <table className="relative w-full min-w-max table-auto text-left">
-            <OrderTableHead th={tableHeads} />
-            <OrderTableBody orderItems={orderPackages} />
-          </table>
-        </div>
-      </div>
+      <OrderTable columns={defaultColumns} data={orderPackages} />
       <TableFooter />
     </div>
   );
 };
 
+const columnHelper = createColumnHelper<ShopOrderPackageType>();
+
+const defaultColumns = [
+  columnHelper.display({
+    id: "checkbox",
+    header: () => (
+      <input
+        type="checkbox"
+        className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+        checked={undefined}
+      />
+    ),
+    cell: ({ row }) => (
+      <input
+        type="checkbox"
+        name={`check-${row.index}`}
+        className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+        checked={undefined}
+      />
+    ),
+  }),
+  columnHelper.display({
+    id: "images",
+    header: "Package(s) Image",
+    cell: ({ row }) => (
+      <ImageColumn images={row.original.items.map((item) => item.image)} />
+    ),
+  }),
+  columnHelper.accessor("orderId", {
+    header: "Order ID",
+    cell: ({ row }) => (
+      <span className="title-md font-medium">{row.original.orderId}</span>
+    ),
+  }),
+  columnHelper.display({
+    id: "orderStatus",
+    header: "Order Status",
+    cell: ({ row }) => (
+      <span className="title-md font-medium">
+        {capitalizeWords(row.original.orderStatus)}
+      </span>
+    ),
+  }),
+  columnHelper.accessor("orderDate", {
+    header: "Order Date",
+    cell: ({ row }) => (
+      <span className="title-md font-medium">
+        {row.original.orderDate.toLocaleString()}
+      </span>
+    ),
+  }),
+  columnHelper.accessor("trackingId", {
+    header: "Tracking ID",
+    cell: ({ row }) => (
+      <span className="title-md font-medium text-primary-900">
+        {row.original.trackingId}
+      </span>
+    ),
+  }),
+  columnHelper.display({
+    id: "shippingStatus",
+    header: "Shipping Status",
+    cell: ({ row }) => (
+      <ShippingStatus
+        id={row.original.orderId}
+        status={row.original.shippingStatus}
+      />
+    ),
+  }),
+  columnHelper.display({
+    id: "shopForMeStatus",
+    header: "Shop For Me Status",
+    cell: ({ row }) => (
+      <span className="title-md font-medium">
+        {capitalizeWords(row.original.shopForMeStatus)}
+      </span>
+    ),
+  }),
+  columnHelper.accessor("shopForMeCost", {
+    header: "Shop For Me Cost",
+    cell: ({ row }) => (
+      <span className="title-md flex gap-[5px] font-medium">
+        <TickSquare size="20" variant="Bold" className="text-primary-600" />$
+        {row.original.shopForMeCost}
+      </span>
+    ),
+  }),
+  columnHelper.accessor("shippingCost", {
+    header: "Shipping Cost",
+    cell: ({ row }) => (
+      <span className="title-md flex gap-[5px] font-medium">
+        <More size="20" variant="Bold" className="text-error-600" />$
+        {row.original.shippingCost}
+      </span>
+    ),
+  }),
+  columnHelper.display({
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => <MoreButton index={row.index} />,
+  }),
+] as Array<ColumnDef<ShopOrderPackageType, unknown>>;
+
 export type TableHeadType = { title: string; sortIcon: boolean };
-
-const tableHeads: TableHeadType[] = [
-  { title: "Package(s) Image", sortIcon: false },
-  { title: "Order ID", sortIcon: true },
-  { title: "Order Status", sortIcon: false },
-  { title: "Order Date", sortIcon: true },
-  { title: "Tracking ID", sortIcon: true },
-  { title: "Shipping Status", sortIcon: false },
-  { title: "Shop For Me Status", sortIcon: false },
-  { title: "Shop For Me Cost", sortIcon: true },
-  { title: "Shipping Cost", sortIcon: true },
-];
-
-type OrderTableHeadProps = { th: TableHeadType[] };
-
-const OrderTableHead = ({ th }: OrderTableHeadProps) => {
-  return (
-    <thead className="title-sm sticky top-0 z-10 grid grid-cols-[50px_repeat(10,1fr)] gap-[20px] p-[20px] font-medium text-neutral-900">
-      <tr className="col-span-1 w-max">
-        <th className="border-0 p-0">
-          <input
-            type="checkbox"
-            name="check-all"
-            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-            checked={undefined}
-          />
-        </th>
-      </tr>
-
-      {th.map(({ title, sortIcon }) => {
-        return (
-          <tr key={title} className="col-span-1">
-            <th className="flex items-center gap-[20px] whitespace-nowrap border-0 p-0">
-              {title}
-              {sortIcon && (
-                <ArrowSwapVertical
-                  className="self-end text-neutral-500"
-                  size="20"
-                />
-              )}
-            </th>
-          </tr>
-        );
-      })}
-
-      <tr className="col-span-1">
-        <th className="border-0 p-0">Action</th>
-      </tr>
-    </thead>
-  );
-};
-
-type OrderTableBodyProps = {
-  orderItems: ShopOrderPackageType[];
-};
-
-const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
-  const { handleActiveAction, handleViewIndex } = useTabContext();
-
-  const handleViewDetails = (index: number) => {
-    handleViewIndex(index);
-    handleActiveAction("order details");
-  };
-
-  return (
-    <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
-      {orderItems.map(
-        (
-          {
-            items,
-            orderId,
-            orderStatus,
-            orderDate,
-            shippingCost,
-            shippingStatus,
-            trackingId,
-            shopForMeStatus,
-            shopForMeCost,
-          },
-          i,
-        ) => {
-          const images = items.map((item) => item.image);
-
-          return (
-            <tr
-              key={orderId}
-              className="grid grid-cols-[50px_repeat(10,1fr)] items-center gap-[20px] bg-gray-10 px-[20px] py-[20px]"
-            >
-              <td className="border-0 p-0">
-                <input
-                  type="checkbox"
-                  name={`check-${orderId}`}
-                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-                  checked={undefined}
-                />
-              </td>
-              <td className="border-0 p-0">
-                <ImageColumn images={images} />
-              </td>
-              <td className="border-0 p-0">
-                <p className="title-md whitespace-nowrap">{orderId}</p>
-              </td>
-              <td className="border-0 p-0">
-                <p className="title-md whitespace-nowrap">
-                  {capitalizeWords(orderStatus)}
-                </p>
-              </td>
-              <td className="border-0 p-0">
-                <p className="label-lg whitespace-nowrap text-neutral-900">
-                  {orderDate.toLocaleString()}
-                </p>
-              </td>
-              <td className="border-0 p-0">
-                <p className="title-md text-primary-900">{trackingId}</p>
-              </td>
-              <td className="title-sm max-w-[150px] border-0 p-0">
-                <ShippingStatus
-                  id={orderId}
-                  status={shippingStatus as ShippingStatusProps["status"]}
-                />
-              </td>
-              <td className="border-0 p-0">
-                <p className="title-md whitespace-nowrap">
-                  {capitalizeWords(shopForMeStatus)}
-                </p>
-              </td>
-              <td className="flex gap-[5px] border-0 p-0">
-                <TickSquare
-                  size="20"
-                  variant="Bold"
-                  className="text-primary-600"
-                />
-                <p className="title-md">{shopForMeCost}</p>
-              </td>
-              <td className="flex gap-[5px] border-0 p-0">
-                <More size="20" variant="Bold" className="text-error-600" />
-
-                <p className="title-md">{shippingCost}</p>
-              </td>
-              <td className="border-0 p-0">
-                <MoreButton handleViewDetails={() => handleViewDetails(i)} />
-              </td>
-            </tr>
-          );
-        },
-      )}
-    </tbody>
-  );
-};
 
 type ImageColumnProps = { images: string[] };
 
 export const ImageColumn = ({ images }: ImageColumnProps) => {
   return (
     <div className="w-full max-w-[130px] border-0 p-0">
-      <div className="grid max-h-[150px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-[5px]">
+      <div className="grid h-full max-h-[50px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-[5px] overflow-hidden rounded-[10px]">
         {images.length === 1 && (
           <div className="col-span-full row-span-full overflow-hidden rounded-[10px]">
             <img src={images[0]} alt="package image" />

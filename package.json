@@ -13,6 +13,7 @@
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.7.1",
     "@tanstack/react-query": "^5.12.2",
+    "@tanstack/react-table": "^8.10.7",
     "axios": "^1.6.2",
     "country-state-city": "^3.2.1",
     "iconsax-react": "^0.0.8",

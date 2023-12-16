@@ -57,11 +57,16 @@ export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
   );
 };
 
-type MoreButtonProps = { handleViewDetails: () => void };
+type MoreButtonProps = { handleViewDetails?: () => void; index?: number };
 
-export const MoreButton = ({ handleViewDetails }: MoreButtonProps) => {
+// todo: refactor, get index only
+export const MoreButton = ({ handleViewDetails, index }: MoreButtonProps) => {
+  const { handleActiveAction, handleViewIndex } = useTabContext();
+
   const onClick = () => {
-    handleViewDetails();
+    handleViewDetails?.();
+    handleViewIndex(index ?? 0);
+    handleActiveAction("order details");
   };
 
   return (

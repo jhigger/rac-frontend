@@ -29,7 +29,7 @@ import {
 
 const RequestDetails = () => {
   const { requestItems } = useAutoImportContext();
-  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+  const { viewIndex, handleActiveAction } = useTabContext();
 
   if (viewIndex === null) return;
 
@@ -43,19 +43,12 @@ const RequestDetails = () => {
     handleActiveAction(null);
   };
 
-  // todo: refactor
-  const handleProceed = () => {
-    handleTabChange("orders");
-    handleActiveAction("initiate shipping");
-  };
-
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Auto Import Order Request Details" />
       <LabelId label="Request ID" id={requestPackage.requestId} />
       <OrderInformation
         info={{ date: requestPackage.requestDate.toLocaleString(), status }}
-        onClick={handleProceed}
       />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
@@ -71,9 +64,7 @@ const RequestDetails = () => {
       <PaymentsInformation />
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        {status === "Responded" && (
-          <InitiateShippingButton onClick={handleProceed} />
-        )}
+        {status === "Responded" && <InitiateShippingButton />}
       </div>
     </div>
   );

@@ -360,7 +360,7 @@ export const requestStatuses = {
   "Not Responded": <NotRespondedStatus />,
 };
 
-export type RequestInformationProps = ProceedButtonProps & {
+export type RequestInformationProps = Partial<ProceedButtonProps> & {
   info: { date: string; status: (typeof REQUEST_STATUS)[number] };
 };
 

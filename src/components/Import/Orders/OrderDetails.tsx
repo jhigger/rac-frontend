@@ -27,6 +27,7 @@ import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import { OrderItem } from "./ClearPackage";
+import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 
 const OrderDetails = () => {
   const { orderItems } = useImportContext();
@@ -66,12 +67,49 @@ const OrderDetails = () => {
       </div>
       <SectionHeader title="Shipping Details" />
       <DestinationShippingAddress />
-      <SectionHeader title="Billing details" />
+      <SectionHeader title="Billing Details" />
       <DefaultBillingAddress />
+      <PaymentsInformation />
       <div className="flex w-max gap-[10px] whitespace-nowrap">
-        <BackButton onClick={handleBack} />
+        <BackButton onClick={handleBack} />P
       </div>
     </div>
+  );
+};
+
+const PaymentsInformation = () => {
+  const { open, toggle } = useAccordion(true);
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[30px]">
+        <div className="flex w-full items-center justify-between">
+          <h4 className="title-md md:title-lg text-gray-700">
+            Payments Information
+          </h4>
+          <AccordionButton {...{ open, toggle }} />
+        </div>
+        {open && (
+          <>
+            <div className="flex flex-col gap-[10px]">
+              <HighlightedInfo text="This Shipment Cost is subjected to increase to any Valid reason like delayed clearing and co. Also, you shall be paying the dollar equivalent in any of your chosen currency at the time of Clearing." />
+              <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+                <DetailSection
+                  label="Total Shipment Cost"
+                  value="$234,000.00"
+                  colSpanDesktop={5}
+                />
+                <DetailSection
+                  label="Payment Status"
+                  value="Unpaid"
+                  colSpanDesktop={5}
+                />
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </SectionContentLayout>
   );
 };
 
@@ -109,7 +147,7 @@ export type OrderInformationProps = {
   info: { date: string; status: (typeof SHIPPING_STATUS)[number] };
 };
 
-const OrderInformation = ({ info }: OrderInformationProps) => {
+export const OrderInformation = ({ info }: OrderInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (

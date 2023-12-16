@@ -38,6 +38,7 @@ import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import InitiateShipping from "./InitiateShipping";
+import OrderDetails from "./OrderDetails";
 
 const ExportOrdersPanel = () => {
   const { orderItems } = useExportContext();
@@ -51,13 +52,12 @@ const ExportOrdersPanel = () => {
     );
   }
 
-  // todo:
   if (activeAction === "order details") {
-    // return (
-    // <TabContentLayout>
-    //   <OrderDetails />
-    // </TabContentLayout>
-    // );
+    return (
+      <TabContentLayout>
+        <OrderDetails />
+      </TabContentLayout>
+    );
   }
 
   if (Array.isArray(orderItems) && orderItems.length > 0) {

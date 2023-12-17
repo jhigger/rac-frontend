@@ -64,7 +64,7 @@ const MainTable = <T extends object>({ data, columns }: ReactTableProps<T>) => {
   );
 
   return (
-    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
+    <div className="flex max-w-max flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
       <div className="h-[calc(100vh-552px)] overflow-auto md:h-[calc(100vh-431px)]">
         <table className="relative w-max">
           <thead className="title-sm sticky top-0 z-10 bg-white font-medium text-neutral-900">

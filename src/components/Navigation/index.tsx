@@ -24,10 +24,9 @@ export const NavItem = ({ navItem, onClick }: NavItemProps) => {
   };
 
   return (
-    <button
+    <div
       data-close="#sheet_b"
       onClick={handleClick}
-      type="button"
       className={`flex w-full items-center bg-opacity-[8%] hover:bg-[url('/images/nav/nav_item_hover_bg.svg')] ${
         navItem.title === activeNav &&
         "bg-[url('/images/nav/nav_item_hover_bg.svg')]"
@@ -35,7 +34,7 @@ export const NavItem = ({ navItem, onClick }: NavItemProps) => {
     >
       <span className="p-[16px]">{navItem.src}</span>
       <span className="body-lg text-gray-100">{navItem.title}</span>
-    </button>
+    </div>
   );
 };
 

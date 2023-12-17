@@ -23,6 +23,7 @@ interface ReactTableProps<T extends object> {
 const MainTable = <T extends object>({ data, columns }: ReactTableProps<T>) => {
   const defaultColumns = useMemo(() => columns, []);
   const [sorting, setSorting] = useState<SortingState>([]);
+  // todo: move pagination state to context close to useQuery if going with server side pagination
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,

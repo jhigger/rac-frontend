@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { type ColumnDef, createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import {
   ArrowCircleDown2,
   ArrowCircleRight2,
@@ -24,6 +24,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import { LabelId, MoreButton } from ".";
 import TabContentLayout from "../../Layouts/TabContentLayout";
+import MainTable from "../../MainTable";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import RequestOrderButton from "../RequestOrderButton";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
@@ -32,7 +33,6 @@ import SearchBar from "../SearchBar";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
-import OrderTable from "./OrderTable";
 
 const OrdersPanel = () => {
   const { orderPackages, isFetchingOrderPackages } = useShopContext();
@@ -100,12 +100,7 @@ const OrdersPanel = () => {
 const OrdersTable = () => {
   const { orderPackages } = useShopContext();
 
-  return (
-    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
-      <OrderTable columns={defaultColumns} data={orderPackages} />
-      <TableFooter />
-    </div>
-  );
+  return <MainTable columns={defaultColumns} data={orderPackages} />;
 };
 
 const columnHelper = createColumnHelper<ShopOrderPackageType>();
@@ -732,11 +727,11 @@ export const TableFooter = () => {
 };
 
 type SelectNumberProps = {
-  value?: string;
+  value?: string | number;
   onChange?: ChangeEventHandler<HTMLSelectElement>;
 };
 
-const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
+export const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
   return (
     <div className="relative z-0 w-full">
       <select
@@ -746,6 +741,7 @@ const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
         onChange={onChange}
         className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 pr-[60px] leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
       >
+        <option value="5">5</option>
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="30">30</option>

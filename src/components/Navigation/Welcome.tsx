@@ -5,7 +5,7 @@ const Welcome = () => {
   const { user } = useAuthContext();
 
   return (
-    <div className="mb-[28px] w-[253px] rounded-r-[20px] bg-neutral-100 bg-opacity-[8%]">
+    <div className="mb-[28px] max-w-[253px] rounded-r-[20px] bg-neutral-100 bg-opacity-[8%]">
       <div className="flex items-center gap-[10px] px-[10px] py-[18px]">
         <img
           src={"https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto"}

@@ -41,7 +41,7 @@ export const NavItem = ({ navItem, onClick }: NavItemProps) => {
 
 export const TopNav = () => {
   return (
-    <div className="flex flex-col gap-[16px]">
+    <div className="flex flex-col gap-[16px] overflow-y-auto">
       <Link href="/">
         <NavItem
           navItem={{
@@ -77,7 +77,7 @@ export const BottomNav = () => {
   const { handleLogout } = useAuthContext();
 
   return (
-    <div className="flex flex-1 flex-col justify-end pb-[44px]">
+    <div className="flex flex-1 flex-col justify-end pb-[32px]">
       <div className="px-[20px]">
         <hr className="w-full border-gray-700" />
       </div>
@@ -96,7 +96,6 @@ export const BottomNav = () => {
         }}
         onClick={handleLogout}
       />
-      ;
     </div>
   );
 };

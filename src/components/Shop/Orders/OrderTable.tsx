@@ -34,7 +34,7 @@ const OrderTable = <T extends object>({
   });
 
   return (
-    <div className="max-h-[calc(100vh-431px)] overflow-auto">
+    <div className="max-h-[calc(100vh-552px)] md:max-h-[calc(100vh-431px)] overflow-auto">
       <table className="relative w-max">
         <thead className="title-sm sticky top-0 z-10 bg-white font-medium text-neutral-900">
           {table.getHeaderGroups().map((headerGroup) => (

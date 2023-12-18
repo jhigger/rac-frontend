@@ -323,8 +323,7 @@ const ItemDetailsSection = ({
                     handleAdd={() => {
                       const prev =
                         getValues(`requestItems.items.${index}.quantity`) ?? 0;
-                      if (prev <= 1) return;
-                      const value = prev - 1;
+                      const value = prev + 1;
                       setValue(`requestItems.items.${index}.quantity`, value);
                     }}
                     handleSubtract={() => {

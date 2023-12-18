@@ -55,3 +55,24 @@ export const STORES = [
 ] as const;
 
 export const CONDITIONS = ["Drivable", "Not Drivable"] as const;
+
+export const SERVICES = [
+  "export",
+  "import",
+  "auto import",
+  "shop for me",
+] as const;
+
+export const NAV_TITLES = [
+  "Home",
+  "Shop For Me",
+  "Export",
+  "Import",
+  "Auto Import",
+  "Tracking",
+  "Billing",
+  "Get a Quote",
+  "Help",
+  "Settings",
+  "Logout",
+] as const;

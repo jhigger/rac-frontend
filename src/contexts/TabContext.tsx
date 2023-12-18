@@ -51,7 +51,7 @@ type AppBarTabType = { nav: NavTitleType; tabs: TabType[] };
 
 export const tabs: [AppBarTabType, ...AppBarTabType[]] = [
   {
-    nav: "Shop for me",
+    nav: "Shop For Me",
     tabs: [
       { id: "orders", title: "Orders", content: <ShopOrdersPanel /> },
       { id: "requests", title: "Requests", content: <ShopRequestsPanel /> },

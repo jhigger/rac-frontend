@@ -19,15 +19,19 @@ const BreadCrumbs = () => {
         </div>
       </span>
 
-      <ArrowLeft size={10} color="#292D32" variant="Outline" />
-      <span className="title-sm text-secondary-600">
-        <div className="hidden [@media(min-width:375px)]:block">
-          {activeTab}
-        </div>
-        <div className="[@media(min-width:375px)]:hidden">
-          {activeAction ? "..." : activeTab}
-        </div>
-      </span>
+      {activeTab && (
+        <>
+          <ArrowLeft size={10} color="#292D32" variant="Outline" />
+          <span className="title-sm text-secondary-600">
+            <div className="hidden [@media(min-width:375px)]:block">
+              {activeTab}
+            </div>
+            <div className="[@media(min-width:375px)]:hidden">
+              {activeAction ? "..." : activeTab}
+            </div>
+          </span>
+        </>
+      )}
 
       {activeAction && (
         <>

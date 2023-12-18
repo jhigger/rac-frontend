@@ -1111,9 +1111,12 @@ export const SaveAsDraftButton = () => {
   );
 };
 
-type ProceedButtonProps = { next: () => void };
+type ProceedButtonProps = { label?: string; next: () => void };
 
-export const ProceedButton = ({ next }: ProceedButtonProps) => {
+export const ProceedButton = ({
+  label = "Proceed",
+  next,
+}: ProceedButtonProps) => {
   return (
     <button
       onClick={next}
@@ -1121,7 +1124,7 @@ export const ProceedButton = ({ next }: ProceedButtonProps) => {
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <ArrowCircleRight2 size={18} variant="Bold" />
-      <span className="body-lg text-white">Proceed</span>
+      <span className="body-lg text-white">{label}</span>
     </button>
   );
 };

@@ -18,6 +18,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { type NAV_TITLES } from "~/constants";
 
 export type NavContextType = {
   activeNav: NavTitleType;
@@ -27,20 +28,6 @@ export type NavContextType = {
 export const NavContext = createContext<NavContextType>({} as NavContextType);
 
 export const useNavContext = () => useContext(NavContext);
-
-const NAV_TITLES = [
-  "Home",
-  "Shop for me",
-  "Export",
-  "Import",
-  "Auto Import",
-  "Tracking",
-  "Billing",
-  "Get a Quote",
-  "Help",
-  "Settings",
-  "Logout",
-] as const;
 
 export type NavTitleType = (typeof NAV_TITLES)[number];
 
@@ -53,7 +40,7 @@ export type NavItemType = {
 export const topNavItems: NavItemType[] = [
   {
     src: <Shop className="text-gray-400" />,
-    title: "Shop for me",
+    title: "Shop For Me",
     href: "/shop",
   },
   {
@@ -106,7 +93,7 @@ export const navItems: NavItemType[] = [
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [activeNav, setActiveNav] =
-    useState<NavItemType["title"]>("Shop for me");
+    useState<NavItemType["title"]>("Shop For Me");
 
   const handleActiveNavChange = (navTitle: NavTitleType) => {
     setActiveNav(navTitle);

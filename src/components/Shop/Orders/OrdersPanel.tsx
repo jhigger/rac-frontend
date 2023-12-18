@@ -111,6 +111,7 @@ const defaultColumns = [
     header: () => (
       <input
         type="checkbox"
+        name={"checkAll"}
         className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
         checked={undefined}
       />

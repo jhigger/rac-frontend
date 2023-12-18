@@ -324,11 +324,7 @@ type SectionHeaderProps = { title: string; hr?: boolean };
 export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
   return (
     <div className="flex items-start gap-[10px]">
-      <ArrowCircleRight
-        size={20}
-        variant="Bold"
-        className="text-secondary-900"
-      />
+      <ArrowCircleRight variant="Bold" className="text-secondary-900" />
       <div className="flex w-full flex-col gap-[10px]">
         <h3 className="label-lg font-medium text-secondary-900">{title}</h3>
         {hr && <hr className="hidden w-full border-gray-500 md:block" />}

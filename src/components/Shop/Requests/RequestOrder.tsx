@@ -491,9 +491,20 @@ export const ItemDetailsSection = ({
                     {...register(`requestItems.items.${index}.quantity`, {
                       valueAsNumber: true,
                     })}
-                    setValue={setValue}
-                    getValues={getValues}
-                    index={index}
+                    handleAdd={() => {
+                      const prev =
+                        getValues(`requestItems.items.${index}.quantity`) ?? 0;
+                      if (prev <= 1) return;
+                      const value = prev - 1;
+                      setValue(`requestItems.items.${index}.quantity`, value);
+                    }}
+                    handleSubtract={() => {
+                      const prev =
+                        getValues(`requestItems.items.${index}.quantity`) ?? 0;
+                      if (prev <= 1) return;
+                      const value = prev - 1;
+                      setValue(`requestItems.items.${index}.quantity`, value);
+                    }}
                   />
                 </div>
 

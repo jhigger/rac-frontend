@@ -5,41 +5,21 @@ import {
   type FocusEventHandler,
   type Ref,
 } from "react";
-import { type UseFormGetValues, type UseFormSetValue } from "react-hook-form";
-import { type ImportInputs } from "~/components/Import/Requests/RequestOrder";
-import { type ShopInputs } from "~/components/Shop/Requests/RequestOrder";
-
-type GetValueType = UseFormGetValues<ShopInputs | ImportInputs>;
-type SetValueType = UseFormSetValue<ShopInputs | ImportInputs>;
 
 type QuantityInputProps = {
   id: string;
-  index: number;
   label: string;
-  getValues: GetValueType;
-  setValue: SetValueType;
+  handleAdd: () => void;
+  handleSubtract: () => void;
   value?: number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
 const QuantityInput = (
-  { id, index, label, setValue, getValues, ...props }: QuantityInputProps,
+  { id, label, handleAdd, handleSubtract, ...props }: QuantityInputProps,
   ref: Ref<HTMLInputElement>,
 ) => {
-  const handleSubtract = () => {
-    const prev = getValues(`requestItems.items.${index}.quantity`) ?? 0;
-    if (prev <= 1) return;
-    const value = prev - 1;
-    setValue(`requestItems.items.${index}.quantity`, value);
-  };
-
-  const handleAdd = () => {
-    const prev = getValues(`requestItems.items.${index}.quantity`) ?? 0;
-    const value = prev + 1;
-    setValue(`requestItems.items.${index}.quantity`, value);
-  };
-
   return (
     <div className="relative flex w-full flex-col">
       <div className="relative z-0">

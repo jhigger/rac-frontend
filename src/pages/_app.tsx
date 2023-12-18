@@ -38,9 +38,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <QueryClientProvider client={queryClient}>
         <NavContextProvider>
           <AuthContextProvider>
-            <main className={roboto.className}>
+            <div className={roboto.className}>
               <Component {...pageProps} />
-            </main>
+            </div>
           </AuthContextProvider>
         </NavContextProvider>
       </QueryClientProvider>

@@ -1,4 +1,5 @@
-import { ExportSquare, FtxToken, ImportSquare } from "iconsax-react";
+import { FtxToken } from "iconsax-react";
+import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import SearchInput from "../Forms/Inputs/SearchInput";
@@ -83,6 +84,7 @@ const FilterButton = () => {
 };
 
 const RequestNewOrderButton = () => {
+  const { activeNav } = useNavContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const handleNewOrder = () => {
@@ -96,14 +98,9 @@ const RequestNewOrderButton = () => {
       aria-label="Filter"
       className="btn relative flex h-14 w-full flex-row items-center justify-center gap-[9px] rounded-[20px] bg-brand px-[8px] py-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 md:gap-x-[12px] md:p-4"
     >
-      <ImportSquare
-        variant="Bold"
-        className="hidden w-[18px] md:block md:w-6"
-      />
-      <ExportSquare
-        variant="Bold"
-        className="block w-[18px] md:hidden md:w-6"
-      />
+      <span className="[&>*]:text-white">
+        {navItems.find((navItem) => activeNav === navItem.title)?.src}
+      </span>
       <span className="label-lg text-neutral-100">Request new order</span>
     </button>
   );

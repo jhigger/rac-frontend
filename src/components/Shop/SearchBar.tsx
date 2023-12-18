@@ -13,19 +13,22 @@ const SearchBar = ({ id }: SearchBarProps) => {
         <div className="w-max">
           <FilterButton />
         </div>
-        <div className="w-max sm:w-full md:w-max">
-          <SearchInput id={`${id}-desktopSearch`} />
-        </div>
-        <div className="flex flex-grow justify-end">
-          <div className="w-max">
-            <RequestNewOrderButton />
+        <div className="flex-grow">
+          <div className="overflow-x-clip lg:w-max">
+            <SearchInput
+              id={`${id}-desktopSearch`}
+              label="Search for users with any related keyword"
+            />
           </div>
+        </div>
+        <div className="w-max">
+          <RequestNewOrderButton />
         </div>
       </div>
       {/* for mobile version */}
       <div className="mb-[20px] flex flex-col items-center gap-[9px] sm:hidden">
         <div className="w-full">
-          <SearchInput id={`${id}-mobileSearch`} />
+          <SearchInput id={`${id}-mobileSearch`} label="Search" />
         </div>
         <div className="flex w-full justify-between gap-[20px]">
           <FilterButton />

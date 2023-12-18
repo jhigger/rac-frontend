@@ -116,7 +116,7 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const [viewIndex, setViewIndex] = useState<number | null>(null);
 
   const handleTabChange = (tabId: TabIdType | null) => {
-    let clickedTabIndex = 0;
+    let clickedTabIndex = null;
     tabs.forEach(({ nav, tabs }) => {
       if (nav === activeNav)
         tabs.forEach((tab, i) => {
@@ -126,8 +126,10 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
         });
     });
 
-    if (!tabsRef.current[clickedTabIndex]) return;
-    tabsRef.current[clickedTabIndex]?.click();
+    if (clickedTabIndex) {
+      if (!tabsRef.current[clickedTabIndex]) return;
+      tabsRef.current[clickedTabIndex]?.click();
+    }
     setActiveTab(tabId);
     reset();
   };

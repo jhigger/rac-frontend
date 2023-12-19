@@ -92,9 +92,13 @@ const Step1 = () => {
 };
 
 const Step2 = () => {
+  const { getValues } = useFormContext<SearchInputType>();
   const { orderPackage } = useTrackingContext();
 
-  if (!orderPackage) return;
+  if (!orderPackage)
+    return (
+      <LabelId label="Tracking ID Not Found" id={getValues("trackingId")} />
+    );
 
   return (
     <>

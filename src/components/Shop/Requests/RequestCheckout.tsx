@@ -522,7 +522,7 @@ const PaymentMethod = ({
   );
 };
 
-type SubSectionTitleProps = { title: string };
+type SubSectionTitleProps = { title: string | JSX.Element };
 
 export const SubSectionTitle = ({ title }: SubSectionTitleProps) => {
   return <h4 className="title-md md:title-lg text-gray-700">{title}</h4>;

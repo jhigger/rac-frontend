@@ -1004,7 +1004,7 @@ const GetAQuoteButton = () => {
   );
 };
 
-const CustomerSupportButton = () => {
+export const CustomerSupportButton = () => {
   const onClick = () => {
     return;
   };

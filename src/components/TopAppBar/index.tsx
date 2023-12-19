@@ -15,7 +15,6 @@ import {
   useNotificationContext,
   type NotificationItemType,
 } from "~/contexts/NotificationContext";
-import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import { CloseButton } from "../Buttons";
 import {
@@ -238,28 +237,24 @@ export const PreviewNotificationButton = ({
   dataClose,
   notification,
 }: PreviewNotificationButtonProps) => {
-  const { handleCustomText } = useTabContext();
   const { handleSelectedNotification } = useNotificationContext();
 
   const handleClick = () => {
     handleSelectedNotification(notification);
-    handleCustomText(
-      notificationMessages[notification.type].getCustomText(notification.order),
-    );
   };
 
   return (
-    <>
-      <button
+    <Link href="/notifications">
+      <div
         onClick={handleClick}
         data-close={dataClose}
         aria-label="Preview Notification"
         className="btn relative hidden flex-row items-center justify-center rounded-[6.25rem] md:flex"
       >
         <Eye />
-      </button>
+      </div>
 
-      <button
+      <div
         onClick={handleClick}
         data-close={dataClose}
         aria-label="Preview Notification"
@@ -267,8 +262,8 @@ export const PreviewNotificationButton = ({
       >
         <Eye size={18} variant="Bold" />
         <span>Preview</span>
-      </button>
-    </>
+      </div>
+    </Link>
   );
 };
 

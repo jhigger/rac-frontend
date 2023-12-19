@@ -1,9 +1,11 @@
 import dayjs from "dayjs";
 import { ExportCircle } from "iconsax-react";
+import { useEffect } from "react";
 import { type NOTIFICATION_TYPES } from "~/constants";
 import { type AutoImportOrderPackageType } from "~/contexts/AutoImportContext";
 import { type ExportOrderPackageType } from "~/contexts/ExportContext";
 import { type ImportOrderPackageType } from "~/contexts/ImportContext";
+import { useNavContext } from "~/contexts/NavigationContext";
 import {
   useNotificationContext,
   type NotificationItemType,
@@ -30,6 +32,17 @@ const NotificationList = () => {
   const { handleCustomText } = useTabContext();
   const { notifications, selectedNotification, handleSelectedNotification } =
     useNotificationContext();
+  const { activeNav } = useNavContext();
+
+  useEffect(() => {
+    if (selectedNotification) {
+      handleCustomText(
+        notificationMessages[selectedNotification.type].getCustomText(
+          selectedNotification.order,
+        ),
+      );
+    }
+  }, [selectedNotification, activeNav]);
 
   if (selectedNotification) {
     const handleBack = () => {

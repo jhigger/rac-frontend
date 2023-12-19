@@ -15,18 +15,11 @@ export type NavItemProps = {
 };
 
 export const NavItem = ({ navItem, onClick }: NavItemProps) => {
-  const { activeNav, handleActiveNavChange } = useNavContext();
-
-  const handleClick = () => {
-    if (onClick) return onClick();
-
-    handleActiveNavChange(navItem.title);
-  };
+  const { activeNav } = useNavContext();
 
   return (
     <div
-      data-close="#sheet_b"
-      onClick={handleClick}
+      onClick={onClick}
       className={`flex w-full items-center bg-opacity-[8%] hover:bg-[url('/images/nav/nav_item_hover_bg.svg')] ${
         navItem.title === activeNav &&
         "bg-[url('/images/nav/nav_item_hover_bg.svg')]"

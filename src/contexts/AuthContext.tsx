@@ -92,8 +92,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         const token = cookies.jwt as string;
         return await useFetchUser(token).then(async (userData) => {
           console.log("user found");
-          console.log("redirecting to shop...");
-          redirectTo("/shop");
+          console.log(`redirecting to ${router.asPath}...`);
+          redirectTo(router.asPath);
           return userData;
         });
       }

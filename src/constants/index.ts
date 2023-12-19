@@ -75,4 +75,11 @@ export const NAV_TITLES = [
   "Help",
   "Settings",
   "Logout",
+  "Notifications",
+] as const;
+
+export const NOTIFICATION_TYPES = [
+  "payment confirmation",
+  "payment rejection",
+  "shipment arrival",
 ] as const;

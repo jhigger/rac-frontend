@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
+import { CloseButton } from "~/components/Buttons";
+import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { LabelId, MoreButton } from "~/components/Shop/Orders";
+import { MoreButton } from "~/components/Shop/Orders";
 import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
 import {
   CancelButton,
-  CloseButton,
   ImageColumn,
   TableFooter,
 } from "~/components/Shop/Orders/OrdersPanel";
@@ -23,8 +24,8 @@ import SearchBar from "~/components/Shop/SearchBar";
 import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
-import RequestOrder from "./RequestOrder";
 import RequestDetails from "./RequestDetails";
+import RequestOrder from "./RequestOrder";
 
 const ImportRequestsPanel = () => {
   const { activeAction } = useTabContext();

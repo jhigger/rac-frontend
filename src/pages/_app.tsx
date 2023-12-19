@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import AuthContextProvider from "~/contexts/AuthContext";
 import NavContextProvider from "~/contexts/NavigationContext";
+import NotificationContextProvider from "~/contexts/NotificationContext";
 import tailmater from "~/js/tailmater";
 
 import "~/styles/globals.css";
@@ -38,9 +39,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <QueryClientProvider client={queryClient}>
         <NavContextProvider>
           <AuthContextProvider>
-            <div className={roboto.className}>
-              <Component {...pageProps} />
-            </div>
+            <NotificationContextProvider>
+              <div className={roboto.className}>
+                <Component {...pageProps} />
+              </div>
+            </NotificationContextProvider>
           </AuthContextProvider>
         </NavContextProvider>
       </QueryClientProvider>

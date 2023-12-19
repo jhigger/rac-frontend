@@ -2,8 +2,11 @@
 import { ArrowSwapVertical, More } from "iconsax-react";
 import { useEffect } from "react";
 import Balancer from "react-wrap-balancer";
+import { CloseButton } from "~/components/Buttons";
+import CongratulationImage from "~/components/CongratulationImage";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import { MoreButton } from "~/components/Shop/Orders";
 import {
   DetailSection,
@@ -12,10 +15,7 @@ import {
 import {
   CancelButton,
   ClearPackageButton,
-  CloseButton,
-  CongratulationImage,
   ImageColumn,
-  OrderTrackingId,
   PickUpInstructions,
   TableFooter,
   TrackButton,

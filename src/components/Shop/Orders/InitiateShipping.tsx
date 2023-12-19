@@ -1,13 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle, Ship } from "iconsax-react";
+import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   BackButton,
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
 } from "~/components/Shop/Requests/RequestOrder";
+import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -20,13 +23,11 @@ import {
   PayNowButton,
   StepIndex,
   SubSectionTitle,
-  SuccessImportantNotice,
   TotalCost,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
 import { LabelWithTooltip } from "../Requests/RequestDetails";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
-import { CongratulationImage, OrderTrackingId } from "./OrdersPanel";
 
 const InitiateShipping = () => {
   const { handleActiveAction, handleTabChange } = useTabContext();

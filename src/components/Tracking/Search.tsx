@@ -15,7 +15,7 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import { CustomerSupportButton } from "../AutoImport/Requests/RequestOrder";
 import AccordionButton from "../Forms/AccordionButton";
 import SearchInput from "../Forms/Inputs/SearchInput";
-import { LabelId } from "../Shop/Orders";
+import LabelId from "../LabelId";
 import { SubSectionTitle } from "../Shop/Requests/RequestCheckout";
 import {
   BackButton,

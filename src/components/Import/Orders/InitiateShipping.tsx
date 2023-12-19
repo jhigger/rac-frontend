@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle, Wallet } from "iconsax-react";
+import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
-import { LabelId } from "~/components/Shop/Orders";
+import LabelId from "~/components/LabelId";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   DestinationShippingAddress,
   DetailSection,
@@ -13,16 +15,11 @@ import {
   type ShipmentCostsSummaryProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
-  CongratulationImage,
-  OrderTrackingId,
-} from "~/components/Shop/Orders/OrdersPanel";
-import {
   CustomBillingAddress,
   DefaultBillingAddressRadio,
   NextButton,
   StepIndex,
   SubSectionTitle,
-  SuccessImportantNotice,
   type PackageTableHeadProps,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
@@ -31,6 +28,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
+import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";

@@ -1,4 +1,5 @@
 import { shippingStatuses } from "~/components/Import/Orders/OrderDetails";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import { type SHIPPING_STATUS, type SHOP_FOR_ME_STATUS } from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
@@ -26,7 +27,6 @@ import {
   SectionHeader,
 } from "../Requests/RequestOrder";
 import { DetailSection } from "./InitiateShipping";
-import { OrderTrackingId } from "./OrdersPanel";
 
 const OrderDetails = () => {
   const { orderPackages } = useShopContext();

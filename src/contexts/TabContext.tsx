@@ -25,10 +25,12 @@ import { useNavContext, type NavTitleType } from "./NavigationContext";
 export type TabContextType = {
   activeAction: ActionType | null;
   activeTab: AppBarTabType["tabs"][number]["id"] | null;
+  customText: string | null;
   tabs: AppBarTabType[];
   tabsRef: MutableRefObject<Array<HTMLButtonElement | null>>;
   viewIndex: number | null;
   handleActiveAction: (action: ActionType | null) => void;
+  handleCustomText: (text: string | null) => void;
   handleTabChange: (tab: TabIdType) => void;
   handleViewIndex: (index: number | null) => void;
 };
@@ -107,13 +109,19 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
     AppBarTabType["tabs"][number]["id"] | null
   >(getFirstTab(activeNav));
 
+  const [customText, setCustomText] = useState<string | null>(null);
+
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
+
+  const [viewIndex, setViewIndex] = useState<number | null>(null);
 
   const handleActiveAction = (action: ActionType | null) => {
     setActiveAction(action);
   };
 
-  const [viewIndex, setViewIndex] = useState<number | null>(null);
+  const handleCustomText = (text: string | null) => {
+    setCustomText(text);
+  };
 
   const handleTabChange = (tabId: TabIdType | null) => {
     let clickedTabIndex = null;
@@ -141,6 +149,7 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   const reset = () => {
     setActiveAction(null);
     setViewIndex(null);
+    setCustomText(null);
   };
 
   useEffect(() => {
@@ -148,12 +157,14 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   }, [activeNav]);
 
   const value: TabContextType = {
-    viewIndex,
     activeAction,
     activeTab,
+    customText,
     tabs,
     tabsRef,
+    viewIndex,
     handleActiveAction,
+    handleCustomText,
     handleTabChange,
     handleViewIndex,
   };

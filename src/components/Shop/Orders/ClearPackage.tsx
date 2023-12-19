@@ -1,5 +1,7 @@
 import { useEffect } from "react";
+import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   BackButton,
   SectionContentLayout,
@@ -26,11 +28,7 @@ import {
   ShipmentCostsSummary,
   ShippingMethod,
 } from "./InitiateShipping";
-import {
-  CongratulationImage,
-  OrderTrackingId,
-  PickUpInstructions,
-} from "./OrdersPanel";
+import { PickUpInstructions } from "./OrdersPanel";
 
 const ClearPackage = () => {
   const { handlePayNowAction } = useShopContext();

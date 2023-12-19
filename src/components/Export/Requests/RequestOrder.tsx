@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import CongratulationImage from "~/components/CongratulationImage";
 import {
   Guidelines,
   Step1,
@@ -7,12 +8,9 @@ import {
   type InstructionsItem,
   type Step3Props,
 } from "~/components/Import/Requests/RequestOrder";
+import LabelId from "~/components/LabelId";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { LabelId } from "~/components/Shop/Orders";
-import {
-  CongratulationImage,
-  StepDescription,
-} from "~/components/Shop/Orders/OrdersPanel";
+import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import {
   BackButton,

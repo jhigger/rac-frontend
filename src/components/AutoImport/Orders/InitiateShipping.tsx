@@ -1,18 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle, Wallet } from "iconsax-react";
 import { useEffect } from "react";
+import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
-import { LabelId } from "~/components/Shop/Orders";
+import LabelId from "~/components/LabelId";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import { AddressDetail } from "~/components/Shop/Orders/ClearPackage";
 import {
   DefaultBillingAddress,
   type OrderItemProps,
   type ShippingMethodProps,
 } from "~/components/Shop/Orders/InitiateShipping";
-import {
-  CongratulationImage,
-  OrderTrackingId,
-} from "~/components/Shop/Orders/OrdersPanel";
 import {
   AndLastly,
   Cost,

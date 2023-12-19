@@ -2,17 +2,6 @@
 import { ClipboardTick, More, Ship } from "iconsax-react";
 import { useTabContext } from "~/contexts/TabContext";
 
-type LabelIdProps = { label: string; id: string };
-
-export const LabelId = ({ label, id }: LabelIdProps) => {
-  return (
-    <div className="title-lg md:headline-sm flex items-center gap-[5px] text-neutral-900">
-      <span>{label}:</span>
-      <span className="font-bold">{id}</span>
-    </div>
-  );
-};
-
 type OrderItemImagesProps = { images: string[] };
 
 export const OrderItemImages = ({ images }: OrderItemImagesProps) => {

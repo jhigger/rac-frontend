@@ -3,6 +3,7 @@ import {
   shippingStatuses,
   type OrderInformationProps,
 } from "~/components/Import/Orders/OrderDetails";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   DetailsClearPackageButton,
   DetailsClearedButton,
@@ -14,7 +15,6 @@ import {
   DefaultBillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
-import { OrderTrackingId } from "~/components/Shop/Orders/OrdersPanel";
 import {
   BackButton,
   RequestFormHeader,

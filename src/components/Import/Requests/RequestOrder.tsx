@@ -6,6 +6,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import CurrencyInput from "~/components/Forms/Inputs/CurrencyInput";
 import FileInput from "~/components/Forms/Inputs/FileInput";
@@ -13,12 +14,9 @@ import QuantityInput from "~/components/Forms/Inputs/QuantityInput";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import TextAreaInput from "~/components/Forms/Inputs/TextAreaInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
+import LabelId from "~/components/LabelId";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { LabelId } from "~/components/Shop/Orders";
-import {
-  CongratulationImage,
-  StepDescription,
-} from "~/components/Shop/Orders/OrdersPanel";
+import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import {
   AddButton,

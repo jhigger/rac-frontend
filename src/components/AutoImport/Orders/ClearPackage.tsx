@@ -1,9 +1,8 @@
+import { ArrowRight3, ExportCircle, Wallet } from "iconsax-react";
 import { useEffect } from "react";
+import CongratulationImage from "~/components/CongratulationImage";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import { DefaultBillingAddress } from "~/components/Shop/Orders/InitiateShipping";
-import {
-  CongratulationImage,
-  OrderTrackingId,
-} from "~/components/Shop/Orders/OrdersPanel";
 import {
   AndLastly,
   Cost,
@@ -25,7 +24,6 @@ import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { DestinationAddressDetails } from "../Requests/RequestOrder";
 import { OrderItem, PackageTable } from "./InitiateShipping";
-import { ArrowRight3, ExportCircle, Wallet } from "iconsax-react";
 
 const ClearPackage = () => {
   const { handlePayNowAction } = useAutoImportContext();

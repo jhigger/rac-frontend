@@ -12,6 +12,7 @@ import {
   type ImportOrderPackageType,
   type ImportRequestPackageType,
 } from "~/contexts/ImportContext";
+import { type NotificationItemType } from "~/contexts/NotificationContext";
 import {
   type ShopDraftPackageType,
   type ShopOrderPackageType,
@@ -19,6 +20,93 @@ import {
 } from "~/contexts/ShopContext";
 
 const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image";
+
+export const notificationItems: NotificationItemType[] = [
+  {
+    date: new Date(),
+    type: "payment confirmation",
+    order: {
+      orderId: "OD08753",
+      orderStatus: "responded",
+      orderDate: new Date(),
+      trackingId: "SH08753",
+      shippingStatus: "ready for shipping",
+      shopForMeStatus: "Purchase completed",
+      shopForMeCost: 107.76,
+      shippingCost: 107.76,
+      originWarehouse: "China Warehouse (Guangzhou city)",
+      items: [
+        {
+          store: "Amazon",
+          urgent: false,
+          url: "",
+          name: "Designer Bags",
+          originalCost: 1,
+          quantity: 1,
+          shippingCost: 1,
+          image: src,
+          description: "",
+        },
+      ],
+    },
+  },
+  {
+    date: new Date("2022/12/12"),
+    type: "shipment arrival",
+    order: {
+      orderId: "OD08753",
+      orderStatus: "responded",
+      orderDate: new Date(),
+      trackingId: "SH08753",
+      shippingStatus: "ready for shipping",
+      shopForMeStatus: "Purchase completed",
+      shopForMeCost: 107.76,
+      shippingCost: 107.76,
+      originWarehouse: "China Warehouse (Guangzhou city)",
+      items: [
+        {
+          store: "Amazon",
+          urgent: false,
+          url: "",
+          name: "Designer Bags",
+          originalCost: 1,
+          quantity: 1,
+          shippingCost: 1,
+          image: src,
+          description: "",
+        },
+      ],
+    },
+  },
+  {
+    date: new Date("2023/2/23"),
+    type: "payment rejection",
+    order: {
+      orderId: "OD08751",
+      orderStatus: "processed",
+      orderDate: new Date(),
+      trackingId: "SH08751",
+      shippingStatus: "not started",
+      shopForMeStatus: "Purchase not started",
+      shopForMeCost: 107.76,
+      shippingCost: 107.76,
+      originWarehouse: "Nigeria Warehouse (Lagos)",
+      items: [
+        {
+          store: "Amazon",
+          urgent: false,
+          url: "",
+          name: "Designer Bags",
+          originalCost: 1,
+          quantity: 1,
+          shippingCost: 1,
+          image: src,
+          description: "",
+        },
+      ],
+    },
+  },
+];
 
 export const shopOrders: ShopOrderPackageType[] = [
   {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import LabelId from "~/components/LabelId";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { LabelId } from "~/components/Shop/Orders";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import {
   BackButton,

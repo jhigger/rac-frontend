@@ -6,6 +6,7 @@ import {
   type OrderInformationProps,
 } from "~/components/Import/Orders/OrderDetails";
 import { PackageOrigin } from "~/components/Import/Requests/RequestDetails";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   DetailsClearedButton,
   DetailsDeliveredButton,
@@ -16,7 +17,6 @@ import {
   DefaultBillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
-import { OrderTrackingId } from "~/components/Shop/Orders/OrdersPanel";
 import {
   BackButton,
   RequestFormHeader,

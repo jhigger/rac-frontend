@@ -1,10 +1,11 @@
 import { ConvertCard, Security, Wallet } from "iconsax-react";
+import LabelId from "~/components/LabelId";
 import { type REQUEST_STATUS } from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
-import { LabelId, NotRespondedStatus, RespondedStatus } from "../Orders";
+import { NotRespondedStatus, RespondedStatus } from "../Orders";
 import { DetailSection } from "../Orders/InitiateShipping";
 import {
   BackButton,

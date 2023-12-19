@@ -1,4 +1,5 @@
 import AccordionButton from "~/components/Forms/AccordionButton";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   ArrivedClearStatus,
   ArrivedClearedDeliveredStatus,
@@ -16,7 +17,7 @@ import {
   DefaultBillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
-import { OrderTrackingId } from "~/components/Shop/Orders/OrdersPanel";
+import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import {
   BackButton,
   RequestFormHeader,
@@ -28,7 +29,6 @@ import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import { OrderItem } from "./ClearPackage";
-import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 
 const OrderDetails = () => {
   const { orderItems } = useImportContext();

@@ -3,7 +3,7 @@ import {
   OrderInformation,
   PackageOrigin,
 } from "~/components/Import/Requests/RequestDetails";
-import { LabelId } from "~/components/Shop/Orders";
+import LabelId from "~/components/LabelId";
 import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
 import {
   BackButton,

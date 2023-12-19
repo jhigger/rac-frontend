@@ -8,6 +8,7 @@ import {
   type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
+import CongratulationImage from "~/components/CongratulationImage";
 import { FillInShippingAddress } from "~/components/Export/Orders/InitiateShipping";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import CurrencyInput from "~/components/Forms/Inputs/CurrencyInput";
@@ -23,18 +24,15 @@ import {
   SelectCity,
   SelectState,
 } from "~/components/Forms/Register/AddressForm";
+import LabelId from "~/components/LabelId";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { LabelId } from "~/components/Shop/Orders";
 import { AddressDetail } from "~/components/Shop/Orders/ClearPackage";
 import {
   DefaultBillingAddress,
   DetailSection,
   type OrderItemProps,
 } from "~/components/Shop/Orders/InitiateShipping";
-import {
-  CongratulationImage,
-  StepDescription,
-} from "~/components/Shop/Orders/OrdersPanel";
+import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import {
   CustomBillingAddress,
   DefaultBillingAddressRadio,

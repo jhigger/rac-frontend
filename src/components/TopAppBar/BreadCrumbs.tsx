@@ -4,7 +4,7 @@ import { useTabContext } from "~/contexts/TabContext";
 
 const BreadCrumbs = () => {
   const { activeNav } = useNavContext();
-  const { activeTab, activeAction } = useTabContext();
+  const { activeTab, activeAction, customText } = useTabContext();
 
   return (
     <div className="flex w-full items-center justify-center gap-[10px] md:gap-4">
@@ -15,7 +15,7 @@ const BreadCrumbs = () => {
           {activeNav.toLowerCase()}
         </div>
         <div className="[@media(min-width:500px)]:hidden">
-          {activeAction ? "..." : activeNav.toLowerCase()}
+          {activeAction ?? customText ? "..." : activeNav.toLowerCase()}
         </div>
       </span>
 
@@ -37,6 +37,13 @@ const BreadCrumbs = () => {
         <>
           <ArrowLeft size={10} color="#292D32" variant="Outline" />
           <span className="title-sm text-secondary-600">{activeAction}</span>
+        </>
+      )}
+
+      {customText && (
+        <>
+          <ArrowLeft size={10} color="#292D32" variant="Outline" />
+          <span className="title-sm text-secondary-600">{customText}</span>
         </>
       )}
     </div>

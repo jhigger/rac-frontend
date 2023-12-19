@@ -1,12 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import {
-  ArrowCircleDown2,
-  ArrowCircleRight2,
   ArrowSquareLeft,
   ArrowSquareRight,
   ClipboardTick,
-  CloseCircle,
   ExportCircle,
   More,
   Ship,
@@ -15,14 +12,17 @@ import {
 import { useEffect, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
+import { CloseButton, type CloseButtonProps } from "~/components/Buttons";
+import CongratulationImage from "~/components/CongratulationImage";
 import { LoadingSpinner } from "~/components/LoadingScreen";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   useShopContext,
   type ShopOrderPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
-import { LabelId, MoreButton } from ".";
+import { MoreButton } from ".";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import MainTable from "../../MainTable";
 import NeedHelpFAB from "../../NeedHelpFAB";
@@ -34,7 +34,7 @@ import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
-const OrdersPanel = () => {
+const ShopOrdersPanel = () => {
   const { orderPackages, isFetchingOrderPackages } = useShopContext();
   const { activeAction } = useTabContext();
 
@@ -564,47 +564,6 @@ export const StepDescription = ({
   );
 };
 
-type OrderTrackingIdProps = { orderId: string; trackingId: string };
-
-export const OrderTrackingId = ({
-  orderId,
-  trackingId,
-}: OrderTrackingIdProps) => {
-  return (
-    <div className="flex w-full flex-col items-center justify-center gap-[10px] md:flex-row">
-      <div className="flex items-center gap-[10px]">
-        <LabelId label="Order ID" id={orderId} />
-        <ArrowCircleDown2 variant="Bold" className="text-gray-500 md:hidden" />
-      </div>
-      <ArrowCircleRight2
-        variant="Bold"
-        className="hidden text-gray-500 md:block"
-      />
-      <LabelId label="Tracking ID" id={trackingId} />
-    </div>
-  );
-};
-
-type CongratulationImageProps = { text: string };
-
-export const CongratulationImage = ({ text }: CongratulationImageProps) => {
-  return (
-    <div className="flex flex-col-reverse gap-[10px] rounded-[20px] bg-primary-600 px-[21px] py-[15px] md:flex-row md:px-[14px] md:py-[10px]">
-      <img
-        src="/images/drone_flying_with_package.png"
-        alt="drone flying with package"
-        className="md:w-1/2"
-      />
-      <div className="flex flex-col justify-center gap-[10px] text-white">
-        <span className="title-lg md:headline-md font-bold">
-          Congratulations!
-        </span>
-        <span className="title-lg md:headline-md">{text}</span>
-      </div>
-    </div>
-  );
-};
-
 type ClearPackageButtonProps = ModalCloseType;
 
 export const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
@@ -666,22 +625,6 @@ const InitiateShippingButton = ({ dataClose }: InitiateShippingButtonProps) => {
     >
       <Ship size="18" variant="Bold" />
       <span className="label-lg text-white">Initiate Shipping</span>
-    </button>
-  );
-};
-
-type CloseButtonProps = { dataClose: string; onClick?: () => void };
-
-export const CloseButton = ({ dataClose, onClick }: CloseButtonProps) => {
-  return (
-    <button
-      aria-label="Back"
-      onClick={onClick}
-      data-close={dataClose}
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-    >
-      <CloseCircle size="18" variant="Bold" />
-      <span className="label-lg text-white">close</span>
     </button>
   );
 };
@@ -751,4 +694,4 @@ export const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
   );
 };
 
-export default OrdersPanel;
+export default ShopOrdersPanel;

@@ -1,8 +1,6 @@
 import AccordionButton from "~/components/Forms/AccordionButton";
-import {
-  DetailsInitiateShippingButton,
-  LabelId,
-} from "~/components/Shop/Orders";
+import LabelId from "~/components/LabelId";
+import { DetailsInitiateShippingButton } from "~/components/Shop/Orders";
 import {
   DetailSection,
   InitiateShippingButton,

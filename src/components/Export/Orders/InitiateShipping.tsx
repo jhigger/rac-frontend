@@ -1,6 +1,7 @@
 import { ArrowRight3, ExportCircle, Wallet } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import CongratulationImage from "~/components/CongratulationImage";
 import TextInput from "~/components/Forms/Inputs/TextInput";
 import {
   SelectCountry,
@@ -12,16 +13,13 @@ import {
 } from "~/components/Forms/Register/AddressForm";
 import { OrderItem } from "~/components/Import/Orders/ClearPackage";
 import { PackageTable } from "~/components/Import/Orders/InitiateShipping";
-import { LabelId } from "~/components/Shop/Orders";
+import LabelId from "~/components/LabelId";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   ShippingMethod,
   Summary,
   type ShipmentCostsSummaryProps,
 } from "~/components/Shop/Orders/InitiateShipping";
-import {
-  CongratulationImage,
-  OrderTrackingId,
-} from "~/components/Shop/Orders/OrdersPanel";
 import {
   AndLastly,
   CustomBillingAddress,

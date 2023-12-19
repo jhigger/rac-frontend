@@ -8,6 +8,7 @@ import {
 } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import CongratulationImage from "~/components/CongratulationImage";
 import TextInput from "~/components/Forms/Inputs/TextInput";
 import {
   SelectCountry,
@@ -17,6 +18,8 @@ import {
   SelectCity,
   SelectState,
 } from "~/components/Forms/Register/AddressForm";
+import LabelId from "~/components/LabelId";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -24,8 +27,6 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 import { type RegisterInputs } from "~/pages/register";
 import AccordionButton from "../../Forms/AccordionButton";
-import { LabelId } from "../Orders";
-import { CongratulationImage, OrderTrackingId } from "../Orders/OrdersPanel";
 import { Item, PackageOrigin } from "./RequestDetails";
 import {
   BackButton,
@@ -34,6 +35,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "./RequestOrder";
+import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 
 export type stepsContentType = { title: string; content: JSX.Element };
 
@@ -704,21 +706,6 @@ export const AndLastly = () => {
           </button>
         </div>
       </div>
-    </div>
-  );
-};
-
-export const SuccessImportantNotice = () => {
-  return (
-    <div className="flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[28px] py-[20px]">
-      <span className="title-lg font-bold text-primary-900">
-        IMPORTANT NOTICE:
-      </span>
-      <p className="title-lg text-gray-700">
-        You will make payment for your shipping once it arrives our office in
-        Nigeria (your selected <b>&quot;Destination&quot;</b>) before you can
-        clear it.
-      </p>
     </div>
   );
 };

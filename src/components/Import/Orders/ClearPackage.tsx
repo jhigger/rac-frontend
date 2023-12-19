@@ -1,6 +1,8 @@
 import { ArrowRight3, Wallet } from "iconsax-react";
 import { useEffect } from "react";
+import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
+import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   BillingDetailsConfirmation,
   Success,
@@ -12,10 +14,6 @@ import {
   type OrderItemProps,
   type ShipmentCostsSummaryProps,
 } from "~/components/Shop/Orders/InitiateShipping";
-import {
-  CongratulationImage,
-  OrderTrackingId,
-} from "~/components/Shop/Orders/OrdersPanel";
 import {
   NextButton,
   PaymentMethods,

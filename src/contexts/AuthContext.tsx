@@ -92,13 +92,14 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         const token = cookies.jwt as string;
         return await useFetchUser(token).then(async (userData) => {
           console.log("user found");
-          console.log(`redirecting to ${router.asPath}...`);
-          redirectTo(router.asPath);
+          handleRedirect();
           return userData;
         });
       }
 
-      console.log("user logged out, redirecting to login page...");
+      console.log(
+        "user logged out or token expired, redirecting to login page...",
+      );
       redirectTo("/login");
       return null;
     },
@@ -133,6 +134,17 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         setIsRegistering(false);
         console.log("register failed");
       });
+  };
+
+  const handleRedirect = () => {
+    const path = router.asPath;
+    if (["/login", "/register"].includes(path)) {
+      console.log("redirecting to /shop...");
+      redirectTo("/shop");
+    } else {
+      console.log(`redirecting to ${path}...`);
+      redirectTo(path);
+    }
   };
 
   const redirectTo = (path: string) => {

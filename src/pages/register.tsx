@@ -7,7 +7,7 @@ import AddressForm from "~/components/Forms/Register/AddressForm";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { type RegisterType, useAuthContext } from "~/contexts/AuthContext";
+import { useAuthContext } from "~/contexts/AuthContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
 export type RegisterInputs = {
@@ -56,11 +56,13 @@ const register = () => {
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     if (!isLastStep) return next();
 
-    const registerData: RegisterType = {
+    const registerData = {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       password: data.password,
+      country: data.country,
+      countryCode: data.countryCode,
       contactAddress: [
         {
           country: data.country,

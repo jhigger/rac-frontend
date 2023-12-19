@@ -37,6 +37,7 @@ const NotificationList = () => {
       handleSelectedNotification(null);
     };
 
+    // todo: make notification preview/modal folder and data structure
     return (
       <div className="flex max-w-[1094px] flex-col gap-[20px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">

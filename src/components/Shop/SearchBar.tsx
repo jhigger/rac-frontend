@@ -4,12 +4,16 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import SearchInput from "../Forms/Inputs/SearchInput";
 
-type SearchBarProps = { id: string }; // search input label cannot be clickable if id is not unique to page
+type SearchBarProps = {
+  id: string; // search input label cannot be clickable if id is not unique to page
+  value: string;
+  setState: (value: string) => void;
+};
 
-const SearchBar = ({ id }: SearchBarProps) => {
+const SearchBar = ({ id, value, setState }: SearchBarProps) => {
   return (
     <>
-      <div className="mb-[20px] hidden gap-[20px] sm:flex">
+      <div className="hidden gap-[20px] sm:flex">
         <div className="w-max">
           <FilterButton />
         </div>
@@ -18,6 +22,8 @@ const SearchBar = ({ id }: SearchBarProps) => {
             <SearchInput
               id={`${id}-desktopSearch`}
               label="Search for users with any related keyword"
+              initialValue={value}
+              onChange={setState}
             />
           </div>
         </div>
@@ -28,7 +34,12 @@ const SearchBar = ({ id }: SearchBarProps) => {
       {/* for mobile version */}
       <div className="mb-[20px] flex flex-col items-center gap-[9px] sm:hidden">
         <div className="w-full">
-          <SearchInput id={`${id}-mobileSearch`} label="Search" />
+          <SearchInput
+            id={`${id}-mobileSearch`}
+            label="Search"
+            initialValue={value}
+            onChange={setState}
+          />
         </div>
         <div className="flex w-full justify-between gap-[20px]">
           <FilterButton />

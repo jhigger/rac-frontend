@@ -29,7 +29,6 @@ import NeedHelpFAB from "../../NeedHelpFAB";
 import RequestOrderButton from "../RequestOrderButton";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
-import SearchBar from "../SearchBar";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
@@ -75,7 +74,6 @@ const ShopOrdersPanel = () => {
   if (Array.isArray(orderPackages) && orderPackages.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar id="orders" />
         <OrdersTable />
         <NeedHelpFAB />
       </TabContentLayout>
@@ -100,7 +98,9 @@ const ShopOrdersPanel = () => {
 const OrdersTable = () => {
   const { orderPackages } = useShopContext();
 
-  return <MainTable columns={defaultColumns} data={orderPackages} />;
+  return (
+    <MainTable id="orders" columns={defaultColumns} data={orderPackages} />
+  );
 };
 
 const columnHelper = createColumnHelper<ShopOrderPackageType>();

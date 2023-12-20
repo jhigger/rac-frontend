@@ -28,8 +28,8 @@ import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
 
 const ImportRequestsPanel = () => {
-  const { activeAction } = useTabContext();
   const { requestItems } = useImportContext();
+  const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
     return (
@@ -50,7 +50,7 @@ const ImportRequestsPanel = () => {
   if (Array.isArray(requestItems) && requestItems.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar />
+        <SearchBar id="requests" />
         <RequestsTable />
         <NeedHelpFAB />
       </TabContentLayout>

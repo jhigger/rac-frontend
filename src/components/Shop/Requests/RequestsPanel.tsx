@@ -69,7 +69,7 @@ const RequestsPanel = () => {
   if (Array.isArray(requestPackages) && requestPackages.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar id="shopRequests" />
+        <SearchBar id="requests" />
         <RequestsTable />
         <NeedHelpFAB />
       </TabContentLayout>

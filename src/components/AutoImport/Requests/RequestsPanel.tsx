@@ -52,7 +52,7 @@ const AutoImportRequestsPanel = () => {
   if (Array.isArray(requestItems) && requestItems.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar />
+        <SearchBar id="requests" />
         <RequestsTable />
         <NeedHelpFAB />
       </TabContentLayout>

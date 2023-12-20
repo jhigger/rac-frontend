@@ -75,7 +75,7 @@ const ShopOrdersPanel = () => {
   if (Array.isArray(orderPackages) && orderPackages.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar id="shopOrders" />
+        <SearchBar id="orders" />
         <OrdersTable />
         <NeedHelpFAB />
       </TabContentLayout>

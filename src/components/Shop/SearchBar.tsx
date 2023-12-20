@@ -4,7 +4,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import SearchInput from "../Forms/Inputs/SearchInput";
 
-type SearchBarProps = { id?: string };
+type SearchBarProps = { id: string }; // search input label cannot be clickable if id is not unique to page
 
 const SearchBar = ({ id }: SearchBarProps) => {
   return (

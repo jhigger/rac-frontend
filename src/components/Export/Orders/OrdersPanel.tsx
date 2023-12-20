@@ -63,7 +63,7 @@ const ExportOrdersPanel = () => {
   if (Array.isArray(orderItems) && orderItems.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar />
+        <SearchBar id="orders" />
         <OrdersTable />
         <NeedHelpFAB />
       </TabContentLayout>

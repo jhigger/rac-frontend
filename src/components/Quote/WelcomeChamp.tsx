@@ -84,7 +84,7 @@ const Step1 = () => {
           Provide details about your package
         </h3>
         <div className="grid grid-cols-1 gap-[30px] md:grid-cols-12">
-          <div className="col-span-6">
+          <div className="col-span-full md:col-span-6">
             <SelectInput
               id="originCountry"
               label="Origin Country"
@@ -105,7 +105,7 @@ const Step1 = () => {
               }
             />
           </div>
-          <div className="col-span-6">
+          <div className="col-span-full md:col-span-6">
             <SelectInput
               id="destinationCountry"
               label="Destination Country"
@@ -126,7 +126,7 @@ const Step1 = () => {
               }
             />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-full md:col-span-4">
             <SelectInput
               id="serviceInput"
               label="Service"
@@ -147,14 +147,14 @@ const Step1 = () => {
               }
             />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-full md:col-span-4">
             <TextInput
               id="weight"
               label="Weight (in kg)"
               {...register("weight")}
             />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-full md:col-span-4">
             <QuantityInput
               id="quantity"
               label="Quantity"
@@ -172,21 +172,21 @@ const Step1 = () => {
               }}
             />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-full md:col-span-4">
             <TextInput
               id="length"
               label="Length (in inches)"
               {...register("length")}
             />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-full md:col-span-4">
             <TextInput
               id="width"
               label="Width (in inches)"
               {...register("width")}
             />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-full md:col-span-4">
             <TextInput
               id="height"
               label="Height (in inches)"

@@ -15,14 +15,17 @@ import {
   useNotificationContext,
   type NotificationItemType,
 } from "~/contexts/NotificationContext";
+import useAccordion from "~/hooks/useAccordion";
 import tailmater from "~/js/tailmater";
 import { CloseButton } from "../Buttons";
+import AccordionButton from "../Forms/AccordionButton";
 import {
   notificationMessages,
   type NotificationListItemProps,
 } from "../Notifications/NotificationList";
 import {
   DeleteButtonIcon,
+  DeleteItemButton,
   RequestFormHeader,
 } from "../Shop/Requests/RequestOrder";
 import AppBarTabs from "./AppBarTabs";
@@ -98,6 +101,8 @@ const NotificationButton = () => {
   const id = "notification";
   const dataTarget = `#${id}`;
 
+  const { notifications } = useNotificationContext();
+
   useEffect(() => {
     tailmater();
   }, []);
@@ -111,9 +116,11 @@ const NotificationButton = () => {
         className="btn relative flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
       >
         <NotificationBing className="text-gray-500" />
-        <div className="label-sm absolute right-3 top-3 flex h-[10px] min-w-[10px] items-center justify-center rounded-full bg-error-600 p-1 text-[8px] text-white">
-          {/* put notification count here */}
-        </div>
+        {notifications.length > 0 && (
+          <div className="label-sm absolute right-3 top-3 flex h-[10px] min-w-[10px] items-center justify-center rounded-full bg-error-600 p-1 text-[8px] text-white">
+            {/* put notification count here */}
+          </div>
+        )}
       </button>
       <NotificationModal id={id} />
     </>
@@ -204,6 +211,7 @@ const ClearAllButton = ({ onClick }: ClearAllButtonProps) => {
 type NotificationItemProps = NotificationListItemProps & { dataClose: string };
 
 const NotificationItem = ({ dataClose, index }: NotificationItemProps) => {
+  const { open, toggle } = useAccordion(false);
   const { notifications, handleDelete } = useNotificationContext();
   const notification = notifications[index];
 
@@ -211,19 +219,38 @@ const NotificationItem = ({ dataClose, index }: NotificationItemProps) => {
 
   return (
     <div className="flex items-center gap-[20px]">
-      <div className="flex flex-grow items-center gap-[20px] rounded-[20px] bg-surface-100 p-[20px]">
+      <div className="flex flex-grow flex-col gap-[20px] rounded-[20px] bg-surface-100 p-[20px] md:flex-row md:items-center">
         <span className="body-lg flex-grow text-start">
           {notificationMessages[notification.type].getMessage(
             notification.order,
           )}
         </span>
-        <span>{dayjs(notification.date).fromNow()}</span>
-        <PreviewNotificationButton
-          dataClose={dataClose}
-          notification={notification}
-        />
+        <span className="title-sm flex justify-between font-medium text-black">
+          {dayjs(notification.date).fromNow()}
+          <div className="md:hidden">
+            <AccordionButton {...{ open, toggle }} />
+          </div>
+        </span>
+        <div className="hidden md:block">
+          <PreviewNotificationButton
+            dataClose={dataClose}
+            notification={notification}
+          />
+        </div>
+        {/* for mobile */}
+        {open && (
+          <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 pt-[10px] md:hidden">
+            <PreviewNotificationButton
+              dataClose={dataClose}
+              notification={notification}
+            />
+            <DeleteItemButton onClick={() => handleDelete(index)} />
+          </div>
+        )}
       </div>
-      <DeleteButtonIcon onClick={() => handleDelete(index)} />
+      <div className="hidden md:block">
+        <DeleteButtonIcon onClick={() => handleDelete(index)} />
+      </div>
     </div>
   );
 };

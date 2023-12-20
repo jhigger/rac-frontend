@@ -14,6 +14,7 @@ import "~/styles/globals.css";
 const roboto = Roboto({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const queryClient = new QueryClient({

@@ -130,6 +130,7 @@ const defaultColumns = [
       />
     ),
     enableSorting: false,
+    enableHiding: false,
   }),
   columnHelper.display({
     id: "images",
@@ -210,6 +211,7 @@ const defaultColumns = [
     id: "actions",
     header: "Actions",
     cell: ({ row }) => <MoreButton index={row.index} />,
+    enableHiding: false,
   }),
 ] as Array<ColumnDef<ShopOrderPackageType, unknown>>;
 

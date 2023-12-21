@@ -308,8 +308,6 @@ const OrdersTable = () => {
   );
 };
 
-export type TableHeadType = { title: string; sortIcon: boolean };
-
 type ImageColumnProps = { images: string[] };
 
 export const ImageColumn = ({ images }: ImageColumnProps) => {

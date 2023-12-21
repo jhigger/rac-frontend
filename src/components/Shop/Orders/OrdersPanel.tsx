@@ -100,6 +100,12 @@ const ShopOrdersPanel = () => {
 
 const OrdersTable = () => {
   const { orderPackages } = useShopContext();
+  const { handleActiveAction, handleViewIndex } = useTabContext();
+
+  const onClick = (index: number) => {
+    handleViewIndex(index);
+    handleActiveAction("order details");
+  };
 
   const defaultColumns = useMemo(() => {
     const columnHelper = createColumnHelper<ShopOrderPackageType>();
@@ -209,7 +215,9 @@ const OrdersTable = () => {
       columnHelper.display({
         id: "actions",
         header: "Actions",
-        cell: ({ row }) => <MoreButton index={row.index} />,
+        cell: ({ row }) => (
+          <MoreButton onClick={() => onClick(Number(row.id))} />
+        ),
         enableHiding: false,
       }),
     ] as Array<ColumnDef<ShopOrderPackageType, unknown>>;

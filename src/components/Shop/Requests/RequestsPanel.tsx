@@ -1,12 +1,12 @@
-import { ArrowSwapVertical, Security } from "iconsax-react";
-import { useEffect } from "react";
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
+import { Security } from "iconsax-react";
+import { useEffect, useMemo } from "react";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseButton } from "~/components/Buttons";
 import LabelId from "~/components/LabelId";
 import { LoadingSpinner } from "~/components/LoadingScreen";
-import { type ExportRequestPackageType } from "~/contexts/ExportContext";
-import { type ImportRequestPackageType } from "~/contexts/ImportContext";
+import MainTable from "~/components/MainTable";
 import {
   useShopContext,
   type ShopRequestPackageType,
@@ -16,14 +16,9 @@ import tailmater from "~/js/tailmater";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import NeedHelpFAB from "../../NeedHelpFAB";
 import { MoreButton } from "../Orders";
-import {
-  CancelButton,
-  ImageColumn,
-  TableFooter,
-  type TableHeadType,
-} from "../Orders/OrdersPanel";
+import { CancelButton, ImageColumn } from "../Orders/OrdersPanel";
 import RequestOrderButton from "../RequestOrderButton";
-import SearchBar from "../SearchBar";
+import { type FilterCategoriesType } from "../SearchBar";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
@@ -69,7 +64,6 @@ const RequestsPanel = () => {
   if (Array.isArray(requestPackages) && requestPackages.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar id="requests" />
         <RequestsTable />
         <NeedHelpFAB />
       </TabContentLayout>
@@ -93,126 +87,99 @@ const RequestsPanel = () => {
 
 const RequestsTable = () => {
   const { requestPackages } = useShopContext();
-
-  return (
-    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[10px] md:p-[20px]">
-      <div className="flex flex-col gap-[20px]">
-        <div className="overflow-x-scroll ">
-          <table className="relative w-full min-w-max table-auto text-left">
-            <RequestTableHead th={tableHeads} />
-            <RequestTableBody requestItems={requestPackages} />
-          </table>
-        </div>
-      </div>
-      <TableFooter />
-    </div>
-  );
-};
-
-export const tableHeads: TableHeadType[] = [
-  { title: "Package(s) Image", sortIcon: false },
-  { title: "Request ID", sortIcon: true },
-  { title: "Request Status", sortIcon: false },
-  { title: "Request Date", sortIcon: true },
-];
-
-type RequestTableHeadProps = { th: TableHeadType[] };
-
-export const RequestTableHead = ({ th }: RequestTableHeadProps) => {
-  return (
-    <thead className="title-sm sticky top-0 z-10 grid grid-cols-[50px_repeat(5,1fr)] gap-[10px] p-[10px] font-medium text-neutral-900 md:gap-[20px] md:p-[20px]">
-      <tr className="col-span-1 w-max">
-        <th className="border-0 p-0">
-          <input
-            type="checkbox"
-            name="check-all"
-            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-            checked={undefined}
-          />
-        </th>
-      </tr>
-
-      {th.map(({ title, sortIcon }) => {
-        return (
-          <tr key={title} className="col-span-1">
-            <th className="flex items-center gap-[20px] whitespace-nowrap border-0 p-0">
-              {title}
-              {sortIcon && (
-                <ArrowSwapVertical
-                  className="self-end text-neutral-500"
-                  size="20"
-                />
-              )}
-            </th>
-          </tr>
-        );
-      })}
-
-      <tr className="col-span-1">
-        <th className="border-0 p-0">Action</th>
-      </tr>
-    </thead>
-  );
-};
-
-export type RequestTableBodyProps = {
-  requestItems:
-    | ShopRequestPackageType[]
-    | ImportRequestPackageType[]
-    | ExportRequestPackageType[];
-};
-
-export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
   const { handleActiveAction, handleViewIndex } = useTabContext();
 
-  const handleViewDetails = (index: number) => {
+  const onClick = (index: number) => {
     handleViewIndex(index);
     handleActiveAction("request details");
   };
 
-  return (
-    <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
-      {requestItems.map(
-        ({ items, requestId, requestStatus, requestDate }, i) => {
-          const images = items.map((item) => item.image);
+  const defaultColumns = useMemo(() => {
+    const columnHelper = createColumnHelper<ShopRequestPackageType>();
 
-          return (
-            <tr
-              key={requestId}
-              className="grid grid-cols-[50px_repeat(5,1fr)] items-center gap-[10px] bg-gray-10 p-[10px] md:gap-[20px] md:p-[20px]"
-            >
-              <td className="border-0 p-0">
-                <input
-                  type="checkbox"
-                  name={`check-${requestId}`}
-                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-                  checked={undefined}
-                />
-              </td>
-              <td className="border-0 p-0">
-                <ImageColumn images={images} />
-              </td>
-              <td className="border-0 p-0">
-                <p className="label-lg md:title-md max-w-[100px] whitespace-nowrap">
-                  {requestId}
-                </p>
-              </td>
-              <td className="w-[150px] border-0 p-0">
-                <RequestStatus id={requestId} status={requestStatus} />
-              </td>
-              <td className="border-0 p-0">
-                <p className="label-lg whitespace-nowrap text-neutral-900">
-                  {requestDate.toLocaleString()}
-                </p>
-              </td>
-              <td className="border-0 p-0">
-                <MoreButton handleViewDetails={() => handleViewDetails(i)} />
-              </td>
-            </tr>
-          );
-        },
-      )}
-    </tbody>
+    return [
+      columnHelper.display({
+        id: "checkbox",
+        header: ({ table }) => (
+          <input
+            type="checkbox"
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={table.getIsAllPageRowsSelected()}
+            onChange={(e) => {
+              table.toggleAllPageRowsSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <input
+            type="checkbox"
+            name={`check-${row.index}`}
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={row.getIsSelected()}
+            onChange={(e) => {
+              row.toggleSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      }),
+      columnHelper.display({
+        id: "images",
+        header: "Package(s) Image",
+        cell: ({ row }) => (
+          <ImageColumn images={row.original.items.map((item) => item.image)} />
+        ),
+      }),
+      columnHelper.accessor("requestId", {
+        header: "Request ID",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">{row.original.requestId}</span>
+        ),
+      }),
+      columnHelper.display({
+        id: "requestStatus",
+        header: "Request Status",
+        cell: ({ row }) => (
+          <RequestStatus id={row.id} status={row.original.requestStatus} />
+        ),
+      }),
+      columnHelper.accessor("requestDate", {
+        header: "Request Date",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">
+            {row.original.requestDate.toLocaleString()}
+          </span>
+        ),
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <MoreButton onClick={() => onClick(Number(row.id))} />
+        ),
+        enableHiding: false,
+      }),
+    ] as Array<ColumnDef<ShopRequestPackageType, unknown>>;
+  }, []);
+
+  const filterCategories = useMemo<FilterCategoriesType[]>(
+    () => [
+      {
+        category: "Order request status",
+        categoryFilters: [{ label: "Responded" }, { label: "Not responded" }],
+      },
+    ],
+    [],
+  );
+
+  return (
+    <MainTable
+      id="requests"
+      columns={defaultColumns}
+      data={requestPackages}
+      filterCategories={filterCategories}
+    />
   );
 };
 
@@ -242,7 +209,7 @@ export const RequestStatus = ({ id, status }: RequestStatusProps) => {
         data-type="dialogs"
         data-target={dataTarget}
         aria-label={capitalizeWords(status)}
-        className={`btn relative w-full rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
+        className={`btn relative w-[150px] rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
       >
         {capitalizeWords(status)}
       </button>

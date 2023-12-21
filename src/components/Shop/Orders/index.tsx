@@ -46,18 +46,9 @@ export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
   );
 };
 
-type MoreButtonProps = { handleViewDetails?: () => void; index?: number };
+type MoreButtonProps = { onClick: () => void };
 
-// todo: refactor, get index only
-export const MoreButton = ({ handleViewDetails, index }: MoreButtonProps) => {
-  const { handleActiveAction, handleViewIndex } = useTabContext();
-
-  const onClick = () => {
-    handleViewDetails?.();
-    handleViewIndex(index ?? 0);
-    handleActiveAction("order details");
-  };
-
+export const MoreButton = ({ onClick }: MoreButtonProps) => {
   return (
     <div className="group relative inline-block">
       <button className="peer flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">

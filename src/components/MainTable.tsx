@@ -90,11 +90,11 @@ const MainTable = <T extends object>({
         rowCount={table.getFilteredRowModel().rows.length}
       />
 
-      <div className="flex h-[calc(100vh-402px)] max-w-max flex-col gap-[10px] rounded-[20px] bg-white p-[20px] md:h-[calc(100vh-286px)]">
+      <div className="flex h-[calc(100vh-402px)] min-w-full max-w-max flex-col gap-[10px] rounded-[20px] bg-white p-[20px] md:h-[calc(100vh-286px)]">
         {table.getRowModel().rows.length > 0 ? (
           <>
             <div className="h-full overflow-auto">
-              <table className="relative w-max">
+              <table className="relative w-max min-w-full">
                 <thead className="title-sm sticky top-0 z-10 bg-white font-medium text-neutral-900">
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>

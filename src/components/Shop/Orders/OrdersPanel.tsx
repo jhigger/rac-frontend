@@ -108,12 +108,14 @@ const columnHelper = createColumnHelper<ShopOrderPackageType>();
 const defaultColumns = [
   columnHelper.display({
     id: "checkbox",
-    header: () => (
+    header: ({ table }) => (
       <input
         type="checkbox"
-        name={"checkAll"}
         className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-        checked={undefined}
+        checked={table.getIsAllPageRowsSelected()}
+        onChange={(e) => {
+          table.toggleAllPageRowsSelected(!!e.target.checked);
+        }}
       />
     ),
     cell: ({ row }) => (
@@ -121,9 +123,13 @@ const defaultColumns = [
         type="checkbox"
         name={`check-${row.index}`}
         className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-        checked={undefined}
+        checked={row.getIsSelected()}
+        onChange={(e) => {
+          row.toggleSelected(!!e.target.checked);
+        }}
       />
     ),
+    enableSorting: false,
   }),
   columnHelper.display({
     id: "images",

@@ -3,19 +3,21 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import {
   ArrowSquareLeft,
   ArrowSquareRight,
+  BackSquare,
   ClipboardTick,
   ExportCircle,
   More,
   Ship,
   TickSquare,
 } from "iconsax-react";
-import { useEffect, type ChangeEventHandler } from "react";
+import { useEffect, useMemo, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseButton, type CloseButtonProps } from "~/components/Buttons";
 import CongratulationImage from "~/components/CongratulationImage";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import { SHIPPING_STATUS, SHOP_FOR_ME_STATUS } from "~/constants";
 import {
   useShopContext,
   type ShopOrderPackageType,
@@ -29,6 +31,7 @@ import NeedHelpFAB from "../../NeedHelpFAB";
 import RequestOrderButton from "../RequestOrderButton";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
+import { type FilterCategoriesType } from "../SearchBar";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
@@ -98,122 +101,212 @@ const ShopOrdersPanel = () => {
 const OrdersTable = () => {
   const { orderPackages } = useShopContext();
 
+  const defaultColumns = useMemo(() => {
+    const columnHelper = createColumnHelper<ShopOrderPackageType>();
+
+    return [
+      columnHelper.display({
+        id: "checkbox",
+        header: ({ table }) => (
+          <input
+            type="checkbox"
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={table.getIsAllPageRowsSelected()}
+            onChange={(e) => {
+              table.toggleAllPageRowsSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <input
+            type="checkbox"
+            name={`check-${row.index}`}
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={row.getIsSelected()}
+            onChange={(e) => {
+              row.toggleSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      }),
+      columnHelper.display({
+        id: "images",
+        header: "Package(s) Image",
+        cell: ({ row }) => (
+          <ImageColumn images={row.original.items.map((item) => item.image)} />
+        ),
+      }),
+      columnHelper.accessor("orderId", {
+        header: "Order ID",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">{row.original.orderId}</span>
+        ),
+      }),
+      columnHelper.display({
+        id: "orderStatus",
+        header: "Order Status",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">
+            {capitalizeWords(row.original.orderStatus)}
+          </span>
+        ),
+      }),
+      columnHelper.accessor("orderDate", {
+        header: "Order Date",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">
+            {row.original.orderDate.toLocaleString()}
+          </span>
+        ),
+      }),
+      columnHelper.accessor("trackingId", {
+        header: "Tracking ID",
+        cell: ({ row }) => (
+          <span className="title-md font-medium text-primary-900">
+            {row.original.trackingId}
+          </span>
+        ),
+      }),
+      columnHelper.display({
+        id: "shippingStatus",
+        header: "Shipping Status",
+        cell: ({ row }) => (
+          <ShippingStatus
+            id={row.original.orderId}
+            status={row.original.shippingStatus}
+          />
+        ),
+      }),
+      columnHelper.display({
+        id: "shopForMeStatus",
+        header: "Shop For Me Status",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">
+            {capitalizeWords(row.original.shopForMeStatus)}
+          </span>
+        ),
+      }),
+      columnHelper.accessor("shopForMeCost", {
+        header: "Shop For Me Cost",
+        cell: ({ row }) => (
+          <span className="title-md flex gap-[5px] font-medium">
+            <TickSquare size="20" variant="Bold" className="text-primary-600" />
+            ${row.original.shopForMeCost}
+          </span>
+        ),
+      }),
+      columnHelper.accessor("shippingCost", {
+        header: "Shipping Cost",
+        cell: ({ row }) => (
+          <span className="title-md flex gap-[5px] font-medium">
+            <More size="20" variant="Bold" className="text-error-600" />$
+            {row.original.shippingCost}
+          </span>
+        ),
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => <MoreButton index={row.index} />,
+        enableHiding: false,
+      }),
+    ] as Array<ColumnDef<ShopOrderPackageType, unknown>>;
+  }, []);
+
+  const filterCategories = useMemo<FilterCategoriesType[]>(
+    () => [
+      {
+        category: "Order status",
+        categoryFilters: [
+          { label: "Processed" },
+          { label: "Processing" },
+          { label: "Unprocessed" },
+        ],
+      },
+      {
+        category: "Payment status",
+        categoryFilters: [
+          {
+            label: (
+              <span className="flex items-center gap-[10px]">
+                Confirmed
+                <TickSquare
+                  size={18}
+                  variant="Bold"
+                  className="text-primary-900"
+                />
+              </span>
+            ),
+          },
+          {
+            label: (
+              <span className="flex items-center gap-[5px]">
+                Not yet confirmed
+                <More size={18} variant="Bold" className="text-error-600" />
+              </span>
+            ),
+          },
+          {
+            label: (
+              <span className="flex items-center gap-[5px]">
+                Reversed
+                <BackSquare
+                  size={18}
+                  variant="Bold"
+                  className="text-primary-600"
+                />
+              </span>
+            ),
+          },
+        ],
+      },
+      {
+        category: "Shipping cost",
+        categoryFilters: [
+          { label: "$0 - $20" },
+          { label: "$20 - $50" },
+          { label: "$50 - $100" },
+          { label: "$100 - $500" },
+          { label: "Above $500" },
+        ],
+      },
+      {
+        category: "Shop for me cost",
+        categoryFilters: [
+          { label: "$0 - $20" },
+          { label: "$20 - $50" },
+          { label: "$50 - $100" },
+          { label: "$100 - $500" },
+          { label: "Above $500" },
+        ],
+      },
+      {
+        category: "Shop for me status",
+        categoryFilters: SHOP_FOR_ME_STATUS.map((status) => {
+          return { label: capitalizeWords(status) };
+        }),
+      },
+      {
+        category: "Shipment status",
+        categoryFilters: SHIPPING_STATUS.map((status) => {
+          return { label: capitalizeWords(status) };
+        }),
+      },
+    ],
+    [],
+  );
+
   return (
-    <MainTable id="orders" columns={defaultColumns} data={orderPackages} />
+    <MainTable
+      id="orders"
+      columns={defaultColumns}
+      data={orderPackages}
+      filterCategories={filterCategories}
+    />
   );
 };
-
-const columnHelper = createColumnHelper<ShopOrderPackageType>();
-
-const defaultColumns = [
-  columnHelper.display({
-    id: "checkbox",
-    header: ({ table }) => (
-      <input
-        type="checkbox"
-        className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-        checked={table.getIsAllPageRowsSelected()}
-        onChange={(e) => {
-          table.toggleAllPageRowsSelected(!!e.target.checked);
-        }}
-      />
-    ),
-    cell: ({ row }) => (
-      <input
-        type="checkbox"
-        name={`check-${row.index}`}
-        className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-        checked={row.getIsSelected()}
-        onChange={(e) => {
-          row.toggleSelected(!!e.target.checked);
-        }}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  }),
-  columnHelper.display({
-    id: "images",
-    header: "Package(s) Image",
-    cell: ({ row }) => (
-      <ImageColumn images={row.original.items.map((item) => item.image)} />
-    ),
-  }),
-  columnHelper.accessor("orderId", {
-    header: "Order ID",
-    cell: ({ row }) => (
-      <span className="title-md font-medium">{row.original.orderId}</span>
-    ),
-  }),
-  columnHelper.display({
-    id: "orderStatus",
-    header: "Order Status",
-    cell: ({ row }) => (
-      <span className="title-md font-medium">
-        {capitalizeWords(row.original.orderStatus)}
-      </span>
-    ),
-  }),
-  columnHelper.accessor("orderDate", {
-    header: "Order Date",
-    cell: ({ row }) => (
-      <span className="title-md font-medium">
-        {row.original.orderDate.toLocaleString()}
-      </span>
-    ),
-  }),
-  columnHelper.accessor("trackingId", {
-    header: "Tracking ID",
-    cell: ({ row }) => (
-      <span className="title-md font-medium text-primary-900">
-        {row.original.trackingId}
-      </span>
-    ),
-  }),
-  columnHelper.display({
-    id: "shippingStatus",
-    header: "Shipping Status",
-    cell: ({ row }) => (
-      <ShippingStatus
-        id={row.original.orderId}
-        status={row.original.shippingStatus}
-      />
-    ),
-  }),
-  columnHelper.display({
-    id: "shopForMeStatus",
-    header: "Shop For Me Status",
-    cell: ({ row }) => (
-      <span className="title-md font-medium">
-        {capitalizeWords(row.original.shopForMeStatus)}
-      </span>
-    ),
-  }),
-  columnHelper.accessor("shopForMeCost", {
-    header: "Shop For Me Cost",
-    cell: ({ row }) => (
-      <span className="title-md flex gap-[5px] font-medium">
-        <TickSquare size="20" variant="Bold" className="text-primary-600" />$
-        {row.original.shopForMeCost}
-      </span>
-    ),
-  }),
-  columnHelper.accessor("shippingCost", {
-    header: "Shipping Cost",
-    cell: ({ row }) => (
-      <span className="title-md flex gap-[5px] font-medium">
-        <More size="20" variant="Bold" className="text-error-600" />$
-        {row.original.shippingCost}
-      </span>
-    ),
-  }),
-  columnHelper.display({
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => <MoreButton index={row.index} />,
-    enableHiding: false,
-  }),
-] as Array<ColumnDef<ShopOrderPackageType, unknown>>;
 
 export type TableHeadType = { title: string; sortIcon: boolean };
 

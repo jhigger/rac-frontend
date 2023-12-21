@@ -5,6 +5,7 @@ import {
   getSortedRowModel,
   useReactTable,
   type ColumnDef,
+  type ColumnFiltersState,
   type PaginationState,
   type SortingState,
 } from "@tanstack/react-table";
@@ -16,22 +17,24 @@ import {
 import { useMemo, useState } from "react";
 import Balancer from "react-wrap-balancer";
 import { SelectNumber } from "./Shop/Orders/OrdersPanel";
-import SearchBar from "./Shop/SearchBar";
+import SearchBar, { type FilterCategoriesType } from "./Shop/SearchBar";
 
 interface ReactTableProps<T extends object> {
   id: string;
   data: T[];
   columns: ColumnDef<T>[];
+  filterCategories: FilterCategoriesType[];
 }
 
 const MainTable = <T extends object>({
   id,
   data,
   columns,
+  filterCategories,
 }: ReactTableProps<T>) => {
-  const defaultColumns = useMemo(() => columns, []);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   // todo: move pagination state to context close to useQuery if going with server side pagination
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -47,7 +50,7 @@ const MainTable = <T extends object>({
 
   const table = useReactTable({
     data,
-    columns: defaultColumns,
+    columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -55,6 +58,7 @@ const MainTable = <T extends object>({
       sorting,
       pagination,
       globalFilter,
+      columnFilters,
     },
     onSortingChange: setSorting,
     enableSortingRemoval: false,
@@ -62,6 +66,7 @@ const MainTable = <T extends object>({
     pageCount: Math.ceil(data.length / pagination.pageSize),
     manualPagination: true,
     onGlobalFilterChange: setGlobalFilter,
+    onColumnFiltersChange: setColumnFilters,
   });
 
   const firstRow =
@@ -79,8 +84,10 @@ const MainTable = <T extends object>({
     <div className="flex flex-col gap-[20px]">
       <SearchBar
         id={id}
-        value={globalFilter}
-        setState={(value) => setGlobalFilter(value)}
+        searchValue={globalFilter}
+        setSearchState={(value) => setGlobalFilter(value)}
+        filterCategories={filterCategories}
+        rowCount={table.getFilteredRowModel().rows.length}
       />
 
       <div className="flex h-[calc(100vh-402px)] max-w-max flex-col gap-[10px] rounded-[20px] bg-white p-[20px] md:h-[calc(100vh-286px)]">

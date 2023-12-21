@@ -122,13 +122,7 @@ const FilterButton = ({ filterCategories, rowCount }: FilterButtonProps) => {
         </div>
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2">
           {filterCategories.map((filter) => {
-            return (
-              <FilterColumn
-                key={filter.category}
-                filterCategory={filter}
-                header
-              />
-            );
+            return <Filters key={filter.category} filterCategory={filter} />;
           })}
         </div>
         <ProcessedDate />
@@ -172,33 +166,22 @@ const CancelButton = ({ onClick }: CancelButtonProps) => {
   );
 };
 
-type FilterColumnProps = {
-  header?: boolean;
+type FiltersProps = {
   filterCategory: FilterCategoriesType;
 };
 
-const FilterColumn = ({
-  header = false,
-  filterCategory,
-}: FilterColumnProps) => {
+const Filters = ({ filterCategory }: FiltersProps) => {
   return (
     <div className="flex flex-col gap-[20px]">
       <label className="flex items-center gap-[20px]">
         <input
-          readOnly={header}
-          checked={header}
+          readOnly
+          checked
           type="checkbox"
           name="orderStatus"
-          className={
-            "rounded-[2px] accent-primary-600 hover:accent-primary-600 " +
-            (header
-              ? "h-[18px] w-[18px]"
-              : "h-[14px] w-[14px] before:!h-8 before:!w-8 before:!-translate-x-[.55rem] before:!-translate-y-[.55rem]")
-          }
+          className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
         />
-        <span
-          className={"text-neutral-900 " + (header ? "body-lg" : "body-sm")}
-        >
+        <span className="body-lg text-neutral-900">
           {filterCategory.category}
         </span>
       </label>
@@ -210,7 +193,7 @@ const FilterColumn = ({
               <input
                 type="checkbox"
                 name="orderStatus"
-                className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+                className="h-[14px] w-[14px] rounded-[2px] accent-primary-600 before:!h-8 before:!w-8 before:!-translate-x-[.55rem] before:!-translate-y-[.55rem] hover:accent-primary-600"
               />
               <div className="body-sm text-neutral-900">{label}</div>
             </label>

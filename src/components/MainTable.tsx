@@ -31,7 +31,7 @@ const MainTable = <T extends object>({
 }: ReactTableProps<T>) => {
   const defaultColumns = useMemo(() => columns, []);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filtering, setFiltering] = useState("");
+  const [globalFilter, setGlobalFilter] = useState("");
   // todo: move pagination state to context close to useQuery if going with server side pagination
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -54,14 +54,14 @@ const MainTable = <T extends object>({
     state: {
       sorting,
       pagination,
-      globalFilter: filtering,
+      globalFilter,
     },
     onSortingChange: setSorting,
     enableSortingRemoval: false,
     onPaginationChange: setPagination,
     pageCount: Math.ceil(data.length / pagination.pageSize),
     manualPagination: true,
-    onGlobalFilterChange: setFiltering,
+    onGlobalFilterChange: setGlobalFilter,
   });
 
   const firstRow =
@@ -79,8 +79,8 @@ const MainTable = <T extends object>({
     <div className="flex flex-col gap-[20px]">
       <SearchBar
         id={id}
-        value={filtering}
-        setState={(value) => setFiltering(value)}
+        value={globalFilter}
+        setState={(value) => setGlobalFilter(value)}
       />
 
       <div className="flex h-[calc(100vh-402px)] max-w-max flex-col gap-[10px] rounded-[20px] bg-white p-[20px] md:h-[calc(100vh-286px)]">
@@ -196,7 +196,7 @@ const MainTable = <T extends object>({
         ) : (
           <div className="title-lg md:title-lg flex h-full w-[1040px] items-center justify-center gap-[10px] break-words">
             <Balancer>
-              Not Found: <span className="text-gray-500">{filtering}</span>
+              Not Found: <span className="text-gray-500">{globalFilter}</span>
             </Balancer>
           </div>
         )}

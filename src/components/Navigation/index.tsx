@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { Home2, User, Wallet3 } from "iconsax-react";
+import { Home2, Wallet3 } from "iconsax-react";
 import Link from "next/link";
-import { useAuthContext } from "~/contexts/AuthContext";
 import {
   bottomNavItems,
   topNavItems,
@@ -66,8 +65,6 @@ export const TopNav = () => {
 };
 
 export const BottomNav = () => {
-  const { handleLogout } = useAuthContext();
-
   return (
     <div className="flex flex-1 flex-col justify-end pb-[32px]">
       <div className="px-[20px]">
@@ -80,14 +77,6 @@ export const BottomNav = () => {
           </Link>
         );
       })}
-      <NavItem
-        navItem={{
-          src: <User className="text-gray-400" />,
-          title: "Logout",
-          href: "/",
-        }}
-        onClick={handleLogout}
-      />
     </div>
   );
 };

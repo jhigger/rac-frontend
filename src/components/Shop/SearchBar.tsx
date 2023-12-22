@@ -2,7 +2,7 @@ import { FtxToken } from "iconsax-react";
 import { useState } from "react";
 import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { useTabContext } from "~/contexts/TabContext";
-import SearchInput from "../Forms/Inputs/SearchInput";
+import DebounceSearchInput from "../Forms/Inputs/DebounceSearchInput";
 import TextInput from "../Forms/Inputs/TextInput";
 
 type SearchBarProps = {
@@ -31,7 +31,7 @@ const SearchBar = ({
         </div>
         <div className="flex-grow">
           <div className="overflow-x-clip lg:w-max">
-            <SearchInput
+            <DebounceSearchInput
               id={`${id}-desktopSearch`}
               label="Search for users with any related keyword"
               initialValue={searchValue}
@@ -46,7 +46,7 @@ const SearchBar = ({
       {/* for mobile version */}
       <div className="mb-[20px] flex flex-col items-center gap-[9px] sm:hidden">
         <div className="w-full">
-          <SearchInput
+          <DebounceSearchInput
             id={`${id}-mobileSearch`}
             label="Search"
             initialValue={searchValue}

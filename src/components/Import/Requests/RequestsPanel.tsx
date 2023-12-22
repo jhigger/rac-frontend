@@ -1,27 +1,28 @@
-import { useEffect } from "react";
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
+import { useEffect, useMemo } from "react";
 import Balancer from "react-wrap-balancer";
 import { CloseButton } from "~/components/Buttons";
 import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
+import MainTable from "~/components/MainTable";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { MoreButton } from "~/components/Shop/Orders";
 import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
 import {
   CancelButton,
   ImageColumn,
-  TableFooter,
 } from "~/components/Shop/Orders/OrdersPanel";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import {
-  RequestTableHead,
-  tableHeads,
   type RequestStatusModalProps,
   type RequestStatusProps,
-  type RequestTableBodyProps,
 } from "~/components/Shop/Requests/RequestsPanel";
-import SearchBar from "~/components/Shop/SearchBar";
-import { useImportContext } from "~/contexts/ImportContext";
+import { type FilterCategoriesType } from "~/components/Shop/SearchBar";
+import {
+  useImportContext,
+  type ImportRequestPackageType,
+} from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import RequestDetails from "./RequestDetails";
@@ -50,7 +51,6 @@ const ImportRequestsPanel = () => {
   if (Array.isArray(requestItems) && requestItems.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar id="requests" />
         <RequestsTable />
         <NeedHelpFAB />
       </TabContentLayout>
@@ -74,75 +74,99 @@ const ImportRequestsPanel = () => {
 
 const RequestsTable = () => {
   const { requestItems } = useImportContext();
-
-  if (!requestItems) return;
-
-  return (
-    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[10px] md:p-[20px]">
-      <div className="flex flex-col gap-[20px]">
-        <div className="overflow-x-scroll ">
-          <table className="relative w-full min-w-max table-auto text-left">
-            <RequestTableHead th={tableHeads} />
-            <RequestTableBody requestItems={requestItems} />
-          </table>
-        </div>
-      </div>
-      <TableFooter />
-    </div>
-  );
-};
-
-export const RequestTableBody = ({ requestItems }: RequestTableBodyProps) => {
   const { handleActiveAction, handleViewIndex } = useTabContext();
 
-  const handleViewDetails = (index: number) => {
+  const onClick = (index: number) => {
     handleViewIndex(index);
     handleActiveAction("request details");
   };
 
-  return (
-    <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
-      {requestItems.map(
-        ({ items, requestId, requestStatus, requestDate }, i) => {
-          const images = items.map((item) => item.image);
+  const defaultColumns = useMemo(() => {
+    const columnHelper = createColumnHelper<ImportRequestPackageType>();
 
-          return (
-            <tr
-              key={requestId}
-              className="grid grid-cols-[50px_repeat(5,1fr)] items-center gap-[10px] bg-gray-10 p-[10px] md:gap-[20px] md:p-[20px]"
-            >
-              <td className="border-0 p-0">
-                <input
-                  type="checkbox"
-                  name={`check-${requestId}`}
-                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-                  checked={undefined}
-                />
-              </td>
-              <td className="border-0 p-0">
-                <ImageColumn images={images} />
-              </td>
-              <td className="border-0 p-0">
-                <p className="label-lg md:title-md max-w-[100px] whitespace-nowrap">
-                  {requestId}
-                </p>
-              </td>
-              <td className="w-[150px] border-0 p-0">
-                <RequestStatus id={requestId} status={requestStatus} />
-              </td>
-              <td className="border-0 p-0">
-                <p className="label-lg whitespace-nowrap text-neutral-900">
-                  {requestDate.toLocaleString()}
-                </p>
-              </td>
-              <td className="border-0 p-0">
-                <MoreButton handleViewDetails={() => handleViewDetails(i)} />
-              </td>
-            </tr>
-          );
-        },
-      )}
-    </tbody>
+    return [
+      columnHelper.display({
+        id: "checkbox",
+        header: ({ table }) => (
+          <input
+            type="checkbox"
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={table.getIsAllPageRowsSelected()}
+            onChange={(e) => {
+              table.toggleAllPageRowsSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <input
+            type="checkbox"
+            name={`check-${row.index}`}
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={row.getIsSelected()}
+            onChange={(e) => {
+              row.toggleSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      }),
+      columnHelper.display({
+        id: "images",
+        header: "Package(s) Image",
+        cell: ({ row }) => (
+          <ImageColumn images={row.original.items.map((item) => item.image)} />
+        ),
+      }),
+      columnHelper.accessor("requestId", {
+        header: "Request ID",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">{row.original.requestId}</span>
+        ),
+      }),
+      columnHelper.display({
+        id: "requestStatus",
+        header: "Request Status",
+        cell: ({ row }) => (
+          <RequestStatus id={row.id} status={row.original.requestStatus} />
+        ),
+      }),
+      columnHelper.accessor("requestDate", {
+        header: "Request Date",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">
+            {row.original.requestDate.toLocaleString()}
+          </span>
+        ),
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <MoreButton onClick={() => onClick(Number(row.id))} />
+        ),
+        enableHiding: false,
+      }),
+    ] as Array<ColumnDef<ImportRequestPackageType, unknown>>;
+  }, []);
+
+  const filterCategories = useMemo<FilterCategoriesType[]>(
+    () => [
+      {
+        category: "Order request status",
+        categoryFilters: [{ label: "Responded" }, { label: "Not responded" }],
+      },
+    ],
+    [],
+  );
+
+  return (
+    <MainTable
+      id="requests"
+      columns={defaultColumns}
+      data={requestItems}
+      filterCategories={filterCategories}
+    />
   );
 };
 

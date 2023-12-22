@@ -1,15 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { More } from "iconsax-react";
-import { useEffect } from "react";
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
+import { BackSquare, More, TickSquare } from "iconsax-react";
+import { useEffect, useMemo } from "react";
 import Balancer from "react-wrap-balancer";
+import { capitalizeWords } from "~/Utils";
 import { CloseButton } from "~/components/Buttons";
 import CongratulationImage from "~/components/CongratulationImage";
-import {
-  OrderTableHead,
-  tableHeads,
-  type OrderTableBodyProps,
-} from "~/components/Import/Orders/OrdersPanel";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
+import MainTable from "~/components/MainTable";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import { MoreButton } from "~/components/Shop/Orders";
@@ -21,7 +19,6 @@ import {
   CancelButton,
   ImageColumn,
   PickUpInstructions,
-  TableFooter,
   TrackButton,
   excluded,
   type ShippingStatusModalProps,
@@ -33,8 +30,12 @@ import {
   RequestFormHeader,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import SearchBar from "~/components/Shop/SearchBar";
-import { useExportContext } from "~/contexts/ExportContext";
+import { type FilterCategoriesType } from "~/components/Shop/SearchBar";
+import { SHIPPING_STATUS } from "~/constants";
+import {
+  useExportContext,
+  type ExportOrderPackageType,
+} from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import InitiateShipping from "./InitiateShipping";
@@ -63,7 +64,6 @@ const ExportOrdersPanel = () => {
   if (Array.isArray(orderItems) && orderItems.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar id="orders" />
         <OrdersTable />
         <NeedHelpFAB />
       </TabContentLayout>
@@ -87,94 +87,185 @@ const ExportOrdersPanel = () => {
 
 const OrdersTable = () => {
   const { orderItems } = useExportContext();
-  if (!orderItems) return;
-
-  return (
-    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px]">
-      <div className="flex flex-col gap-[20px]">
-        <div className="overflow-x-scroll ">
-          <table className="relative w-full min-w-max table-auto text-left">
-            <OrderTableHead th={tableHeads} />
-            <OrderTableBody orderItems={orderItems} />
-          </table>
-        </div>
-      </div>
-      <TableFooter />
-    </div>
-  );
-};
-
-const OrderTableBody = ({ orderItems }: OrderTableBodyProps) => {
   const { handleActiveAction, handleViewIndex } = useTabContext();
 
-  const handleViewDetails = (index: number) => {
+  const onClick = (index: number) => {
     handleViewIndex(index);
     handleActiveAction("order details");
   };
 
-  return (
-    <tbody className="flex flex-col border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
-      {orderItems.map(
-        (
+  const defaultColumns = useMemo(() => {
+    const columnHelper = createColumnHelper<ExportOrderPackageType>();
+
+    return [
+      columnHelper.display({
+        id: "checkbox",
+        header: ({ table }) => (
+          <input
+            type="checkbox"
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={table.getIsAllPageRowsSelected()}
+            onChange={(e) => {
+              table.toggleAllPageRowsSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <input
+            type="checkbox"
+            name={`check-${row.index}`}
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={row.getIsSelected()}
+            onChange={(e) => {
+              row.toggleSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      }),
+      columnHelper.display({
+        id: "images",
+        header: "Package(s) Image",
+        cell: ({ row }) => (
+          <ImageColumn images={row.original.items.map((item) => item.image)} />
+        ),
+      }),
+      columnHelper.accessor("orderId", {
+        header: "Order ID",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">{row.original.orderId}</span>
+        ),
+      }),
+      columnHelper.display({
+        id: "orderStatus",
+        header: "Order Status",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">
+            {capitalizeWords(row.original.orderStatus)}
+          </span>
+        ),
+      }),
+      columnHelper.accessor("orderDate", {
+        header: "Order Date",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">
+            {row.original.orderDate.toLocaleString()}
+          </span>
+        ),
+      }),
+      columnHelper.accessor("trackingId", {
+        header: "Tracking ID",
+        cell: ({ row }) => (
+          <span className="title-md font-medium text-primary-900">
+            {row.original.trackingId}
+          </span>
+        ),
+      }),
+      columnHelper.display({
+        id: "shippingStatus",
+        header: "Shipping Status",
+        cell: ({ row }) => (
+          <ShippingStatus
+            id={row.original.orderId}
+            status={row.original.shippingStatus}
+          />
+        ),
+      }),
+      columnHelper.accessor("shippingCost", {
+        header: "Shipping Cost",
+        cell: ({ row }) => (
+          <span className="title-md flex gap-[5px] font-medium">
+            <More size="20" variant="Bold" className="text-error-600" />$
+            {row.original.shippingCost}
+          </span>
+        ),
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <MoreButton onClick={() => onClick(Number(row.id))} />
+        ),
+        enableHiding: false,
+      }),
+    ] as Array<ColumnDef<ExportOrderPackageType, unknown>>;
+  }, []);
+
+  const filterCategories = useMemo<FilterCategoriesType[]>(
+    () => [
+      {
+        category: "Order status",
+        categoryFilters: [
+          { label: "Processed" },
+          { label: "Processing" },
+          { label: "Unprocessed" },
+        ],
+      },
+      {
+        category: "Payment status",
+        categoryFilters: [
           {
-            items,
-            orderId,
-            orderStatus,
-            orderDate,
-            shippingCost,
-            shippingStatus,
-            trackingId,
-          },
-          i,
-        ) => {
-          const images = items.map((item) => item.image);
-
-          return (
-            <tr
-              key={orderId}
-              className="grid grid-cols-[50px_repeat(8,1fr)] items-center gap-[20px] bg-gray-10 px-[20px] py-[20px]"
-            >
-              <td className="border-0 p-0">
-                <input
-                  type="checkbox"
-                  name={`check-${orderId}`}
-                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-                  checked={undefined}
+            label: (
+              <span className="flex items-center gap-[10px]">
+                Confirmed
+                <TickSquare
+                  size={18}
+                  variant="Bold"
+                  className="text-primary-900"
                 />
-              </td>
-              <td className="border-0 p-0">
-                <ImageColumn images={images} />
-              </td>
-              <td className="border-0 p-0">
-                <p className="title-md whitespace-nowrap">{orderId}</p>
-              </td>
-              <td className="border-0 p-0">
-                <p className="title-md whitespace-nowrap">{orderStatus}</p>
-              </td>
-              <td className="border-0 p-0">
-                <p className="label-lg whitespace-nowrap text-neutral-900">
-                  {orderDate.toLocaleString()}
-                </p>
-              </td>
-              <td className="border-0 p-0">
-                <p className="title-md text-primary-900">{trackingId}</p>
-              </td>
-              <td className="title-sm max-w-[150px] border-0 p-0">
-                <ShippingStatus id={orderId} status={shippingStatus} />
-              </td>
-              <td className="flex gap-[5px] border-0 p-0">
-                <More size="20" variant="Bold" className="text-error-600" />
+              </span>
+            ),
+          },
+          {
+            label: (
+              <span className="flex items-center gap-[5px]">
+                Not yet confirmed
+                <More size={18} variant="Bold" className="text-error-600" />
+              </span>
+            ),
+          },
+          {
+            label: (
+              <span className="flex items-center gap-[5px]">
+                Reversed
+                <BackSquare
+                  size={18}
+                  variant="Bold"
+                  className="text-primary-600"
+                />
+              </span>
+            ),
+          },
+        ],
+      },
+      {
+        category: "Shipping cost",
+        categoryFilters: [
+          { label: "$0 - $20" },
+          { label: "$20 - $50" },
+          { label: "$50 - $100" },
+          { label: "$100 - $500" },
+          { label: "Above $500" },
+        ],
+      },
+      {
+        category: "Shipment status",
+        categoryFilters: SHIPPING_STATUS.map((status) => {
+          return { label: capitalizeWords(status) };
+        }),
+      },
+    ],
+    [],
+  );
 
-                <p className="title-md">{shippingCost}</p>
-              </td>
-              <td className="border-0 p-0">
-                <MoreButton handleViewDetails={() => handleViewDetails(i)} />
-              </td>
-            </tr>
-          );
-        },
-      )}
-    </tbody>
+  return (
+    <MainTable
+      id="orders"
+      columns={defaultColumns}
+      data={orderItems}
+      filterCategories={filterCategories}
+    />
   );
 };
 

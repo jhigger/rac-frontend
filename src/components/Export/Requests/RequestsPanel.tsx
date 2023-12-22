@@ -1,18 +1,21 @@
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
+import { useMemo } from "react";
 import Balancer from "react-wrap-balancer";
-import { RequestTableBody } from "~/components/Import/Requests/RequestsPanel";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
+import MainTable from "~/components/MainTable";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
-import { TableFooter } from "~/components/Shop/Orders/OrdersPanel";
+import { MoreButton } from "~/components/Shop/Orders";
+import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
+import { RequestStatus } from "~/components/Shop/Requests/RequestsPanel";
+import { type FilterCategoriesType } from "~/components/Shop/SearchBar";
 import {
-  RequestTableHead,
-  tableHeads,
-} from "~/components/Shop/Requests/RequestsPanel";
-import SearchBar from "~/components/Shop/SearchBar";
-import { useExportContext } from "~/contexts/ExportContext";
+  useExportContext,
+  type ExportRequestPackageType,
+} from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import RequestOrder from "./RequestOrder";
 import RequestDetails from "./RequestDetails";
+import RequestOrder from "./RequestOrder";
 
 const ExportRequestsPanel = () => {
   const { requestItems } = useExportContext();
@@ -37,7 +40,6 @@ const ExportRequestsPanel = () => {
   if (Array.isArray(requestItems) && requestItems.length > 0) {
     return (
       <TabContentLayout>
-        <SearchBar id="requests" />
         <RequestsTable />
         <NeedHelpFAB />
       </TabContentLayout>
@@ -61,21 +63,99 @@ const ExportRequestsPanel = () => {
 
 const RequestsTable = () => {
   const { requestItems } = useExportContext();
+  const { handleActiveAction, handleViewIndex } = useTabContext();
 
-  if (!requestItems) return;
+  const onClick = (index: number) => {
+    handleViewIndex(index);
+    handleActiveAction("request details");
+  };
+
+  const defaultColumns = useMemo(() => {
+    const columnHelper = createColumnHelper<ExportRequestPackageType>();
+
+    return [
+      columnHelper.display({
+        id: "checkbox",
+        header: ({ table }) => (
+          <input
+            type="checkbox"
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={table.getIsAllPageRowsSelected()}
+            onChange={(e) => {
+              table.toggleAllPageRowsSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        cell: ({ row }) => (
+          <input
+            type="checkbox"
+            name={`check-${row.index}`}
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+            checked={row.getIsSelected()}
+            onChange={(e) => {
+              row.toggleSelected(!!e.target.checked);
+            }}
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      }),
+      columnHelper.display({
+        id: "images",
+        header: "Package(s) Image",
+        cell: ({ row }) => (
+          <ImageColumn images={row.original.items.map((item) => item.image)} />
+        ),
+      }),
+      columnHelper.accessor("requestId", {
+        header: "Request ID",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">{row.original.requestId}</span>
+        ),
+      }),
+      columnHelper.display({
+        id: "requestStatus",
+        header: "Request Status",
+        cell: ({ row }) => (
+          <RequestStatus id={row.id} status={row.original.requestStatus} />
+        ),
+      }),
+      columnHelper.accessor("requestDate", {
+        header: "Request Date",
+        cell: ({ row }) => (
+          <span className="title-md font-medium">
+            {row.original.requestDate.toLocaleString()}
+          </span>
+        ),
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => (
+          <MoreButton onClick={() => onClick(Number(row.id))} />
+        ),
+        enableHiding: false,
+      }),
+    ] as Array<ColumnDef<ExportRequestPackageType, unknown>>;
+  }, []);
+
+  const filterCategories = useMemo<FilterCategoriesType[]>(
+    () => [
+      {
+        category: "Order request status",
+        categoryFilters: [{ label: "Responded" }, { label: "Not responded" }],
+      },
+    ],
+    [],
+  );
 
   return (
-    <div className="flex w-full flex-col gap-[10px] rounded-[20px] bg-white p-[10px] md:p-[20px]">
-      <div className="flex flex-col gap-[20px]">
-        <div className="overflow-x-scroll ">
-          <table className="relative w-full min-w-max table-auto text-left">
-            <RequestTableHead th={tableHeads} />
-            <RequestTableBody requestItems={requestItems} />
-          </table>
-        </div>
-      </div>
-      <TableFooter />
-    </div>
+    <MainTable
+      id="requests"
+      columns={defaultColumns}
+      data={requestItems}
+      filterCategories={filterCategories}
+    />
   );
 };
 

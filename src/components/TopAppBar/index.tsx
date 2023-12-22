@@ -45,30 +45,25 @@ type TopAppBarProps = { tabs?: boolean };
 const TopAppBar = ({ tabs = true }: TopAppBarProps) => {
   return (
     <div className="sticky top-0 z-40 flex flex-col">
-      <div
-        className={
-          !tabs
-            ? "overflow-hidden rounded-b-[20px] border-b-[1px] border-b-gray-200"
-            : ""
-        }
-      >
-        <div className="flex w-full items-center justify-between gap-[10px] bg-white px-[20px] pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
-          <div className="md:hidden">
-            <MenuButton />
-          </div>
-          <div className="hidden flex-col gap-[10px] md:flex">
-            <TopAppBarHeader />
-          </div>
-          <div className="flex flex-row items-center justify-end">
-            <NotificationButton />
-            <AccountButton />
-          </div>
+      <div className="flex w-full items-center justify-between gap-[10px] bg-white px-[20px] pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
+        <div className="md:hidden">
+          <MenuButton />
         </div>
-        {/* mobile version */}
-        <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
+        <div className="hidden flex-col gap-[10px] md:flex">
           <TopAppBarHeader />
         </div>
+        <div className="flex flex-row items-center justify-end">
+          <NotificationButton />
+          <AccountButton />
+        </div>
       </div>
+      {/* mobile version */}
+      <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
+        <TopAppBarHeader />
+      </div>
+      {!tabs && (
+        <div className="h-[20px] overflow-hidden rounded-b-[20px] border-b-[1px] border-b-gray-200 bg-white"></div>
+      )}
       {/* tabs */}
       {tabs && (
         <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">

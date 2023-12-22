@@ -4,46 +4,33 @@ import { useTabContext } from "~/contexts/TabContext";
 
 const BreadCrumbs = () => {
   const { activeNav } = useNavContext();
-  const { activeTab, activeAction, customText } = useTabContext();
+  const { activeTab, customText } = useTabContext();
 
   return (
-    <div className="flex w-full items-center justify-center gap-[10px] md:gap-4">
-      <Home2 size="19" className="text-secondary-600" />
-      <ArrowLeft size={10} color="#292D32" variant="Outline" />
-      <span className="title-sm text-secondary-600">
-        <div className="hidden [@media(min-width:500px)]:block">
-          {activeNav.toLowerCase()}
-        </div>
-        <div className="[@media(min-width:500px)]:hidden">
-          {activeAction ?? customText ? "..." : activeNav.toLowerCase()}
-        </div>
+    <div className="flex w-full items-center justify-center gap-[10px] px-[20px] md:gap-4 md:px-0">
+      <Home2 size="19" className="flex-shrink-0 text-secondary-600" />
+      <ArrowLeft
+        size={10}
+        color="#292D32"
+        variant="Outline"
+        className="flex-shrink-0"
+      />
+      <span className="title-sm flex items-center text-secondary-600">
+        {activeNav.toLowerCase()}
+        {activeTab && <> - {activeTab}</>}
       </span>
-
-      {activeTab && (
-        <>
-          <ArrowLeft size={10} color="#292D32" variant="Outline" />
-          <span className="title-sm text-secondary-600">
-            <div className="hidden [@media(min-width:375px)]:block">
-              {activeTab}
-            </div>
-            <div className="[@media(min-width:375px)]:hidden">
-              {activeAction ? "..." : activeTab}
-            </div>
-          </span>
-        </>
-      )}
-
-      {activeAction && (
-        <>
-          <ArrowLeft size={10} color="#292D32" variant="Outline" />
-          <span className="title-sm text-secondary-600">{activeAction}</span>
-        </>
-      )}
 
       {customText && (
         <>
-          <ArrowLeft size={10} color="#292D32" variant="Outline" />
-          <span className="title-sm text-secondary-600">{customText}</span>
+          <ArrowLeft
+            size={10}
+            color="#292D32"
+            variant="Outline"
+            className="flex-shrink-0"
+          />
+          <span className="title-sm overflow-hidden text-ellipsis whitespace-nowrap text-secondary-600">
+            {customText}
+          </span>
         </>
       )}
     </div>

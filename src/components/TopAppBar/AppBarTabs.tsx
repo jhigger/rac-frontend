@@ -40,11 +40,13 @@ const AppBarTabs = () => {
                   data-type="tabs"
                   data-target={`#${href.slice(1)}-panel-${id}`}
                   className={`flex h-[49px] w-1/3 flex-col items-center justify-end gap-1 px-4 py-2 md:w-[120px] ${
-                    activeTab && "active"
+                    activeTab === id && "active text-primary-600"
                   }`}
                   onClick={() => handleTabChange(id)}
                 >
-                  <p className="text-sm tracking-[.00714em]">{tabTitle}</p>
+                  <p className="text-sm font-medium tracking-[.00714em]">
+                    {tabTitle}
+                  </p>
                 </button>
               );
             });

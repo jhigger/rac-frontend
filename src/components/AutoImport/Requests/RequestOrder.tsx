@@ -54,6 +54,7 @@ import {
   SectionHeader,
   TooltipButton,
 } from "~/components/Shop/Requests/RequestOrder";
+import { AUTO_IMPORT_ORIGINS, CAR_CONDITIONS } from "~/constants";
 import {
   useAutoImportContext,
   type AutoImportRequestPackageType,
@@ -249,6 +250,10 @@ const SelectWarehouseOriginSection = () => {
               <option value="" disabled hidden>
                 Select Origin
               </option>
+
+              {AUTO_IMPORT_ORIGINS.map((origin) => {
+                return <option value={origin}>{origin}</option>;
+              })}
             </>
           }
         />
@@ -365,8 +370,12 @@ const ItemDetailsSection = ({
                     options={
                       <>
                         <option value="" disabled hidden>
-                          Drivable
+                          Select Condition
                         </option>
+
+                        {CAR_CONDITIONS.map((condition) => {
+                          return <option value={condition}>{condition}</option>;
+                        })}
                       </>
                     }
                   />

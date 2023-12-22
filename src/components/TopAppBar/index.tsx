@@ -1,15 +1,22 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import {
+  Activity,
   ArrowCircleRight2,
   ArrowDown2,
+  ArrowRight2,
+  ArrowUp2,
+  Celo,
   Eye,
   HambergerMenu,
   NotificationBing,
+  Profile,
+  SecuritySafe,
   User,
 } from "iconsax-react";
 import Link from "next/link";
 import { useEffect } from "react";
+import { useAuthContext } from "~/contexts/AuthContext";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
   useNotificationContext,
@@ -54,7 +61,7 @@ const TopAppBar = ({ tabs = true }: TopAppBarProps) => {
           </div>
           <div className="flex flex-row items-center justify-end">
             <NotificationButton />
-            <UserButton />
+            <AccountButton />
           </div>
         </div>
         {/* mobile version */}
@@ -294,14 +301,75 @@ export const PreviewNotificationButton = ({
   );
 };
 
-const UserButton = () => {
+const AccountButton = () => {
+  const { open, toggle } = useAccordion(false);
+  const { handleLogout } = useAuthContext();
+
   return (
-    <button className="group flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-      <User className="text-gray-500" />
-      <ArrowDown2
-        variant="Bold"
-        className="hidden text-gray-500 group-hover:block"
-      />
+    <div className="group relative">
+      <button
+        onClick={toggle}
+        className="group peer flex h-fit w-fit items-center justify-center rounded-[6.25rem] p-3 hover:bg-surface-300 focus:bg-surface-400"
+      >
+        <User className="text-gray-500" />
+        <ArrowDown2
+          variant="Bold"
+          className="text-gray-500 group-focus:hidden group-focus-visible:hidden"
+        />
+        <ArrowUp2
+          variant="Bold"
+          className="hidden text-gray-500 group-focus:block group-focus-visible:block"
+        />
+      </button>
+      <div
+        className={`absolute right-0 top-0 z-50 hidden w-[320px] flex-col gap-[30px] overflow-y-auto rounded-[20px] bg-surface-200 p-[20px] shadow-md group-focus-within:inline-flex md:top-16 ${
+          open ? "hover:inline-flex" : "group-focus-within:hidden"
+        }`}
+      >
+        <AccountMenuItem
+          icon={<Profile color="#292D32" />}
+          label="Profile Information"
+        />
+        <AccountMenuItem
+          icon={<Activity color="#292D32" />}
+          label="Account Activities"
+        />
+        <AccountMenuItem
+          icon={<SecuritySafe color="#292D32" />}
+          label="Account Security"
+        />
+        <AccountMenuItem icon={<Celo color="#292D32" />} label="Help" />
+
+        <LogoutButton onClick={handleLogout} />
+      </div>
+    </div>
+  );
+};
+
+type LogoutButtonProps = { onClick: () => void };
+
+const LogoutButton = ({ onClick }: LogoutButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      aria-label="Logout"
+      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+    >
+      <span className="body-lg text-white">Logout</span>
+    </button>
+  );
+};
+
+type AccountMenuItemProps = { icon: JSX.Element; label: string };
+
+const AccountMenuItem = ({ icon, label }: AccountMenuItemProps) => {
+  return (
+    <button className="flex items-center justify-between">
+      <div className="flex gap-[16px]">
+        {icon}
+        <span className="body-lg text-neutral-900">{label}</span>
+      </div>
+      <ArrowRight2 size={18} variant="Bold" className="text-neutral-900" />
     </button>
   );
 };

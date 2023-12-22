@@ -42,7 +42,7 @@ import InitiateShipping from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const ExportOrdersPanel = () => {
-  const { orderItems } = useExportContext();
+  const { orderPackages } = useExportContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "initiate shipping") {
@@ -61,7 +61,7 @@ const ExportOrdersPanel = () => {
     );
   }
 
-  if (Array.isArray(orderItems) && orderItems.length > 0) {
+  if (Array.isArray(orderPackages) && orderPackages.length > 0) {
     return (
       <TabContentLayout>
         <OrdersTable />
@@ -86,7 +86,7 @@ const ExportOrdersPanel = () => {
 };
 
 const OrdersTable = () => {
-  const { orderItems } = useExportContext();
+  const { orderPackages } = useExportContext();
   const { handleActiveAction, handleViewIndex } = useTabContext();
 
   const onClick = (index: number) => {
@@ -263,7 +263,7 @@ const OrdersTable = () => {
     <MainTable
       id="orders"
       columns={defaultColumns}
-      data={orderItems}
+      data={orderPackages}
       filterCategories={filterCategories}
     />
   );

@@ -24,12 +24,12 @@ const DraftDetails = () => {
 
   const formMethods = useForm<ShopInputs>({
     defaultValues: {
-      requestItems: emptyValue,
+      requestPackages: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
-    console.log(data.requestItems);
+    console.log(data.requestPackages);
     next();
   };
 

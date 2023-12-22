@@ -44,7 +44,7 @@ import InitiateShipping from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const ImportOrdersPanel = () => {
-  const { orderItems } = useImportContext();
+  const { orderPackages } = useImportContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "clear package") {
@@ -71,7 +71,7 @@ const ImportOrdersPanel = () => {
     );
   }
 
-  if (Array.isArray(orderItems) && orderItems.length > 0) {
+  if (Array.isArray(orderPackages) && orderPackages.length > 0) {
     return (
       <TabContentLayout>
         <OrdersTable />
@@ -96,7 +96,7 @@ const ImportOrdersPanel = () => {
 };
 
 const OrdersTable = () => {
-  const { orderItems } = useImportContext();
+  const { orderPackages } = useImportContext();
   const { handleActiveAction, handleViewIndex } = useTabContext();
 
   const onClick = (index: number) => {
@@ -273,7 +273,7 @@ const OrdersTable = () => {
     <MainTable
       id="orders"
       columns={defaultColumns}
-      data={orderItems}
+      data={orderPackages}
       filterCategories={filterCategories}
     />
   );

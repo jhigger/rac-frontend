@@ -13,12 +13,12 @@ import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 
 const RequestDetails = () => {
-  const { requestItems } = useExportContext();
+  const { requestPackages } = useExportContext();
   const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const requestPackage = requestItems?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
   if (!requestPackage) return;
 

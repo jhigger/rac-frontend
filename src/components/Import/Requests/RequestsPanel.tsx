@@ -29,7 +29,7 @@ import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
 
 const ImportRequestsPanel = () => {
-  const { requestItems } = useImportContext();
+  const { requestPackages } = useImportContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
@@ -48,7 +48,7 @@ const ImportRequestsPanel = () => {
     );
   }
 
-  if (Array.isArray(requestItems) && requestItems.length > 0) {
+  if (Array.isArray(requestPackages) && requestPackages.length > 0) {
     return (
       <TabContentLayout>
         <RequestsTable />
@@ -73,7 +73,7 @@ const ImportRequestsPanel = () => {
 };
 
 const RequestsTable = () => {
-  const { requestItems } = useImportContext();
+  const { requestPackages } = useImportContext();
   const { handleActiveAction, handleViewIndex } = useTabContext();
 
   const onClick = (index: number) => {
@@ -164,7 +164,7 @@ const RequestsTable = () => {
     <MainTable
       id="requests"
       columns={defaultColumns}
-      data={requestItems}
+      data={requestPackages}
       filterCategories={filterCategories}
     />
   );

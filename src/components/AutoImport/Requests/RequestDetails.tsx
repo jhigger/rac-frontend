@@ -26,12 +26,12 @@ import {
 } from "./RequestOrder";
 
 const RequestDetails = () => {
-  const { requestItems } = useAutoImportContext();
+  const { requestPackages } = useAutoImportContext();
   const { viewIndex, handleActiveAction } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const requestPackage = requestItems?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
   if (!requestPackage) return;
 

@@ -29,12 +29,12 @@ import { DestinationAddressDetails } from "../Requests/RequestOrder";
 import { OrderItem } from "./InitiateShipping";
 
 const OrderDetails = () => {
-  const { orderItems } = useAutoImportContext();
+  const { orderPackages } = useAutoImportContext();
   const { viewIndex, handleActiveAction } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderItems?.[viewIndex];
+  const orderPackage = orderPackages?.[viewIndex];
 
   if (!orderPackage) return;
 

@@ -120,15 +120,15 @@ const InitiateShipping = () => {
 };
 
 const Step1 = () => {
-  const { orderItems } = useAutoImportContext();
+  const { orderPackages } = useAutoImportContext();
 
-  if (!orderItems) return;
+  if (!orderPackages) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderItems.map((item, i) => {
+      {orderPackages.map((item, i) => {
         return <OrderItem key={item.orderId} index={i} />;
       })}
     </div>

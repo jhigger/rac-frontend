@@ -6,7 +6,7 @@ const useSubmitShopRequest = (token: string) => {
   const handleSubmit = async (orderPackage: ShopOrderPackageType) => {
     const data = {
       origin: orderPackage.originWarehouse,
-      requestItems: orderPackage.items.map((item) => {
+      requestPackages: orderPackage.items.map((item) => {
         const packageItem = {
           store: item.store,
           itemUrl: item.url,
@@ -51,7 +51,7 @@ const useSubmitShopRequest = (token: string) => {
 
 export interface Main {
   origin: string;
-  requestItems: RequestItem[];
+  requestPackages: RequestItem[];
 }
 
 export interface RequestItem {

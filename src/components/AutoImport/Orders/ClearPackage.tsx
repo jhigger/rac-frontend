@@ -106,14 +106,14 @@ const ClearPackage = () => {
 };
 
 const Step1 = () => {
-  const { orderItems } = useAutoImportContext();
+  const { orderPackages } = useAutoImportContext();
 
-  if (!orderItems) return;
+  if (!orderPackages) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <SectionHeader title="Confirm that the Car(s) below are the car(s) you wish to clear" />
-      {orderItems.map((item, i) => {
+      {orderPackages.map((item, i) => {
         return <OrderItem key={item.orderId} index={i} />;
       })}
     </div>

@@ -60,7 +60,7 @@ export const emptyValue: ImportRequestPackageType = {
 };
 
 export type ImportInputs = {
-  requestItems: ImportRequestPackageType;
+  requestPackages: ImportRequestPackageType;
 };
 
 const RequestOrder = () => {
@@ -73,13 +73,13 @@ const RequestOrder = () => {
 
   const formMethods = useForm<ImportInputs>({
     defaultValues: {
-      requestItems: emptyValue,
+      requestPackages: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
     // handleRequests();
-    console.log(data.requestItems);
+    console.log(data.requestPackages);
     next();
   };
 
@@ -177,7 +177,7 @@ export const Step2 = () => {
   const { control } = useFormContext<ImportInputs>();
   const { fields, append, remove } = useFieldArray<ImportInputs>({
     control,
-    name: "requestItems.items",
+    name: "requestPackages.items",
   });
 
   const handleAddMore = () => {
@@ -315,21 +315,29 @@ const ItemDetailsSection = ({
                   <QuantityInput
                     id={`quantity-${index}`}
                     label={"Quantity"}
-                    {...register(`requestItems.items.${index}.quantity`, {
+                    {...register(`requestPackages.items.${index}.quantity`, {
                       valueAsNumber: true,
                     })}
                     handleAdd={() => {
                       const prev =
-                        getValues(`requestItems.items.${index}.quantity`) ?? 0;
+                        getValues(`requestPackages.items.${index}.quantity`) ??
+                        0;
                       const value = prev + 1;
-                      setValue(`requestItems.items.${index}.quantity`, value);
+                      setValue(
+                        `requestPackages.items.${index}.quantity`,
+                        value,
+                      );
                     }}
                     handleSubtract={() => {
                       const prev =
-                        getValues(`requestItems.items.${index}.quantity`) ?? 0;
+                        getValues(`requestPackages.items.${index}.quantity`) ??
+                        0;
                       if (prev <= 1) return;
                       const value = prev - 1;
-                      setValue(`requestItems.items.${index}.quantity`, value);
+                      setValue(
+                        `requestPackages.items.${index}.quantity`,
+                        value,
+                      );
                     }}
                   />
                 </div>

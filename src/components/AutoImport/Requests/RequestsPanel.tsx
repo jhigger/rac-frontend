@@ -29,7 +29,7 @@ import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
 
 const AutoImportRequestsPanel = () => {
-  const { requestItems } = useAutoImportContext();
+  const { requestPackages } = useAutoImportContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
@@ -48,7 +48,7 @@ const AutoImportRequestsPanel = () => {
     );
   }
 
-  if (Array.isArray(requestItems) && requestItems.length > 0) {
+  if (Array.isArray(requestPackages) && requestPackages.length > 0) {
     return (
       <TabContentLayout>
         <RequestsTable />
@@ -73,7 +73,7 @@ const AutoImportRequestsPanel = () => {
 };
 
 const RequestsTable = () => {
-  const { requestItems } = useAutoImportContext();
+  const { requestPackages } = useAutoImportContext();
   const { handleActiveAction, handleViewIndex } = useTabContext();
 
   const onClick = (index: number) => {
@@ -164,7 +164,7 @@ const RequestsTable = () => {
     <MainTable
       id="requests"
       columns={defaultColumns}
-      data={requestItems}
+      data={requestPackages}
       filterCategories={filterCategories}
     />
   );

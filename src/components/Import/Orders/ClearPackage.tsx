@@ -116,15 +116,15 @@ const ClearPackage = () => {
 };
 
 const PackageConfirmation = () => {
-  const { orderItems } = useImportContext();
+  const { orderPackages } = useImportContext();
 
-  if (!orderItems) return;
+  if (!orderPackages) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderItems.map((item, i) => {
+      {orderPackages.map((item, i) => {
         return <OrderItem key={item.orderId} index={i} />;
       })}
     </div>

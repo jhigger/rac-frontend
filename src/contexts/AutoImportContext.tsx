@@ -16,9 +16,9 @@ import { autoImportOrders, autoImportRequests } from "~/fake data";
 export type AutoImportContextType = {
   clearDrafts: () => void;
   draftItems: AutoImportDraftPackageType[];
-  orderItems: AutoImportOrderPackageType[];
+  orderPackages: AutoImportOrderPackageType[];
   payNowAction: { action: () => void } | null;
-  requestItems: AutoImportRequestPackageType[];
+  requestPackages: AutoImportRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
   handlePayNowAction: (action: AutoImportContextType["payNowAction"]) => void;
@@ -135,9 +135,9 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   const value: AutoImportContextType = {
     clearDrafts,
     draftItems: draftPackages,
-    orderItems: orderPackages,
+    orderPackages: orderPackages,
     payNowAction,
-    requestItems: requestPackages,
+    requestPackages: requestPackages,
     handleDrafts,
     handleOrders,
     handlePayNowAction,

@@ -34,7 +34,7 @@ const useFetchShopRequests = (
           requestStatus:
             request.requestStatus as ShopRequestPackageType["requestStatus"],
           requestDate: new Date(request.createdAt),
-          items: request.requestItems.map((item) => {
+          items: request.requestPackages.map((item) => {
             const requestItem: ShopItemType = {
               store: item.store as ShopItemType["store"],
               urgent: item.urgent,
@@ -95,7 +95,7 @@ export interface SfmRequest {
   user: string;
   sfmType?: string;
   origin: string;
-  requestItems: RequestItem[];
+  requestPackages: RequestItem[];
   contactAddress?: unknown[];
   sfmRequestApproved?: boolean;
   sfmPaymentPaid: boolean;

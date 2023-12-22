@@ -22,12 +22,12 @@ import useAccordion from "~/hooks/useAccordion";
 import { OrderItem } from "../Orders/ClearPackage";
 
 const RequestDetails = () => {
-  const { requestItems } = useImportContext();
+  const { requestPackages } = useImportContext();
   const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const requestPackage = requestItems?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
   if (!requestPackage) return;
 

@@ -31,12 +31,12 @@ import useAccordion from "~/hooks/useAccordion";
 import { OrderItem } from "./ClearPackage";
 
 const OrderDetails = () => {
-  const { orderItems } = useImportContext();
+  const { orderPackages } = useImportContext();
   const { viewIndex, handleActiveAction } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderItems?.[viewIndex];
+  const orderPackage = orderPackages?.[viewIndex];
 
   if (!orderPackage) return;
 

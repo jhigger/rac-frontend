@@ -48,7 +48,7 @@ export const emptyValue: ExportRequestPackageType = {
 };
 
 export type ExportInputs = {
-  requestItems: ExportRequestPackageType;
+  requestPackages: ExportRequestPackageType;
 };
 
 const RequestOrder = () => {
@@ -61,13 +61,13 @@ const RequestOrder = () => {
 
   const formMethods = useForm<ExportInputs>({
     defaultValues: {
-      requestItems: emptyValue,
+      requestPackages: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<ExportInputs> = async (data) => {
     // handleRequests();
-    console.log(data.requestItems);
+    console.log(data.requestPackages);
     next();
   };
 

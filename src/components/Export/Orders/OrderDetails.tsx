@@ -28,12 +28,12 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 
 const OrderDetails = () => {
-  const { orderItems } = useExportContext();
+  const { orderPackages } = useExportContext();
   const { viewIndex, handleActiveAction } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderItems?.[viewIndex];
+  const orderPackage = orderPackages?.[viewIndex];
 
   if (!orderPackage) return;
 

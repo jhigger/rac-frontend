@@ -74,7 +74,7 @@ export const emptyValue: ShopOrderPackageType = {
 };
 
 export type ShopInputs = {
-  requestItems: ShopOrderPackageType;
+  requestPackages: ShopOrderPackageType;
 };
 
 const RequestOrderForm = () => {
@@ -91,21 +91,21 @@ const RequestOrderForm = () => {
 
   const formMethods = useForm<ShopInputs>({
     defaultValues: {
-      requestItems: emptyValue,
+      requestPackages: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
-    data.requestItems.items.every((item, index) => {
+    data.requestPackages.items.every((item, index) => {
       const value = item.urgent;
       formMethods.setValue(
-        `requestItems.items.${index}.urgent`,
+        `requestPackages.items.${index}.urgent`,
         Boolean(Number(value)),
       );
     });
 
     // console.log("submitting user package...");
-    // await mutateAsync(formMethods.getValues().requestItems);
+    // await mutateAsync(formMethods.getValues().requestPackages);
     // console.log(status);
     // console.log(error);
     // if (isSuccess) next();
@@ -177,7 +177,7 @@ export const RequestOrderStep1 = () => {
   const { control } = useFormContext<ShopInputs>();
   const { fields, append, remove } = useFieldArray<ShopInputs>({
     control,
-    name: "requestItems.items",
+    name: "requestPackages.items",
   });
 
   const handleAddMore = () => {
@@ -360,7 +360,7 @@ const SelectWarehouseOriginSection = () => {
               })}
             </>
           }
-          {...register("requestItems.originWarehouse")}
+          {...register("requestPackages.originWarehouse")}
         />
         <TooltipButton />
       </div>
@@ -436,7 +436,7 @@ export const ItemDetailsSection = ({
                         })}
                       </>
                     }
-                    {...register(`requestItems.items.${index}.store`)}
+                    {...register(`requestPackages.items.${index}.store`)}
                   />
                   <TooltipButton />
                 </div>
@@ -451,7 +451,7 @@ export const ItemDetailsSection = ({
                         <option value="0">No</option>
                       </>
                     }
-                    {...register(`requestItems.items.${index}.urgent`)}
+                    {...register(`requestPackages.items.${index}.urgent`)}
                   />
                   <TooltipButton />
                 </div>
@@ -460,7 +460,7 @@ export const ItemDetailsSection = ({
                   <TextInput
                     id={`itemUrl-${index}`}
                     label={"Item URL"}
-                    {...register(`requestItems.items.${index}.url`)}
+                    {...register(`requestPackages.items.${index}.url`)}
                   />
                 </div>
 
@@ -468,7 +468,7 @@ export const ItemDetailsSection = ({
                   <TextInput
                     id={`itemName-${index}`}
                     label={"Item Name"}
-                    {...register(`requestItems.items.${index}.name`)}
+                    {...register(`requestPackages.items.${index}.name`)}
                   />
                 </div>
 
@@ -476,7 +476,7 @@ export const ItemDetailsSection = ({
                   <CurrencyInput
                     id={`itemOriginalCost-${index}`}
                     label={"Item Original Cost"}
-                    {...register(`requestItems.items.${index}.originalCost`)}
+                    {...register(`requestPackages.items.${index}.originalCost`)}
                   />
                 </div>
 
@@ -484,21 +484,29 @@ export const ItemDetailsSection = ({
                   <QuantityInput
                     id={`quantity-${index}`}
                     label={"Quantity"}
-                    {...register(`requestItems.items.${index}.quantity`, {
+                    {...register(`requestPackages.items.${index}.quantity`, {
                       valueAsNumber: true,
                     })}
                     handleAdd={() => {
                       const prev =
-                        getValues(`requestItems.items.${index}.quantity`) ?? 0;
+                        getValues(`requestPackages.items.${index}.quantity`) ??
+                        0;
                       const value = prev + 1;
-                      setValue(`requestItems.items.${index}.quantity`, value);
+                      setValue(
+                        `requestPackages.items.${index}.quantity`,
+                        value,
+                      );
                     }}
                     handleSubtract={() => {
                       const prev =
-                        getValues(`requestItems.items.${index}.quantity`) ?? 0;
+                        getValues(`requestPackages.items.${index}.quantity`) ??
+                        0;
                       if (prev <= 1) return;
                       const value = prev - 1;
-                      setValue(`requestItems.items.${index}.quantity`, value);
+                      setValue(
+                        `requestPackages.items.${index}.quantity`,
+                        value,
+                      );
                     }}
                   />
                 </div>
@@ -507,7 +515,7 @@ export const ItemDetailsSection = ({
                   <CurrencyInput
                     id={`shippingCost-${index}`}
                     label={"Total shipping cost to your warehouse & Sales Tax"}
-                    {...register(`requestItems.items.${index}.shippingCost`)}
+                    {...register(`requestPackages.items.${index}.shippingCost`)}
                   />
                 </div>
 
@@ -516,7 +524,7 @@ export const ItemDetailsSection = ({
                     id={`itemPicture-${index}`}
                     label={"Upload Item Picture"}
                     value={filename}
-                    {...register(`requestItems.items.${index}.image`, {
+                    {...register(`requestPackages.items.${index}.image`, {
                       onChange: handleChange,
                     })}
                   />
@@ -526,7 +534,7 @@ export const ItemDetailsSection = ({
                   <TextAreaInput
                     id={`additionalItemDescription-${index}`}
                     label={"Additional Item Description"}
-                    {...register(`requestItems.items.${index}.description`)}
+                    {...register(`requestPackages.items.${index}.description`)}
                   />
                 </div>
 
@@ -572,7 +580,7 @@ export const AddPropertiesSection = ({
   };
 
   useEffect(() => {
-    setValue(`requestItems.items.${index}.properties`, properties);
+    setValue(`requestPackages.items.${index}.properties`, properties);
   }, [properties]);
 
   return (
@@ -857,7 +865,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
   const ref = useRef<HTMLImageElement>(null);
 
   const handleGetImage = () => {
-    const files = getValues(`requestItems.items.${index}.image`);
+    const files = getValues(`requestPackages.items.${index}.image`);
     if (!files ?? files[0]) return;
 
     const src = URL.createObjectURL(files[0] as unknown as Blob);
@@ -868,7 +876,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
 
   useEffect(() => {
     handleGetImage();
-  }, [watch(`requestItems.items.${index}.image`)]);
+  }, [watch(`requestPackages.items.${index}.image`)]);
 
   return (
     <div
@@ -894,7 +902,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
                 Item Name:
               </label>
               <span id="item-name" className="title-lg text-neutral-900">
-                {getValues(`requestItems.items.${index}.name`)}
+                {getValues(`requestPackages.items.${index}.name`)}
               </span>
             </div>
           </div>
@@ -909,7 +917,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
                   <span>
                     $
                     {(getValues(
-                      `requestItems.items.${index}.urgent`,
+                      `requestPackages.items.${index}.urgent`,
                     ) as unknown as string) === "Yes"
                       ? 999
                       : 0}
@@ -919,7 +927,7 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
                 <div className="flex justify-between">
                   <span>Cost of Item from Store</span>
                   <span>
-                    ${getValues(`requestItems.items.${index}.originalCost`)}
+                    ${getValues(`requestPackages.items.${index}.originalCost`)}
                   </span>
                 </div>
                 <hr className="bg-gray-200" />
@@ -960,14 +968,14 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Item Quantity:</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {getValues(`requestItems.items.${index}.quantity`)}
+          {getValues(`requestPackages.items.${index}.quantity`)}
         </span>
       </div>
 
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Country Of Purchase:</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {getValues(`requestItems.originWarehouse`)}
+          {getValues(`requestPackages.originWarehouse`)}
         </span>
       </div>
 
@@ -977,7 +985,7 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
           id="item-name"
           className="title-md md:title-lg text-error-600 underline"
         >
-          {getValues(`requestItems.items.${index}.url`)}
+          {getValues(`requestPackages.items.${index}.url`)}
         </span>
       </div>
 
@@ -986,14 +994,14 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
           Cost of item from Store:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          ${getValues(`requestItems.items.${index}.originalCost`)}
+          ${getValues(`requestPackages.items.${index}.originalCost`)}
         </span>
       </div>
 
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Store</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {getValues(`requestItems.items.${index}.store`)}
+          {getValues(`requestPackages.items.${index}.store`)}
         </span>
       </div>
 
@@ -1023,7 +1031,7 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
           Total Shipping Cost to your Warehouse & Sales Tax:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          ${getValues(`requestItems.items.${index}.shippingCost`)}
+          ${getValues(`requestPackages.items.${index}.shippingCost`)}
         </span>
       </div>
 
@@ -1032,7 +1040,7 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
           Additional Item Description:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {getValues(`requestItems.items.${index}.description`)}
+          {getValues(`requestPackages.items.${index}.description`)}
         </span>
       </div>
     </div>

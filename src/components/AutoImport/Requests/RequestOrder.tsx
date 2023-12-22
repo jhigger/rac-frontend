@@ -87,7 +87,7 @@ export const emptyValue: AutoImportRequestPackageType = {
 };
 
 export type AutoImportInputs = {
-  requestItems: AutoImportRequestPackageType[];
+  requestPackages: AutoImportRequestPackageType[];
 };
 
 const RequestOrder = () => {
@@ -117,13 +117,13 @@ const RequestOrder = () => {
 
   const formMethods = useForm<AutoImportInputs>({
     defaultValues: {
-      requestItems: [emptyValue],
+      requestPackages: [emptyValue],
     },
   });
 
   const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
     // handleRequests();
-    console.log(data.requestItems);
+    console.log(data.requestPackages);
     next();
   };
 
@@ -199,7 +199,7 @@ export const Step1 = () => {
   const { control } = useFormContext<AutoImportInputs>();
   const { fields, append, remove } = useFieldArray<AutoImportInputs>({
     control,
-    name: "requestItems",
+    name: "requestPackages",
   });
 
   const handleAddMore = () => {
@@ -264,9 +264,9 @@ type ItemDetailsSectionProps = {
   handleRemoveItem: (index: number) => void;
   fields: FieldArrayWithId<
     AutoImportInputs,
-    | "requestItems"
-    | `requestItems.${number}.items`
-    | `requestItems.${number}.items.${number}.properties`,
+    | "requestPackages"
+    | `requestPackages.${number}.items`
+    | `requestPackages.${number}.items.${number}.properties`,
     "id"
   >[];
 };

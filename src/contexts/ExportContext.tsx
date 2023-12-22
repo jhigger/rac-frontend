@@ -16,9 +16,9 @@ import { exportDrafts, exportOrders, exportRequests } from "~/fake data";
 export type ExportContextType = {
   clearDrafts: () => void;
   draftItems: ExportDraftPackageType[];
-  orderItems: ExportOrderPackageType[];
+  orderPackages: ExportOrderPackageType[];
   payNowAction: { action: () => void } | null;
-  requestItems: ExportRequestPackageType[];
+  requestPackages: ExportRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
   handlePayNowAction: (action: ExportContextType["payNowAction"]) => void;
@@ -117,9 +117,9 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   const value: ExportContextType = {
     clearDrafts,
     draftItems: draftPackages,
-    orderItems: orderPackages,
+    orderPackages: orderPackages,
     payNowAction,
-    requestItems: requestPackages,
+    requestPackages: requestPackages,
     handleDrafts,
     handleOrders,
     handlePayNowAction,

@@ -42,7 +42,7 @@ const useFetchShopOrders = (
         shippingCost: 0, // todo: missing
         originWarehouse:
           order.origin as ShopOrderPackageType["originWarehouse"],
-        items: order.requestItems.map((item) => {
+        items: order.requestPackages.map((item) => {
           const requestItem: ShopItemType = {
             store: item.store as ShopItemType["store"],
             urgent: item.urgent,
@@ -102,7 +102,7 @@ export interface SfmOrder {
   user: string;
   sfmType?: string;
   origin: string;
-  requestItems: RequestItem[];
+  requestPackages: RequestItem[];
   contactAddress?: unknown[];
   sfmRequestApproved?: boolean;
   sfmPaymentPaid: boolean;

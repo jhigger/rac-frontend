@@ -59,7 +59,7 @@ const WelcomeChamp = () => {
           </div>
         )}
         {isLastStep && (
-          <div className="w-full max-w-[300px]">
+          <div className="w-full md:max-w-[300px]">
             <DoneButton handleFinish={back} />
           </div>
         )}
@@ -252,9 +252,9 @@ const Step2 = () => {
             The shipping cost shown here is an estimate based on the package
             details you provided.
           </span>
-          <div className="flex flex-col gap-[10px]">
+          <div className="flex flex-col gap-[10px] border-t-[1px] p-[10px] md:border-0">
             <span className="body-lg">Estimated Shipping Cost:</span>
-            <span className="headline-md">$345.00</span>
+            <span className="title-lg md:headline-md">$345.00</span>
           </div>
         </div>
       </div>
@@ -262,16 +262,16 @@ const Step2 = () => {
         <SectionHeader title="What next?" />
         <div className="flex flex-col gap-[10px] px-[10px] md:px-[34px]">
           <p className="body-md">{services[getValues("service")].text}</p>
-          <div className="w-max">
+          <div className="w-full md:w-max">
             <button
               onClick={() => router.push(services[getValues("service")].href)}
               aria-label={`Initiate ${capitalizeWords(getValues("service"))}`}
               className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
             >
-              <span className="text-primary-900">
+              <span className="text-primary-900 [&>*]:w-[18px] [&>*]:md:w-[24px]">
                 {services[getValues("service")].icon}
               </span>
-              <span className="body-lg whitespace-nowrap text-primary-600">
+              <span className="label-lg md:body-lg whitespace-nowrap text-primary-600">
                 Initiate {capitalizeWords(getValues("service"))}
               </span>
             </button>

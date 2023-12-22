@@ -1,11 +1,12 @@
 import { ArrowCircleLeft2 } from "iconsax-react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
 import PageLayout from "~/components/Layouts/PageLayout";
 import NotificationList from "~/components/Notifications/NotificationList";
 import TopAppBar from "~/components/TopAppBar";
 import { useAuthContext } from "~/contexts/AuthContext";
-import { navItems } from "~/contexts/NavigationContext";
+import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { useNotificationContext } from "~/contexts/NotificationContext";
 import TabContextProvider from "~/contexts/TabContext";
 
@@ -29,14 +30,30 @@ const notifications = () => {
 };
 
 const Empty = () => {
+  const { previousRoute } = useNavContext();
   const router = useRouter();
 
+  const [route, setRoute] = useState("Shop For Me");
+  const [href, setHref] = useState<string | null>(null);
+
   const handleBack = () => {
-    const path = navItems.find((navItem) => navItem.href === router.asPath);
-    if (path) {
+    if (href) {
       router.back();
+    } else {
+      void router.push("/shop");
     }
   };
+
+  useEffect(() => {
+    const path = navItems.find(
+      (navItem) =>
+        navItem.href === previousRoute && navItem.href !== "/notifications",
+    );
+    setHref(path?.href ?? null);
+    if (path) {
+      setRoute(path.title);
+    }
+  }, []);
 
   return (
     <div className="flex w-full flex-grow flex-col items-center justify-center gap-[30px]">
@@ -44,7 +61,7 @@ const Empty = () => {
         <Balancer>You don&apos;t have any notification here yet.</Balancer>
       </h2>
       <div className="w-max">
-        <PrimaryBackButton text="Return to ..." onClick={handleBack} />
+        <PrimaryBackButton text={`Return to ${route}`} onClick={handleBack} />
       </div>
     </div>
   );

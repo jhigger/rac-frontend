@@ -16,6 +16,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -23,6 +24,7 @@ import { type NAV_TITLES } from "~/constants";
 
 export type NavContextType = {
   activeNav: NavTitleType;
+  previousRoute: string | null;
   handleActiveNavChange: (navTitle: NavTitleType) => void;
 };
 
@@ -98,16 +100,12 @@ export const navItems: NavItemType[] = [
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
+  const previousRouteRef = useRef<string | null>(null);
   const [activeNav, setActiveNav] =
     useState<NavItemType["title"]>("Shop For Me");
 
   const handleActiveNavChange = (navTitle: NavTitleType) => {
     setActiveNav(navTitle);
-  };
-
-  const value: NavContextType = {
-    activeNav,
-    handleActiveNavChange,
   };
 
   const redirectTo = (path: string) => {
@@ -123,7 +121,17 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
       handleActiveNavChange(matchedNavItem.title);
       redirectTo(router.asPath);
     }
+
+    router.events?.on("routeChangeStart", () => {
+      previousRouteRef.current = router.asPath;
+    });
   }, [router.asPath]);
+
+  const value: NavContextType = {
+    activeNav,
+    previousRoute: previousRouteRef.current,
+    handleActiveNavChange,
+  };
 
   return <NavContext.Provider value={value}>{children}</NavContext.Provider>;
 };

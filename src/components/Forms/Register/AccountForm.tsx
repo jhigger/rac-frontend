@@ -12,7 +12,7 @@ const AccountForm = () => {
   return (
     <>
       <FormHeader title="Create your account" />
-      <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
+      <div className="flex w-full flex-col gap-[30px]">
         <TextInput
           id={"firstName"}
           label={"First Name"}
@@ -36,12 +36,14 @@ const AccountForm = () => {
           id="password"
           label="Password"
           disabled={isRegistering}
+          newPassword
           {...register("password")}
         />
         <PasswordInput
           id="confirmPassword"
           label="Confirm Password"
           disabled={isRegistering}
+          confirmPassword
           {...register("confirmPassword")}
         />
       </div>

@@ -84,11 +84,11 @@ const register = () => {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-brand">
-      <div className="container flex flex-col items-center justify-center px-14 py-16">
+      <div className="container flex flex-col items-center justify-center px-[20px] md:px-14 py-16">
         <Logo />
 
         <FormProvider {...formMethods}>
-          <div className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]">
+          <div className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
             {step}
 
             {registerError && (

@@ -1,4 +1,4 @@
-import { Eye, EyeSlash } from "iconsax-react";
+import { Eye, EyeSlash, TickCircle } from "iconsax-react";
 import {
   forwardRef,
   useState,
@@ -10,13 +10,21 @@ import {
 type PasswordInputProps = {
   id: string;
   label: string;
+  confirmPassword?: boolean;
+  newPassword?: boolean;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
 
 const PasswordInput = (
-  { id, label, ...props }: PasswordInputProps,
+  {
+    id,
+    label,
+    confirmPassword = false,
+    newPassword = false,
+    ...props
+  }: PasswordInputProps,
   ref: Ref<HTMLInputElement>,
 ) => {
   const [show, setShow] = useState(false);
@@ -26,7 +34,7 @@ const PasswordInput = (
   };
 
   return (
-    <div className="relative flex flex-col">
+    <div className="relative flex flex-col gap-[10px]">
       <div className="relative z-0">
         <input
           ref={ref}
@@ -51,12 +59,42 @@ const PasswordInput = (
           type="button"
           onClick={toggleVisibility}
         >
-          {show ? <Eye color="#292d32" /> : <EyeSlash color="#292d32" />}
+          {show ? (
+            <Eye variant="Bold" className="text-gray-700" />
+          ) : (
+            <EyeSlash variant="Bold" className="text-gray-700" />
+          )}
         </button>
       </div>
-      <div className="hidden px-4 pt-1 text-xs tracking-[0.4px]">
-        Supporting text
-      </div>
+      {newPassword && (
+        <div className="grid grid-cols-1 gap-[10px] px-[10px] md:grid-cols-2">
+          <SupportingText text="At least one lowercase letter" />
+          <SupportingText text="Minimum of 8 characters" />
+          <SupportingText text="At least one uppercase character" />
+          <SupportingText text="Must contain a number or special character" />
+        </div>
+      )}
+
+      {confirmPassword && (
+        <div className="px-[10px]">
+          <SupportingText text="Passwords match each other" />
+        </div>
+      )}
+    </div>
+  );
+};
+
+type SupportingTextProps = { text: string };
+
+const SupportingText = ({ text }: SupportingTextProps) => {
+  return (
+    <div className="flex items-center gap-[10px]">
+      <TickCircle
+        size={18}
+        variant="Bold"
+        className="flex-shrink-0 text-gray-500"
+      />
+      <span className="body-sm text-gray-700">{text} </span>
     </div>
   );
 };

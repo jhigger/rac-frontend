@@ -22,12 +22,11 @@ const LoginForm = () => {
 
   return (
     <form
-
       onSubmit={handleSubmit(onSubmit)}
-      className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]"
+      className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
     >
       <FormHeader title="Login" />
-      <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
+      <div className="flex w-full flex-col gap-[30px]">
         <TextInput
           id="email"
           label="Email"

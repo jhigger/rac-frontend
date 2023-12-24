@@ -28,7 +28,7 @@ const AddressForm = () => {
           </>
         }
       />
-      <div className="flex w-full max-w-[500px] flex-col gap-[30px]">
+      <div className="flex w-full flex-col gap-[30px]">
         <SelectCountryInput register={register} />
         {watch("country") && (
           <SelectStateInput states={states} register={register} />

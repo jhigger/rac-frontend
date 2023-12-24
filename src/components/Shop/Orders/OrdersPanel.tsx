@@ -320,77 +320,67 @@ type ImageColumnProps = { images: string[] };
 
 export const ImageColumn = ({ images }: ImageColumnProps) => {
   return (
-    <div className="w-full max-w-[130px] border-0 p-0">
-      <div className="grid h-full max-h-[50px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-[5px] overflow-hidden rounded-[10px]">
+    <div className="w-full max-w-[130px] overflow-hidden rounded-[10px] border-0 bg-surface-100 p-0">
+      <div className="m-[5px] grid h-full max-h-[50px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-x-[10px] gap-y-[5px]">
         {images.length === 1 && (
-          <div className="col-span-full row-span-full overflow-hidden rounded-[10px]">
+          <div className="col-span-full row-span-full flex max-h-[50px] items-center justify-center overflow-hidden rounded-[10px]">
             <img src={images[0]} alt="package image" />
           </div>
         )}
         {images.length === 2 && (
           <>
-            <div className="col-span-full row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-full flex max-h-[50px] items-center justify-center overflow-hidden rounded-[10px]">
               <img src={images[0]} alt="package image" />
             </div>
-            <div className="col-span-full row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-full flex max-h-[50px] items-center justify-center overflow-hidden rounded-[10px]">
               <img src={images[1]} alt="package image" />
             </div>
           </>
         )}
         {images.length === 3 && (
           <>
-            <div className="col-span-2 row-span-2 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[0]} alt="package image" />
             </div>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-2 flex max-h-[50px] items-center justify-center overflow-hidden rounded-[10px]">
               <img src={images[1]} alt="package image" />
             </div>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[2]} alt="package image" />
             </div>
           </>
         )}
         {images.length === 4 && (
           <>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[0]} alt="package image" />
             </div>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[1]} alt="package image" />
             </div>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[2]} alt="package image" />
             </div>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[3]} alt="package image" />
             </div>
           </>
         )}
         {images.length >= 5 && (
           <>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[0]} alt="package image" />
             </div>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[1]} alt="package image" />
             </div>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
               <img src={images[2]} alt="package image" />
             </div>
-            <div className="col-span-1 row-span-1 flex max-h-[60px] items-center justify-center overflow-hidden rounded-[10px]">
-              <div className="flex w-max items-center gap-[10px] rounded-[10px] bg-surface-100 p-[10px]">
-                {images.length >= 5 && (
-                  <>
-                    <div className="label-lg hidden items-center p-[10px] text-secondary-600 sm:flex">{`${
-                      images.length - 4
-                    }+`}</div>
-                    {/* for mobile screen */}
-                    <div className="label-lg flex items-center p-[10px] text-secondary-600 sm:hidden">{`${
-                      images.length - 1
-                    }+`}</div>
-                  </>
-                )}
-              </div>
+            <div className="col-span-1 row-span-1 flex max-h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
+              <div className="label-lg flex items-center p-[10px] text-secondary-600">{`${
+                images.length - 4
+              }+`}</div>
             </div>
           </>
         )}
@@ -790,7 +780,7 @@ export const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
         id="pageNumber"
         value={value}
         onChange={onChange}
-        className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 pr-[60px] leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
+        className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 pr-[50px] leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
       >
         <option value="5">5</option>
         <option value="10">10</option>

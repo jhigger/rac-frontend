@@ -112,7 +112,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderDate: new Date("2023/1/23"),
     trackingId: "SH08751",
     shippingStatus: "not started",
     shopForMeStatus: "Purchase not started",
@@ -147,7 +147,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "not responded",
-    orderDate: new Date(),
+    orderDate: new Date("2023/2/23"),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     shopForMeStatus: "Purchase in progress",
@@ -193,7 +193,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderDate: new Date("2023/3/23"),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     shopForMeStatus: "Purchase completed",
@@ -250,7 +250,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderDate: new Date("2023/4/23"),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     shopForMeStatus: "Purchase completed",
@@ -318,7 +318,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "not responded",
-    orderDate: new Date(),
+    orderDate: new Date("2023/5/23"),
     trackingId: "SH08755",
     shippingStatus: "processing",
     shopForMeStatus: "Purchase completed",
@@ -342,7 +342,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderDate: new Date("2023/6/23"),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     shopForMeStatus: "Purchase completed",
@@ -366,7 +366,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderDate: new Date("2023/7/23"),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     shopForMeStatus: "Purchase completed",
@@ -390,7 +390,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderDate: new Date("2023/8/23"),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     shopForMeStatus: "Purchase completed",

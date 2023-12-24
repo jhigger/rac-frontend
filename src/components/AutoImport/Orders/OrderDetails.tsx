@@ -1,3 +1,4 @@
+import { BackButton } from "~/components/Buttons";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import {
   shippingStatuses,
@@ -16,7 +17,6 @@ import {
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
-  BackButton,
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,

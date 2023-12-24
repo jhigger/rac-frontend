@@ -6,12 +6,11 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { capitalizeWords } from "~/Utils";
 import { SERVICES } from "~/constants";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import { DoneButton, ProceedButton } from "../Buttons";
 import QuantityInput from "../Forms/Inputs/QuantityInput";
 import SelectInput from "../Forms/Inputs/SelectInput";
 import TextInput from "../Forms/Inputs/TextInput";
 import {
-  DoneButton,
-  ProceedButton,
   RequestFormHeader,
   SectionHeader,
 } from "../Shop/Requests/RequestOrder";

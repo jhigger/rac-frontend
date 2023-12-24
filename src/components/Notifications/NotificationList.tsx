@@ -14,14 +14,13 @@ import { type ShopOrderPackageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import { PrimaryBackButton } from "~/pages/notifications";
+import { DeleteButtonIcon, DeleteItemButton } from "../Buttons";
 import CongratulationImage from "../CongratulationImage";
 import AccordionButton from "../Forms/AccordionButton";
 import OrderTrackingId from "../OrderTrackingId";
 import { StepDescription } from "../Shop/Orders/OrdersPanel";
 import { AndLastly } from "../Shop/Requests/RequestCheckout";
 import {
-  DeleteButtonIcon,
-  DeleteItemButton,
   SectionContentLayout,
   SectionHeader,
 } from "../Shop/Requests/RequestOrder";

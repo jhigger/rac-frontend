@@ -2,7 +2,7 @@
 import { ArrowRight3, ExportCircle, Receipt2, TickCircle } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { PayNowButton } from "~/components/Buttons";
+import { BackButton, PayNowButton } from "~/components/Buttons";
 import CongratulationImage from "~/components/CongratulationImage";
 import SelectCityInput from "~/components/Forms/Inputs/SelectCityInput";
 import SelectCountryInput from "~/components/Forms/Inputs/SelectCountryInput";
@@ -21,7 +21,6 @@ import { type RegisterInputs } from "~/pages/register";
 import AccordionButton from "../../Forms/AccordionButton";
 import { Item, PackageOrigin } from "./RequestDetails";
 import {
-  BackButton,
   ChangeCurrencyButton,
   RequestFormHeader,
   SectionContentLayout,

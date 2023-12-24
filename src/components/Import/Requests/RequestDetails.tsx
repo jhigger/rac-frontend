@@ -1,3 +1,4 @@
+import { BackButton } from "~/components/Buttons";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
 import { DetailsInitiateShippingButton } from "~/components/Shop/Orders";
@@ -11,7 +12,6 @@ import {
   type RequestInformationProps,
 } from "~/components/Shop/Requests/RequestDetails";
 import {
-  BackButton,
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,

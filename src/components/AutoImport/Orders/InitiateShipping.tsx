@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect } from "react";
-import { PayNowButton } from "~/components/Buttons";
+import { BackButton, PayNowButton } from "~/components/Buttons";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
@@ -25,7 +25,6 @@ import {
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
 import {
-  BackButton,
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";

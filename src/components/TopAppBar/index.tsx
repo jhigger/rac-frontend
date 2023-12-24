@@ -24,17 +24,13 @@ import {
 } from "~/contexts/NotificationContext";
 import useAccordion from "~/hooks/useAccordion";
 import tailmater from "~/js/tailmater";
-import { CloseButton } from "../Buttons";
+import { CloseButton, DeleteButtonIcon, DeleteItemButton } from "../Buttons";
 import AccordionButton from "../Forms/AccordionButton";
 import {
   notificationMessages,
   type NotificationListItemProps,
 } from "../Notifications/NotificationList";
-import {
-  DeleteButtonIcon,
-  DeleteItemButton,
-  RequestFormHeader,
-} from "../Shop/Requests/RequestOrder";
+import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
 import AppBarTabs from "./AppBarTabs";
 import BreadCrumbs from "./BreadCrumbs";
 

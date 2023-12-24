@@ -1,15 +1,12 @@
 import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
+import { BackButton, ProceedButton } from "~/components/Buttons";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import AccountForm from "~/components/Forms/Register/AccountForm";
 import AddressForm from "~/components/Forms/Register/AddressForm";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
-import {
-  BackButton,
-  ProceedButton,
-} from "~/components/Shop/Requests/RequestOrder";
 import { useAuthContext } from "~/contexts/AuthContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
@@ -84,7 +81,7 @@ const register = () => {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-brand">
-      <div className="container flex flex-col items-center justify-center px-[20px] md:px-14 py-16">
+      <div className="container flex flex-col items-center justify-center px-[20px] py-16 md:px-14">
         <Logo />
 
         <FormProvider {...formMethods}>

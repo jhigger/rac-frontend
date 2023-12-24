@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import {
+  BackButton,
+  DoneButton,
+  ProceedButton,
+  SaveAsDraftButton,
+} from "~/components/Buttons";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import CongratulationImage from "~/components/CongratulationImage";
 import {
   Guidelines,
@@ -9,15 +16,10 @@ import {
   type Step3Props,
 } from "~/components/Import/Requests/RequestOrder";
 import LabelId from "~/components/LabelId";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import {
-  BackButton,
-  DoneButton,
-  ProceedButton,
   RequestFormHeader,
-  SaveAsDraftButton,
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";

@@ -1,13 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle, Ship } from "iconsax-react";
 import { useEffect } from "react";
-import { PayNowButton } from "~/components/Buttons";
+import { BackButton, PayNowButton } from "~/components/Buttons";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
-  BackButton,
   SectionContentLayout,
   SectionHeader,
   TooltipButton,

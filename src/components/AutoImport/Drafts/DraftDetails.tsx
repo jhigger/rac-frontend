@@ -1,16 +1,16 @@
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import {
+  BackButton,
+  DoneButton,
+  ProceedButton,
+  SaveAsDraftButton,
+} from "~/components/Buttons";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import {
   StepIndex,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
-import {
-  BackButton,
-  DoneButton,
-  ProceedButton,
-  RequestFormHeader,
-  SaveAsDraftButton,
-} from "~/components/Shop/Requests/RequestOrder";
+import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import { useAutoImportContext } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";

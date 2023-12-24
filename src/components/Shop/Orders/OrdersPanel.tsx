@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import {
-  ArrowSquareLeft,
-  ArrowSquareRight,
   BackSquare,
   ClipboardTick,
   ExportCircle,
@@ -10,7 +8,7 @@ import {
   Ship,
   TickSquare,
 } from "iconsax-react";
-import { useEffect, useMemo, type ChangeEventHandler } from "react";
+import { useEffect, useMemo } from "react";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseButton, type CloseButtonProps } from "~/components/Buttons";
@@ -25,9 +23,9 @@ import {
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import { MoreButton } from ".";
+import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import MainTable from "../../MainTable";
-import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import RequestOrderButton from "../RequestOrderButton";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
@@ -737,57 +735,6 @@ export const CancelButton = ({ dataClose, onClick }: CloseButtonProps) => {
     >
       <span className="label-lg">Cancel</span>
     </button>
-  );
-};
-
-export const TableFooter = () => {
-  return (
-    <div className="body-lg flex flex-col items-center gap-[20px] px-[20px] py-[10px] md:flex-row">
-      <div className="flex items-center gap-[12px]">
-        <span className="whitespace-nowrap">Items per page:</span>
-        <div className="w-full md:w-max">
-          <SelectNumber />
-        </div>
-      </div>
-      <div className="flex gap-[20px]">
-        <span>1-10 of 12</span>
-        <div className="flex gap-[10px]">
-          <button
-            disabled
-            className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
-          >
-            <ArrowSquareLeft className="text-primary-600" />
-          </button>
-          <button className="flex h-fit w-fit items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
-            <ArrowSquareRight className="text-primary-600" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-type SelectNumberProps = {
-  value?: string | number;
-  onChange?: ChangeEventHandler<HTMLSelectElement>;
-};
-
-export const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
-  return (
-    <div className="relative z-0 w-full">
-      <select
-        name="pageNumber"
-        id="pageNumber"
-        value={value}
-        onChange={onChange}
-        className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 pr-[50px] leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
-      >
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-      </select>
-    </div>
   );
 };
 

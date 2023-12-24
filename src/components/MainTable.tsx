@@ -14,9 +14,8 @@ import {
   ArrowSquareRight,
   ArrowSwapVertical,
 } from "iconsax-react";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
-import { SelectNumber } from "./Shop/Orders/OrdersPanel";
 import SearchBar, { type FilterCategoriesType } from "./Shop/SearchBar";
 
 interface ReactTableProps<T extends object> {
@@ -208,6 +207,35 @@ const MainTable = <T extends object>({
           </div>
         )}
       </div>
+    </div>
+  );
+};
+
+type SelectNumberProps = {
+  value?: string | number;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
+};
+
+const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
+  const values = useMemo(() => [5, 10, 20, 30], []);
+
+  return (
+    <div className="relative z-0 w-full">
+      <select
+        name="pageNumber"
+        id="pageNumber"
+        value={value}
+        onChange={onChange}
+        className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 pr-[50px] leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
+      >
+        {values.map((value) => {
+          return (
+            <option key={value} value={value}>
+              {value}
+            </option>
+          );
+        })}
+      </select>
     </div>
   );
 };

@@ -135,10 +135,7 @@ const RequestOrder = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <div
-        onSubmit={formMethods.handleSubmit(onSubmit)}
-        className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
-      >
+      <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <RequestFormHeader title="Requesting For New Auto Import Order" />
         <StepIndex
           currentIndex={currentStepIndex}
@@ -248,7 +245,11 @@ const SelectWarehouseOriginSection = () => {
               </option>
 
               {AUTO_IMPORT_ORIGINS.map((origin) => {
-                return <option value={origin}>{origin}</option>;
+                return (
+                  <option key={origin} value={origin}>
+                    {origin}
+                  </option>
+                );
               })}
             </>
           }
@@ -370,7 +371,11 @@ const ItemDetailsSection = ({
                         </option>
 
                         {CAR_CONDITIONS.map((condition) => {
-                          return <option value={condition}>{condition}</option>;
+                          return (
+                            <option key={condition} value={condition}>
+                              {condition}
+                            </option>
+                          );
                         })}
                       </>
                     }

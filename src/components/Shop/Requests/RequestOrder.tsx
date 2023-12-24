@@ -123,10 +123,7 @@ const RequestOrderForm = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <div
-        onSubmit={formMethods.handleSubmit(onSubmit)}
-        className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
-      >
+      <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <RequestFormHeader title="Requesting For New Shop For Me Service" />
 
         {step}

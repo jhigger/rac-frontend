@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import AccountForm from "~/components/Forms/Register/AccountForm";
 import AddressForm from "~/components/Forms/Register/AddressForm";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import {
   BackButton,
   ProceedButton,
@@ -88,10 +88,7 @@ const register = () => {
         <Logo />
 
         <FormProvider {...formMethods}>
-          <form
-            onSubmit={formMethods.handleSubmit(onSubmit)}
-            className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]"
-          >
+          <div className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]">
             {step}
 
             {registerError && (
@@ -104,13 +101,15 @@ const register = () => {
                 </div>
               )}
               {!isLastStep && <ProceedButton onClick={next} />}
-              <CreateAccountButton
-                {...{ next, isLastStep }}
-                disabled={isRegistering}
-              />
+              {isLastStep && (
+                <CreateAccountButton
+                  onClick={formMethods.handleSubmit(onSubmit)}
+                  disabled={isRegistering}
+                />
+              )}
             </div>
             <TermsAndCondition isLastStep={isLastStep} />
-          </form>
+          </div>
         </FormProvider>
 
         <div className="text-white">
@@ -129,23 +128,19 @@ const register = () => {
 };
 
 type CreateAccountButtonProps = {
-  next: () => void;
-  isLastStep: boolean;
+  onClick: () => void;
   disabled?: boolean;
 };
 
 const CreateAccountButton = ({
-  next,
-  isLastStep,
+  onClick,
   disabled,
 }: CreateAccountButtonProps) => {
-  if (!isLastStep) return;
-
   return (
     <button
       disabled={disabled}
       type="submit"
-      onClick={next}
+      onClick={onClick}
       className="btn relative flex h-[40px] flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md"
     >
       {disabled ? <LoadingSpinner /> : "Create My Account"}

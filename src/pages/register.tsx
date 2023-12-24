@@ -5,7 +5,7 @@ import AccountForm from "~/components/Forms/Register/AccountForm";
 import AddressForm from "~/components/Forms/Register/AddressForm";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
-import NeedHelpFAB from "~/components/NeedHelpFAB";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import {
   BackButton,
   ProceedButton,

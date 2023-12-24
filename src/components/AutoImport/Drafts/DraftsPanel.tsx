@@ -1,6 +1,6 @@
 import Balancer from "react-wrap-balancer";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
-import NeedHelpFAB from "~/components/NeedHelpFAB";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import { useAutoImportContext } from "~/contexts/AutoImportContext";
 import DraftDetails from "./DraftDetails";

@@ -1,5 +1,5 @@
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
-import NeedHelpFAB from "~/components/NeedHelpFAB";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";

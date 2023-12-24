@@ -43,7 +43,7 @@ import QuantityInput from "../../Forms/Inputs/QuantityInput";
 import SelectInput from "../../Forms/Inputs/SelectInput";
 import TextAreaInput from "../../Forms/Inputs/TextAreaInput";
 import TextInput from "../../Forms/Inputs/TextInput";
-import NeedHelpFAB from "../../NeedHelpFAB";
+import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import { CancelButton } from "../Orders/OrdersPanel";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";

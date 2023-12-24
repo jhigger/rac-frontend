@@ -9,7 +9,7 @@ import {
   type Step3Props,
 } from "~/components/Import/Requests/RequestOrder";
 import LabelId from "~/components/LabelId";
-import NeedHelpFAB from "~/components/NeedHelpFAB";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import {

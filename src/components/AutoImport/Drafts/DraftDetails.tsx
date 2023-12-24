@@ -1,5 +1,5 @@
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
-import NeedHelpFAB from "~/components/NeedHelpFAB";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import {
   StepIndex,
   type stepsContentType,

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
-import NeedHelpFAB from "~/components/NeedHelpFAB";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { useShopContext } from "~/contexts/ShopContext";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import RequestOrderButton from "../RequestOrderButton";

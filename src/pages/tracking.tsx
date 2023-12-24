@@ -1,5 +1,5 @@
 import PageLayout from "~/components/Layouts/PageLayout";
-import NeedHelpFAB from "~/components/NeedHelpFAB";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import TopAppBar from "~/components/TopAppBar";
 import Search from "~/components/Tracking/Search";
 import { useAuthContext } from "~/contexts/AuthContext";

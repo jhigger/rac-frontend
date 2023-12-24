@@ -1,7 +1,7 @@
 import Link from "next/link";
 import LoginForm from "~/components/Forms/Login/LoginForm";
 import Logo from "~/components/Logo";
-import NeedHelpFAB from "~/components/NeedHelpFAB";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { useAuthContext } from "~/contexts/AuthContext";
 
 const login = () => {

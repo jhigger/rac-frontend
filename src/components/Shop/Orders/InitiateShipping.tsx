@@ -101,51 +101,62 @@ const InitiateShipping = () => {
         {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
       </div>
       {currentStepIndex === 2 && (
-        <div className="flex w-full flex-col gap-[10px]">
-          <div className="flex w-full items-center gap-[10px] rounded-[20px] border-[1px] border-gray-200 p-[10px]">
-            <input
-              type="checkbox"
-              name="checked-demo"
-              className="h-[24px] w-[24px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-              checked={undefined}
-              onChange={() => {
-                return;
-              }}
-            />
-            <span className="body-md md:body-lg text-neutral-900">
-              I agree to pay for the shipment cost upon arrival/clearing for my
-              package
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-[10px] md:flex-row">
-            <div className="w-full md:max-w-[141px]">
-              <BackButton onClick={back} />
-            </div>
-            <div className="w-full md:max-w-[249px]">
-              <InitiateShippingButton onClick={next} />
-            </div>
-          </div>
-
-          <span className="body-md text-center md:text-start">
-            Upon clicking &quot;initiate shipping&quot;, I confirm I have read
-            and agreed to{" "}
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600"
-            >
-              all terms and policies
-            </a>
-          </span>
-        </div>
+        <InitiateShippingAgreement back={back} next={next} />
       )}
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
           <NextButton text="Done" next={handleFinish} />
         </div>
       )}
+    </div>
+  );
+};
+
+type InitiateShippingAgreement = { back: () => void; next: () => void };
+
+export const InitiateShippingAgreement = ({
+  back,
+  next,
+}: InitiateShippingAgreement) => {
+  return (
+    <div className="flex w-full flex-col gap-[10px]">
+      <div className="flex w-full items-center gap-[10px] rounded-[20px] border-[1px] border-gray-200 p-[10px]">
+        <input
+          type="checkbox"
+          name="checked-demo"
+          className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+          checked={undefined}
+          onChange={() => {
+            return;
+          }}
+        />
+        <span className="body-md md:body-lg text-neutral-900">
+          I agree to pay for the shipment cost upon arrival/clearing for my
+          package
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-[10px] md:flex-row">
+        <div className="w-full md:max-w-[141px]">
+          <BackButton onClick={back} />
+        </div>
+        <div className="w-full md:max-w-[249px]">
+          <InitiateShippingButton onClick={next} />
+        </div>
+      </div>
+
+      <span className="body-md text-center md:text-start">
+        Upon clicking &quot;initiate shipping&quot;, I confirm I have read and
+        agreed to{" "}
+        <a
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary-600"
+        >
+          all terms and policies
+        </a>
+      </span>
     </div>
   );
 };

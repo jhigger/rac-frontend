@@ -170,7 +170,7 @@ const RequestsTable = () => {
   );
 };
 
-const RequestStatus = ({ id, status }: RequestStatusProps) => {
+export const RequestStatus = ({ id, status }: RequestStatusProps) => {
   const capitalizedWords = status
     .split(" ")
     .map((word) => {

@@ -120,7 +120,7 @@ export const InitiateShippingAgreement = ({
 }: InitiateShippingAgreement) => {
   return (
     <div className="flex w-full flex-col gap-[10px]">
-      <div className="flex w-full items-center gap-[10px] rounded-[20px] border-[1px] border-gray-200 p-[10px]">
+      <div className="flex w-full items-center gap-[10px] rounded-[20px] border-[1px] border-gray-200 px-[15px] py-[10px]">
         <input
           type="checkbox"
           name="checked-demo"
@@ -522,8 +522,6 @@ export const ShipmentCostsSummary = ({
 }: ShipmentCostsSummaryProps) => {
   const { payNowAction } = useShopContext();
 
-  if (!payNowAction) return;
-
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -552,7 +550,7 @@ export const ShipmentCostsSummary = ({
         </div>
         {payButton && (
           <div className="w-full self-center md:max-w-[500px]">
-            <PayNowButton onClick={payNowAction.action} />
+            <PayNowButton onClick={() => payNowAction?.action()} />
           </div>
         )}
       </div>

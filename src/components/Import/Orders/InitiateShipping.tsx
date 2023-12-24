@@ -287,8 +287,6 @@ const ShipmentCostsSummary = ({
 }: ShipmentCostsSummaryProps) => {
   const { payNowAction } = useImportContext();
 
-  if (!payNowAction) return;
-
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -317,7 +315,7 @@ const ShipmentCostsSummary = ({
         </div>
         {payButton && (
           <div className="w-full self-center md:max-w-[500px]">
-            <PayNowButton onClick={payNowAction.action} />
+            <PayNowButton onClick={() => payNowAction?.action()} />
           </div>
         )}
       </div>

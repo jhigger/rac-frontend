@@ -20,7 +20,6 @@ import {
   Cost,
   NextButton,
   PackageTable,
-  PayNowButton,
   StepIndex,
   SubSectionTitle,
   TotalCost,
@@ -28,6 +27,7 @@ import {
 } from "../Requests/RequestCheckout";
 import { LabelWithTooltip } from "../Requests/RequestDetails";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
+import { PayNowButton } from "~/components/Buttons";
 
 const InitiateShipping = () => {
   const { handleActiveAction, handleTabChange } = useTabContext();
@@ -503,6 +503,10 @@ export type ShipmentCostsSummaryProps = { payButton?: boolean };
 export const ShipmentCostsSummary = ({
   payButton = false,
 }: ShipmentCostsSummaryProps) => {
+  const { payNowAction } = useShopContext();
+
+  if (!payNowAction) return;
+
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -531,7 +535,7 @@ export const ShipmentCostsSummary = ({
         </div>
         {payButton && (
           <div className="w-full self-center md:max-w-[500px]">
-            <PayNowButton />
+            <PayNowButton onClick={payNowAction.action} />
           </div>
         )}
       </div>

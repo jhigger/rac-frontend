@@ -1,5 +1,6 @@
-import { ArrowRight3, ExportCircle, Wallet } from "iconsax-react";
+import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect } from "react";
+import { PayNowButton } from "~/components/Buttons";
 import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import { DefaultBillingAddress } from "~/components/Shop/Orders/InitiateShipping";
@@ -171,6 +172,10 @@ const Summary = () => {
 };
 
 const CostsSummary = () => {
+  const { payNowAction } = useAutoImportContext();
+
+  if (!payNowAction) return;
+
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -191,27 +196,10 @@ const CostsSummary = () => {
           </div>
         </div>
         <div className="w-[168px]">
-          <PayNowButton />
+          <PayNowButton onClick={payNowAction.action} />
         </div>
       </div>
     </div>
-  );
-};
-
-const PayNowButton = () => {
-  const { payNowAction } = useAutoImportContext();
-
-  if (!payNowAction) return;
-
-  return (
-    <button
-      onClick={payNowAction.action}
-      aria-label="Pay Now"
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-    >
-      <Wallet size={18} variant="Bold" />
-      <span className="body-lg text-white">Pay Now</span>
-    </button>
   );
 };
 

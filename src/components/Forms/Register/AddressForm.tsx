@@ -1,5 +1,6 @@
 import { type ICity, type IState } from "country-state-city";
-import { type UseFormReturn } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
+import { useAuthContext } from "~/contexts/AuthContext";
 import useStatesCities from "~/hooks/useStatesCities";
 import { type RegisterInputs } from "~/pages/register";
 import FormHeader from "../FormHeader";
@@ -11,14 +12,10 @@ import {
   type RegisterType,
 } from "./AccountForm";
 
-type AddressFormProps = Omit<UseFormReturn<RegisterInputs>, "handleSubmit">;
-
-const AddressForm = ({
-  register,
-  getValues,
-  setValue,
-  watch,
-}: AddressFormProps) => {
+const AddressForm = () => {
+  const { isRegistering } = useAuthContext();
+  const { register, getValues, setValue, watch } =
+    useFormContext<RegisterInputs>();
   const { cities, states } = useStatesCities({ getValues, setValue, watch });
 
   return (
@@ -43,6 +40,7 @@ const AddressForm = ({
         <TextInput
           id={"streetAddress"}
           label={"Street Address"}
+          disabled={isRegistering}
           {...register("streetAddress")}
         />
         <div className="grid grid-rows-2 gap-[30px] md:grid-cols-12 md:grid-rows-1 md:gap-[10px]">
@@ -54,6 +52,7 @@ const AddressForm = ({
               id="phoneNumber"
               label="Phone Number"
               type="tel"
+              disabled={isRegistering}
               {...register("phoneNumber")}
             />
           </div>
@@ -61,6 +60,7 @@ const AddressForm = ({
         <TextInput
           id={"zipPostalCode"}
           label={"Zip/Postal Code"}
+          disabled={isRegistering}
           {...register("zipPostalCode")}
         />
       </div>
@@ -74,11 +74,13 @@ type SelectStateProps = {
 };
 
 export const SelectState = ({ states, register }: SelectStateProps) => {
+  const { isRegistering } = useAuthContext();
+
   return (
     <SelectInput
       id="state"
       label="State"
-      {...register("state")}
+      {...register("state", { disabled: isRegistering })}
       options={
         <>
           <option value="" disabled hidden>
@@ -103,11 +105,13 @@ type SelectCityProps = {
 };
 
 export const SelectCity = ({ cities, register }: SelectCityProps) => {
+  const { isRegistering } = useAuthContext();
+
   return (
     <SelectInput
       id="city"
       label="City"
-      {...register("city")}
+      {...register("city", { disabled: isRegistering })}
       options={
         <>
           <option value="" disabled hidden>

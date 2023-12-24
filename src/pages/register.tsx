@@ -1,6 +1,6 @@
 import { ArrowLeft } from "iconsax-react";
 import Link from "next/link";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler, FormProvider } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
 import AccountForm from "~/components/Forms/Register/AccountForm";
 import AddressForm from "~/components/Forms/Register/AddressForm";
@@ -46,12 +46,12 @@ const register = () => {
 
   if (user) return null;
 
-  const { handleSubmit, ...form } = useForm<RegisterInputs>({
+  const formMethods = useForm<RegisterInputs>({
     defaultValues: INITIAL_DATA,
   });
   const { step, next, isFirstStep, back, isLastStep } = useMultiStepForm([
-    <AccountForm {...form} />,
-    <AddressForm {...form} />,
+    <AccountForm />,
+    <AddressForm />,
   ]);
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     if (!isLastStep) return next();
@@ -75,6 +75,7 @@ const register = () => {
         },
       ],
     };
+
     await handleRegister(registerData);
   };
 
@@ -83,25 +84,27 @@ const register = () => {
       <div className="container flex flex-col items-center justify-center px-14 py-16">
         <Logo />
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]"
-        >
-          {step}
+        <FormProvider {...formMethods}>
+          <form
+            onSubmit={formMethods.handleSubmit(onSubmit)}
+            className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]"
+          >
+            {step}
 
-          {registerError && (
-            <span className="text-error-600">{registerError}</span>
-          )}
-          <div className="flex gap-4">
-            {!isRegistering && <BackButton {...{ back, isFirstStep }} />}
-            <ProceedButton {...{ next, isFirstStep }} />
-            <CreateAccountButton
-              {...{ next, isLastStep }}
-              disabled={isRegistering}
-            />
-          </div>
-          <TermsAndCondition isLastStep={isLastStep} />
-        </form>
+            {registerError && (
+              <span className="text-error-600">{registerError}</span>
+            )}
+            <div className="flex gap-4">
+              {!isRegistering && <BackButton {...{ back, isFirstStep }} />}
+              <ProceedButton {...{ next, isFirstStep }} />
+              <CreateAccountButton
+                {...{ next, isLastStep }}
+                disabled={isRegistering}
+              />
+            </div>
+            <TermsAndCondition isLastStep={isLastStep} />
+          </form>
+        </FormProvider>
 
         <div className="text-white">
           <span className="label-lg">Already have an account?</span>

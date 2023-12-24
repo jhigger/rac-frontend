@@ -1,16 +1,16 @@
 import { Country } from "country-state-city";
-import { type UseFormRegister } from "react-hook-form";
+import { useFormContext, type UseFormRegister } from "react-hook-form";
 import { type RegisterInputs } from "~/pages/register";
 import FormHeader from "../FormHeader";
 import PasswordInput from "../Inputs/PasswordInput";
 import SelectInput from "../Inputs/SelectInput";
 import TextInput from "../Inputs/TextInput";
+import { useAuthContext } from "~/contexts/AuthContext";
 
-type AccountFormProps = {
-  register: UseFormRegister<RegisterInputs>;
-};
+const AccountForm = () => {
+  const { isRegistering } = useAuthContext();
+  const { register } = useFormContext<RegisterInputs>();
 
-const AccountForm = ({ register }: AccountFormProps) => {
   return (
     <>
       <FormHeader title="Create your account" />
@@ -19,27 +19,32 @@ const AccountForm = ({ register }: AccountFormProps) => {
         <TextInput
           id={"firstName"}
           label={"First Name"}
+          disabled={isRegistering}
           {...register("firstName")}
         />
         <TextInput
           id={"lastName"}
           label={"Last Name"}
+          disabled={isRegistering}
           {...register("lastName")}
         />
         <TextInput
           id="email"
           label="Email"
           type="email"
+          disabled={isRegistering}
           {...register("email")}
         />
         <PasswordInput
           id="password"
           label="Password"
+          disabled={isRegistering}
           {...register("password")}
         />
         <PasswordInput
           id="confirmPassword"
           label="Confirm Password"
+          disabled={isRegistering}
           {...register("confirmPassword")}
         />
         <div className="grid grid-rows-2 gap-[30px] md:grid-cols-12 md:grid-rows-1 md:gap-[10px]">
@@ -51,6 +56,7 @@ const AccountForm = ({ register }: AccountFormProps) => {
               id="phoneNumber"
               label="Phone Number"
               type="tel"
+              disabled={isRegistering}
               {...register("phoneNumber")}
             />
           </div>
@@ -69,11 +75,13 @@ type SelectCountryProps = {
 };
 
 export const SelectCountry = ({ register }: SelectCountryProps) => {
+  const { isRegistering } = useAuthContext();
+
   return (
     <SelectInput
       id="country"
       label="Country"
-      {...register("country")}
+      {...register("country", { disabled: isRegistering })}
       options={
         <>
           <option value="" disabled hidden>
@@ -99,11 +107,13 @@ type SelectCountryPhoneCodeProps = {
 export const SelectCountryPhoneCode = ({
   register,
 }: SelectCountryPhoneCodeProps) => {
+  const { isRegistering } = useAuthContext();
+
   return (
     <SelectInput
       id="countryCode"
       label="Country Code"
-      {...register("countryCode")}
+      {...register("countryCode", { disabled: isRegistering })}
       options={
         <>
           <option value="" disabled hidden>

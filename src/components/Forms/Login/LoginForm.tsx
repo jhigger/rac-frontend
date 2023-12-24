@@ -22,6 +22,7 @@ const LoginForm = () => {
 
   return (
     <form
+
       onSubmit={handleSubmit(onSubmit)}
       className="mb-[30px] mt-[100px] flex w-full max-w-[658px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[50px]"
     >
@@ -31,11 +32,13 @@ const LoginForm = () => {
           id="email"
           label="Email"
           type="email"
+          disabled={isAuthenticating || isFetchingUser}
           {...register("email")}
         />
         <PasswordInput
           id="password"
           label="Password"
+          disabled={isAuthenticating || isFetchingUser}
           {...register("password")}
         />
       </div>

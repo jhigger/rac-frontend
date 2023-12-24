@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle, Ship } from "iconsax-react";
+import { useEffect } from "react";
+import { PayNowButton } from "~/components/Buttons";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
@@ -27,9 +29,9 @@ import {
 } from "../Requests/RequestCheckout";
 import { LabelWithTooltip } from "../Requests/RequestDetails";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
-import { PayNowButton } from "~/components/Buttons";
 
 const InitiateShipping = () => {
+  const { handlePayNowAction } = useShopContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -53,6 +55,10 @@ const InitiateShipping = () => {
   const handleFinish = () => {
     handleTabChange("orders");
   };
+
+  useEffect(() => {
+    handlePayNowAction({ action: next });
+  }, []);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">

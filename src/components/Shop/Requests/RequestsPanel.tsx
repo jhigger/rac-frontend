@@ -144,11 +144,11 @@ const RequestsTable = () => {
           <RequestStatus id={row.id} status={row.original.requestStatus} />
         ),
       }),
-      columnHelper.accessor("requestDate", {
+      columnHelper.accessor("requestLocalDate", {
         header: "Request Date",
         cell: ({ row }) => (
           <span className="title-md font-medium">
-            {row.original.requestDate.toLocaleString()}
+            {row.original.requestLocalDate.toLocaleString()}
           </span>
         ),
       }),

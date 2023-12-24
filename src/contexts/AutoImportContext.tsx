@@ -74,7 +74,7 @@ export type AutoImportDraftPackageType = AutoImportOrderPackageInput;
 export type AutoImportOrderPackageType = {
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
-  orderDate: Date;
+  orderLocalDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shippingCost: number;
@@ -84,7 +84,7 @@ export type AutoImportOrderPackageType = {
 export type AutoImportRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
-  requestDate: Date;
+  requestLocalDate: string;
   items: AutoImportItemType[];
 };
 

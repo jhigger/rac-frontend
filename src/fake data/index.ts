@@ -23,12 +23,12 @@ const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image";
 
 export const notificationItems: NotificationItemType[] = [
   {
-    date: new Date(),
+    localDate: new Date().toLocaleString(),
     type: "payment confirmation",
     order: {
       orderId: "OD08753",
       orderStatus: "responded",
-      orderDate: new Date(),
+      orderLocalDate: new Date().toLocaleString(),
       trackingId: "SH08753",
       shippingStatus: "ready for shipping",
       shopForMeStatus: "Purchase completed",
@@ -51,12 +51,12 @@ export const notificationItems: NotificationItemType[] = [
     },
   },
   {
-    date: new Date("2022/12/12"),
+    localDate: new Date("2022/12/12").toLocaleString(),
     type: "shipment arrival",
     order: {
       orderId: "OD08753",
       orderStatus: "responded",
-      orderDate: new Date(),
+      orderLocalDate: new Date().toLocaleString(),
       trackingId: "SH08753",
       shippingStatus: "ready for shipping",
       shopForMeStatus: "Purchase completed",
@@ -79,12 +79,12 @@ export const notificationItems: NotificationItemType[] = [
     },
   },
   {
-    date: new Date("2023/2/23"),
+    localDate: new Date("2023/2/23").toLocaleString(),
     type: "payment rejection",
     order: {
       orderId: "OD08751",
       orderStatus: "processed",
-      orderDate: new Date(),
+      orderLocalDate: new Date().toLocaleString(),
       trackingId: "SH08751",
       shippingStatus: "not started",
       shopForMeStatus: "Purchase not started",
@@ -112,7 +112,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderDate: new Date("2023/1/23"),
+    orderLocalDate: new Date("2023/1/23").toLocaleString(),
     trackingId: "SH08751",
     shippingStatus: "not started",
     shopForMeStatus: "Purchase not started",
@@ -147,7 +147,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "not responded",
-    orderDate: new Date("2023/2/23"),
+    orderLocalDate: new Date("2023/2/23").toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     shopForMeStatus: "Purchase in progress",
@@ -193,7 +193,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "responded",
-    orderDate: new Date("2023/3/23"),
+    orderLocalDate: new Date("2023/3/23").toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     shopForMeStatus: "Purchase completed",
@@ -250,7 +250,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderDate: new Date("2023/4/23"),
+    orderLocalDate: new Date("2023/4/23").toLocaleString(),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     shopForMeStatus: "Purchase completed",
@@ -318,7 +318,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "not responded",
-    orderDate: new Date("2023/5/23"),
+    orderLocalDate: new Date("2023/5/23").toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "processing",
     shopForMeStatus: "Purchase completed",
@@ -342,7 +342,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "responded",
-    orderDate: new Date("2023/6/23"),
+    orderLocalDate: new Date("2023/6/23").toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     shopForMeStatus: "Purchase completed",
@@ -366,7 +366,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "responded",
-    orderDate: new Date("2023/7/23"),
+    orderLocalDate: new Date("2023/7/23").toLocaleString(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     shopForMeStatus: "Purchase completed",
@@ -390,7 +390,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "responded",
-    orderDate: new Date("2023/8/23"),
+    orderLocalDate: new Date("2023/8/23").toLocaleString(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     shopForMeStatus: "Purchase completed",
@@ -417,7 +417,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "OD08751",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         store: "Amazon",
@@ -435,7 +435,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "OD08752",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         store: "Amazon",
@@ -453,7 +453,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "OD08753",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         store: "Amazon",
@@ -471,7 +471,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "OD08754",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         store: "Amazon",
@@ -489,7 +489,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "OD08755",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         store: "Amazon",
@@ -507,7 +507,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "OD08756",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         store: "Amazon",
@@ -547,7 +547,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08751",
     shippingStatus: "not started",
     shippingCost: 107.76,
@@ -568,7 +568,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "not responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     shippingCost: 107.76,
@@ -589,7 +589,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     shippingCost: 107.76,
@@ -610,7 +610,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     shippingCost: 107.76,
@@ -631,7 +631,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "not responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "processing",
     shippingCost: 107.76,
@@ -652,7 +652,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     shippingCost: 107.76,
@@ -673,7 +673,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     shippingCost: 107.76,
@@ -694,7 +694,7 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     shippingCost: 107.76,
@@ -718,7 +718,7 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "OD08751",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -736,7 +736,7 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "OD08752",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -754,7 +754,7 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "OD08753",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -772,7 +772,7 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "OD08754",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -790,7 +790,7 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "OD08755",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -808,7 +808,7 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "OD08756",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -866,7 +866,7 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08751",
     shippingStatus: "not started",
     shippingCost: 107.76,
@@ -887,7 +887,7 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "not responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     shippingCost: 107.76,
@@ -908,7 +908,7 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     shippingCost: 107.76,
@@ -929,7 +929,7 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     shippingCost: 107.76,
@@ -950,7 +950,7 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "not responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "processing",
     shippingCost: 107.76,
@@ -971,7 +971,7 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     shippingCost: 107.76,
@@ -992,7 +992,7 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     shippingCost: 107.76,
@@ -1013,7 +1013,7 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "responded",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     shippingCost: 107.76,
@@ -1037,7 +1037,7 @@ export const exportRequests: ExportRequestPackageType[] = [
   {
     requestId: "OD08751",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -1055,7 +1055,7 @@ export const exportRequests: ExportRequestPackageType[] = [
   {
     requestId: "OD08752",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -1073,7 +1073,7 @@ export const exportRequests: ExportRequestPackageType[] = [
   {
     requestId: "OD08753",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -1091,7 +1091,7 @@ export const exportRequests: ExportRequestPackageType[] = [
   {
     requestId: "OD08754",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -1109,7 +1109,7 @@ export const exportRequests: ExportRequestPackageType[] = [
   {
     requestId: "OD08755",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -1127,7 +1127,7 @@ export const exportRequests: ExportRequestPackageType[] = [
   {
     requestId: "OD08756",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         name: "Designer Bags",
@@ -1185,7 +1185,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "not started",
     shippingCost: 107.76,
@@ -1209,7 +1209,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "ready for shipping",
     shippingCost: 107.76,
@@ -1233,7 +1233,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08754",
     shippingStatus: "cleared",
     shippingCost: 107.76,
@@ -1257,7 +1257,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "processing",
     shippingCost: 107.76,
@@ -1282,7 +1282,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "in transit",
     shippingCost: 107.76,
@@ -1307,7 +1307,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08751",
     shippingStatus: "arrived destination",
     shippingCost: 107.76,
@@ -1331,7 +1331,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08750",
     orderStatus: "processed",
-    orderDate: new Date(),
+    orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08750",
     shippingStatus: "delivered",
     shippingCost: 107.76,
@@ -1358,7 +1358,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
   {
     requestId: "OD08756",
     requestStatus: "Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         brand: "asd",
@@ -1379,7 +1379,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
   {
     requestId: "OD08755",
     requestStatus: "Not Responded",
-    requestDate: new Date(),
+    requestLocalDate: new Date().toLocaleString(),
     items: [
       {
         brand: "asd",

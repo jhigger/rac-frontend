@@ -157,11 +157,11 @@ const OrdersTable = () => {
           </span>
         ),
       }),
-      columnHelper.accessor("orderDate", {
+      columnHelper.accessor("orderLocalDate", {
         header: "Order Date",
         cell: ({ row }) => (
           <span className="title-md font-medium">
-            {row.original.orderDate.toLocaleString()}
+            {row.original.orderLocalDate}
           </span>
         ),
       }),

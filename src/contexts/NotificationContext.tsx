@@ -32,7 +32,7 @@ type OrderPackageType =
   | AutoImportOrderPackageType;
 
 export type NotificationItemType = {
-  date: Date;
+  localDate: string;
   type: (typeof NOTIFICATION_TYPES)[number];
   order: OrderPackageType;
 };
@@ -70,7 +70,9 @@ const NotificationContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const sortNotificationByDate = (array: NotificationItemType[]) => {
-    const sorted = array.sort((a, b) => Number(b.date) - Number(a.date));
+    const sorted = array.sort(
+      (a, b) => Number(b.localDate) - Number(a.localDate),
+    );
     return sorted;
   };
 

@@ -31,7 +31,7 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 export const emptyValue: ExportRequestPackageType = {
   requestId: "",
   requestStatus: "Not Responded",
-  requestDate: new Date(),
+  requestLocalDate: new Date().toLocaleString(),
   items: [
     {
       image: "",

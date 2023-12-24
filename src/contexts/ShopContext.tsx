@@ -64,7 +64,7 @@ export type ShopDraftPackageType = ShopOrderPackageInput;
 export type ShopOrderPackageType = {
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
-  orderDate: Date;
+  orderLocalDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
@@ -77,7 +77,7 @@ export type ShopOrderPackageType = {
 export type ShopRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
-  requestDate: Date;
+  requestLocalDate: string;
   items: ShopItemType[];
 };
 

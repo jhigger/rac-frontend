@@ -32,7 +32,7 @@ const useFetchShopOrders = (
         orderId: order.orderId,
         orderStatus:
           order.orderStatus.toLowerCase() as ShopOrderPackageType["orderStatus"],
-        orderDate: new Date(order.createdAt),
+        orderLocalDate: new Date(order.createdAt).toLocaleString(),
         trackingId: order.trackingId,
         shippingStatus:
           order.ShippingStatus.toLowerCase() as ShopOrderPackageType["shippingStatus"],

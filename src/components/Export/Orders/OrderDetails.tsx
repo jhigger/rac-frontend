@@ -52,7 +52,7 @@ const OrderDetails = () => {
       </div>
       <OrderInformation
         info={{
-          date: orderPackage.orderDate.toLocaleString(),
+          date: orderPackage.orderLocalDate.toLocaleString(),
           status: orderPackage.shippingStatus,
         }}
       />

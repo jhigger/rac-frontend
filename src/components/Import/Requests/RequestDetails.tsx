@@ -47,7 +47,10 @@ const RequestDetails = () => {
       <RequestFormHeader title="Import Order Request Details" />
       <LabelId label="Request ID" id={requestPackage.requestId} />
       <OrderInformation
-        info={{ date: requestPackage.requestDate.toLocaleString(), status }}
+        info={{
+          date: requestPackage.requestLocalDate.toLocaleString(),
+          status,
+        }}
         onClick={handleProceed}
       />
       <div className="flex flex-col gap-[10px]">

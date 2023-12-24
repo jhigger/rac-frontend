@@ -228,7 +228,7 @@ const NotificationItem = ({ dataClose, index }: NotificationItemProps) => {
           )}
         </span>
         <span className="title-sm flex justify-between font-medium text-black">
-          {dayjs(notification.date).fromNow()}
+          {dayjs(notification.localDate).fromNow()}
           <div className="md:hidden">
             <AccordionButton {...{ open, toggle }} />
           </div>

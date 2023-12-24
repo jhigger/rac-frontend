@@ -177,7 +177,7 @@ const NotificationListItem = ({
   const { handleDelete } = useNotificationContext();
 
   const currentYear = new Date().getFullYear();
-  const notifcationYear = notification.date.getFullYear();
+  const notifcationYear = new Date(notification.localDate).getFullYear();
   const format = currentYear === notifcationYear ? "MMM D" : "MMM D YYYY";
 
   return (
@@ -189,7 +189,7 @@ const NotificationListItem = ({
           )}
         </span>
         <span className="title-sm flex justify-between font-medium text-black">
-          {dayjs(notification.date).format(format)}
+          {dayjs(notification.localDate).format(format)}
           <div className="md:hidden">
             <AccordionButton {...{ open, toggle }} />
           </div>

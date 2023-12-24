@@ -58,7 +58,7 @@ export type ImportDraftPackageType = ImportOrderPackageInput;
 export type ImportOrderPackageType = {
   orderId: string;
   orderStatus: (typeof ORDER_STATUS)[number];
-  orderDate: Date;
+  orderLocalDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shippingCost: number;
@@ -68,7 +68,7 @@ export type ImportOrderPackageType = {
 export type ImportRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
-  requestDate: Date;
+  requestLocalDate: string;
   items: ImportItemType[];
 };
 

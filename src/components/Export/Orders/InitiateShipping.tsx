@@ -2,15 +2,11 @@ import { ArrowRight3, ExportCircle, Wallet } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import CongratulationImage from "~/components/CongratulationImage";
+import SelectCityInput from "~/components/Forms/Inputs/SelectCityInput";
+import SelectCountryInput from "~/components/Forms/Inputs/SelectCountryInput";
+import SelectCountryPhoneCodeInput from "~/components/Forms/Inputs/SelectCountryPhoneCodeInput";
+import SelectStateInput from "~/components/Forms/Inputs/SelectStateInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
-import {
-  SelectCountry,
-  SelectCountryPhoneCode,
-} from "~/components/Forms/Register/AccountForm";
-import {
-  SelectCity,
-  SelectState,
-} from "~/components/Forms/Register/AddressForm";
 import { OrderItem } from "~/components/Import/Orders/ClearPackage";
 import { PackageTable } from "~/components/Import/Orders/InitiateShipping";
 import LabelId from "~/components/LabelId";
@@ -180,7 +176,7 @@ export const FillInShippingAddress = () => {
             <TextInput id="email" label="Receiver's Email" type="email" />
           </div>
           <div className="col-span-full md:col-span-3">
-            <SelectCountryPhoneCode register={register} />
+            <SelectCountryPhoneCodeInput register={register} />
           </div>
           <div className="col-span-full md:col-span-4">
             <TextInput
@@ -208,13 +204,13 @@ export const FillInShippingAddress = () => {
 
         <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
           <div className="col-span-4">
-            <SelectCountry register={register} />
+            <SelectCountryInput register={register} />
           </div>
           <div className="col-span-4">
-            <SelectState states={states} register={register} />
+            <SelectStateInput states={states} register={register} />
           </div>
           <div className="col-span-4">
-            <SelectCity cities={cities} register={register} />
+            <SelectCityInput cities={cities} register={register} />
           </div>
         </div>
 

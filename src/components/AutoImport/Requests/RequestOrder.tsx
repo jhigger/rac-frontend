@@ -13,17 +13,13 @@ import { FillInShippingAddress } from "~/components/Export/Orders/InitiateShippi
 import AccordionButton from "~/components/Forms/AccordionButton";
 import CurrencyInput from "~/components/Forms/Inputs/CurrencyInput";
 import FileInput from "~/components/Forms/Inputs/FileInput";
+import SelectCityInput from "~/components/Forms/Inputs/SelectCityInput";
+import SelectCountryInput from "~/components/Forms/Inputs/SelectCountryInput";
+import SelectCountryPhoneCodeInput from "~/components/Forms/Inputs/SelectCountryPhoneCodeInput";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
+import SelectStateInput from "~/components/Forms/Inputs/SelectStateInput";
 import TextAreaInput from "~/components/Forms/Inputs/TextAreaInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
-import {
-  SelectCountry,
-  SelectCountryPhoneCode,
-} from "~/components/Forms/Register/AccountForm";
-import {
-  SelectCity,
-  SelectState,
-} from "~/components/Forms/Register/AddressForm";
 import LabelId from "~/components/LabelId";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
 import { AddressDetail } from "~/components/Shop/Orders/ClearPackage";
@@ -159,7 +155,7 @@ const RequestOrder = () => {
               {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
               <SaveAsDraftButton />
               <ProceedButton
-                next={
+                onClick={
                   isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
                 }
               />
@@ -172,7 +168,7 @@ const RequestOrder = () => {
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
                 <ProceedButton
-                  next={
+                  onClick={
                     isSecondToLastStep
                       ? formMethods.handleSubmit(onSubmit)
                       : next
@@ -505,7 +501,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectCountryPhoneCode register={register} />
+                <SelectCountryPhoneCodeInput register={register} />
               </div>
 
               <div className="col-span-full md:col-span-4">
@@ -540,15 +536,15 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectCountry register={register} />
+                <SelectCountryInput register={register} />
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectState states={states} register={register} />
+                <SelectStateInput states={states} register={register} />
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectCity cities={cities} register={register} />
+                <SelectCityInput cities={cities} register={register} />
               </div>
 
               <div className="col-span-full md:col-span-6">

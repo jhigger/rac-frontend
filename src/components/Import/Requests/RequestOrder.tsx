@@ -112,7 +112,7 @@ const RequestOrder = () => {
           <>
             <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
               <BackButton onClick={handleBack} />
-              <ProceedButton next={next} />
+              <ProceedButton onClick={next} />
             </div>
           </>
         )}
@@ -122,7 +122,7 @@ const RequestOrder = () => {
               <BackButton onClick={handleBack} />
               <SaveAsDraftButton />
               <ProceedButton
-                next={
+                onClick={
                   isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
                 }
               />
@@ -134,7 +134,7 @@ const RequestOrder = () => {
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
                 <ProceedButton
-                  next={
+                  onClick={
                     isSecondToLastStep
                       ? formMethods.handleSubmit(onSubmit)
                       : next

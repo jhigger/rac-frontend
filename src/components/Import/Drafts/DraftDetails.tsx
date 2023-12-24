@@ -72,7 +72,7 @@ const DraftDetails = () => {
               <BackButton onClick={handleBack} />
               <SaveAsDraftButton />
               <ProceedButton
-                next={
+                onClick={
                   isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
                 }
               />
@@ -84,7 +84,7 @@ const DraftDetails = () => {
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
                 <ProceedButton
-                  next={
+                  onClick={
                     isSecondToLastStep
                       ? formMethods.handleSubmit(onSubmit)
                       : next

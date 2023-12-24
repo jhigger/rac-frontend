@@ -137,7 +137,7 @@ const RequestOrderForm = () => {
               <BackButton onClick={handleBack} />
               <SaveAsDraftButton />
               <ProceedButton
-                next={
+                onClick={
                   isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
                 }
               />
@@ -149,7 +149,7 @@ const RequestOrderForm = () => {
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
                 <ProceedButton
-                  next={
+                  onClick={
                     isSecondToLastStep
                       ? formMethods.handleSubmit(onSubmit)
                       : next
@@ -1088,7 +1088,7 @@ export const BackButton = ({ onClick }: BackButtonProps) => {
     <button
       onClick={onClick}
       aria-label="Back"
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+      className="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <ArrowCircleLeft2 size={18} variant="Bold" className="text-primary-600" />
       <span className="body-lg text-primary-600">Back</span>
@@ -1115,15 +1115,15 @@ export const SaveAsDraftButton = () => {
   );
 };
 
-type ProceedButtonProps = { label?: string; next: () => void };
+type ProceedButtonProps = { label?: string; onClick: () => void };
 
 export const ProceedButton = ({
   label = "Proceed",
-  next,
+  onClick,
 }: ProceedButtonProps) => {
   return (
     <button
-      onClick={next}
+      onClick={onClick}
       aria-label="Proceed"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >

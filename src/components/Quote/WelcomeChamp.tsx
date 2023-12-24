@@ -55,7 +55,7 @@ const WelcomeChamp = () => {
 
         {isFirstStep && (
           <div className="w-full max-w-[300px]">
-            <ProceedButton label="Get Quote" next={next} />
+            <ProceedButton label="Get Quote" onClick={next} />
           </div>
         )}
         {isLastStep && (

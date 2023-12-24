@@ -1,12 +1,15 @@
-import { ArrowLeft } from "iconsax-react";
 import Link from "next/link";
-import { useForm, type SubmitHandler, FormProvider } from "react-hook-form";
+import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
 import AccountForm from "~/components/Forms/Register/AccountForm";
 import AddressForm from "~/components/Forms/Register/AddressForm";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
 import NeedHelpFAB from "~/components/NeedHelpFAB";
+import {
+  BackButton,
+  ProceedButton,
+} from "~/components/Shop/Requests/RequestOrder";
 import { useAuthContext } from "~/contexts/AuthContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
@@ -95,8 +98,12 @@ const register = () => {
               <span className="text-error-600">{registerError}</span>
             )}
             <div className="flex gap-4">
-              {!isRegistering && <BackButton {...{ back, isFirstStep }} />}
-              <ProceedButton {...{ next, isFirstStep }} />
+              {!isRegistering && !isFirstStep && (
+                <div className="w-full md:w-max">
+                  <BackButton onClick={back} />
+                </div>
+              )}
+              {!isLastStep && <ProceedButton onClick={next} />}
               <CreateAccountButton
                 {...{ next, isLastStep }}
                 disabled={isRegistering}
@@ -118,38 +125,6 @@ const register = () => {
       </div>
       <NeedHelpFAB />
     </main>
-  );
-};
-
-type BackButtonProps = { back: () => void; isFirstStep: boolean };
-
-const BackButton = ({ back, isFirstStep }: BackButtonProps) => {
-  if (isFirstStep) return;
-
-  return (
-    <button
-      type="button"
-      onClick={back}
-      className="btn-outline relative flex h-[40px] flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600"
-    >
-      <ArrowLeft />
-    </button>
-  );
-};
-
-type ProceedButtonProps = { next: () => void; isFirstStep: boolean };
-
-const ProceedButton = ({ next, isFirstStep }: ProceedButtonProps) => {
-  if (!isFirstStep) return;
-
-  return (
-    <button
-      type="submit"
-      onClick={next}
-      className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md"
-    >
-      Proceed
-    </button>
   );
 };
 

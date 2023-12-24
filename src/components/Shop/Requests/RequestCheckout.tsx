@@ -9,17 +9,14 @@ import {
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import CongratulationImage from "~/components/CongratulationImage";
+import SelectCityInput from "~/components/Forms/Inputs/SelectCityInput";
+import SelectCountryInput from "~/components/Forms/Inputs/SelectCountryInput";
+import SelectCountryPhoneCodeInput from "~/components/Forms/Inputs/SelectCountryPhoneCodeInput";
+import SelectStateInput from "~/components/Forms/Inputs/SelectStateInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
-import {
-  SelectCountry,
-  SelectCountryPhoneCode,
-} from "~/components/Forms/Register/AccountForm";
-import {
-  SelectCity,
-  SelectState,
-} from "~/components/Forms/Register/AddressForm";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -35,7 +32,6 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "./RequestOrder";
-import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 
 export type stepsContentType = { title: string; content: JSX.Element };
 
@@ -231,7 +227,7 @@ export const CustomBillingAddress = () => {
                 <TextInput id="email" label="Email" type="email" />
               </div>
               <div className="col-span-full md:col-span-3">
-                <SelectCountryPhoneCode register={register} />
+                <SelectCountryPhoneCodeInput register={register} />
               </div>
               <div className="col-span-full md:col-span-4">
                 <TextInput
@@ -263,13 +259,13 @@ export const CustomBillingAddress = () => {
 
             <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
               <div className="col-span-4">
-                <SelectCountry register={register} />
+                <SelectCountryInput register={register} />
               </div>
               <div className="col-span-4">
-                <SelectState states={states} register={register} />
+                <SelectStateInput states={states} register={register} />
               </div>
               <div className="col-span-4">
-                <SelectCity cities={cities} register={register} />
+                <SelectCityInput cities={cities} register={register} />
               </div>
             </div>
 

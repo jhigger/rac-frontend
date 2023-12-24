@@ -61,7 +61,7 @@ const ClearPackage = () => {
   };
 
   useEffect(() => {
-    handlePayNowAction({ action: next }); // todo: move to context
+    handlePayNowAction({ action: next });
   }, []);
 
   return (

@@ -97,7 +97,7 @@ const MainTable = <T extends object>({
         rowCount={table.getFilteredRowModel().rows.length}
       />
 
-      <div className="flex h-[calc(100vh-382px)] w-full flex-col gap-[10px] rounded-[20px] bg-white p-[20px] sm:h-[calc(100vh-317px)] md:h-[calc(100vh-286px)]">
+      <div className="flex h-[calc(100vh-382px)] w-full flex-col gap-[10px] rounded-[20px] bg-white p-[10px] sm:h-[calc(100vh-317px)] md:h-[calc(100vh-286px)] md:p-[20px]">
         {table.getRowModel().rows.length > 0 ? (
           <>
             <div className="h-full overflow-auto">
@@ -112,7 +112,7 @@ const MainTable = <T extends object>({
                               {...{
                                 className: header.column.getCanSort()
                                   ? "cursor-pointer select-none flex gap-[10px]"
-                                  : "",
+                                  : "flex items-center",
                                 onClick:
                                   header.column.getToggleSortingHandler(),
                               }}
@@ -163,13 +163,13 @@ const MainTable = <T extends object>({
                       {headerGroup.headers
                         .filter((header) => filters.includes(header.column.id))
                         .map((header) => (
-                          <th key={header.id} className="border-0">
+                          <th key={header.id} className="border-0 p-[8px]">
                             {header.isPlaceholder ? null : (
                               <div
                                 {...{
                                   className: header.column.getCanSort()
                                     ? "cursor-pointer select-none flex gap-[10px]"
-                                    : "",
+                                    : "flex items-center",
                                   onClick:
                                     header.column.getToggleSortingHandler(),
                                 }}
@@ -188,8 +188,6 @@ const MainTable = <T extends object>({
                             )}
                           </th>
                         ))}
-
-                      <th className="border-0"></th>
                     </tr>
                   ))}
                 </thead>
@@ -213,10 +211,10 @@ const MainTable = <T extends object>({
               </table>
             </div>
 
-            <div className="body-lg flex flex-col items-center gap-[20px] px-[20px] py-[10px] md:flex-row">
-              <div className="flex items-center gap-[12px]">
-                <span>Items per page:</span>
-                <div className="w-full md:w-max">
+            <div className="body-lg flex flex-col items-center gap-[20px] px-[10px] py-[10px] md:flex-row">
+              <div className="flex w-full items-center gap-[12px] md:w-max">
+                <span className="whitespace-nowrap">Items per page:</span>
+                <div className="w-[150px]">
                   <SelectNumber
                     value={table.getState().pagination.pageSize}
                     onChange={(e) => {
@@ -225,7 +223,7 @@ const MainTable = <T extends object>({
                   />
                 </div>
               </div>
-              <div className="flex gap-[20px]">
+              <div className="flex w-full gap-[20px]">
                 <span>
                   {firstRow + 1}-
                   {lastRow > table.getRowModel().rows.length
@@ -300,25 +298,25 @@ const TableRow = <T extends object>({
           .getVisibleCells()
           .filter((cell) => filters.includes(cell.column.id))
           .map((cell) => (
-            <td key={cell.id} className="border-0">
+            <td key={cell.id} className="border-0 p-[8px]">
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </td>
           ))}
 
-        <td className="border-0">
+        <td className="border-0 p-[8px]">
           <AccordionButton open={open} toggle={toggle} />
         </td>
 
         {open && (
-          <td className="absolute left-0 top-[90px] z-10 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
+          <td className="absolute left-0 top-[76px] z-10 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
             <SubTable data={[data[index]!]} columns={columns} />
           </td>
         )}
       </tr>
       {open && (
         <tr>
-          <td className="border-0 p-0">
-            <div className="mb-[110px]"></div>
+          <td className="border-0 p-[8px]">
+            <div className="mb-[96px]"></div>
           </td>
         </tr>
       )}
@@ -341,7 +339,7 @@ const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
         id="pageNumber"
         value={value}
         onChange={onChange}
-        className="peer relative block h-14 w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 pr-[50px] leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0"
+        className="peer relative block h-[45px] w-full overflow-x-auto rounded-[20px] border border-gray-500 bg-neutral-10 px-4 py-2 leading-5 focus:border-2 focus:border-primary-600 focus:outline-none focus:ring-0 md:h-14"
       >
         {values.map((value) => {
           return (

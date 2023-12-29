@@ -14,8 +14,10 @@ import {
   ArrowSquareRight,
   ArrowSwapVertical,
 } from "iconsax-react";
-import { useMemo, useState, type ChangeEventHandler } from "react";
+import { Fragment, useMemo, useState, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
+import useAccordion from "~/hooks/useAccordion";
+import AccordionButton from "./Forms/AccordionButton";
 import SearchBar, { type FilterCategoriesType } from "./Shop/SearchBar";
 
 interface ReactTableProps<T extends object> {
@@ -79,6 +81,8 @@ const MainTable = <T extends object>({
     table.getRowModel().rows.length,
   );
 
+  const filters = ["checkbox", "images", "orderId", "requestId", "actions"];
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SearchBar
@@ -89,11 +93,11 @@ const MainTable = <T extends object>({
         rowCount={table.getFilteredRowModel().rows.length}
       />
 
-      <div className="flex h-[calc(100vh-402px)] min-w-full max-w-max flex-col gap-[10px] rounded-[20px] bg-white p-[20px] md:h-[calc(100vh-286px)]">
+      <div className="flex h-[calc(100vh-382px)] min-w-full max-w-max flex-col gap-[10px] rounded-[20px] bg-white p-[20px] sm:h-[calc(100vh-317px)] md:h-[calc(100vh-286px)]">
         {table.getRowModel().rows.length > 0 ? (
           <>
             <div className="h-full overflow-auto">
-              <table className="relative w-max min-w-full">
+              <table className="relative hidden w-max min-w-full md:block">
                 <thead className="title-sm sticky top-0 z-10 bg-white font-medium text-neutral-900">
                   {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
@@ -133,7 +137,7 @@ const MainTable = <T extends object>({
                     .map((row) => (
                       <tr
                         key={row.id}
-                        className="border-b bg-gray-10 px-[20px] py-[20px]"
+                        className="bg-gray-10 px-[20px] py-[20px]"
                       >
                         {row.getVisibleCells().map((cell) => (
                           <td className="border-0" key={cell.id}>
@@ -147,10 +151,95 @@ const MainTable = <T extends object>({
                     ))}
                 </tbody>
               </table>
+
+              <table className="relative w-max min-w-full md:hidden">
+                <thead className="title-sm sticky top-0 z-20 bg-white font-medium text-neutral-900">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers
+                        .filter((header) => filters.includes(header.column.id))
+                        .map((header) => (
+                          <th key={header.id} className="border-0">
+                            {header.isPlaceholder ? null : (
+                              <div
+                                {...{
+                                  className: header.column.getCanSort()
+                                    ? "cursor-pointer select-none flex gap-[10px]"
+                                    : "",
+                                  onClick:
+                                    header.column.getToggleSortingHandler(),
+                                }}
+                              >
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
+                                {header.column.getCanSort() && (
+                                  <ArrowSwapVertical
+                                    className="self-end text-neutral-500"
+                                    size="20"
+                                  />
+                                )}
+                              </div>
+                            )}
+                          </th>
+                        ))}
+
+                      <th className="border-0"></th>
+                    </tr>
+                  ))}
+                </thead>
+                <tbody className="border-y-[1px] border-gray-500 [&>tr]:border-b-[1px] [&>tr]:border-gray-500 last:[&>tr]:border-b-0">
+                  {table
+                    .getRowModel()
+                    .rows.slice(startRowIndex, endRowIndex)
+                    .map((row, i) => {
+                      const { open, toggle } = useAccordion(false);
+
+                      return (
+                        <Fragment key={row.id}>
+                          <tr className="relative bg-gray-10">
+                            {row
+                              .getVisibleCells()
+                              .filter((cell) =>
+                                filters.includes(cell.column.id),
+                              )
+                              .map((cell) => (
+                                <td key={cell.id} className="border-0">
+                                  {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext(),
+                                  )}
+                                </td>
+                              ))}
+
+                            <td className="border-0">
+                              <AccordionButton open={open} toggle={toggle} />
+                            </td>
+
+                            {open && (
+                              <td className="absolute left-0 top-[90px] z-10 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
+                                <SubTable data={[data[i]!]} columns={columns} />
+                              </td>
+                            )}
+                          </tr>
+                          {open && (
+                            <tr>
+                              <td className="border-0 p-0">
+                                <div className="mb-[110px]"></div>
+                              </td>
+                            </tr>
+                          )}
+                        </Fragment>
+                      );
+                    })}
+                </tbody>
+              </table>
             </div>
+
             <div className="body-lg flex flex-col items-center gap-[20px] px-[20px] py-[10px] md:flex-row">
               <div className="flex items-center gap-[12px]">
-                <span className="whitespace-nowrap">Items per page:</span>
+                <span>Items per page:</span>
                 <div className="w-full md:w-max">
                   <SelectNumber
                     value={table.getState().pagination.pageSize}
@@ -237,6 +326,60 @@ const SelectNumber = ({ value, onChange }: SelectNumberProps) => {
         })}
       </select>
     </div>
+  );
+};
+
+interface SubTableProps<T extends object> {
+  data: T[];
+  columns: ColumnDef<T>[];
+}
+
+const SubTable = <T extends object>({ data, columns }: SubTableProps<T>) => {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const filters = ["checkbox", "images", "orderId", "actions"];
+
+  return (
+    <table className="relative w-max min-w-full bg-[#EBE0E859]">
+      <thead className="title-sm sticky top-0 z-10 font-medium text-neutral-900">
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers
+              .filter((header) => !filters.includes(header.column.id))
+              .map((header) => (
+                <th key={header.id} className="border-0">
+                  {header.isPlaceholder ? null : (
+                    <>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                    </>
+                  )}
+                </th>
+              ))}
+          </tr>
+        ))}
+      </thead>
+      <tbody>
+        {table.getRowModel().rows.map((row) => (
+          <tr key={row.id}>
+            {row
+              .getVisibleCells()
+              .filter((cell) => !filters.includes(cell.column.id))
+              .map((cell) => (
+                <td key={cell.id} className="border-0">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

@@ -44,7 +44,7 @@ const SearchBar = ({
         </div>
       </div>
       {/* for mobile version */}
-      <div className="mb-[20px] flex flex-col items-center gap-[9px] sm:hidden">
+      <div className="flex flex-col items-center gap-[9px] sm:hidden">
         <div className="w-full">
           <DebounceSearchInput
             id={`${id}-mobileSearch`}

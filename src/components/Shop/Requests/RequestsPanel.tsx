@@ -209,7 +209,7 @@ export const RequestStatus = ({ id, status }: RequestStatusProps) => {
         data-type="dialogs"
         data-target={dataTarget}
         aria-label={capitalizeWords(status)}
-        className={`btn relative w-[150px] rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
+        className={`btn title-sm relative w-[150px] rounded-[10px] px-[10px] py-[5px] text-center font-medium ${buttonStyle}`}
       >
         {capitalizeWords(status)}
       </button>

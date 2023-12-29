@@ -7,6 +7,7 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   type PaginationState,
+  type Row,
   type SortingState,
 } from "@tanstack/react-table";
 import {
@@ -81,7 +82,10 @@ const MainTable = <T extends object>({
     table.getRowModel().rows.length,
   );
 
-  const filters = ["checkbox", "images", "orderId", "requestId", "actions"];
+  const filters = useMemo(
+    () => ["checkbox", "images", "orderId", "requestId", "actions"],
+    [],
+  );
 
   return (
     <div className="flex flex-col gap-[20px]">
@@ -194,43 +198,15 @@ const MainTable = <T extends object>({
                     .getRowModel()
                     .rows.slice(startRowIndex, endRowIndex)
                     .map((row, i) => {
-                      const { open, toggle } = useAccordion(false);
-
                       return (
-                        <Fragment key={row.id}>
-                          <tr className="relative bg-gray-10">
-                            {row
-                              .getVisibleCells()
-                              .filter((cell) =>
-                                filters.includes(cell.column.id),
-                              )
-                              .map((cell) => (
-                                <td key={cell.id} className="border-0">
-                                  {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext(),
-                                  )}
-                                </td>
-                              ))}
-
-                            <td className="border-0">
-                              <AccordionButton open={open} toggle={toggle} />
-                            </td>
-
-                            {open && (
-                              <td className="absolute left-0 top-[90px] z-10 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
-                                <SubTable data={[data[i]!]} columns={columns} />
-                              </td>
-                            )}
-                          </tr>
-                          {open && (
-                            <tr>
-                              <td className="border-0 p-0">
-                                <div className="mb-[110px]"></div>
-                              </td>
-                            </tr>
-                          )}
-                        </Fragment>
+                        <TableRow
+                          key={row.id}
+                          row={row}
+                          index={i}
+                          filters={filters}
+                          data={data}
+                          columns={columns}
+                        />
                       );
                     })}
                 </tbody>
@@ -300,6 +276,56 @@ const MainTable = <T extends object>({
   );
 };
 
+type TableRowProps<T> = {
+  row: Row<T>;
+  index: number;
+  filters: string[];
+  data: T[];
+  columns: ColumnDef<T>[];
+};
+
+const TableRow = <T extends object>({
+  row,
+  index,
+  filters,
+  data,
+  columns,
+}: TableRowProps<T>) => {
+  const { open, toggle } = useAccordion(false);
+
+  return (
+    <Fragment key={row.id}>
+      <tr className="relative bg-gray-10">
+        {row
+          .getVisibleCells()
+          .filter((cell) => filters.includes(cell.column.id))
+          .map((cell) => (
+            <td key={cell.id} className="border-0">
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </td>
+          ))}
+
+        <td className="border-0">
+          <AccordionButton open={open} toggle={toggle} />
+        </td>
+
+        {open && (
+          <td className="absolute left-0 top-[90px] z-10 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
+            <SubTable data={[data[index]!]} columns={columns} />
+          </td>
+        )}
+      </tr>
+      {open && (
+        <tr>
+          <td className="border-0 p-0">
+            <div className="mb-[110px]"></div>
+          </td>
+        </tr>
+      )}
+    </Fragment>
+  );
+};
+
 type SelectNumberProps = {
   value?: string | number;
   onChange?: ChangeEventHandler<HTMLSelectElement>;
@@ -341,7 +367,10 @@ const SubTable = <T extends object>({ data, columns }: SubTableProps<T>) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const filters = ["checkbox", "images", "orderId", "actions"];
+  const filters = useMemo(
+    () => ["checkbox", "images", "orderId", "actions"],
+    [],
+  );
 
   return (
     <table className="relative w-max min-w-full bg-[#EBE0E859]">

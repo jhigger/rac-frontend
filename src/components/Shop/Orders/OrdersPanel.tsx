@@ -9,6 +9,7 @@ import {
   TickSquare,
 } from "iconsax-react";
 import { useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseButton, type CloseButtonProps } from "~/components/Buttons";
@@ -423,7 +424,10 @@ export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
       >
         {capitalizeWords(status)}
       </button>
-      <ShippingStatusModal {...{ modalId, status }} />
+      {createPortal(
+        <ShippingStatusModal {...{ modalId, status }} />,
+        document.body,
+      )}
     </>
   );
 };
@@ -471,7 +475,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
   const maxWidth =
     status === "cleared" ? "max-w-[1000px] mt-60" : "max-w-[700px]";
 
-  const marginTop = status === "cleared" && "mt-[400px] md:mt-[300px]";
+  const marginTop = status === "cleared" ? "mt-[400px] md:mt-[300px]" : "";
 
   return (
     <div

@@ -1,11 +1,12 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { CloseButton } from "~/components/Buttons";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { MoreButton } from "~/components/Shop/Orders";
 import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
 import {
@@ -202,7 +203,10 @@ const RequestStatus = ({ id, status }: RequestStatusProps) => {
       >
         {capitalizedWords}
       </button>
-      <RequestStatusModal {...{ modalId, status }} />
+      {createPortal(
+        <RequestStatusModal {...{ modalId, status }} />,
+        document.body,
+      )}
     </>
   );
 };

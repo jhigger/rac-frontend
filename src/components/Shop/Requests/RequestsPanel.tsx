@@ -1,6 +1,7 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { Security } from "iconsax-react";
 import { useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseButton } from "~/components/Buttons";
@@ -13,8 +14,8 @@ import {
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
-import TabContentLayout from "../../Layouts/TabContentLayout";
 import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
+import TabContentLayout from "../../Layouts/TabContentLayout";
 import { MoreButton } from "../Orders";
 import { CancelButton, ImageColumn } from "../Orders/OrdersPanel";
 import RequestOrderButton from "../RequestOrderButton";
@@ -213,7 +214,10 @@ export const RequestStatus = ({ id, status }: RequestStatusProps) => {
       >
         {capitalizeWords(status)}
       </button>
-      <RequestStatusModal {...{ modalId, status }} />
+      {createPortal(
+        <RequestStatusModal {...{ modalId, status }} />,
+        document.body,
+      )}
     </>
   );
 };

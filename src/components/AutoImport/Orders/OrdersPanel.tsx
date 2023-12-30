@@ -2,13 +2,14 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { BackSquare, More, TickSquare } from "iconsax-react";
 import { useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseButton } from "~/components/Buttons";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import CongratulationImage from "~/components/CongratulationImage";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import { MoreButton } from "~/components/Shop/Orders";
 import {
@@ -317,7 +318,10 @@ const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
       >
         {capitalizedWords}
       </button>
-      <ShippingStatusModal {...{ modalId, status }} />
+      {createPortal(
+        <ShippingStatusModal {...{ modalId, status }} />,
+        document.body,
+      )}
     </>
   );
 };
@@ -351,7 +355,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
   const maxWidth =
     status === "cleared" ? "max-w-[1000px] mt-60" : "max-w-[700px]";
 
-  const marginTop = status === "cleared" && "mt-[400px] md:mt-[300px]";
+  const marginTop = status === "cleared" ? "mt-[400px] md:mt-[300px]" : "";
 
   return (
     <div

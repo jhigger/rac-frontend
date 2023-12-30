@@ -33,6 +33,7 @@ import {
 import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
 import AppBarTabs from "./AppBarTabs";
 import BreadCrumbs from "./BreadCrumbs";
+import { createPortal } from "react-dom";
 
 dayjs.extend(relativeTime);
 
@@ -120,7 +121,7 @@ const NotificationButton = () => {
           </div>
         )}
       </button>
-      <NotificationModal id={id} />
+      {createPortal(<NotificationModal id={id} />, document.body)}
     </>
   );
 };

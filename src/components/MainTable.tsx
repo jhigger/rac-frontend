@@ -217,7 +217,7 @@ const MainTable = <T extends object>({
             <div className="body-lg flex flex-col items-center gap-[20px] px-[10px] py-[10px] md:flex-row">
               <div className="flex w-full items-center gap-[12px] md:w-max">
                 <span className="whitespace-nowrap">Items per page:</span>
-                <div className="w-[150px]">
+                <div className="w-[150px] md:w-[100px]">
                   <SelectNumber
                     value={table.getState().pagination.pageSize}
                     onChange={(e) => {

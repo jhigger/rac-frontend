@@ -85,7 +85,7 @@ const register = () => {
         <Logo />
 
         <FormProvider {...formMethods}>
-          <div className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[54px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+          <div className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
             {step}
 
             {registerError && (
@@ -105,7 +105,7 @@ const register = () => {
                 />
               )}
             </div>
-            <TermsAndCondition isLastStep={isLastStep} />
+            {isLastStep && <TermsAndCondition />}
           </div>
         </FormProvider>
 
@@ -145,9 +145,7 @@ const CreateAccountButton = ({
   );
 };
 
-const TermsAndCondition = ({ isLastStep }: { isLastStep: boolean }) => {
-  if (!isLastStep) return;
-
+const TermsAndCondition = () => {
   return (
     <div className="body-md text-center text-black">
       <Balancer>

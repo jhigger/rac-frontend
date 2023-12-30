@@ -16,15 +16,19 @@ import useLoginUser from "~/hooks/useLoginUser";
 import useRegisterUser from "~/hooks/useRegisterUser";
 
 export type AuthContextType = {
+  authType: TwoFactorAuthenticationType;
   user: UserType | null;
   isAuthenticating: boolean;
   isFetchingUser: boolean;
   isRegistering: boolean;
+  isVerified: boolean;
   loginError: AxiosError | null;
   registerError: string | null;
+  handleCodeVerification: (sixDigitCode: string) => void;
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => void;
   handleRegister: (data: RegisterType) => Promise<void>;
+  setAuthType: (authType: TwoFactorAuthenticationType) => void;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -59,12 +63,16 @@ export type RegisterType = {
   }[];
 };
 
+export type TwoFactorAuthenticationType = "email" | "TOTP" | null;
+
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [loginInputs, setLoginInputs] = useState<LoginInputs | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);
   const [registerError, setRegisterError] = useState<string | null>(null);
+  const [authType, setAuthType] = useState<TwoFactorAuthenticationType>(null); // todo: get this from server instead
+  const [isVerified, setIsVerified] = useState(false);
 
   const {
     data: user,
@@ -79,13 +87,19 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       if (loginInputs) {
         console.log("logging in...");
         return await useLoginUser(loginInputs).then(async (userData) => {
-          console.log("user logged in");
-          setLoginInputs(null);
-          setIsRegistering(false);
-          handleJWTCookie(userData.jwt);
-          console.log("redirecting to shop...");
-          redirectTo("/shop");
-          return userData;
+          if (authType === null || isVerified) {
+            setLoginInputs(null);
+            setIsRegistering(false);
+            setIsVerified(false);
+            console.log("user logged in");
+            handleJWTCookie(userData.jwt);
+            console.log("redirecting to shop...");
+            redirectTo("/shop");
+            return userData;
+          }
+
+          redirectTo("/authentication");
+          return null;
         });
       } else if (cookies.jwt) {
         console.log("token found, fetching user info...");
@@ -105,6 +119,11 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     },
     initialData: null,
   });
+
+  const handleCodeVerification = (sixDigitCode: string) => {
+    console.log("verifying:", sixDigitCode);
+    setIsVerified(true);
+  };
 
   const handleJWTCookie = (jwtCookie: string) => {
     const expirationDate = new Date();
@@ -138,7 +157,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleRedirect = () => {
     const path = router.asPath;
-    if (["/login", "/register"].includes(path)) {
+    if (["/login", "/register", "/authentication"].includes(path)) {
       console.log("redirecting to /shop...");
       redirectTo("/shop");
     } else {
@@ -153,22 +172,26 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (loginInputs) void refetch(); // fetch user after clicking login
-  }, [loginInputs]);
+  }, [loginInputs, isVerified]);
 
   useEffect(() => {
     if (!cookies.jwt) void refetch(); // set user to null if there is no cookie
   }, [cookies.jwt]);
 
   const value: AuthContextType = {
+    authType,
     user,
     isAuthenticating,
     isFetchingUser,
     isRegistering,
+    isVerified,
     loginError,
     registerError,
+    handleCodeVerification,
     handleLogin,
     handleLogout,
     handleRegister,
+    setAuthType,
   };
 
   if (router.asPath !== "/login" && isRefetching) return <LoadingScreen />;

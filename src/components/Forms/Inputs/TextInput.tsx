@@ -12,7 +12,11 @@ type TextInputProps = {
   bg?: string;
   defaultValue?: string;
   disabled?: boolean;
-  min?: string | number | undefined;
+  max?: string | number;
+  maxLength?: number;
+  min?: string | number;
+  minLength?: number;
+  pattern?: string;
   type?: HTMLInputTypeAttribute;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;

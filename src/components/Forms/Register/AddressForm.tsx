@@ -19,7 +19,7 @@ const AddressForm = () => {
     <>
       <FormHeader
         title="Just one more step"
-        body={
+        subTitle={
           <>
             <span className="font-medium">{`Dear ${getValues(
               "firstName",

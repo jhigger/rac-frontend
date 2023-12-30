@@ -12,12 +12,12 @@ import TextInput from "~/components/Forms/Inputs/TextInput";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
+import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
-import { type RegisterInputs } from "~/pages/register";
 import AccordionButton from "../../Forms/AccordionButton";
 import { Item, PackageOrigin } from "./RequestDetails";
 import {
@@ -182,7 +182,8 @@ export const DefaultBillingAddressRadio = () => {
 
 export const CustomBillingAddress = () => {
   const { open, toggle } = useAccordion(true);
-  const { register, getValues, setValue, watch } = useForm<RegisterInputs>();
+  const { register, getValues, setValue, watch } =
+    useForm<BillingDetailsType>();
   const { states, cities } = useStatesCities({ getValues, setValue, watch });
 
   return (
@@ -208,34 +209,40 @@ export const CustomBillingAddress = () => {
           <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
             <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
               <div className="col-span-1">
-                <TextInput id={"firstName"} label={"First Name"} />
+                <TextInput
+                  id={"firstName"}
+                  label={"First Name"}
+                  {...register("firstName")}
+                />
               </div>
 
               <div className="col-span-1">
-                <TextInput id={"lastName"} label={"Last Name"} />
+                <TextInput
+                  id={"lastName"}
+                  label={"Last Name"}
+                  {...register("lastName")}
+                />
               </div>
             </div>
 
             <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
               <div className="col-span-full md:col-span-5">
-                <TextInput id="email" label="Email" type="email" />
+                <TextInput
+                  id="email"
+                  label="Email"
+                  type="email"
+                  {...register("email")}
+                />
               </div>
               <div className="col-span-full md:col-span-3">
-                <SelectCountryPhoneCodeInput register={register} />
+                <SelectCountryPhoneCodeInput {...register("countryCode")} />
               </div>
               <div className="col-span-full md:col-span-4">
                 <TextInput
                   id="phone-number"
                   label="Phone Number"
                   type="tel"
-                  value=""
-                  onChange={() => {
-                    return;
-                  }}
-                  // value={phoneNumber}
-                  // onChange={(e) =>
-                  //   updateFields({ phoneNumber: e.target.value })
-                  // }
+                  {...register("phoneNumber")}
                 />
               </div>
             </div>
@@ -244,27 +251,28 @@ export const CustomBillingAddress = () => {
               <TextInput
                 id={"street-address"}
                 label={"Street Address"}
-                // value={streetAddress}
-                // onChange={(e) =>
-                //   updateFields({ streetAddress: e.target.value })
-                // }
+                {...register("address")}
               />
             </div>
 
             <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
               <div className="col-span-4">
-                <SelectCountryInput register={register} />
+                <SelectCountryInput {...register("country")} />
               </div>
               <div className="col-span-4">
-                <SelectStateInput states={states} register={register} />
+                <SelectStateInput states={states} {...register("state")} />
               </div>
               <div className="col-span-4">
-                <SelectCityInput cities={cities} register={register} />
+                <SelectCityInput cities={cities} {...register("city")} />
               </div>
             </div>
 
             <div className="col-span-full">
-              <TextInput id={"zipPostalCode"} label={"Zip Postal Code"} />
+              <TextInput
+                id={"zipPostalCode"}
+                label={"Zip Postal Code"}
+                {...register("zipPostalCode")}
+              />
             </div>
           </div>
         )}

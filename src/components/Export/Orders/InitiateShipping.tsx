@@ -32,11 +32,11 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
+import { type ShipmentDetailsType } from "~/contexts/AutoImportContext";
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
-import { type RegisterInputs } from "~/pages/register";
 
 const InitiateShipping = () => {
   const { handlePayNowAction } = useExportContext();
@@ -155,7 +155,8 @@ const BillingAddressStep = () => {
 };
 
 export const FillInShippingAddress = () => {
-  const { register, getValues, setValue, watch } = useForm<RegisterInputs>();
+  const { register, getValues, setValue, watch } =
+    useForm<ShipmentDetailsType>();
   const { states, cities } = useStatesCities({ getValues, setValue, watch });
 
   return (
@@ -163,30 +164,40 @@ export const FillInShippingAddress = () => {
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
         <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
           <div className="col-span-1">
-            <TextInput id={"firstName"} label={"Receiver's First Name"} />
+            <TextInput
+              id={"firstName"}
+              label={"Receiver's First Name"}
+              {...register("firstName")}
+            />
           </div>
 
           <div className="col-span-1">
-            <TextInput id={"lastName"} label={"Receiver's Last Name"} />
+            <TextInput
+              id={"lastName"}
+              label={"Receiver's Last Name"}
+              {...register("lastName")}
+            />
           </div>
         </div>
 
         <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
           <div className="col-span-full md:col-span-5">
-            <TextInput id="email" label="Receiver's Email" type="email" />
+            <TextInput
+              id="email"
+              label="Receiver's Email"
+              type="email"
+              {...register("email")}
+            />
           </div>
           <div className="col-span-full md:col-span-3">
-            <SelectCountryPhoneCodeInput register={register} />
+            <SelectCountryPhoneCodeInput {...register("countryCode")} />
           </div>
           <div className="col-span-full md:col-span-4">
             <TextInput
               id="phone-number"
               label="Receiver's Phone Number"
               type="tel"
-              // value={phoneNumber}
-              // onChange={(e) =>
-              //   updateFields({ phoneNumber: e.target.value })
-              // }
+              {...register("phoneNumber")}
             />
           </div>
         </div>
@@ -195,22 +206,19 @@ export const FillInShippingAddress = () => {
           <TextInput
             id={"street-address"}
             label={"Receiver's Address"}
-            // value={streetAddress}
-            // onChange={(e) =>
-            //   updateFields({ streetAddress: e.target.value })
-            // }
+            {...register("address")}
           />
         </div>
 
         <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
           <div className="col-span-4">
-            <SelectCountryInput register={register} />
+            <SelectCountryInput {...register("country")} />
           </div>
           <div className="col-span-4">
-            <SelectStateInput states={states} register={register} />
+            <SelectStateInput states={states} {...register("state")} />
           </div>
           <div className="col-span-4">
-            <SelectCityInput cities={cities} register={register} />
+            <SelectCityInput cities={cities} {...register("city")} />
           </div>
         </div>
 

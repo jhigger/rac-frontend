@@ -198,14 +198,12 @@ const MainTable = <T extends object>({
                   {table
                     .getRowModel()
                     .rows.slice(startRowIndex, endRowIndex)
-                    .map((row, i) => {
+                    .map((row) => {
                       return (
                         <TableRow
                           key={row.id}
                           row={row}
-                          index={i}
                           filters={filters}
-                          data={data}
                           columns={columns}
                         />
                       );
@@ -279,23 +277,19 @@ const MainTable = <T extends object>({
 
 type TableRowProps<T> = {
   row: Row<T>;
-  index: number;
   filters: string[];
-  data: T[];
   columns: ColumnDef<T>[];
 };
 
 const TableRow = <T extends object>({
   row,
-  index,
   filters,
-  data,
   columns,
 }: TableRowProps<T>) => {
   const { open, toggle } = useAccordion(false);
 
   return (
-    <Fragment key={row.id}>
+    <Fragment>
       <tr className="relative bg-gray-10">
         {row
           .getVisibleCells()
@@ -312,7 +306,7 @@ const TableRow = <T extends object>({
 
         {open && (
           <td className="absolute left-0 top-[76px] z-10 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
-            <SubTable data={[data[index]!]} columns={columns} />
+            <SubTable data={[row.original]} columns={columns} />
           </td>
         )}
       </tr>

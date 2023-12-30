@@ -33,6 +33,7 @@ import {
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
+  type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
 import {
   useImportContext,
@@ -212,12 +213,6 @@ export const Step2 = () => {
       </div>
     </>
   );
-};
-
-type ItemDetailsSectionProps = {
-  index: number;
-  expanded?: boolean;
-  handleRemoveItem: () => void;
 };
 
 const ItemDetailsSection = ({

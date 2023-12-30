@@ -378,13 +378,13 @@ export const TooltipButton = () => {
   );
 };
 
-type ItemDetailsSectionProps = {
+export type ItemDetailsSectionProps = {
   index: number;
   expanded?: boolean;
-  handleRemoveItem: (index: number) => void;
+  handleRemoveItem: () => void;
 };
 
-export const ItemDetailsSection = ({
+const ItemDetailsSection = ({
   index,
   expanded = false,
   handleRemoveItem,
@@ -554,12 +554,12 @@ export const ItemDetailsSection = ({
 
             <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 p-[10px] md:hidden">
               <PreviewItemButton index={index} />
-              <DeleteItemButton onClick={() => handleRemoveItem(index)} />
+              <DeleteItemButton onClick={handleRemoveItem} />
             </div>
           </div>
         </SectionContentLayout>
         <div className="hidden md:block">
-          <DeleteButtonIcon onClick={() => handleRemoveItem(index)} />
+          <DeleteButtonIcon onClick={handleRemoveItem} />
         </div>
       </div>
       <ItemPreview index={index} />

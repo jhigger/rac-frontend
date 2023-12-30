@@ -108,7 +108,7 @@ const RequestOrderForm = () => {
         Boolean(Number(value)),
       );
     });
-
+    console.log(data.requestPackages);
     // console.log("submitting user package...");
     // await mutateAsync(formMethods.getValues().requestPackages);
     // console.log(status);

@@ -81,7 +81,6 @@ const RequestOrder = () => {
   });
 
   const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
-    // handleRequests();
     console.log(data.requestPackages);
     next();
   };

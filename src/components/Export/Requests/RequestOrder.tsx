@@ -68,7 +68,6 @@ const RequestOrder = () => {
   });
 
   const onSubmit: SubmitHandler<ExportInputs> = async (data) => {
-    // handleRequests();
     console.log(data.requestPackages);
     next();
   };

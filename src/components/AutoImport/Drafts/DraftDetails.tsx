@@ -50,7 +50,7 @@ const DraftDetails = () => {
 
   const formMethods = useForm<AutoImportInputs>({
     defaultValues: {
-      requestPackages: [emptyValue],
+      requestPackages: emptyValue,
     },
   });
 

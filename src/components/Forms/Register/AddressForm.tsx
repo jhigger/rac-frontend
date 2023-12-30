@@ -29,12 +29,20 @@ const AddressForm = () => {
         }
       />
       <div className="flex w-full flex-col gap-[30px]">
-        <SelectCountryInput register={register} />
+        <SelectCountryInput disabled={isRegistering} {...register("country")} />
         {watch("country") && (
-          <SelectStateInput states={states} register={register} />
+          <SelectStateInput
+            states={states}
+            disabled={isRegistering}
+            {...register("state")}
+          />
         )}
         {watch("state") && (
-          <SelectCityInput cities={cities} register={register} />
+          <SelectCityInput
+            cities={cities}
+            disabled={isRegistering}
+            {...register("city")}
+          />
         )}
         <TextInput
           id={"streetAddress"}
@@ -44,7 +52,7 @@ const AddressForm = () => {
         />
         <div className="grid grid-rows-2 gap-[30px] md:grid-cols-12 md:grid-rows-1 md:gap-[10px]">
           <div className="md col-span-full md:col-span-5">
-            <SelectCountryPhoneCodeInput register={register} />
+            <SelectCountryPhoneCodeInput {...register("countryCode")} />
           </div>
           <div className="col-span-full md:col-span-7">
             <TextInput

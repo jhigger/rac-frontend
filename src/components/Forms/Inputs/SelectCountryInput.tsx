@@ -1,23 +1,13 @@
 import { Country } from "country-state-city";
-import { type UseFormRegister } from "react-hook-form";
-import { useAuthContext } from "~/contexts/AuthContext";
-import { type RegisterInputs } from "~/pages/register";
+import { forwardRef, type Ref } from "react";
 import SelectInput from "./SelectInput";
 
-type SelectCountryProps = {
-  register:
-    | UseFormRegister<RegisterInputs>
-    | UseFormRegister<Partial<RegisterInputs>>;
-};
-
-const SelectCountryInput = ({ register }: SelectCountryProps) => {
-  const { isRegistering } = useAuthContext();
-
+const SelectCountryInput = ({ ...props }, ref: Ref<HTMLSelectElement>) => {
   return (
     <SelectInput
+      ref={ref}
       id="country"
       label="Country"
-      {...register("country", { disabled: isRegistering })}
       options={
         <>
           <option value="" disabled hidden>
@@ -32,8 +22,9 @@ const SelectCountryInput = ({ register }: SelectCountryProps) => {
           })}
         </>
       }
+      {...props}
     />
   );
 };
 
-export default SelectCountryInput;
+export default forwardRef(SelectCountryInput);

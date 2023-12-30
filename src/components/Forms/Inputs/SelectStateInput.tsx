@@ -1,24 +1,20 @@
 import { type IState } from "country-state-city";
-import { type UseFormRegister } from "react-hook-form";
-import { useAuthContext } from "~/contexts/AuthContext";
-import { type RegisterInputs } from "~/pages/register";
+import { forwardRef, type Ref } from "react";
 import SelectInput from "./SelectInput";
 
 type SelectStateProps = {
   states: IState[];
-  register:
-    | UseFormRegister<RegisterInputs>
-    | UseFormRegister<Partial<RegisterInputs>>;
 };
 
-const SelectStateInput = ({ states, register }: SelectStateProps) => {
-  const { isRegistering } = useAuthContext();
-
+const SelectStateInput = (
+  { states, ...props }: SelectStateProps,
+  ref: Ref<HTMLSelectElement>,
+) => {
   return (
     <SelectInput
+      ref={ref}
       id="state"
       label="State"
-      {...register("state", { disabled: isRegistering })}
       options={
         <>
           <option value="" disabled hidden>
@@ -33,8 +29,9 @@ const SelectStateInput = ({ states, register }: SelectStateProps) => {
           })}
         </>
       }
+      {...props}
     />
   );
 };
 
-export default SelectStateInput;
+export default forwardRef(SelectStateInput);

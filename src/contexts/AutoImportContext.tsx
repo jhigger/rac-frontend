@@ -51,18 +51,33 @@ type AutoImportItemType = {
   additionalDetails?: AdditionalDetails;
 };
 
-type AdditionalDetails = {
+export type AdditionalDetails = {
   contactName: string;
   countryCode: string;
   phoneNumber: string;
   contactEmail: string;
   contactAddress: string;
-  carCountry: string;
-  carState: string;
-  carCity: string;
-  pickUpData: string;
+  country: string;
+  state: string;
+  city: string;
+  pickUpDate: string;
   locationType: string;
 };
+
+export type BillingDetailsType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  countryCode: string;
+  phoneNumber: string;
+  address: string;
+  country: string;
+  state: string;
+  city: string;
+  zipPostalCode: string;
+};
+
+export type ShipmentDetailsType = BillingDetailsType;
 
 export type AutoImportOrderPackageInput = {
   origin: string;
@@ -86,6 +101,8 @@ export type AutoImportRequestPackageType = {
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestLocalDate: string;
   items: AutoImportItemType[];
+  shipmentDetails: ShipmentDetailsType;
+  billingDetails: BillingDetailsType;
 };
 
 export type PropertyType = { label: string; value: string | undefined };

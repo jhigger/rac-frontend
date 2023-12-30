@@ -5,7 +5,6 @@ import {
   useFieldArray,
   useForm,
   useFormContext,
-  type FieldArrayWithId,
   type SubmitHandler,
 } from "react-hook-form";
 import {
@@ -18,7 +17,6 @@ import {
 } from "~/components/Buttons";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import CongratulationImage from "~/components/CongratulationImage";
-import { FillInShippingAddress } from "~/components/Export/Orders/InitiateShipping";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import CurrencyInput from "~/components/Forms/Inputs/CurrencyInput";
 import FileInput from "~/components/Forms/Inputs/FileInput";
@@ -38,7 +36,6 @@ import {
 } from "~/components/Shop/Orders/InitiateShipping";
 import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import {
-  CustomBillingAddress,
   DefaultBillingAddressRadio,
   StepIndex,
   type stepsContentType,
@@ -51,6 +48,7 @@ import {
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
+  type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
 import { AUTO_IMPORT_ORIGINS, CAR_CONDITIONS } from "~/constants";
 import {
@@ -61,7 +59,6 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
-import { type RegisterInputs } from "~/pages/register";
 
 export const emptyValue: AutoImportRequestPackageType = {
   requestId: "",
@@ -83,10 +80,34 @@ export const emptyValue: AutoImportRequestPackageType = {
       description: "",
     },
   ],
+  shipmentDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
+  billingDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
 };
 
 export type AutoImportInputs = {
-  requestPackages: AutoImportRequestPackageType[];
+  requestPackages: AutoImportRequestPackageType;
 };
 
 const RequestOrder = () => {
@@ -116,12 +137,11 @@ const RequestOrder = () => {
 
   const formMethods = useForm<AutoImportInputs>({
     defaultValues: {
-      requestPackages: [emptyValue],
+      requestPackages: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
-    // handleRequests();
     console.log(data.requestPackages);
     next();
   };
@@ -195,11 +215,11 @@ export const Step1 = () => {
   const { control } = useFormContext<AutoImportInputs>();
   const { fields, append, remove } = useFieldArray<AutoImportInputs>({
     control,
-    name: "requestPackages",
+    name: "requestPackages.items",
   });
 
   const handleAddMore = () => {
-    append(emptyValue);
+    append(emptyValue.items);
   };
 
   const handleRemove = (index: number) => {
@@ -216,7 +236,6 @@ export const Step1 = () => {
               key={field.id}
               index={i}
               handleRemoveItem={() => handleRemove(i)}
-              fields={fields}
               expanded
             />
           );
@@ -262,25 +281,12 @@ const SelectWarehouseOriginSection = () => {
   );
 };
 
-type ItemDetailsSectionProps = {
-  index: number;
-  expanded?: boolean;
-  handleRemoveItem: (index: number) => void;
-  fields: FieldArrayWithId<
-    AutoImportInputs,
-    | "requestPackages"
-    | `requestPackages.${number}.items`
-    | `requestPackages.${number}.items.${number}.properties`,
-    "id"
-  >[];
-};
-
 const ItemDetailsSection = ({
-  // fields // todo: register form fields
   index,
   expanded = false,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
+  const { register } = useFormContext<AutoImportInputs>();
   const { open, toggle } = useAccordion(expanded);
   const [filename1, setFilename1] = useState("");
 
@@ -327,6 +333,7 @@ const ItemDetailsSection = ({
                         </option>
                       </>
                     }
+                    {...register(`requestPackages.items.${index}.brand`)}
                   />
                 </div>
 
@@ -341,6 +348,7 @@ const ItemDetailsSection = ({
                         </option>
                       </>
                     }
+                    {...register(`requestPackages.items.${index}.model`)}
                   />
                 </div>
 
@@ -355,11 +363,18 @@ const ItemDetailsSection = ({
                         </option>
                       </>
                     }
+                    {...register(
+                      `requestPackages.items.${index}.productionYear`,
+                    )}
                   />
                 </div>
 
                 <div className="col-span-full md:col-span-5">
-                  <CurrencyInput id={`carValue-${index}`} label={"Car Value"} />
+                  <CurrencyInput
+                    id={`carValue-${index}`}
+                    label={"Car Value"}
+                    {...register(`requestPackages.items.${index}.value`)}
+                  />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-4">
@@ -381,18 +396,24 @@ const ItemDetailsSection = ({
                         })}
                       </>
                     }
+                    {...register(`requestPackages.items.${index}.condition`)}
                   />
                 </div>
 
                 <div className="col-span-full md:col-span-3">
-                  <TextInput id={`carColor-${index}`} label={"Car Color"} />
+                  <TextInput
+                    id={`carColor-${index}`}
+                    label={"Car Color"}
+                    {...register(`requestPackages.items.${index}.color`)}
+                  />
                 </div>
 
                 <div className="col-span-full md:col-span-4">
                   <TextInput
-                    id={`millage-${index}`}
+                    id={`mileage-${index}`}
                     label={"Mileage"}
                     type="number"
+                    {...register(`requestPackages.items.${index}.mileage`)}
                   />
                 </div>
 
@@ -400,11 +421,16 @@ const ItemDetailsSection = ({
                   <TextInput
                     id={`vin-${index}`}
                     label={"Vehicle Identification Number"}
+                    {...register(`requestPackages.items.${index}.vin`)}
                   />
                 </div>
 
                 <div className="col-span-full md:col-span-4">
-                  <TextInput id={`url-${index}`} label={"Car's Website Link"} />
+                  <TextInput
+                    id={`url-${index}`}
+                    label={"Car's Website Link"}
+                    {...register(`requestPackages.items.${index}.url`)}
+                  />
                 </div>
 
                 <div className="col-span-full md:col-span-6">
@@ -412,7 +438,9 @@ const ItemDetailsSection = ({
                     id={`carPicture-${index}`}
                     label={"Upload Car Picture"}
                     value={filename1}
-                    onChange={handleChange1}
+                    {...register(`requestPackages.items.${index}.image`, {
+                      onChange: handleChange1,
+                    })}
                   />
                 </div>
 
@@ -421,7 +449,9 @@ const ItemDetailsSection = ({
                     id={`carTitle-${index}`}
                     label={"Upload Copy of Car Title"}
                     value={filename2}
-                    onChange={handleChange2}
+                    {...register(`requestPackages.items.${index}.image`, {
+                      onChange: handleChange2,
+                    })}
                   />
                 </div>
 
@@ -439,6 +469,9 @@ const ItemDetailsSection = ({
                   <TextAreaInput
                     id={`additionalCarDescription-${index}`}
                     label={"Additional Car Description"}
+                    {...register(`requestPackages.items.${index}.image`, {
+                      onChange: handleChange2,
+                    })}
                   />
                 </div>
 
@@ -460,12 +493,12 @@ const ItemDetailsSection = ({
             )}
 
             <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 p-[10px] md:hidden">
-              <DeleteItemButton onClick={() => handleRemoveItem(index)} />
+              <DeleteItemButton onClick={handleRemoveItem} />
             </div>
           </div>
         </SectionContentLayout>
         <div className="hidden md:block">
-          <DeleteButtonIcon onClick={() => handleRemoveItem(index)} />
+          <DeleteButtonIcon onClick={handleRemoveItem} />
         </div>
       </div>
     </>
@@ -476,7 +509,16 @@ type DropOffAddressProps = { index: number };
 
 const DropOffAddress = ({ index }: DropOffAddressProps) => {
   const { open, toggle } = useAccordion(false);
-  const { register, getValues, setValue, watch } = useForm<RegisterInputs>();
+  const { register } = useFormContext<NonNullable<AutoImportInputs>>();
+  const { getValues, setValue, watch } =
+    useFormContext<
+      Pick<
+        NonNullable<
+          AutoImportInputs["requestPackages"]["items"][number]["additionalDetails"]
+        >,
+        "country" | "state" | "city"
+      >
+    >();
   const { states, cities } = useStatesCities({ getValues, setValue, watch });
 
   return (
@@ -504,11 +546,21 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
           <div className="flex w-full flex-col gap-[40px] py-[10px]">
             <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
               <div className="col-span-full md:col-span-4">
-                <TextInput id={"contactName"} label={"Pick up Contact Name"} />
+                <TextInput
+                  id={"contactName"}
+                  label={"Pick up Contact Name"}
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.contactName`,
+                  )}
+                />
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectCountryPhoneCodeInput register={register} />
+                <SelectCountryPhoneCodeInput
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.countryCode`,
+                  )}
+                />
               </div>
 
               <div className="col-span-full md:col-span-4">
@@ -516,10 +568,9 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={`contactPhoneNumber-${index}`}
                   label="Contact's Phone Number"
                   type="tel"
-                  // value={phoneNumber}
-                  // onChange={(e) =>
-                  //   updateFields({ phoneNumber: e.target.value })
-                  // }
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.phoneNumber`,
+                  )}
                 />
               </div>
 
@@ -528,6 +579,9 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={`pickUpEmail-${index}`}
                   label="Pick up Contact Email Address"
                   type="email"
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.contactEmail`,
+                  )}
                 />
               </div>
 
@@ -535,23 +589,36 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={`pickUpAddress-${index}`}
                   label={"Pick up Address"}
-                  // value={streetAddress}
-                  // onChange={(e) =>
-                  //   updateFields({ streetAddress: e.target.value })
-                  // }
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.contactAddress`,
+                  )}
                 />
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectCountryInput register={register} />
+                <SelectCountryInput
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.country`,
+                  )}
+                />
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectStateInput states={states} register={register} />
+                <SelectStateInput
+                  states={states}
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.state`,
+                  )}
+                />
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectCityInput cities={cities} register={register} />
+                <SelectCityInput
+                  cities={cities}
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.city`,
+                  )}
+                />
               </div>
 
               <div className="col-span-full md:col-span-6">
@@ -560,11 +627,20 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   label={"Pick up date"}
                   type="date"
                   min={new Date().toLocaleDateString()}
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.pickUpDate`,
+                  )}
                 />
               </div>
 
               <div className="col-span-full md:col-span-6">
-                <TextInput id={"locationType"} label={"Pickup Location Type"} />
+                <TextInput
+                  id={"locationType"}
+                  label={"Pickup Location Type"}
+                  {...register(
+                    `requestPackages.items.${index}.additionalDetails.locationType`,
+                  )}
+                />
               </div>
             </div>
           </div>
@@ -592,6 +668,224 @@ export const Step2 = () => {
     </div>
   );
 };
+
+const CustomBillingAddress = () => {
+  const { open, toggle } = useAccordion(true);
+  const { register } = useFormContext<AutoImportInputs>();
+  const { getValues, setValue, watch } =
+    useFormContext<
+      Pick<
+        NonNullable<
+          AutoImportInputs["requestPackages"]["items"][number]["additionalDetails"]
+        >,
+        "country" | "state" | "city"
+      >
+    >();
+  const { states, cities } = useStatesCities({ getValues, setValue, watch });
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[40px] py-[10px]">
+        <div className="col-span-full flex items-center gap-[10px] md:gap-[30px]">
+          <input
+            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
+            name="radio"
+            type="radio"
+            value="female"
+            aria-label="Custom Billing Address"
+          />
+          <h4 className="title-md md:title-lg text-gray-700">
+            Custom Billing Address
+          </h4>
+          <div className="flex flex-grow justify-end">
+            <AccordionButton {...{ open, toggle }} />
+          </div>
+        </div>
+
+        {open && (
+          <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
+              <div className="col-span-1">
+                <TextInput
+                  id={"firstName"}
+                  label={"First Name"}
+                  {...register("requestPackages.shipmentDetails.firstName")}
+                />
+              </div>
+
+              <div className="col-span-1">
+                <TextInput
+                  id={"lastName"}
+                  label={"Last Name"}
+                  {...register("requestPackages.shipmentDetails.lastName")}
+                />
+              </div>
+            </div>
+
+            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+              <div className="col-span-full md:col-span-5">
+                <TextInput
+                  id="email"
+                  label="Email"
+                  type="email"
+                  {...register("requestPackages.shipmentDetails.email")}
+                />
+              </div>
+              <div className="col-span-full md:col-span-3">
+                <SelectCountryPhoneCodeInput
+                  {...register("requestPackages.shipmentDetails.countryCode")}
+                />
+              </div>
+              <div className="col-span-full md:col-span-4">
+                <TextInput
+                  id="phone-number"
+                  label="Phone Number"
+                  type="tel"
+                  {...register("requestPackages.shipmentDetails.phoneNumber")}
+                />
+              </div>
+            </div>
+
+            <div className="col-span-full">
+              <TextInput
+                id={"street-address"}
+                label={"Street Address"}
+                {...register("requestPackages.shipmentDetails.address")}
+              />
+            </div>
+
+            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+              <div className="col-span-4">
+                <SelectCountryInput
+                  {...register("requestPackages.billingDetails.country")}
+                />
+              </div>
+              <div className="col-span-4">
+                <SelectStateInput
+                  states={states}
+                  {...register("requestPackages.billingDetails.state")}
+                />
+              </div>
+              <div className="col-span-4">
+                <SelectCityInput
+                  cities={cities}
+                  {...register("requestPackages.billingDetails.city")}
+                />
+              </div>
+            </div>
+
+            <div className="col-span-full">
+              <TextInput
+                id={"zipPostalCode"}
+                label={"Zip Postal Code"}
+                {...register("requestPackages.billingDetails.zipPostalCode")}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </SectionContentLayout>
+  );
+};
+
+const FillInShippingAddress = () => {
+  const { register } = useFormContext<AutoImportInputs>();
+  const { getValues, setValue, watch } =
+    useFormContext<
+      Pick<
+        NonNullable<
+          AutoImportInputs["requestPackages"]["items"][number]["additionalDetails"]
+        >,
+        "country" | "state" | "city"
+      >
+    >();
+  const { states, cities } = useStatesCities({ getValues, setValue, watch });
+
+  return (
+    <div className="flex w-full flex-col gap-[40px] py-[10px]">
+      <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
+          <div className="col-span-1">
+            <TextInput
+              id={"firstName"}
+              label={"Receiver's First Name"}
+              {...register("requestPackages.shipmentDetails.firstName")}
+            />
+          </div>
+
+          <div className="col-span-1">
+            <TextInput
+              id={"lastName"}
+              label={"Receiver's Last Name"}
+              {...register("requestPackages.shipmentDetails.lastName")}
+            />
+          </div>
+        </div>
+
+        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+          <div className="col-span-full md:col-span-5">
+            <TextInput
+              id="email"
+              label="Receiver's Email"
+              type="email"
+              {...register("requestPackages.shipmentDetails.email")}
+            />
+          </div>
+          <div className="col-span-full md:col-span-3">
+            <SelectCountryPhoneCodeInput
+              {...register("requestPackages.shipmentDetails.countryCode")}
+            />
+          </div>
+          <div className="col-span-full md:col-span-4">
+            <TextInput
+              id="phone-number"
+              label="Receiver's Phone Number"
+              type="tel"
+              {...register("requestPackages.shipmentDetails.phoneNumber")}
+            />
+          </div>
+        </div>
+
+        <div className="col-span-full">
+          <TextInput
+            id={"street-address"}
+            label={"Receiver's Address"}
+            {...register("requestPackages.shipmentDetails.address")}
+          />
+        </div>
+
+        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+          <div className="col-span-4">
+            <SelectCountryInput
+              {...register("requestPackages.shipmentDetails.country")}
+            />
+          </div>
+          <div className="col-span-4">
+            <SelectStateInput
+              states={states}
+              {...register("requestPackages.shipmentDetails.state")}
+            />
+          </div>
+          <div className="col-span-4">
+            <SelectCityInput
+              cities={cities}
+              {...register("requestPackages.shipmentDetails.city")}
+            />
+          </div>
+        </div>
+
+        <div className="col-span-full">
+          <TextInput
+            id={"zipPostalCode"}
+            label={"Zip Postal Code"}
+            {...register("requestPackages.billingDetails.zipPostalCode")}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const Step3 = () => {
   const fakeData = [
     {

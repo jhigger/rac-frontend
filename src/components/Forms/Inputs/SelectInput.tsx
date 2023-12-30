@@ -6,9 +6,10 @@ import {
 } from "react";
 
 type SelectInputProps = {
-  id: string;
   label: string;
   options: JSX.Element;
+  disabled?: boolean;
+  id?: string;
   value?: string;
   onBlur?: FocusEventHandler<HTMLSelectElement>;
   onChange?: ChangeEventHandler<HTMLSelectElement>;

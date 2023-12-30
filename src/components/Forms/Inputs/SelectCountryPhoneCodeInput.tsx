@@ -1,25 +1,15 @@
 import { Country } from "country-state-city";
-import { type UseFormRegister } from "react-hook-form";
-import { useAuthContext } from "~/contexts/AuthContext";
-import { type RegisterInputs } from "~/pages/register";
+import { forwardRef, type Ref } from "react";
 import SelectInput from "./SelectInput";
 
-type SelectCountryPhoneCodeProps = {
-  register:
-    | UseFormRegister<RegisterInputs>
-    | UseFormRegister<Partial<RegisterInputs>>;
-};
-
-const SelectCountryPhoneCodeInput = ({
-  register,
-}: SelectCountryPhoneCodeProps) => {
-  const { isRegistering } = useAuthContext();
-
+const SelectCountryPhoneCodeInput = (
+  { ...props },
+  ref: Ref<HTMLSelectElement>,
+) => {
   return (
     <SelectInput
-      id="countryCode"
+      ref={ref}
       label="Country Code"
-      {...register("countryCode", { disabled: isRegistering })}
       options={
         <>
           <option value="" disabled hidden>
@@ -36,8 +26,9 @@ const SelectCountryPhoneCodeInput = ({
           })}
         </>
       }
+      {...props}
     />
   );
 };
 
-export default SelectCountryPhoneCodeInput;
+export default forwardRef(SelectCountryPhoneCodeInput);

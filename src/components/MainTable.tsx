@@ -155,7 +155,7 @@ const MainTable = <T extends object>({
                     ))}
                 </tbody>
               </table>
-
+              {/* mobile table */}
               <table className="relative w-max min-w-full md:hidden">
                 <thead className="title-sm sticky top-0 z-20 bg-white font-medium text-neutral-900">
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -188,6 +188,9 @@ const MainTable = <T extends object>({
                             )}
                           </th>
                         ))}
+                      <th className="border-0 p-[8px]">
+                        {/* placeholder for accordion */}
+                      </th>
                     </tr>
                   ))}
                 </thead>

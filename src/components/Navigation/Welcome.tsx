@@ -10,7 +10,7 @@ const Welcome = () => {
         <img
           src={"https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto"}
           alt="user image"
-          className="h-[40px] w-[40px] rounded-full bg-red-500"
+          className="h-[40px] w-[40px] rounded-full bg-gray-500"
         />
         <div className="flex flex-col gap-0 text-gray-100">
           <span className="body-md">Welcome back,</span>

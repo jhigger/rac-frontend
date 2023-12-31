@@ -13,7 +13,7 @@ import {
 import { type ShopOrderPackageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
-import { PrimaryBackButton } from "~/pages/notifications";
+import { PrimaryBackButton } from "~/components/Buttons/PrimaryBackButton";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import CongratulationImage from "../CongratulationImage";

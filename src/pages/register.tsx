@@ -1,15 +1,21 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
-import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { BackButton } from "~/components/Buttons/BackButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
-import AccountForm from "~/components/Forms/Register/AccountForm";
-import AddressForm from "~/components/Forms/Register/AddressForm";
+import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
 import { useAuthContext } from "~/contexts/AuthContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+
+const AccountForm = dynamic(
+  () => import("~/components/Forms/Register/AccountForm"),
+);
+const AddressForm = dynamic(
+  () => import("~/components/Forms/Register/AddressForm"),
+);
 
 export type RegisterInputs = {
   firstName: string;

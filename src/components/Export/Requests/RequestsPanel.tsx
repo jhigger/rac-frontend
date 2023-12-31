@@ -5,9 +5,9 @@ import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { RequestStatus } from "~/components/Import/Requests/RequestsPanel";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
-import { MoreButton } from "~/components/Shop/Orders";
+import { MoreButton } from "~/components/Buttons/MoreButton";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
-import RequestOrderButton from "~/components/Shop/RequestOrderButton";
+import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import { type FilterCategoriesType } from "~/components/Shop/SearchBar";
 import {
   useExportContext,

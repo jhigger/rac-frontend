@@ -2,11 +2,11 @@
 import Balancer from "react-wrap-balancer";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { useShopContext } from "~/contexts/ShopContext";
+import RequestOrderButton from "../../Buttons/RequestOrderButton";
 import TabContentLayout from "../../Layouts/TabContentLayout";
-import RequestOrderButton from "../RequestOrderButton";
 import DraftDetails from "./DraftDetails";
 
-const DraftsPanel = () => {
+const ShopDraftsPanel = () => {
   const { draftPackages } = useShopContext();
 
   if (Array.isArray(draftPackages) && draftPackages.length > 0) {
@@ -33,4 +33,4 @@ const DraftsPanel = () => {
   );
 };
 
-export default DraftsPanel;
+export default ShopDraftsPanel;

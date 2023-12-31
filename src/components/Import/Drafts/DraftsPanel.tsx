@@ -2,7 +2,7 @@
 import Balancer from "react-wrap-balancer";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
-import RequestOrderButton from "~/components/Shop/RequestOrderButton";
+import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import { useImportContext } from "~/contexts/ImportContext";
 import DraftDetails from "./DraftDetails";
 

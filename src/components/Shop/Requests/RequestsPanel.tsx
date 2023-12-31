@@ -16,16 +16,16 @@ import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import TabContentLayout from "../../Layouts/TabContentLayout";
-import { MoreButton } from "../Orders";
+import { MoreButton } from "../../Buttons/MoreButton";
 import { ImageColumn } from "../Orders/OrdersPanel";
 import { CancelButton } from "../../Buttons/CancelButton";
-import RequestOrderButton from "../RequestOrderButton";
+import RequestOrderButton from "../../Buttons/RequestOrderButton";
 import { type FilterCategoriesType } from "../SearchBar";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
 
-const RequestsPanel = () => {
+const ShopRequestsPanel = () => {
   const { requestPackages, isFetchingRequestPackages } = useShopContext();
   const { activeAction } = useTabContext();
 
@@ -298,4 +298,4 @@ export const ProceedToCheckoutButton = ({
   );
 };
 
-export default RequestsPanel;
+export default ShopRequestsPanel;

@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import {
   createContext,
   useContext,
@@ -7,20 +8,45 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from "react";
-import AutoImportDraftsPanel from "~/components/AutoImport/Drafts/DraftsPanel";
-import AutoImportOrdersPanel from "~/components/AutoImport/Orders/OrdersPanel";
-import AutoImportRequestsPanel from "~/components/AutoImport/Requests/RequestsPanel";
-import ExportDraftsPanel from "~/components/Export/Drafts/DraftsPanel";
-import ExportOrdersPanel from "~/components/Export/Orders/OrdersPanel";
-import ExportRequestsPanel from "~/components/Export/Requests/RequestsPanel";
-import ImportDraftsPanel from "~/components/Import/Drafts/DraftsPanel";
-import ImportOrdersPanel from "~/components/Import/Orders/OrdersPanel";
-import ImportRequestsPanel from "~/components/Import/Requests/RequestsPanel";
-import ShopDraftsPanel from "~/components/Shop/Drafts/DraftsPanel";
-import ShopOrdersPanel from "~/components/Shop/Orders/OrdersPanel";
-import ShopRequestsPanel from "~/components/Shop/Requests/RequestsPanel";
 import { type ACTION_CONST, type TAB_IDS } from "~/constants";
 import { useNavContext, type NavTitleType } from "./NavigationContext";
+
+const AutoImportDraftsPanel = dynamic(
+  () => import("~/components/AutoImport/Drafts/DraftsPanel"),
+);
+const AutoImportOrdersPanel = dynamic(
+  () => import("~/components/AutoImport/Orders/OrdersPanel"),
+);
+const AutoImportRequestsPanel = dynamic(
+  () => import("~/components/AutoImport/Requests/RequestsPanel"),
+);
+const ExportDraftsPanel = dynamic(
+  () => import("~/components/Export/Drafts/DraftsPanel"),
+);
+const ExportOrdersPanel = dynamic(
+  () => import("~/components/Export/Orders/OrdersPanel"),
+);
+const ExportRequestsPanel = dynamic(
+  () => import("~/components/Export/Requests/RequestsPanel"),
+);
+const ImportDraftsPanel = dynamic(
+  () => import("~/components/Import/Drafts/DraftsPanel"),
+);
+const ImportOrdersPanel = dynamic(
+  () => import("~/components/Import/Orders/OrdersPanel"),
+);
+const ImportRequestsPanel = dynamic(
+  () => import("~/components/Import/Requests/RequestsPanel"),
+);
+const ShopDraftsPanel = dynamic(
+  () => import("~/components/Shop/Drafts/DraftsPanel"),
+);
+const ShopOrdersPanel = dynamic(
+  () => import("~/components/Shop/Orders/OrdersPanel"),
+);
+const ShopRequestsPanel = dynamic(
+  () => import("~/components/Shop/Requests/RequestsPanel"),
+);
 
 export type TabContextType = {
   activeAction: ActionType | null;

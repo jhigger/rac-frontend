@@ -1,14 +1,18 @@
-import { ArrowCircleLeft2 } from "iconsax-react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
 import PageLayout from "~/components/Layouts/PageLayout";
-import NotificationList from "~/components/Notifications/NotificationList";
-import TopAppBar from "~/components/TopAppBar";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { useNotificationContext } from "~/contexts/NotificationContext";
 import TabContextProvider from "~/contexts/TabContext";
+import { PrimaryBackButton } from "../components/Buttons/PrimaryBackButton";
+
+const NotificationList = dynamic(
+  () => import("~/components/Notifications/NotificationList"),
+);
+const TopAppBar = dynamic(() => import("~/components/TopAppBar"));
 
 const notifications = () => {
   const { user } = useAuthContext();
@@ -64,24 +68,6 @@ const Empty = () => {
         <PrimaryBackButton text={`Return to ${route}`} onClick={handleBack} />
       </div>
     </div>
-  );
-};
-
-type PrimaryBackButtonProps = { text?: string; onClick: () => void };
-
-export const PrimaryBackButton = ({
-  text = "Back",
-  onClick,
-}: PrimaryBackButtonProps) => {
-  return (
-    <button
-      onClick={onClick}
-      aria-label="Back"
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-    >
-      <ArrowCircleLeft2 size={18} variant="Bold" />
-      <span className="label-lg text-white">{text}</span>
-    </button>
   );
 };
 

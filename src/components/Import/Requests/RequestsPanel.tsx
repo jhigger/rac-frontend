@@ -7,11 +7,11 @@ import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
-import { MoreButton } from "~/components/Shop/Orders";
+import { MoreButton } from "~/components/Buttons/MoreButton";
 import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import { CancelButton } from "~/components/Buttons/CancelButton";
-import RequestOrderButton from "~/components/Shop/RequestOrderButton";
+import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import {
   type RequestStatusModalProps,

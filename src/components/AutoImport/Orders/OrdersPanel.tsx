@@ -5,13 +5,15 @@ import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
+import { CancelButton } from "~/components/Buttons/CancelButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
+import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
+import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { MoreButton } from "~/components/Shop/Orders";
 import {
   DetailSection,
   InitiateShippingButton,
@@ -26,8 +28,6 @@ import {
   type ShippingStatusProps,
   type SomeStatusType,
 } from "~/components/Shop/Orders/OrdersPanel";
-import { CancelButton } from "~/components/Buttons/CancelButton";
-import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import {
   RequestFormHeader,
   SectionHeader,

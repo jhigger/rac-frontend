@@ -1,8 +1,10 @@
+import dynamic from "next/dynamic";
 import PageLayout from "~/components/Layouts/PageLayout";
-import WelcomeChamp from "~/components/Quote/WelcomeChamp";
-import TopAppBar from "~/components/TopAppBar";
 import { useAuthContext } from "~/contexts/AuthContext";
 import TabContextProvider from "~/contexts/TabContext";
+
+const TopAppBar = dynamic(() => import("~/components/TopAppBar"));
+const WelcomeChamp = dynamic(() => import("~/components/Quote/WelcomeChamp"));
 
 const quote = () => {
   const { user } = useAuthContext();

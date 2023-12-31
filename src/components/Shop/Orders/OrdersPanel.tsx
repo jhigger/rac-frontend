@@ -23,11 +23,11 @@ import {
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
-import { MoreButton } from ".";
+import { MoreButton } from "../../Buttons/MoreButton";
 import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import MainTable from "../../MainTable";
-import RequestOrderButton from "../RequestOrderButton";
+import RequestOrderButton from "../../Buttons/RequestOrderButton";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
 import { type FilterCategoriesType } from "../SearchBar";

@@ -11,7 +11,7 @@ import CongratulationImage from "~/components/CongratulationImage";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { MoreButton } from "~/components/Shop/Orders";
+import { MoreButton } from "~/components/Buttons/MoreButton";
 import {
   DetailSection,
   InitiateShippingButton,
@@ -27,7 +27,7 @@ import {
   type SomeStatusType,
 } from "~/components/Shop/Orders/OrdersPanel";
 import { CancelButton } from "~/components/Buttons/CancelButton";
-import RequestOrderButton from "~/components/Shop/RequestOrderButton";
+import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import {
   RequestFormHeader,
   SectionHeader,

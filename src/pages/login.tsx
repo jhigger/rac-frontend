@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { useCookies } from "react-cookie";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import LoginForm from "~/components/Forms/Login/LoginForm";
 import Logo from "~/components/Logo";
+import { useAuthContext } from "~/contexts/AuthContext";
 
 const login = () => {
-  const [cookies] = useCookies(["jwt"]);
+  const { user } = useAuthContext();
 
-  if (typeof cookies.jwt === "string") return null;
+  if (user) return null;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-brand">

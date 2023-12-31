@@ -5,6 +5,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -70,6 +71,10 @@ export type TwoFactorAuthenticationType = "email" | "TOTP" | null;
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
+  const restrictedPaths = useMemo(
+    () => ["/login", "/authentication", "/register", "/password-reset"],
+    [],
+  );
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [loginInputs, setLoginInputs] = useState<LoginInputs | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);
@@ -159,27 +164,30 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRedirect = () => {
-    const pathWithoutQuery = router.asPath.split("?")[0]!;
-    const restrictedPaths = [
-      "/login",
-      "/authentication",
-      "/register",
-      "/password-reset",
-    ];
+    const pathWithoutQuery = router.asPath.split("?");
+    if (!pathWithoutQuery[0]) return;
     // when going to restrictedPaths
     // redirect to /shop or callback route if token exist else redirect to /login
     if (typeof cookies.jwt === "string") {
-      if (restrictedPaths.includes(pathWithoutQuery)) {
+      if (restrictedPaths.includes(pathWithoutQuery[0])) {
         console.log("Redirecting to /shop...");
         redirectTo("/shop");
       } else {
-        console.log(`Redirecting to ${pathWithoutQuery}...`);
-        redirectTo(pathWithoutQuery);
+        console.log(`Redirecting to ${pathWithoutQuery[0]}...`);
+        redirectTo(pathWithoutQuery[0]);
       }
     } else {
-      console.log("User logged out or token expired");
-      console.log("Redirecting to /login...");
-      redirectTo("/login");
+      if (pathWithoutQuery[0] === "/password-reset" && pathWithoutQuery[1])
+        return;
+
+      if (!restrictedPaths.includes(pathWithoutQuery[0])) {
+        console.log("User logged out or token expired");
+        console.log("Redirecting to /login...");
+        redirectTo("/login");
+      } else {
+        console.log(`Redirecting to ${pathWithoutQuery[0]}...`);
+        redirectTo(pathWithoutQuery[0]);
+      }
     }
   };
 
@@ -230,7 +238,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     setAuthType,
   };
 
-  if (isRefetching) return <LoadingScreen />;
+  if (isRefetching && loginInputs === null) return <LoadingScreen />;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

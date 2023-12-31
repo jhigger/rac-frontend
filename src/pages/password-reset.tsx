@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import ConfirmResetPasswordForm from "~/components/Forms/PasswordReset/ConfirmResetPasswordForm";
 import RequestPasswordResetForm from "~/components/Forms/PasswordReset/RequestPasswordResetForm";
@@ -8,8 +8,8 @@ import Logo from "~/components/Logo";
 import { useAuthContext } from "~/contexts/AuthContext";
 
 const passwordReset = () => {
-  const { user, isResetCodeVerified, handleVerifyPasswordResetCode } =
-    useAuthContext();
+  const [isResetCodeVerified, setIsResetCodeVerified] = useState(false); // todo: convert to useQuery and get data from server instead
+  const { user, handleVerifyPasswordResetCode } = useAuthContext(); // todo: move to useVerifyPasswordResetCode hook
 
   if (user) return null;
 
@@ -18,7 +18,8 @@ const passwordReset = () => {
 
   useEffect(() => {
     if (code) {
-      handleVerifyPasswordResetCode(code);
+      const result = handleVerifyPasswordResetCode(code);
+      setIsResetCodeVerified(result);
     }
   }, [code]);
 

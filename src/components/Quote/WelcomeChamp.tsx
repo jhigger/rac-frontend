@@ -2,7 +2,12 @@
 import { Country } from "country-state-city";
 import { Car, ExportSquare, ImportSquare, Shop } from "iconsax-react";
 import { useRouter } from "next/navigation";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  type SubmitHandler,
+} from "react-hook-form";
 import { capitalizeWords } from "~/Utils";
 import { SERVICES } from "~/constants";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -47,14 +52,25 @@ const WelcomeChamp = () => {
     defaultValues,
   });
 
+  const onSubmit: SubmitHandler<QuoteInputs> = (data) => {
+    if (!isLastStep) next();
+    console.log(data);
+  };
+
   return (
     <FormProvider {...formMethods}>
-      <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+      <form
+        onSubmit={formMethods.handleSubmit(onSubmit)}
+        className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
+      >
         {step}
 
         {isFirstStep && (
           <div className="w-full max-w-[300px]">
-            <ProceedButton label="Get Quote" onClick={next} />
+            <ProceedButton
+              label="Get Quote"
+              onClick={formMethods.handleSubmit(onSubmit)}
+            />
           </div>
         )}
         {isLastStep && (
@@ -62,7 +78,7 @@ const WelcomeChamp = () => {
             <DoneButton handleFinish={back} />
           </div>
         )}
-      </div>
+      </form>
     </FormProvider>
   );
 };

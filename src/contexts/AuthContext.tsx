@@ -22,8 +22,6 @@ export type AuthContextType = {
   isFetchingUser: boolean;
   isRegistering: boolean;
   isAuthCodeVerified: boolean;
-  isEmailSent: boolean;
-  isResetCodeVerified: boolean;
   loginError: AxiosError | null;
   registerError: string | null;
   handleCodeVerification: (sixDigitCode: string) => void;
@@ -31,8 +29,8 @@ export type AuthContextType = {
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => void;
   handleRegister: (data: RegisterType) => Promise<void>;
-  handleSendResetEmail: (email: string) => void;
-  handleVerifyPasswordResetCode: (code: string) => void;
+  handleSendResetEmail: (email: string) => boolean;
+  handleVerifyPasswordResetCode: (code: string) => boolean;
   setAuthType: (authType: TwoFactorAuthenticationType) => void;
 };
 
@@ -76,10 +74,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [loginInputs, setLoginInputs] = useState<LoginInputs | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);
   const [registerError, setRegisterError] = useState<string | null>(null);
-  const [authType, setAuthType] = useState<TwoFactorAuthenticationType>(null); // todo: convert to useQuery and data from server instead
+  const [authType, setAuthType] = useState<TwoFactorAuthenticationType>(null); // todo: get this data in user object from backend
   const [isAuthCodeVerified, setIsAuthCodeVerified] = useState(false); // todo: convert to useQuery and data from server instead
-  const [isEmailSent, setIsEmailSent] = useState(false); // todo: convert to useQuery and data from server instead
-  const [isResetCodeVerified, setIsResetCodeVerified] = useState(false); // todo: convert to useQuery and data from server instead
 
   const {
     data: user,
@@ -171,11 +167,16 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       "/password-reset",
     ];
     // when going to restrictedPaths
-    // redirect to /shop if user exist or to /login if user does not exist
-    if (user && restrictedPaths.includes(pathWithoutQuery)) {
-      console.log("Redirecting to /shop...");
-      redirectTo("/shop");
-    } else if (!user && !restrictedPaths.includes(pathWithoutQuery)) {
+    // redirect to /shop or callback route if token exist else redirect to /login
+    if (typeof cookies.jwt === "string") {
+      if (restrictedPaths.includes(pathWithoutQuery)) {
+        console.log("Redirecting to /shop...");
+        redirectTo("/shop");
+      } else {
+        console.log(`Redirecting to ${pathWithoutQuery}...`);
+        redirectTo(pathWithoutQuery);
+      }
+    } else {
       console.log("User logged out or token expired");
       console.log("Redirecting to /login...");
       redirectTo("/login");
@@ -185,13 +186,13 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const handleSendResetEmail = (email: string) => {
     const result = true; // todo: handle backend api useVerifyResetCode(email)
     console.log("sending reset link to email: ", email);
-    setIsEmailSent(result);
+    return result;
   };
 
   const handleVerifyPasswordResetCode = (code: string) => {
     const result = true; // todo: handle backend api useVerifyResetCode(token, code)
     console.log("verifying code: ", code);
-    setIsResetCodeVerified(result);
+    return result;
   };
 
   const redirectTo = (path: string) => {
@@ -217,8 +218,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     isFetchingUser,
     isRegistering,
     isAuthCodeVerified,
-    isEmailSent,
-    isResetCodeVerified,
     loginError,
     registerError,
     handleCodeVerification,

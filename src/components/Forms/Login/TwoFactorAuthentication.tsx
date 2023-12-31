@@ -21,7 +21,10 @@ const TwoFactorAuthentication = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <div className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+      <form
+        onSubmit={formMethods.handleSubmit(onSubmit)}
+        className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
+      >
         <FormHeader
           title="Two-Factor Authentication"
           subTitle={
@@ -52,7 +55,7 @@ const TwoFactorAuthentication = () => {
             </div>
           </div>
         )}
-      </div>
+      </form>
     </FormProvider>
   );
 };

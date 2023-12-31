@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import { useAuthContext } from "~/contexts/AuthContext";
@@ -10,12 +11,14 @@ type Inputs = {
 };
 
 const RequestPasswordResetForm = () => {
-  const { isEmailSent, handleSendResetEmail } = useAuthContext(); // todo: add verify email and throw error
+  const [isEmailSent, setIsEmailSent] = useState(false); // todo: convert to useQuery and get data from server instead
+  const { handleSendResetEmail } = useAuthContext(); // todo: move to useVerifyEmail hook
   const formMethods = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data.email);
-    handleSendResetEmail(data.email);
+    const result = handleSendResetEmail(data.email);
+    setIsEmailSent(result);
   };
 
   if (isEmailSent) {
@@ -30,7 +33,10 @@ const RequestPasswordResetForm = () => {
 
   return (
     <FormProvider {...formMethods}>
-      <div className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+      <form
+        onSubmit={formMethods.handleSubmit(onSubmit)}
+        className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
+      >
         <FormHeader
           title="Reset your password"
           subTitle="We will send you a password reset link if we find the email you provide associated to an existing account."
@@ -58,7 +64,7 @@ const RequestPasswordResetForm = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </form>
     </FormProvider>
   );
 };

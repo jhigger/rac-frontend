@@ -6,14 +6,12 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import {
-  BackButton,
-  DeleteButtonIcon,
-  DeleteItemButton,
-  DoneButton,
-  ProceedButton,
-  SaveAsDraftButton,
-} from "~/components/Buttons";
+import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
+import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
+import { DoneButton } from "~/components/Buttons/DoneButton";
+import { ProceedButton } from "~/components/Buttons/ProceedButton";
+import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
+import { BackButton } from "~/components/Buttons/BackButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";

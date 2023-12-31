@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
-import { CloseButton } from "~/components/Buttons";
+import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import LabelId from "~/components/LabelId";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
@@ -17,7 +17,8 @@ import tailmater from "~/js/tailmater";
 import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import { MoreButton } from "../Orders";
-import { CancelButton, ImageColumn } from "../Orders/OrdersPanel";
+import { ImageColumn } from "../Orders/OrdersPanel";
+import { CancelButton } from "../../Buttons/CancelButton";
 import RequestOrderButton from "../RequestOrderButton";
 import { type FilterCategoriesType } from "../SearchBar";
 import RequestCheckout from "./RequestCheckout";
@@ -256,7 +257,7 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
         <div className="flex flex-row items-end justify-end">
           <div className="w-max whitespace-nowrap">
             {status === "Not Responded" && (
-              <CloseButton dataClose={dataClose} />
+              <CloseModalButton dataClose={dataClose} />
             )}
             {status === "Responded" && (
               <div className="flex gap-[8px]">

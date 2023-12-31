@@ -13,7 +13,7 @@ import { useTrackingContext } from "~/contexts/TrackingContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { CustomerSupportButton } from "../AutoImport/Requests/RequestOrder";
-import { BackButton } from "../Buttons";
+import { BackButton } from "../Buttons/BackButton";
 import AccordionButton from "../Forms/AccordionButton";
 import SearchInput from "../Forms/Inputs/SearchInput";
 import LabelId from "../LabelId";

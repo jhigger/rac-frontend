@@ -1,5 +1,5 @@
 import { ConvertCard, Security, Wallet } from "iconsax-react";
-import { BackButton } from "~/components/Buttons";
+import { BackButton } from "~/components/Buttons/BackButton";
 import LabelId from "~/components/LabelId";
 import { type REQUEST_STATUS } from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";

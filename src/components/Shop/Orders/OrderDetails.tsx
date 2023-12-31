@@ -1,4 +1,4 @@
-import { BackButton } from "~/components/Buttons";
+import { BackButton } from "~/components/Buttons/BackButton";
 import { shippingStatuses } from "~/components/Import/Orders/OrderDetails";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import { type SHIPPING_STATUS, type SHOP_FOR_ME_STATUS } from "~/constants";

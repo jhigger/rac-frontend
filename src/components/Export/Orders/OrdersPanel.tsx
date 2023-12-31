@@ -5,7 +5,7 @@ import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
-import { CloseButton } from "~/components/Buttons";
+import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import CongratulationImage from "~/components/CongratulationImage";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
@@ -17,7 +17,6 @@ import {
   InitiateShippingButton,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
-  CancelButton,
   ImageColumn,
   PickUpInstructions,
   TrackButton,
@@ -26,6 +25,7 @@ import {
   type ShippingStatusProps,
   type SomeStatusType,
 } from "~/components/Shop/Orders/OrdersPanel";
+import { CancelButton } from "~/components/Buttons/CancelButton";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import {
   RequestFormHeader,
@@ -446,7 +446,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
               "cleared",
               "delivered",
               "arrived destination",
-            ].includes(status) && <CloseButton dataClose={dataClose} />}
+            ].includes(status) && <CloseModalButton dataClose={dataClose} />}
             {status === "ready for shipping" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />

@@ -12,7 +12,7 @@ import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
-import { CloseButton, type CloseButtonProps } from "~/components/Buttons";
+import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import OrderTrackingId from "~/components/OrderTrackingId";
@@ -34,6 +34,7 @@ import { type FilterCategoriesType } from "../SearchBar";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
+import { CancelButton } from "../../Buttons/CancelButton";
 
 const ShopOrdersPanel = () => {
   const { orderPackages, isFetchingOrderPackages } = useShopContext();
@@ -573,7 +574,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
           <div className="w-max whitespace-nowrap">
             {["cancelled", "not started", "cleared", "delivered"].includes(
               status,
-            ) && <CloseButton dataClose={dataClose} />}
+            ) && <CloseModalButton dataClose={dataClose} />}
             {status === "ready for shipping" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
@@ -724,20 +725,6 @@ const InitiateShippingButton = ({ dataClose }: InitiateShippingButtonProps) => {
     >
       <Ship size="18" variant="Bold" />
       <span className="label-lg text-white">Initiate Shipping</span>
-    </button>
-  );
-};
-
-export const CancelButton = ({ dataClose, onClick }: CloseButtonProps) => {
-  return (
-    <button
-      type="button"
-      aria-label="Back"
-      onClick={onClick}
-      data-close={dataClose}
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-transparent px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-primary-600 md:px-6"
-    >
-      <span className="label-lg">Cancel</span>
     </button>
   );
 };

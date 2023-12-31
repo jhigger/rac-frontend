@@ -2,17 +2,15 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
-import { CloseButton } from "~/components/Buttons";
+import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import { MoreButton } from "~/components/Shop/Orders";
 import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
-import {
-  CancelButton,
-  ImageColumn,
-} from "~/components/Shop/Orders/OrdersPanel";
+import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
+import { CancelButton } from "~/components/Buttons/CancelButton";
 import RequestOrderButton from "~/components/Shop/RequestOrderButton";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import {
@@ -240,7 +238,7 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
         <div className="flex flex-row items-end justify-end">
           <div className="w-max whitespace-nowrap">
             {status === "Not Responded" && (
-              <CloseButton dataClose={dataClose} />
+              <CloseModalButton dataClose={dataClose} />
             )}
             {status === "Responded" && (
               <div className="flex gap-[8px]">

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BackButton } from "~/components/Buttons";
+import { BackButton } from "~/components/Buttons/BackButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";

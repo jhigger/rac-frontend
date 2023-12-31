@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
-import {
-  BackButton,
-  DoneButton,
-  ProceedButton,
-  SaveAsDraftButton,
-} from "~/components/Buttons";
+import { DoneButton } from "~/components/Buttons/DoneButton";
+import { ProceedButton } from "~/components/Buttons/ProceedButton";
+import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
+import { BackButton } from "~/components/Buttons/BackButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import LabelId from "~/components/LabelId";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";

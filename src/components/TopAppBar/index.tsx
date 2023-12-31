@@ -24,7 +24,9 @@ import {
 } from "~/contexts/NotificationContext";
 import useAccordion from "~/hooks/useAccordion";
 import tailmater from "~/js/tailmater";
-import { CloseButton, DeleteButtonIcon, DeleteItemButton } from "../Buttons";
+import { DeleteItemButton } from "../Buttons/DeleteItemButton";
+import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
+import { CloseModalButton } from "../Buttons/CloseModalButton";
 import AccordionButton from "../Forms/AccordionButton";
 import {
   notificationMessages,
@@ -164,7 +166,7 @@ const NotificationModal = ({ id }: NotificationModalProps) => {
           <div className="flex flex-col items-center justify-center gap-[10px] md:flex-row [&>*]:w-max">
             <ClearAllButton onClick={clearAll} />
             <ViewAllButton dataClose={dataClose} />
-            <CloseButton dataClose={dataClose} />
+            <CloseModalButton dataClose={dataClose} />
           </div>
         </div>
       </div>

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
-import { BackButton, ProceedButton } from "~/components/Buttons";
+import { ProceedButton } from "~/components/Buttons/ProceedButton";
+import { BackButton } from "~/components/Buttons/BackButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import AccountForm from "~/components/Forms/Register/AccountForm";
 import AddressForm from "~/components/Forms/Register/AddressForm";

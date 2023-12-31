@@ -1,4 +1,4 @@
-import { BackButton } from "~/components/Buttons";
+import { BackButton } from "~/components/Buttons/BackButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {

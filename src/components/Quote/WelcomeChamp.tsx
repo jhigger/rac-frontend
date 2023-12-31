@@ -11,7 +11,8 @@ import {
 import { capitalizeWords } from "~/Utils";
 import { SERVICES } from "~/constants";
 import useMultiStepForm from "~/hooks/useMultistepForm";
-import { DoneButton, ProceedButton } from "../Buttons";
+import { DoneButton } from "../Buttons/DoneButton";
+import { ProceedButton } from "../Buttons/ProceedButton";
 import QuantityInput from "../Forms/Inputs/QuantityInput";
 import SelectInput from "../Forms/Inputs/SelectInput";
 import TextInput from "../Forms/Inputs/TextInput";

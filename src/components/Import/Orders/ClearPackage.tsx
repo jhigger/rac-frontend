@@ -1,6 +1,7 @@
 import { ArrowRight3 } from "iconsax-react";
 import { useEffect } from "react";
-import { BackButton, PayNowButton } from "~/components/Buttons";
+import { BackButton } from "~/components/Buttons/BackButton";
+import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";

@@ -23,14 +23,12 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import {
-  BackButton,
-  DeleteButtonIcon,
-  DeleteItemButton,
-  DoneButton,
-  ProceedButton,
-  SaveAsDraftButton,
-} from "~/components/Buttons";
+import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
+import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
+import { DoneButton } from "~/components/Buttons/DoneButton";
+import { ProceedButton } from "~/components/Buttons/ProceedButton";
+import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
+import { BackButton } from "~/components/Buttons/BackButton";
 import { ORIGINS, STORES } from "~/constants";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
@@ -49,7 +47,7 @@ import QuantityInput from "../../Forms/Inputs/QuantityInput";
 import SelectInput from "../../Forms/Inputs/SelectInput";
 import TextAreaInput from "../../Forms/Inputs/TextAreaInput";
 import TextInput from "../../Forms/Inputs/TextInput";
-import { CancelButton } from "../Orders/OrdersPanel";
+import { CancelButton } from "../../Buttons/CancelButton";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 

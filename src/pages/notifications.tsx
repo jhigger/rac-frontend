@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
-import PageLayout from "~/components/Layouts/PageLayout";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { useNotificationContext } from "~/contexts/NotificationContext";
@@ -12,7 +12,13 @@ import { PrimaryBackButton } from "../components/Buttons/PrimaryBackButton";
 const NotificationList = dynamic(
   () => import("~/components/Notifications/NotificationList"),
 );
-const TopAppBar = dynamic(() => import("~/components/TopAppBar"));
+const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
+  loading: () => (
+    <div className="h-screen">
+      <LoadingSpinner />
+    </div>
+  ),
+});
 
 const notifications = () => {
   const { user } = useAuthContext();
@@ -23,12 +29,10 @@ const notifications = () => {
 
   return (
     <TabContextProvider>
-      <PageLayout>
-        <TopAppBar tabs={false} />
-        <div className="relative flex min-h-[calc(100vh-152px)] w-full flex-col overflow-y-auto bg-neutral-50 p-[20px] md:min-h-[calc(100vh-140px)] md:max-w-[calc(100vw-286px)] md:px-[40px] md:py-[30px]">
-          {notifications.length > 0 ? <NotificationList /> : <Empty />}
-        </div>
-      </PageLayout>
+      <TopAppBar tabs={false} />
+      <div className="relative flex min-h-[calc(100vh-152px)] w-full flex-col overflow-y-auto bg-neutral-50 p-[20px] md:min-h-[calc(100vh-140px)] md:max-w-[calc(100vw-286px)] md:px-[40px] md:py-[30px]">
+        {notifications.length > 0 ? <NotificationList /> : <Empty />}
+      </div>
     </TabContextProvider>
   );
 };

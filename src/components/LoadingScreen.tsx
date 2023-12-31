@@ -23,17 +23,19 @@ const LoadingScreen = () => {
 
 export const LoadingSpinner = () => {
   return (
-    <svg className="circular-loader relative h-[50px] w-[50px]">
-      <circle
-        className="path stroke-primary-600"
-        cx="25"
-        cy="25"
-        r="10"
-        fill="none"
-        strokeWidth="3"
-        strokeMiterlimit="5"
-      ></circle>
-    </svg>
+    <div className="flex h-full w-full items-center justify-center">
+      <svg className="circular-loader relative h-[50px] w-[50px]">
+        <circle
+          className="path stroke-primary-600"
+          cx="25"
+          cy="25"
+          r="10"
+          fill="none"
+          strokeWidth="3"
+          strokeMiterlimit="5"
+        ></circle>
+      </svg>
+    </div>
   );
 };
 

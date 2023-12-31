@@ -16,6 +16,7 @@ import {
 } from "iconsax-react";
 import Link from "next/link";
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
@@ -24,9 +25,9 @@ import {
 } from "~/contexts/NotificationContext";
 import useAccordion from "~/hooks/useAccordion";
 import tailmater from "~/js/tailmater";
-import { DeleteItemButton } from "../Buttons/DeleteItemButton";
-import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { CloseModalButton } from "../Buttons/CloseModalButton";
+import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
+import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import AccordionButton from "../Forms/AccordionButton";
 import {
   notificationMessages,
@@ -35,7 +36,6 @@ import {
 import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
 import AppBarTabs from "./AppBarTabs";
 import BreadCrumbs from "./BreadCrumbs";
-import { createPortal } from "react-dom";
 
 dayjs.extend(relativeTime);
 

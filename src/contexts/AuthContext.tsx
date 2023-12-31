@@ -25,6 +25,7 @@ export type AuthContextType = {
   isAuthCodeVerified: boolean;
   loginError: AxiosError | null;
   registerError: string | null;
+  restrictedPaths: string[];
   handleCodeVerification: (sixDigitCode: string) => void;
   handleConfirmPasswordReset: (password: string) => void;
   handleLogin: (data: LoginInputs) => void;
@@ -234,6 +235,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     isAuthCodeVerified,
     loginError,
     registerError,
+    restrictedPaths,
     handleCodeVerification,
     handleConfirmPasswordReset,
     handleLogin,

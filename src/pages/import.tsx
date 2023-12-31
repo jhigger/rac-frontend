@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import PageLayout from "~/components/Layouts/PageLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import { useAuthContext } from "~/contexts/AuthContext";
 import ImportContextProvider from "~/contexts/ImportContext";
@@ -19,9 +20,11 @@ const importPage = () => {
 
   return (
     <TabContextProvider>
-      <ImportContextProvider>
-        <TopAppBar />
-      </ImportContextProvider>
+      <PageLayout>
+        <ImportContextProvider>
+          <TopAppBar />
+        </ImportContextProvider>
+      </PageLayout>
     </TabContextProvider>
   );
 };

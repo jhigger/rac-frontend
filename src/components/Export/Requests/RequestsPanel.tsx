@@ -8,7 +8,7 @@ import MainTable from "~/components/MainTable";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
-import { type FilterCategoriesType } from "~/components/Shop/SearchBar";
+import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
   useExportContext,
   type ExportRequestPackageType,

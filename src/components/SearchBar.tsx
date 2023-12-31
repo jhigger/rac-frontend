@@ -2,8 +2,8 @@ import { FtxToken } from "iconsax-react";
 import { useState } from "react";
 import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { useTabContext } from "~/contexts/TabContext";
-import DebounceSearchInput from "../Forms/Inputs/DebounceSearchInput";
-import TextInput from "../Forms/Inputs/TextInput";
+import DebounceSearchInput from "./Forms/Inputs/DebounceSearchInput";
+import TextInput from "./Forms/Inputs/TextInput";
 
 type SearchBarProps = {
   id: string; // search input label cannot be clickable if id is not unique to page

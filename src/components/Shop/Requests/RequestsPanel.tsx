@@ -20,7 +20,7 @@ import { MoreButton } from "../../Buttons/MoreButton";
 import { ImageColumn } from "../Orders/OrdersPanel";
 import { CancelButton } from "../../Buttons/CancelButton";
 import RequestOrderButton from "../../Buttons/RequestOrderButton";
-import { type FilterCategoriesType } from "../SearchBar";
+import { type FilterCategoriesType } from "../../SearchBar";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";

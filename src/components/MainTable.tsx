@@ -19,7 +19,7 @@ import { Fragment, useMemo, useState, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "./Forms/AccordionButton";
-import SearchBar, { type FilterCategoriesType } from "./Shop/SearchBar";
+import SearchBar, { type FilterCategoriesType } from "./SearchBar";
 
 interface ReactTableProps<T extends object> {
   id: string;

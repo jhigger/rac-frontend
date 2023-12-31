@@ -17,7 +17,7 @@ import {
   type RequestStatusModalProps,
   type RequestStatusProps,
 } from "~/components/Shop/Requests/RequestsPanel";
-import { type FilterCategoriesType } from "~/components/Shop/SearchBar";
+import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
   useAutoImportContext,
   type AutoImportRequestPackageType,

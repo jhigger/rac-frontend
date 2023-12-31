@@ -30,7 +30,7 @@ import MainTable from "../../MainTable";
 import RequestOrderButton from "../../Buttons/RequestOrderButton";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
-import { type FilterCategoriesType } from "../SearchBar";
+import { type FilterCategoriesType } from "../../SearchBar";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";

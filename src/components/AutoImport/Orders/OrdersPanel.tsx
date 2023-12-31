@@ -32,7 +32,7 @@ import {
   RequestFormHeader,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { type FilterCategoriesType } from "~/components/Shop/SearchBar";
+import { type FilterCategoriesType } from "~/components/SearchBar";
 import { SHIPPING_STATUS } from "~/constants";
 import {
   useAutoImportContext,

@@ -75,7 +75,12 @@ const WelcomeChamp = () => {
         )}
         {isLastStep && (
           <div className="w-full md:max-w-[300px]">
-            <DoneButton handleFinish={back} />
+            <DoneButton
+              handleFinish={() => {
+                formMethods.reset();
+                back();
+              }}
+            />
           </div>
         )}
       </form>

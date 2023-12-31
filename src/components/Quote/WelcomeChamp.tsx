@@ -67,7 +67,7 @@ const WelcomeChamp = () => {
         {step}
 
         {isFirstStep && (
-          <div className="w-full max-w-[300px]">
+          <div className="w-full md:max-w-[300px]">
             <ProceedButton
               label="Get Quote"
               onClick={formMethods.handleSubmit(onSubmit)}

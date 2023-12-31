@@ -18,6 +18,7 @@ export const NavItem = ({ navItem, onClick }: NavItemProps) => {
 
   return (
     <div
+      data-close="#sheet_b"
       onClick={onClick}
       className={`flex w-full items-center bg-opacity-[8%] hover:bg-[url('/images/nav/nav_item_hover_bg.svg')] ${
         navItem.title === activeNav &&

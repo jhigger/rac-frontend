@@ -168,7 +168,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     if (!pathWithoutQuery[0]) return;
     // when going to restrictedPaths
     // redirect to /shop or callback route if token exist else redirect to /login
-    if (typeof cookies.jwt === "string") {
+    if (user && !isRefetching) {
       if (restrictedPaths.includes(pathWithoutQuery[0])) {
         console.log("Redirecting to /shop...");
         redirectTo("/shop");
@@ -176,7 +176,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         console.log(`Redirecting to ${pathWithoutQuery[0]}...`);
         redirectTo(pathWithoutQuery[0]);
       }
-    } else {
+    } else if (!user && !isRefetching) {
       if (pathWithoutQuery[0] === "/password-reset" && pathWithoutQuery[1])
         return;
 
@@ -187,6 +187,12 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       } else {
         console.log(`Redirecting to ${pathWithoutQuery[0]}...`);
         redirectTo(pathWithoutQuery[0]);
+      }
+    } else if (!user && cookies.jwt === undefined && isRefetching) {
+      if (!restrictedPaths.includes(pathWithoutQuery[0])) {
+        console.log("User logged out or token expired");
+        console.log("Redirecting to /login...");
+        redirectTo("/login");
       }
     }
   };

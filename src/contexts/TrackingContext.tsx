@@ -1,15 +1,9 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { shopOrders } from "~/fake data";
 import { type AutoImportOrderPackageType } from "./AutoImportContext";
 import { type ExportOrderPackageType } from "./ExportContext";
 import { type ImportOrderPackageType } from "./ImportContext";
 import { type ShopOrderPackageType } from "./ShopContext";
-import { shopOrders } from "~/fake data";
 
 type OrderPackageType =
   | ShopOrderPackageType
@@ -40,11 +34,6 @@ const TrackingContextProvider = ({ children }: { children: ReactNode }) => {
       shopOrders.find((order) => order.trackingId === trackingId) ?? null;
     setOrderPackage(order);
   };
-
-  // testing purposes
-  useEffect(() => {
-    handleOrder(null);
-  }, []);
 
   const value: TrackingContextType = {
     orderPackage,

@@ -21,13 +21,18 @@ export type AuthContextType = {
   isAuthenticating: boolean;
   isFetchingUser: boolean;
   isRegistering: boolean;
-  isVerified: boolean;
+  isAuthCodeVerified: boolean;
+  isEmailSent: boolean;
+  isResetCodeVerified: boolean;
   loginError: AxiosError | null;
   registerError: string | null;
   handleCodeVerification: (sixDigitCode: string) => void;
+  handleConfirmPasswordReset: (password: string) => void;
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => void;
   handleRegister: (data: RegisterType) => Promise<void>;
+  handleSendResetEmail: (email: string) => void;
+  handleVerifyPasswordResetCode: (code: string) => void;
   setAuthType: (authType: TwoFactorAuthenticationType) => void;
 };
 
@@ -71,8 +76,10 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [loginInputs, setLoginInputs] = useState<LoginInputs | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);
   const [registerError, setRegisterError] = useState<string | null>(null);
-  const [authType, setAuthType] = useState<TwoFactorAuthenticationType>(null); // todo: get this from server instead
-  const [isVerified, setIsVerified] = useState(false);
+  const [authType, setAuthType] = useState<TwoFactorAuthenticationType>(null); // todo: convert to useQuery and data from server instead
+  const [isAuthCodeVerified, setIsAuthCodeVerified] = useState(false); // todo: convert to useQuery and data from server instead
+  const [isEmailSent, setIsEmailSent] = useState(false); // todo: convert to useQuery and data from server instead
+  const [isResetCodeVerified, setIsResetCodeVerified] = useState(false); // todo: convert to useQuery and data from server instead
 
   const {
     data: user,
@@ -87,14 +94,12 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       if (loginInputs) {
         console.log("logging in...");
         return await useLoginUser(loginInputs).then(async (userData) => {
-          if (authType === null || isVerified) {
+          if (authType === null || isAuthCodeVerified) {
             setLoginInputs(null);
             setIsRegistering(false);
-            setIsVerified(false);
+            setIsAuthCodeVerified(false);
             console.log("user logged in");
             handleJWTCookie(userData.jwt);
-            console.log("redirecting to shop...");
-            redirectTo("/shop");
             return userData;
           }
 
@@ -106,23 +111,25 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         const token = cookies.jwt as string;
         return await useFetchUser(token).then(async (userData) => {
           console.log("user found");
-          handleRedirect();
           return userData;
         });
       }
 
-      console.log(
-        "user logged out or token expired, redirecting to login page...",
-      );
-      redirectTo("/login");
       return null;
     },
     initialData: null,
   });
 
   const handleCodeVerification = (sixDigitCode: string) => {
-    console.log("verifying:", sixDigitCode);
-    setIsVerified(true);
+    console.log("verifying: ", sixDigitCode);
+    setIsAuthCodeVerified(true);
+  };
+
+  const handleConfirmPasswordReset = (password: string) => {
+    // todo: handle backend api useChangePassword(token, code, password)
+    console.log("changing password to: ", password);
+    console.log("Redirecting to login...");
+    redirectTo("/login");
   };
 
   const handleJWTCookie = (jwtCookie: string) => {
@@ -156,14 +163,35 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRedirect = () => {
-    const path = router.asPath;
-    if (["/login", "/register", "/authentication"].includes(path)) {
-      console.log("redirecting to /shop...");
+    const pathWithoutQuery = router.asPath.split("?")[0]!;
+    const restrictedPaths = [
+      "/login",
+      "/authentication",
+      "/register",
+      "/password-reset",
+    ];
+    // when going to restrictedPaths
+    // redirect to /shop if user exist or to /login if user does not exist
+    if (user && restrictedPaths.includes(pathWithoutQuery)) {
+      console.log("Redirecting to /shop...");
       redirectTo("/shop");
-    } else {
-      console.log(`redirecting to ${path}...`);
-      redirectTo(path);
+    } else if (!user && !restrictedPaths.includes(pathWithoutQuery)) {
+      console.log("User logged out or token expired");
+      console.log("Redirecting to /login...");
+      redirectTo("/login");
     }
+  };
+
+  const handleSendResetEmail = (email: string) => {
+    const result = true; // todo: handle backend api useVerifyResetCode(email)
+    console.log("sending reset link to email: ", email);
+    setIsEmailSent(result);
+  };
+
+  const handleVerifyPasswordResetCode = (code: string) => {
+    const result = true; // todo: handle backend api useVerifyResetCode(token, code)
+    console.log("verifying code: ", code);
+    setIsResetCodeVerified(result);
   };
 
   const redirectTo = (path: string) => {
@@ -172,11 +200,15 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (loginInputs) void refetch(); // fetch user after clicking login
-  }, [loginInputs, isVerified]);
+  }, [loginInputs, isAuthCodeVerified]);
 
   useEffect(() => {
     if (!cookies.jwt) void refetch(); // set user to null if there is no cookie
   }, [cookies.jwt]);
+
+  useEffect(() => {
+    handleRedirect(); // redirect page when user value changes
+  }, [user]);
 
   const value: AuthContextType = {
     authType,
@@ -184,17 +216,22 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     isAuthenticating,
     isFetchingUser,
     isRegistering,
-    isVerified,
+    isAuthCodeVerified,
+    isEmailSent,
+    isResetCodeVerified,
     loginError,
     registerError,
     handleCodeVerification,
+    handleConfirmPasswordReset,
     handleLogin,
     handleLogout,
     handleRegister,
+    handleSendResetEmail,
+    handleVerifyPasswordResetCode,
     setAuthType,
   };
 
-  if (router.asPath !== "/login" && isRefetching) return <LoadingScreen />;
+  if (isRefetching) return <LoadingScreen />;
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

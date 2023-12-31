@@ -35,12 +35,12 @@ const Footer = () => {
           Sign up
         </Link>
       </div>
-      <a
-        href="#"
+      <Link
+        href="/password-reset"
         className="label-lg relative px-[12px] py-[10px] text-primary-200 hover:underline"
       >
         Forgot your password?
-      </a>
+      </Link>
     </>
   );
 };

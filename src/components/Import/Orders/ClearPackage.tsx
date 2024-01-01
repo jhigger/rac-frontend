@@ -27,7 +27,10 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { useImportContext } from "~/contexts/ImportContext";
+import {
+  useImportContext,
+  type ImportItemType,
+} from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -118,22 +121,28 @@ const ClearPackage = () => {
 const PackageConfirmation = () => {
   const { orderPackages } = useImportContext();
 
-  if (!orderPackages) return;
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderPackages.map((item, i) => {
-        return <ImportOrderItem key={item.orderId} index={i} />;
+      {orderPackage.items.map((item, i) => {
+        return <ImportOrderItem key={i} item={item} index={i} />;
       })}
     </div>
   );
 };
 
-type ImportOrderItemProps = { index: number };
+type ImportOrderItemProps = { index: number; item: ImportItemType };
 
-export const ImportOrderItem = ({ index }: ImportOrderItemProps) => {
+export const ImportOrderItem = ({ index, item }: ImportOrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -145,68 +154,44 @@ export const ImportOrderItem = ({ index }: ImportOrderItemProps) => {
           </h4>
           <AccordionButton {...{ open, toggle }} />
         </div>
-        {open && <ImportOrderItemDetails />}
+        {open && <ImportOrderItemDetails item={item} />}
       </div>
     </SectionContentLayout>
   );
 };
 
-const ImportOrderItemDetails = () => {
+type ImportOrderItemDetailsProps = { item: ImportItemType };
+
+const ImportOrderItemDetails = ({ item }: ImportOrderItemDetailsProps) => {
   return (
-    <div className="grid w-fit grid-cols-4 gap-[15px]">
+    <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+      <DetailSection label="Item Name" value={item.name} colSpanDesktop={4} />
       <DetailSection
-        label="Item Name"
-        value="Designer Bags"
-        colSpanMobile="full"
+        label="Item Original Cost"
+        value={`$${item.originalCost}`} // todo: format currency
         colSpanDesktop={2}
       />
       <DetailSection
-        label="Item Original Cost"
-        value="$45.00"
-        colSpanMobile="full"
-        colSpanDesktop={1}
-      />
-      <DetailSection
         label="Quantity"
-        value="4"
-        colSpanMobile="full"
-        colSpanDesktop={1}
+        value={item.quantity}
+        colSpanDesktop={3}
       />
-      <DetailSection
-        label="Weight"
-        value="67kg"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Height"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Length"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Width"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Product/Item Picture"
-        value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-        image
-      />
-      <DetailSection
-        label="Product Description"
-        value="Additonvnv ghss jgsjvsn"
-      />
-      <DetailSection label="Color" value="Blue" />
-      <DetailSection label="Stripes" value="5 inches" />
+      <DetailSection label="Weight" value="67kg" colSpanDesktop={2} />
+      <DetailSection label="Height" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Length" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Width" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Product/Item Picture" value={item.image} image />
+      <DetailSection label="Product Description" value={item.description} />
+
+      {item.properties?.map((property) => {
+        return (
+          <DetailSection
+            label={property.label}
+            value={property.value}
+            colSpanDesktop={3}
+          />
+        );
+      })}
     </div>
   );
 };

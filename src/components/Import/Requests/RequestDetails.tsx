@@ -16,10 +16,12 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { useImportContext } from "~/contexts/ImportContext";
+import {
+  useImportContext,
+  type ImportItemType,
+} from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
-import { ImportOrderItem } from "../Orders/ClearPackage";
 
 const RequestDetails = () => {
   const { requestPackages } = useImportContext();
@@ -57,7 +59,7 @@ const RequestDetails = () => {
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
-          return <ImportOrderItem key={i} index={i} />;
+          return <ImportRequestItem key={i} item={item} index={i} />;
         })}
       </div>
       <div className="flex w-max gap-[10px] whitespace-nowrap">
@@ -66,6 +68,67 @@ const RequestDetails = () => {
           <InitiateShippingButton onClick={handleProceed} />
         )}
       </div>
+    </div>
+  );
+};
+
+type ImportRequestItemProps = {
+  index: number;
+  item: ImportItemType;
+};
+
+const ImportRequestItem = ({ index, item }: ImportRequestItemProps) => {
+  const { open, toggle } = useAccordion(true);
+
+  return (
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[30px]">
+        <div className="flex w-full items-center justify-between">
+          <h4 className="title-md md:title-lg font-medium text-gray-700">
+            Item - <span className="text-primary-600">#{index + 1}</span>
+          </h4>
+          <AccordionButton {...{ open, toggle }} />
+        </div>
+        {open && <ImportRequestItemDetails item={item} />}
+      </div>
+    </SectionContentLayout>
+  );
+};
+
+type ImportRequestItemDetailsProps = {
+  item: ImportItemType;
+};
+
+const ImportRequestItemDetails = ({ item }: ImportRequestItemDetailsProps) => {
+  return (
+    <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+      <DetailSection label="Item Name" value={item.name} colSpanDesktop={4} />
+      <DetailSection
+        label="Item Original Cost"
+        value={`$${item.originalCost}`} // todo: format currency
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Quantity"
+        value={item.quantity}
+        colSpanDesktop={3}
+      />
+      <DetailSection label="Weight" value="67kg" colSpanDesktop={2} />
+      <DetailSection label="Height" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Length" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Width" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Product/Item Picture" value={item.image} image />
+      <DetailSection label="Product Description" value={item.description} />
+
+      {item.properties?.map((property) => {
+        return (
+          <DetailSection
+            label={property.label}
+            value={property.value}
+            colSpanDesktop={3}
+          />
+        );
+      })}
     </div>
   );
 };

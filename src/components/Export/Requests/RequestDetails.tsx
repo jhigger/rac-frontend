@@ -46,7 +46,7 @@ const RequestDetails = () => {
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
-          return <ImportOrderItem key={i} index={i} />;
+          return <ImportOrderItem key={i} item={item} index={i} />;
         })}
       </div>
       <div className="flex w-max gap-[10px] whitespace-nowrap">

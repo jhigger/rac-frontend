@@ -354,8 +354,16 @@ const ShopOrderItemDetails = ({ item }: ShopOrderItemDetailsProps) => {
       <DetailSection label="Width" value="5 inches" colSpanDesktop={2} />
       <DetailSection label="Product/Item Picture" value={item.image} image />
       <DetailSection label="Product Description" value={item.description} />
-      <DetailSection label="Color" value="Blue" colSpanDesktop={2} />
-      <DetailSection label="Stripes" value="5 inches" colSpanDesktop={2} />
+
+      {item.properties?.map((property) => {
+        return (
+          <DetailSection
+            label={property.label}
+            value={property.value}
+            colSpanDesktop={3}
+          />
+        );
+      })}
     </>
   );
 };

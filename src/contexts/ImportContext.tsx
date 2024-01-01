@@ -31,7 +31,7 @@ export const ImportContext = createContext<ImportContextType>(
 
 export const useImportContext = () => useContext(ImportContext);
 
-type ImportItemType = {
+export type ImportItemType = {
   name: string;
   idType: (typeof ID_TYPE)[number];
   idNumber: string;

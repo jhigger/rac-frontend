@@ -33,7 +33,7 @@ const RequestDetails = () => {
 
   if (!requestPackage) return;
 
-  const status = requestPackage.requestStatus ?? "Not Responded";
+  const status = requestPackage.requestStatus
 
   const handleBack = () => {
     handleActiveAction(null);

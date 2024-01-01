@@ -27,7 +27,7 @@ const RequestDetails = () => {
 
   if (!requestPackage) return;
 
-  const status = requestPackage.requestStatus ?? "Not Responded";
+  const status = requestPackage.requestStatus;
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -54,12 +54,7 @@ const RequestDetails = () => {
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
           return (
-            <ShopRequestItem
-              key={i}
-              item={item}
-              index={i}
-              status={requestPackage.requestStatus}
-            />
+            <ShopRequestItem key={i} item={item} index={i} status={status} />
           );
         })}
       </div>
@@ -71,12 +66,22 @@ const RequestDetails = () => {
           <div className="col-span-full">
             <HighlightedInfo
               text={
-                <>
-                  The <b className="text-neutral-900">shop for me cost</b> could
-                  have been changed/updated by our staffs if they observe
-                  differences between the details you provided and the ones we
-                  verify from the store, however we will inform you about it.
-                </>
+                status === "Responded" ? (
+                  <>
+                    The <b className="text-neutral-900">shop for me cost</b>{" "}
+                    could have been changed/updated by our staff if they
+                    observed differences between the details you provided and
+                    the ones we verify from the store. However, we will inform
+                    you about it.
+                  </>
+                ) : (
+                  <>
+                    The <b className="text-neutral-900">shop for me cost</b>{" "}
+                    could be changed/updated by our staff if they observe
+                    differences between the details you provided and the ones we
+                    verify from the store. However, we will inform you about it.
+                  </>
+                )
               }
             />
           </div>
@@ -153,7 +158,13 @@ export const ShopRequestItem = ({
         </div>
         {open && (
           <>
-            <HighlightedInfo text="These details could have been changed/updated by our staffs if they observe differences between the ones you provided and the ones we verified from the store, however we will inform you about it." />
+            <HighlightedInfo
+              text={
+                status === "Responded"
+                  ? "These details could have been changed/updated by our staffs if they observed differences between the ones you provided and the ones we verified from the store, however we will inform you about it."
+                  : "These details could be changed/updated by our staffs if they observe differences between the ones you provided and the ones we verified from the store, however we will inform you about it."
+              }
+            />
             <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
               <ShopRequestItemDetails item={item} status={status} />
               <ShopRequestItemRelatedCosts status={status} />
@@ -277,9 +288,11 @@ const ShopRequestItemRelatedCosts = ({
           </div>
 
           <HighlightedInfo
-            text="These costs could have been changed/updated by our staffs if they
-            observed differences between the details you provided and the ones
-            we verified from the store."
+            text={
+              status === "Responded"
+                ? "These costs could have been changed/updated by our staffs if they observed differences between the details you provided and the ones we verified from the store."
+                : "These costs could be changed/updated by our staffs if they observe differences between the details you provided and the ones we verify from the store, however we will inform you about it."
+            }
           />
           {/* for mobile screen */}
           <div className="block md:hidden">

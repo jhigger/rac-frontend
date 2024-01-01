@@ -36,7 +36,7 @@ const RequestDetails = () => {
 
   if (!requestPackage) return;
 
-  const status = requestPackage.requestStatus ?? "Not Responded";
+  const status = requestPackage.requestStatus;
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -63,28 +63,30 @@ const RequestDetails = () => {
       <DestinationAddressDetails />
       <SectionHeader title="Billing Details" />
       <BillingAddress />
-      <PaymentsInformation>
-        <DetailSection
-          label="Total Shipment Cost"
-          value="$234,000.00"
-          colSpanDesktop={4}
-        />
-        <DetailSection
-          label="Payment Status"
-          value="Unpaid"
-          colSpanDesktop={4}
-        />
-        <DetailSection
-          label="Total Clearing Cost:"
-          value="Not allocated yet"
-          colSpanDesktop={4}
-        />
-        <DetailSection
-          label="Payment Status"
-          value="Unpaid"
-          colSpanDesktop={4}
-        />
-      </PaymentsInformation>
+      {status === "Responded" && (
+        <PaymentsInformation>
+          <DetailSection
+            label="Total Shipment Cost"
+            value="$234,000.00"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Total Clearing Cost:"
+            value="Not allocated yet"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+        </PaymentsInformation>
+      )}
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
         {status === "Responded" && <InitiateShippingButton />}
@@ -110,13 +112,9 @@ export const PaymentsInformation = ({ children }: PaymentsInformation) => {
           <AccordionButton {...{ open, toggle }} />
         </div>
         {open && (
-          <>
-            <div className="flex flex-col gap-[10px]">
-              <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
-                {children}
-              </div>
-            </div>
-          </>
+          <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
+            {children}
+          </div>
         )}
       </div>
     </SectionContentLayout>

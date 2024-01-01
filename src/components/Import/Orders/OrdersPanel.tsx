@@ -180,6 +180,7 @@ const OrdersTable = () => {
           <ShippingStatus
             id={row.original.orderId}
             status={row.original.shippingStatus}
+            onClick={() => handleViewIndex(Number(row.id))}
           />
         ),
       }),
@@ -280,7 +281,7 @@ const OrdersTable = () => {
   );
 };
 
-const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
+const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);
@@ -304,6 +305,7 @@ const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
   return (
     <>
       <button
+        onClick={onClick}
         data-type="dialogs"
         data-target={dataTarget}
         aria-label={capitalizeWords(status)}

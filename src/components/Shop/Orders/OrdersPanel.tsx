@@ -393,7 +393,7 @@ export const ImageColumn = ({ images }: ImageColumnProps) => {
 export type ShippingStatusProps = {
   id: string;
   status: ShopOrderPackageType["shippingStatus"];
-  onClick?: () => void;
+  onClick: () => void;
 };
 
 const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {

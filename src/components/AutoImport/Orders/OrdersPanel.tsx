@@ -308,6 +308,7 @@ const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
   return (
     <>
       <button
+        onClick={onClick}
         data-type="dialogs"
         data-target={dataTarget}
         aria-label={capitalizeWords(status)}

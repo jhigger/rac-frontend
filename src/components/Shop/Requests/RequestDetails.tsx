@@ -1,13 +1,15 @@
 import { ConvertCard, Security, Wallet } from "iconsax-react";
+import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
 import LabelId from "~/components/LabelId";
 import { type REQUEST_STATUS } from "~/constants";
-import { useShopContext } from "~/contexts/ShopContext";
+import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
 import { NotRespondedStatus, RespondedStatus } from "../Orders";
-import { DetailSection } from "../Orders/InitiateShipping";
+import { PurpleDetailSection } from "../Orders/ClearPackage";
+import { BillingAddress, DetailSection } from "../Orders/InitiateShipping";
 import {
   RequestFormHeader,
   SectionContentLayout,
@@ -51,10 +53,57 @@ const RequestDetails = () => {
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
-          return <Item key={i} index={i} />;
+          return (
+            <ShopRequestItem
+              key={i}
+              item={item}
+              index={i}
+              status={requestPackage.requestStatus}
+            />
+          );
         })}
       </div>
-      <BillingDetails />
+
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="Billing Details" />
+        <BillingAddress />
+        <PaymentsInformation>
+          <div className="col-span-full">
+            <HighlightedInfo
+              text={
+                <>
+                  The <b className="text-neutral-900">shop for me cost</b> could
+                  have been changed/updated by our staffs if they observe
+                  differences between the details you provided and the ones we
+                  verify from the store, however we will inform you about it.
+                </>
+              }
+            />
+          </div>
+          <DetailSection
+            label="Total Shipment Cost"
+            value="Not allocated yet"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Total Shop For Me Cost"
+            value="$234,000.00"
+            colSpanDesktop={4}
+            tooltip={requestPackage.requestStatus === "Responded"}
+          />
+          <DetailSection
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+        </PaymentsInformation>
+      </div>
+
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
         {status === "Responded" && (
@@ -72,7 +121,7 @@ export const RedProceedToCheckoutButton = ({ onClick }: ProceedButtonProps) => {
     <button
       onClick={onClick}
       aria-label="Proceed"
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+      className="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <Wallet size={18} variant="Bold" />
       <span className="body-lg text-white">Proceed to checkout</span>
@@ -80,63 +129,17 @@ export const RedProceedToCheckoutButton = ({ onClick }: ProceedButtonProps) => {
   );
 };
 
-export const BillingDetails = () => {
-  const { open, toggle } = useAccordion(true);
-
-  return (
-    <>
-      <SectionHeader title="Billing Details" />
-      <SectionContentLayout>
-        <div className="flex w-full flex-col gap-[30px]">
-          <div className="flex w-full items-center justify-between">
-            <h4 className="title-md md:title-lg text-gray-700">
-              Payments Information
-            </h4>
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-          {open && (
-            <>
-              <div className="flex flex-col gap-[20px] rounded-[20px] bg-error-200 px-[14px] py-[10px]">
-                <p className="label-lg text-gray-700">
-                  The <b className="text-neutral-900">shop for me cost</b> could
-                  have been changed/updated by our staffs if they observe
-                  differences between the details you provided and the ones we
-                  verify from the store, however we will inform you about it.
-                </p>
-              </div>
-              <div className="flex w-max flex-col gap-[15px]">
-                <div className="grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Total Shipment Cost:</span>
-                  <span className="title-lg text-neutral-900">
-                    Not yet allocated
-                  </span>
-                </div>
-                <div className="grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Payment Status:</span>
-                  <span className="title-lg text-neutral-900">Unpaid</span>
-                </div>
-                <div className="grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <LabelWithTooltip label="Total Shop For Me Cost:" />
-                  <span className="title-lg text-neutral-900">$234,000.00</span>
-                </div>
-                <div className="grid grid-cols-1 items-center gap-[20px] text-gray-700 md:grid-cols-2">
-                  <span className="body-md">Store:</span>
-                  <span className="title-lg text-neutral-900">Amazon</span>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </SectionContentLayout>
-    </>
-  );
-};
-
-type ItemProps = {
+type ShopRequestItemProps = {
+  item: ShopItemType;
   index: number;
+  status: (typeof REQUEST_STATUS)[number];
 };
 
-export const Item = ({ index }: ItemProps) => {
+export const ShopRequestItem = ({
+  item,
+  index,
+  status,
+}: ShopRequestItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -151,9 +154,9 @@ export const Item = ({ index }: ItemProps) => {
         {open && (
           <>
             <HighlightedInfo text="These details could have been changed/updated by our staffs if they observe differences between the ones you provided and the ones we verified from the store, however we will inform you about it." />
-            <div className="grid w-full grid-cols-2 gap-[15px] md:grid-cols-4">
-              <RequestItemDetails />
-              <RequestItemRelatedCosts />
+            <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+              <ShopRequestItemDetails item={item} status={status} />
+              <ShopRequestItemRelatedCosts status={status} />
             </div>
           </>
         )}
@@ -162,56 +165,94 @@ export const Item = ({ index }: ItemProps) => {
   );
 };
 
-const RequestItemDetails = () => {
+type ShopRequestItemDetailsProps = {
+  item: ShopItemType;
+  status: (typeof REQUEST_STATUS)[number];
+};
+
+const ShopRequestItemDetails = ({
+  item,
+  status,
+}: ShopRequestItemDetailsProps) => {
   return (
     <>
-      <DetailSection label="Store" value="Amazon" />
-      <DetailSection label="Urgent Purchase" value="No" />
-      <DetailSection label="Item URL" value="htttp/jjnkkukja.jhgyjayjdjjhcjc" />
-      <DetailSection label="Item Name" value="Designer Bags" tooltip />
-      <DetailSection label="Item Cost from Store" value="$45.00" />
-      <DetailSection label="Quantity" value="4" />
-      <DetailSection label="Weight" value="67kg" colSpanDesktop={1} tooltip />
+      <DetailSection label="Store" value={item.store} colSpanDesktop={4} />
+      <DetailSection
+        label="Urgent Purchase"
+        value={item.urgent ? "Yes" : "No"}
+        colSpanDesktop={4}
+      />
+      <DetailSection label="Item URL" value={item.url} />
+      <DetailSection
+        label="Item Name"
+        value={item.name}
+        tooltip={status === "Responded"}
+        colSpanDesktop={4}
+      />
+      <DetailSection
+        label="Item Cost from Store"
+        value={`$${item.originalCost}`}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Quantity"
+        value={item.quantity}
+        colSpanDesktop={3}
+      />
+      <DetailSection
+        label="Weight"
+        value="67kg"
+        tooltip={status === "Responded"}
+        colSpanDesktop={2}
+      />
       <DetailSection
         label="Height"
         value="5 inches"
-        colSpanDesktop={1}
-        tooltip
+        tooltip={status === "Responded"}
+        colSpanDesktop={2}
       />
       <DetailSection
         label="Length"
         value="5 inches"
-        colSpanDesktop={1}
-        tooltip
+        tooltip={status === "Responded"}
+        colSpanDesktop={2}
       />
       <DetailSection
         label="Width"
         value="5 inches"
-        colSpanDesktop={1}
-        tooltip
+        tooltip={status === "Responded"}
+        colSpanDesktop={2}
       />
       <DetailSection
         label="Product/Item Picture"
-        value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
+        value={item.image}
         image
-        tooltip
+        tooltip={status === "Responded"}
       />
+      <DetailSection label="Product Description" value={item.description} />
       <DetailSection
-        label="Product Description"
-        value="Additonvnv ghss jgsjvsn"
+        label="Color"
+        value="Blue"
+        colSpanDesktop={2}
+        tooltip={status === "Responded"}
       />
-      <DetailSection label="Color" value="Blue" colSpanDesktop={1} tooltip />
       <DetailSection
         label="Stripes"
         value="5 inches"
-        colSpanDesktop={1}
-        tooltip
+        colSpanDesktop={2}
+        tooltip={status === "Responded"}
       />
     </>
   );
 };
 
-const RequestItemRelatedCosts = () => {
+type ShopRequestItemRelatedCostsProps = {
+  status: (typeof REQUEST_STATUS)[number];
+};
+
+const ShopRequestItemRelatedCosts = ({
+  status,
+}: ShopRequestItemRelatedCostsProps) => {
   return (
     <>
       <div className="col-span-full">
@@ -254,47 +295,39 @@ const RequestItemRelatedCosts = () => {
         </div>
       </div>
 
-      <div className="col-span-full flex flex-col gap-[5px] md:col-span-2 md:gap-[20px]">
-        <span className="body-md text-primary-600 md:max-w-[139px]">
-          Urgent purchase fee:
-        </span>
-        <span className="title-md md:title-lg font-medium text-primary-900">
-          $0.00
-        </span>
-      </div>
+      <PurpleDetailSection
+        label="Urgent purchase fee"
+        value={`$${"0.00"}`}
+        colSpanDesktop={4}
+      />
 
-      <div className="col-span-full flex flex-col gap-[5px] md:col-span-2 md:gap-[20px]">
-        <span className="body-md text-primary-600 md:max-w-[139px]">
-          <LabelWithTooltip label="Processing Fee:" />
-        </span>
-        <span className="title-md md:title-lg font-medium text-primary-900">
-          $87,000.00
-        </span>
-      </div>
+      <PurpleDetailSection
+        label="Processing Fee"
+        value={`$${"87,000.00"}`}
+        tooltip={status === "Responded"}
+        colSpanDesktop={4}
+      />
 
-      <div className="col-span-full flex flex-col gap-[5px] md:col-span-2 md:gap-[20px]">
-        <span className="body-md text-primary-600 md:w-[139px] ">
-          Shipping to Origin Warehouse Cost:
-        </span>
-        <span className="title-md md:title-lg font-medium text-primary-900">
-          $87,000.00
-        </span>
-      </div>
+      {status === "Responded" && (
+        <PurpleDetailSection
+          label="Shipping to Origin Warehouse Cost"
+          value={`$${"87,000.00"}`}
+          colSpanDesktop={4}
+        />
+      )}
 
-      <div className="col-span-full flex flex-col gap-[5px] md:col-span-2 md:gap-[20px]">
-        <span className="body-md text-primary-600 md:max-w-[139px]">
-          <LabelWithTooltip label="Shop For Me Cost:" />
-        </span>
-        <span className="title-md md:title-lg font-medium text-primary-900">
-          $87,000.00
-        </span>
-      </div>
+      <PurpleDetailSection
+        label="Shop For Me Cost"
+        value={`$${"87,000.00"}`}
+        tooltip={status === "Responded"}
+        colSpanDesktop={4}
+      />
     </>
   );
 };
 
 // todo:
-const ChangeCurrencyButton = () => {
+export const ChangeCurrencyButton = () => {
   return (
     <button
       aria-label="change currency"
@@ -349,7 +382,7 @@ export const PackageOrigin = () => {
   );
 };
 
-type HighlightedInfoProps = { text: string };
+type HighlightedInfoProps = { text: string | JSX.Element };
 
 export const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
   return (
@@ -423,7 +456,7 @@ export const ProceedToCheckoutButton = ({
     <button
       onClick={onClick ?? handleClick}
       aria-label="Take Action Now"
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
+      className="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
     >
       <Security size={18} className="text-primary-900" />
       <span className="label-lg whitespace-nowrap text-primary-600">
@@ -442,7 +475,7 @@ export const ModalProceedToCheckoutButton = ({
     <button
       onClick={onClick}
       aria-label="Take Action Now"
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
+      className="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[88px] border border-gray-500 bg-white px-[14px] py-[10px] text-sm font-medium tracking-[.00714em] text-white"
     >
       <Security size={18} variant="Bold" />
       <span className="label-lg whitespace-nowrap text-primary-600">

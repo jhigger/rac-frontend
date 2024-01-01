@@ -26,11 +26,10 @@ import SelectStateInput from "~/components/Forms/Inputs/SelectStateInput";
 import TextAreaInput from "~/components/Forms/Inputs/TextAreaInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
 import LabelId from "~/components/LabelId";
-import { AddressDetail } from "~/components/Shop/Orders/ClearPackage";
+import { PurpleDetailSection } from "~/components/Shop/Orders/ClearPackage";
 import {
-  DefaultBillingAddress,
+  BillingAddress,
   DetailSection,
-  type OrderItemProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import {
@@ -51,12 +50,14 @@ import {
 import { AUTO_IMPORT_ORIGINS, CAR_CONDITIONS } from "~/constants";
 import {
   useAutoImportContext,
+  type AutoImportItemType,
   type AutoImportRequestPackageType,
 } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
+import { type AutoImportOrderItemProps } from "../Orders/InitiateShipping";
 
 export const emptyValue: AutoImportRequestPackageType = {
   requestId: "",
@@ -200,7 +201,7 @@ const RequestOrder = () => {
         )}
         {isLastStep && (
           <div className="w-full md:w-[200px]">
-            <DoneButton handleFinish={handleFinish} />
+            <DoneButton onClick={handleFinish} />
           </div>
         )}
         <NeedHelpFAB />
@@ -885,41 +886,26 @@ const FillInShippingAddress = () => {
 };
 
 export const Step3 = () => {
-  const fakeData = [
-    {
-      requestId: "",
-      requestStatus: "Not Responded",
-      requestLocalDate: new Date().toLocaleString(),
-      items: [
-        {
-          brand: "",
-          model: "",
-          productionYear: "",
-          value: 0,
-          condition: "Drivable",
-          color: "",
-          mileage: 0,
-          vin: "",
-          url: "",
-          image: "",
-          carTitleCopy: "",
-          description: "",
-        },
-      ],
-    },
-  ];
+  const { requestPackages } = useAutoImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const requestPackage = requestPackages?.[viewIndex];
+
+  if (!requestPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {fakeData.map((item, i) => {
-        return <OrderItem key={item.requestId} index={i} />;
+      {requestPackage.items.map((item, i) => {
+        return <AutoImportOrderItem key={i} item={item} index={i} />;
       })}
       <SectionHeader title="Confirm your Shipping Details" />
       <DestinationAddressDetails />
       <SectionHeader title="Confirm your Billing Details" />
-      <DefaultBillingAddress />
+      <BillingAddress />
     </div>
   );
 };
@@ -1005,61 +991,61 @@ const PickUpDetails = () => {
       </span>
       <HighlightedInfo text="Your Car will be picked up from this address" />
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10 [&>*]:text-primary-900">
-        <AddressDetail
+        <PurpleDetailSection
           label="Contact's First Name"
           value="Malibu"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Contact's Last Name"
           value="SHedrack"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Contact Number"
           value="+234 803 456 7845"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Contact Email"
           value="Malibushdrack@gmail.com"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Street Address"
           value="No, 1osolo way, ikeja road, behind scaint merry"
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Location of the Car (Country)"
           value="Turkey"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Location of the Car (State)"
           value="Istanbul"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Location of the Car (City)"
           value="Cyprusic"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Zip/postal Code"
           value="98765"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
 
-        <AddressDetail
+        <PurpleDetailSection
           label="Pick up Date"
           value="10/02/2023"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Location Type"
           value="Mosque"
           colSpanDesktop={4}
@@ -1069,7 +1055,10 @@ const PickUpDetails = () => {
   );
 };
 
-export const OrderItem = ({ index }: OrderItemProps) => {
+export const AutoImportOrderItem = ({
+  index,
+  item,
+}: AutoImportOrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -1081,7 +1070,7 @@ export const OrderItem = ({ index }: OrderItemProps) => {
           </h4>
           <AccordionButton {...{ open, toggle }} />
         </div>
-        {open && <OrderItemDetails />}
+        {open && <AutoImportOrderItemDetails item={item} />}
         {index % 2 === 0 && (
           <>
             <hr className="block w-full border-dashed border-primary-600" />
@@ -1093,56 +1082,67 @@ export const OrderItem = ({ index }: OrderItemProps) => {
   );
 };
 
-export const OrderItemDetails = () => {
-  return (
-    <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-12">
-      <DetailSection
-        label="Car Model"
-        value="Designer Bags"
-        colSpanDesktop={5}
-      />
-      <DetailSection label="Model" value="Designer Bags" colSpanDesktop={5} />
-      <DetailSection label="Production Year" value="2022" colSpanDesktop={2} />
-      <DetailSection
-        label="Car Value"
-        value="$560,000,000.00"
-        colSpanDesktop={5}
-      />
-      <DetailSection
-        label="Car Condition"
-        value="Drivable"
-        colSpanDesktop={3}
-      />
-      <DetailSection
-        label="Car Color"
-        value="Blue"
-        colSpanMobile={1}
-        colSpanDesktop={2}
-      />
-      <DetailSection
-        label="Mileage"
-        value="77676km"
-        colSpanMobile={1}
-        colSpanDesktop={2}
-      />
-      <DetailSection
-        label="Car Picture"
-        value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-        image
-        colSpanDesktop={5}
-      />
-      <DetailSection
-        label="Copy of the Car Title"
-        value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-        image
-        colSpanDesktop={5}
-      />
-      <DetailSection label="Car Description" value="Additonvnv ghss jgsjvsn" />
-      <DetailSection label="Color" value="Blue" colSpanDesktop={3} />
-      <DetailSection label="Stripes" value="5 inches" colSpanDesktop={3} />
-    </div>
-  );
-};
+type AutoImportOrderItemDetailsProps = { item: AutoImportItemType };
+
+export const AutoImportOrderItemDetails =
+  ({} // item, // todo: change hardcoded values to item prop data
+  : AutoImportOrderItemDetailsProps) => {
+    return (
+      <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-12">
+        <DetailSection
+          label="Car Model"
+          value="Designer Bags"
+          colSpanDesktop={5}
+        />
+        <DetailSection label="Model" value="Designer Bags" colSpanDesktop={5} />
+        <DetailSection
+          label="Production Year"
+          value="2022"
+          colSpanDesktop={2}
+        />
+        <DetailSection
+          label="Car Value"
+          value="$560,000,000.00"
+          colSpanDesktop={5}
+        />
+        <DetailSection
+          label="Car Condition"
+          value="Drivable"
+          colSpanDesktop={3}
+        />
+        <DetailSection
+          label="Car Color"
+          value="Blue"
+          colSpanMobile={1}
+          colSpanDesktop={2}
+        />
+        <DetailSection
+          label="Mileage"
+          value="77676km"
+          colSpanMobile={1}
+          colSpanDesktop={2}
+        />
+        <DetailSection
+          label="Car Picture"
+          value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
+          image
+          colSpanDesktop={5}
+        />
+        <DetailSection
+          label="Copy of the Car Title"
+          value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
+          image
+          colSpanDesktop={5}
+        />
+        <DetailSection
+          label="Car Description"
+          value="Additonvnv ghss jgsjvsn"
+        />
+        <DetailSection label="Color" value="Blue" colSpanDesktop={3} />
+        <DetailSection label="Stripes" value="5 inches" colSpanDesktop={3} />
+      </div>
+    );
+  };
 
 export const PackageOrigin = () => {
   const { open, toggle } = useAccordion(true);
@@ -1185,25 +1185,33 @@ export const OriginWarehouseAddress = () => {
         <hr className="mx-[10px] flex-grow border-dashed border-primary-900" />
       </div>
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
-        <AddressDetail label="First Name" value="Malibu" colSpanDesktop={4} />
-        <AddressDetail label="Last Name" value="SHedrack" colSpanDesktop={4} />
-        <AddressDetail
+        <PurpleDetailSection
+          label="First Name"
+          value="Malibu"
+          colSpanDesktop={4}
+        />
+        <PurpleDetailSection
+          label="Last Name"
+          value="SHedrack"
+          colSpanDesktop={4}
+        />
+        <PurpleDetailSection
           label="Street Address"
           value="No, 1osolo way, ikeja road, behind scaint merry"
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="State"
           value="Istanbul"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="City"
           value="Cyprusic"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Zip/postal Code"
           value="98765"
           colSpanMobile={1}

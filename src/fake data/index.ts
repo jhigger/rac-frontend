@@ -123,13 +123,13 @@ export const shopOrders: ShopOrderPackageType[] = [
       {
         store: "Amazon",
         urgent: false,
-        url: "",
+        url: "htttp/jjnkkukja.jhgyjayjdjjhcjc",
         name: "Designer Bags",
         originalCost: 1,
         quantity: 1,
         shippingCost: 1,
         image: src,
-        description: "",
+        description: "Additonvnv ghss jgsjvsn",
       },
       {
         store: "Aliexpress",

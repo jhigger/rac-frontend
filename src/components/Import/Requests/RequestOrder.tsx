@@ -6,13 +6,13 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
+import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
+import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
-import { BackButton } from "~/components/Buttons/BackButton";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import CurrencyInput from "~/components/Forms/Inputs/CurrencyInput";
@@ -149,7 +149,7 @@ const RequestOrder = () => {
         )}
         {isLastStep && (
           <div className="w-full md:w-[200px]">
-            <DoneButton handleFinish={handleFinish} />
+            <DoneButton onClick={handleFinish} />
           </div>
         )}
         <NeedHelpFAB />

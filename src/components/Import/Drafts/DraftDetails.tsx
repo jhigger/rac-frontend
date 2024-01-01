@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
-import { BackButton } from "~/components/Buttons/BackButton";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import LabelId from "~/components/LabelId";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
@@ -97,7 +97,7 @@ const DraftDetails = () => {
         )}
         {isLastStep && (
           <div className="w-full md:w-[200px]">
-            <DoneButton handleFinish={handleFinish} />
+            <DoneButton onClick={handleFinish} />
           </div>
         )}
         <NeedHelpFAB />

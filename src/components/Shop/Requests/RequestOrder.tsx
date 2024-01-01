@@ -23,12 +23,12 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
+import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
+import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
-import { BackButton } from "~/components/Buttons/BackButton";
 import { ORIGINS, STORES } from "~/constants";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
@@ -39,6 +39,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
+import { CancelButton } from "../../Buttons/CancelButton";
 import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import AccordionButton from "../../Forms/AccordionButton";
 import CurrencyInput from "../../Forms/Inputs/CurrencyInput";
@@ -47,7 +48,6 @@ import QuantityInput from "../../Forms/Inputs/QuantityInput";
 import SelectInput from "../../Forms/Inputs/SelectInput";
 import TextAreaInput from "../../Forms/Inputs/TextAreaInput";
 import TextInput from "../../Forms/Inputs/TextInput";
-import { CancelButton } from "../../Buttons/CancelButton";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 
@@ -164,7 +164,7 @@ const RequestOrderForm = () => {
         )}
         {isLastStep && (
           <div className="w-full md:w-[200px]">
-            <DoneButton handleFinish={handleFinish} />
+            <DoneButton onClick={handleFinish} />
           </div>
         )}
         <NeedHelpFAB />

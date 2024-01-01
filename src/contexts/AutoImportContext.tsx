@@ -31,7 +31,7 @@ export const AutoImportContext = createContext<AutoImportContextType>(
 
 export const useAutoImportContext = () => useContext(AutoImportContext);
 
-type AutoImportItemType = {
+export type AutoImportItemType = {
   brand: string;
   model: string;
   productionYear: string;

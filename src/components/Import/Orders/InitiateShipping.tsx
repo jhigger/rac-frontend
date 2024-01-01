@@ -2,25 +2,24 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect } from "react";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
-  DestinationShippingAddress,
   DetailSection,
   InitiateShippingAgreement,
+  SelectDestinationShippingAddress,
   ShippingImportantNotice,
   ShippingMethod,
   Summary,
-  type OrderItemProps,
   type ShipmentCostsSummaryProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
   CustomBillingAddress,
   DefaultBillingAddressRadio,
-  NextButton,
   StepIndex,
   SubSectionTitle,
   type PackageTableHeadProps,
@@ -105,15 +104,15 @@ const InitiateShipping = () => {
             <BackButton onClick={back} />
           </div>
         )}
-        {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
-        {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
+        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
+        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
       </div>
       {currentStepIndex === 2 && (
         <InitiateShippingAgreement back={back} next={next} />
       )}
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
-          <NextButton text="Done" next={handleFinish} />
+          <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
     </div>
@@ -130,7 +129,7 @@ const PackageConfirmation = () => {
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
       {orderPackages.map((item, i) => {
-        return <OrderItem key={item.orderId} index={i} />;
+        return <ImportOrderItem key={item.orderId} index={i} />;
       })}
     </div>
   );
@@ -166,7 +165,9 @@ const PackageOrigin = () => {
   );
 };
 
-const OrderItem = ({ index }: OrderItemProps) => {
+type ImportOrderItemProps = { index: number };
+
+const ImportOrderItem = ({ index }: ImportOrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -178,13 +179,13 @@ const OrderItem = ({ index }: OrderItemProps) => {
           </h4>
           <AccordionButton {...{ open, toggle }} />
         </div>
-        {open && <OrderItemDetails />}
+        {open && <ImportOrderItemDetails />}
       </div>
     </SectionContentLayout>
   );
 };
 
-const OrderItemDetails = () => {
+const ImportOrderItemDetails = () => {
   return (
     <div className="grid w-fit grid-cols-4 gap-[15px]">
       <DetailSection
@@ -251,7 +252,7 @@ export const BillingAddressStep = () => {
         <SectionHeader title="Provide your shipping address" hr />
         <div className="flex flex-col items-center gap-[30px] md:pl-[34px]">
           <ShippingImportantNotice />
-          <DestinationShippingAddress />
+          <SelectDestinationShippingAddress />
         </div>
       </div>
 

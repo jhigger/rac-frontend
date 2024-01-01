@@ -174,7 +174,6 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
 
   const reset = () => {
     setActiveAction(null);
-    setViewIndex(null);
     if (activeNav !== "Notifications") setCustomText(null);
   };
 

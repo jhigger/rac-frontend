@@ -2,22 +2,21 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect } from "react";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { AddressDetail } from "~/components/Shop/Orders/ClearPackage";
+import { PurpleDetailSection } from "~/components/Shop/Orders/ClearPackage";
 import {
-  DefaultBillingAddress,
-  type OrderItemProps,
+  BillingAddress,
   type ShippingMethodProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
   AndLastly,
   Cost,
   ImportantNotice,
-  NextButton,
   PaymentMethods,
   StepIndex,
   SubSectionTitle,
@@ -29,13 +28,16 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { useAutoImportContext } from "~/contexts/AutoImportContext";
+import {
+  useAutoImportContext,
+  type AutoImportItemType,
+} from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
+  AutoImportOrderItemDetails,
   DestinationAddressDetails,
-  OrderItemDetails,
   PackageOrigin,
 } from "../Requests/RequestOrder";
 
@@ -108,12 +110,12 @@ const InitiateShipping = () => {
             <BackButton onClick={back} />
           </div>
         )}
-        {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
-        {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
+        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
+        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
       </div>
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
-          <NextButton text="Done" next={handleFinish} />
+          <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
     </div>
@@ -123,20 +125,34 @@ const InitiateShipping = () => {
 const Step1 = () => {
   const { orderPackages } = useAutoImportContext();
 
-  if (!orderPackages) return;
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderPackages.map((item, i) => {
-        return <OrderItem key={item.orderId} index={i} />;
+      {orderPackage.items.map((item, i) => {
+        return <AutoImportOrderItem key={i} item={item} index={i} />;
       })}
     </div>
   );
 };
 
-export const OrderItem = ({ index }: OrderItemProps) => {
+export type AutoImportOrderItemProps = {
+  index: number;
+  item: AutoImportItemType;
+};
+
+export const AutoImportOrderItem = ({
+  index,
+  item,
+}: AutoImportOrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -148,7 +164,7 @@ export const OrderItem = ({ index }: OrderItemProps) => {
           </h4>
           <AccordionButton {...{ open, toggle }} />
         </div>
-        {open && <OrderItemDetails />}
+        {open && <AutoImportOrderItemDetails item={item} />}
         {index % 2 === 0 && (
           <>
             <hr className="block w-full border-gray-500" />
@@ -165,61 +181,61 @@ export const PickUpDetails = () => {
     <>
       <span className="title-md md:title-lg text-gray-700">Pickup Details</span>
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10 [&>div>span:first-child]:text-gray-500 [&>div>span:nth-child(2)]:text-neutral-900">
-        <AddressDetail
+        <PurpleDetailSection
           label="Contact's First Name"
           value="Malibu"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Contact's Last Name"
           value="SHedrack"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Contact Number"
           value="+234 803 456 7845"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Contact Email"
           value="Malibushdrack@gmail.com"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Street Address"
           value="No, 1osolo way, ikeja road, behind scaint merry"
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Location of the Car (Country)"
           value="Turkey"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Location of the Car (State)"
           value="Istanbul"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Location of the Car (City)"
           value="Cyprusic"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Zip/postal Code"
           value="98765"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
 
-        <AddressDetail
+        <PurpleDetailSection
           label="Pick up Date"
           value="10/02/2023"
           colSpanDesktop={4}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Location Type"
           value="Mosque"
           colSpanDesktop={4}
@@ -235,7 +251,7 @@ const Step2 = () => {
       <SectionHeader title="Confirm your Shipping Details" />
       <DestinationAddressDetails />
       <SectionHeader title="Confirm your Billing Information" />
-      <DefaultBillingAddress />
+      <BillingAddress />
     </div>
   );
 };

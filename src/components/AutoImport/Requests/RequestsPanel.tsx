@@ -10,6 +10,7 @@ import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
+import { type FilterCategoriesType } from "~/components/SearchBar";
 import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
@@ -17,7 +18,6 @@ import {
   type RequestStatusModalProps,
   type RequestStatusProps,
 } from "~/components/Shop/Requests/RequestsPanel";
-import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
   useAutoImportContext,
   type AutoImportRequestPackageType,
@@ -127,7 +127,11 @@ const RequestsTable = () => {
         id: "requestStatus",
         header: "Request Status",
         cell: ({ row }) => (
-          <RequestStatus id={row.id} status={row.original.requestStatus} />
+          <RequestStatus
+            id={row.id}
+            status={row.original.requestStatus}
+            onClick={() => handleViewIndex(Number(row.id))}
+          />
         ),
       }),
       columnHelper.accessor("requestLocalDate", {

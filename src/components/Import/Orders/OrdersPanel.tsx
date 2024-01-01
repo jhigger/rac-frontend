@@ -5,19 +5,22 @@ import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
+import { CancelButton } from "~/components/Buttons/CancelButton";
+import { ClearPackageButton } from "~/components/Buttons/ClearPackageButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
+import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
+import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { MoreButton } from "~/components/Buttons/MoreButton";
+import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
   DetailSection,
   InitiateShippingButton,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
-  ClearPackageButton,
   ImageColumn,
   PickUpInstructions,
   TrackButton,
@@ -26,13 +29,10 @@ import {
   type ShippingStatusProps,
   type SomeStatusType,
 } from "~/components/Shop/Orders/OrdersPanel";
-import { CancelButton } from "~/components/Buttons/CancelButton";
-import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import {
   RequestFormHeader,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { type FilterCategoriesType } from "~/components/SearchBar";
 import { SHIPPING_STATUS } from "~/constants";
 import {
   useImportContext,

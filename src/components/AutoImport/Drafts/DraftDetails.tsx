@@ -114,7 +114,7 @@ const DraftDetails = () => {
         )}
         {isLastStep && (
           <div className="w-full md:w-[200px]">
-            <DoneButton handleFinish={handleFinish} />
+            <DoneButton onClick={handleFinish} />
           </div>
         )}
         <NeedHelpFAB />

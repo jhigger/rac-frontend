@@ -1,3 +1,4 @@
+import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { shippingStatuses } from "~/components/Import/Orders/OrderDetails";
 import OrderTrackingId from "~/components/OrderTrackingId";
@@ -16,17 +17,18 @@ import {
   SortedOutStatus,
 } from ".";
 import AccordionButton from "../../Forms/AccordionButton";
-import {
-  BillingDetails,
-  Item,
-  PackageOrigin,
-} from "../Requests/RequestDetails";
+import { PackageOrigin } from "../Requests/RequestDetails";
 import {
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,
 } from "../Requests/RequestOrder";
-import { DetailSection } from "./InitiateShipping";
+import { DestinationShippingAddress } from "./ClearPackage";
+import {
+  BillingAddress,
+  DetailSection,
+  ShopOrderItem,
+} from "./InitiateShipping";
 
 const OrderDetails = () => {
   const { orderPackages } = useShopContext();
@@ -61,11 +63,45 @@ const OrderDetails = () => {
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
-        {orderPackages.map((item, i) => {
-          return <Item key={item.orderId} index={i} />;
+        {orderPackage.items.map((item, i) => {
+          return <ShopOrderItem key={i} item={item} index={i} relatedCosts />;
         })}
       </div>
-      <BillingDetails />
+
+      {orderPackage.shopForMeStatus !== "Purchase not started" && (
+        <div className="flex flex-col gap-[10px]">
+          <SectionHeader title="Shipping Details" />
+          <DestinationShippingAddress />
+        </div>
+      )}
+
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="Billing Details" />
+        <BillingAddress />
+        <PaymentsInformation>
+          <DetailSection
+            label="Total Shipment Cost"
+            value="Not allocated yet"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Total Shop For Me Cost"
+            value="$234,000.00"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+        </PaymentsInformation>
+      </div>
+
       <div className="w-max">
         <BackButton onClick={handleBack} />
       </div>

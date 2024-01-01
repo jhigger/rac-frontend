@@ -13,7 +13,7 @@ import {
   ProcessedStatus,
 } from "~/components/Shop/Orders";
 import {
-  DefaultBillingAddress,
+  BillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
@@ -26,7 +26,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import { PackageOrigin, PaymentsInformation } from "../Requests/RequestDetails";
 import { DestinationAddressDetails } from "../Requests/RequestOrder";
-import { OrderItem } from "./InitiateShipping";
+import { AutoImportOrderItem } from "./InitiateShipping";
 
 const OrderDetails = () => {
   const { orderPackages } = useAutoImportContext();
@@ -45,30 +45,61 @@ const OrderDetails = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Auto Import Order Details" />
+
       <div className="w-full md:w-max">
         <OrderTrackingId
           orderId={orderPackage.orderId}
           trackingId={orderPackage.trackingId}
         />
       </div>
+
       <OrderInformation
         info={{
           date: orderPackage.orderLocalDate.toLocaleString(),
           status: orderPackage.shippingStatus,
         }}
       />
+
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
-          return <OrderItem key={i} index={i} />;
+          return <AutoImportOrderItem key={i} item={item} index={i} />;
         })}
       </div>
-      <SectionHeader title="Shipping Details" />
-      <DestinationAddressDetails />
-      <SectionHeader title="Billing details" />
-      <DefaultBillingAddress />
-      <PaymentsInformation />
+
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="Shipping Details" />
+        <DestinationAddressDetails />
+      </div>
+
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="Billing Details" />
+        <BillingAddress />
+        <PaymentsInformation>
+          <DetailSection
+            label="Total Shipment Cost"
+            value="Not allocated yet"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Total Clearing Cost"
+            value="$234,000.00"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+        </PaymentsInformation>
+      </div>
+
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
       </div>

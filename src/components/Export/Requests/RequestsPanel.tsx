@@ -117,7 +117,11 @@ const RequestsTable = () => {
         id: "requestStatus",
         header: "Request Status",
         cell: ({ row }) => (
-          <RequestStatus id={row.id} status={row.original.requestStatus} />
+          <RequestStatus
+            id={row.id}
+            status={row.original.requestStatus}
+            onClick={() => handleViewIndex(Number(row.id))}
+          />
         ),
       }),
       columnHelper.accessor("requestLocalDate", {

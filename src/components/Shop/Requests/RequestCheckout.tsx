@@ -3,6 +3,7 @@ import { ArrowRight3, ExportCircle, Receipt2, TickCircle } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import SelectCityInput from "~/components/Forms/Inputs/SelectCityInput";
@@ -20,7 +21,7 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 import AccordionButton from "../../Forms/AccordionButton";
-import { Item, PackageOrigin } from "./RequestDetails";
+import { PackageOrigin, ShopRequestItem } from "./RequestDetails";
 import {
   ChangeCurrencyButton,
   RequestFormHeader,
@@ -86,11 +87,11 @@ const RequestCheckout = () => {
             <BackButton onClick={back} />
           </div>
         )}
-        {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
-        {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
+        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
+        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
         {currentStepIndex === 3 && (
           <div className="w-full">
-            <NextButton text="Done" next={handleFinish} />
+            <DoneButton text="Done" onClick={handleFinish} />
           </div>
         )}
       </div>
@@ -98,30 +99,29 @@ const RequestCheckout = () => {
   );
 };
 
-type NextButtonProps = { text: string; next: () => void };
-
-export const NextButton = ({ text, next }: NextButtonProps) => {
-  return (
-    <button
-      onClick={next}
-      aria-label="Proceed"
-      className="btn relative flex w-full min-w-[150px] flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-    >
-      <TickCircle size={18} variant="Bold" />
-      <span className="body-lg text-white">{text}</span>
-    </button>
-  );
-};
-
 const PackageConfirmation = () => {
   const { requestPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const requestPackage = requestPackages?.[viewIndex];
+
+  if (!requestPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {requestPackages.map((item, i) => {
-        return <Item key={item.requestId} index={i} />;
+      {requestPackage.items.map((item, i) => {
+        return (
+          <ShopRequestItem
+            key={i}
+            item={item}
+            index={i}
+            status={requestPackage.requestStatus}
+          />
+        );
       })}
     </div>
   );

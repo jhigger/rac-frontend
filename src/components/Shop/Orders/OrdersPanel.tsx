@@ -2,7 +2,6 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import {
   BackSquare,
-  ClipboardTick,
   ExportCircle,
   More,
   Ship,
@@ -23,18 +22,19 @@ import {
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
+import { CancelButton } from "../../Buttons/CancelButton";
+import { ClearPackageButton } from "../../Buttons/ClearPackageButton";
 import { MoreButton } from "../../Buttons/MoreButton";
 import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
+import RequestOrderButton from "../../Buttons/RequestOrderButton";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import MainTable from "../../MainTable";
-import RequestOrderButton from "../../Buttons/RequestOrderButton";
+import { type FilterCategoriesType } from "../../SearchBar";
 import { RequestFormHeader, SectionHeader } from "../Requests/RequestOrder";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
-import { type FilterCategoriesType } from "../../SearchBar";
 import ClearPackage from "./ClearPackage";
 import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
-import { CancelButton } from "../../Buttons/CancelButton";
 
 const ShopOrdersPanel = () => {
   const { orderPackages, isFetchingOrderPackages } = useShopContext();
@@ -182,6 +182,7 @@ const OrdersTable = () => {
           <ShippingStatus
             id={row.original.orderId}
             status={row.original.shippingStatus}
+            onClick={() => handleViewIndex(Number(row.id))}
           />
         ),
       }),
@@ -392,9 +393,14 @@ export const ImageColumn = ({ images }: ImageColumnProps) => {
 export type ShippingStatusProps = {
   id: string;
   status: ShopOrderPackageType["shippingStatus"];
+  onClick?: () => void;
 };
 
-export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
+export const ShippingStatus = ({
+  id,
+  status,
+  onClick,
+}: ShippingStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);
@@ -418,6 +424,7 @@ export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
   return (
     <>
       <button
+        onClick={onClick}
         data-type="dialogs"
         data-target={dataTarget}
         aria-label={capitalizeWords(status)}
@@ -436,6 +443,7 @@ export const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
 export type ShippingStatusModalProps = {
   modalId: string;
   status: ShippingStatusProps["status"];
+  onClick?: () => void;
 };
 
 export const excluded = ["not started", "cancelled", "cleared", "delivered"];
@@ -530,7 +538,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
             <CongratulationImage text="you can now pick up your package from our office in Nigeria (your selected “Destination”)" />
 
             <div className="rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
-              <div className="grid w-fit grid-cols-1 gap-[15px] md:grid-cols-4">
+              <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
                 <DetailSection
                   label="Pick up Address"
                   value="No, 1osolo way, ikeja road, behind scaint merry"
@@ -538,26 +546,14 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
                 <DetailSection
                   label="Country"
                   value="Nigeria"
-                  colSpanMobile={1}
-                  colSpanDesktop={1}
+                  colSpanDesktop={2}
                 />
-                <DetailSection
-                  label="State"
-                  value="Lagos"
-                  colSpanMobile={1}
-                  colSpanDesktop={1}
-                />
-                <DetailSection
-                  label="City"
-                  value="Ikeja"
-                  colSpanMobile={1}
-                  colSpanDesktop={1}
-                />
+                <DetailSection label="State" value="Lagos" colSpanDesktop={2} />
+                <DetailSection label="City" value="Ikeja" colSpanDesktop={2} />
                 <DetailSection
                   label="Zip/postal Code"
                   value="98765"
-                  colSpanMobile={1}
-                  colSpanDesktop={1}
+                  colSpanDesktop={2}
                 />
               </div>
             </div>
@@ -664,27 +660,6 @@ export const StepDescription = ({
   );
 };
 
-type ClearPackageButtonProps = ModalCloseType;
-
-export const ClearPackageButton = ({ dataClose }: ClearPackageButtonProps) => {
-  const { handleActiveAction } = useTabContext();
-
-  const onClick = () => {
-    handleActiveAction("clear package");
-  };
-
-  return (
-    <button
-      data-close={dataClose}
-      onClick={onClick}
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-    >
-      <ClipboardTick variant="Bold" />
-      <span className="label-lg text-white">Clear Package</span>
-    </button>
-  );
-};
-
 type TrackButtonProps = ModalCloseType;
 
 export const TrackButton = ({ dataClose }: TrackButtonProps) => {
@@ -710,17 +685,20 @@ export const TrackButton = ({ dataClose }: TrackButtonProps) => {
 
 type InitiateShippingButtonProps = ModalCloseType;
 
-const InitiateShippingButton = ({ dataClose }: InitiateShippingButtonProps) => {
+const InitiateShippingButton = ({
+  dataClose,
+  onClick,
+}: InitiateShippingButtonProps) => {
   const { handleActiveAction } = useTabContext();
 
-  const onClick = () => {
+  const handleClick = () => {
     handleActiveAction("initiate shipping");
   };
 
   return (
     <button
       data-close={dataClose}
-      onClick={onClick}
+      onClick={onClick ?? handleClick}
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <Ship size="18" variant="Bold" />

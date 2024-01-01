@@ -19,7 +19,7 @@ import {
 import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
-import { OrderItem } from "../Orders/ClearPackage";
+import { ImportOrderItem } from "../Orders/ClearPackage";
 
 const RequestDetails = () => {
   const { requestPackages } = useImportContext();
@@ -57,7 +57,7 @@ const RequestDetails = () => {
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
-          return <OrderItem key={i} index={i} />;
+          return <ImportOrderItem key={i} index={i} />;
         })}
       </div>
       <div className="flex w-max gap-[10px] whitespace-nowrap">

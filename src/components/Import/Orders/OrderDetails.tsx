@@ -15,7 +15,7 @@ import {
 } from "~/components/Shop/Orders";
 import { DestinationShippingAddress } from "~/components/Shop/Orders/ClearPackage";
 import {
-  DefaultBillingAddress,
+  BillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
@@ -28,7 +28,7 @@ import { type SHIPPING_STATUS } from "~/constants";
 import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
-import { OrderItem } from "./ClearPackage";
+import { ImportOrderItem } from "./ClearPackage";
 
 const OrderDetails = () => {
   const { orderPackages } = useImportContext();
@@ -63,13 +63,13 @@ const OrderDetails = () => {
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
-          return <OrderItem key={i} index={i} />;
+          return <ImportOrderItem key={i} index={i} />;
         })}
       </div>
       <SectionHeader title="Shipping Details" />
       <DestinationShippingAddress />
       <SectionHeader title="Billing Details" />
-      <DefaultBillingAddress />
+      <BillingAddress />
       <PaymentsInformation />
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />

@@ -1,7 +1,7 @@
 import { DestinationAddressDetails } from "~/components/AutoImport/Requests/RequestOrder";
 import { BackButton } from "~/components/Buttons/BackButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
-import { OrderItem } from "~/components/Import/Orders/ClearPackage";
+import { ImportOrderItem } from "~/components/Import/Orders/ClearPackage";
 import {
   shippingStatuses,
   type OrderInformationProps,
@@ -15,7 +15,7 @@ import {
   ProcessedStatus,
 } from "~/components/Shop/Orders";
 import {
-  DefaultBillingAddress,
+  BillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
@@ -60,13 +60,13 @@ const OrderDetails = () => {
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
-          return <OrderItem key={i} index={i} />;
+          return <ImportOrderItem key={i} index={i} />;
         })}
       </div>
       <SectionHeader title="Shipping Details" />
       <DestinationAddressDetails />
       <SectionHeader title="Billing details" />
-      <DefaultBillingAddress />
+      <BillingAddress />
       <PaymentsInformation />
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />

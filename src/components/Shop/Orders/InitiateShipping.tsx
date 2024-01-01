@@ -2,6 +2,7 @@
 import { ArrowRight3, ExportCircle, Ship } from "iconsax-react";
 import { useEffect } from "react";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
@@ -13,14 +14,13 @@ import {
   TooltipButton,
 } from "~/components/Shop/Requests/RequestOrder";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
-import { useShopContext } from "~/contexts/ShopContext";
+import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   AndLastly,
   Cost,
-  NextButton,
   PackageTable,
   StepIndex,
   SubSectionTitle,
@@ -29,6 +29,7 @@ import {
 } from "../Requests/RequestCheckout";
 import { LabelWithTooltip } from "../Requests/RequestDetails";
 import { type ModalCloseType } from "../Requests/RequestsPanel";
+import { PurpleDetailSection } from "./ClearPackage";
 
 const InitiateShipping = () => {
   const { handlePayNowAction } = useShopContext();
@@ -97,15 +98,15 @@ const InitiateShipping = () => {
             <BackButton onClick={back} />
           </div>
         )}
-        {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
-        {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
+        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
+        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
       </div>
       {currentStepIndex === 2 && (
         <InitiateShippingAgreement back={back} next={next} />
       )}
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
-          <NextButton text="Done" next={handleFinish} />
+          <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
     </div>
@@ -161,9 +162,7 @@ export const InitiateShippingAgreement = ({
   );
 };
 
-type InitiateShippingButtonProps = Partial<ModalCloseType> & {
-  onClick?: () => void;
-};
+type InitiateShippingButtonProps = Partial<ModalCloseType>;
 
 export const InitiateShippingButton = ({
   dataClose,
@@ -190,23 +189,37 @@ export const InitiateShippingButton = ({
 
 export const PackageConfirmation = () => {
   const { orderPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderPackages.map((item, i) => {
-        return <OrderItem key={item.orderId} index={i} />;
+      {orderPackage.items.map((item, i) => {
+        return <ShopOrderItem key={i} item={item} index={i} />;
       })}
     </div>
   );
 };
 
-export type OrderItemProps = {
+type ShopOrderItemProps = {
+  item: ShopItemType;
   index: number;
+  relatedCosts?: boolean;
 };
 
-const OrderItem = ({ index }: OrderItemProps) => {
+// todo: refactor props to children instead
+export const ShopOrderItem = ({
+  item,
+  index,
+  relatedCosts = false,
+}: ShopOrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -218,15 +231,62 @@ const OrderItem = ({ index }: OrderItemProps) => {
           </h4>
           <AccordionButton {...{ open, toggle }} />
         </div>
-        {open && <OrderItemDetails />}
+        {open && (
+          <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+            <ShopOrderItemDetails item={item} />
+            {relatedCosts && <ShopOrderItemRelatedCosts />}
+          </div>
+        )}
       </div>
     </SectionContentLayout>
   );
 };
 
+const ShopOrderItemRelatedCosts = () => {
+  return (
+    <>
+      <div className="col-span-full">
+        <div className="flex flex-col gap-[10px]">
+          <div className="flex items-center">
+            <span className="title-md md:title-lg text-primary-900">
+              Item Related Costs
+            </span>
+
+            <hr className="mx-[10px] flex-grow border-dashed border-primary-900" />
+          </div>
+        </div>
+      </div>
+
+      <PurpleDetailSection
+        label="Urgent purchase fee"
+        value={`$${"0.00"}`}
+        colSpanDesktop={4}
+      />
+
+      <PurpleDetailSection
+        label="Processing Fee"
+        value={`$${"87,000.00"}`}
+        colSpanDesktop={4}
+      />
+
+      <PurpleDetailSection
+        label="Shipping to Origin Warehouse Cost"
+        value={`$${"87,000.00"}`}
+        colSpanDesktop={4}
+      />
+
+      <PurpleDetailSection
+        label="Shop For Me Cost"
+        value={`$${"87,000.00"}`}
+        colSpanDesktop={4}
+      />
+    </>
+  );
+};
+
 export type DetailSectionProps = {
   label: string;
-  value: string | JSX.Element;
+  value: string | number | JSX.Element;
   colSpanMobile?: "full" | number;
   colSpanDesktop?: "full" | number;
   image?: boolean;
@@ -265,66 +325,38 @@ export const DetailSection = ({
   </div>
 );
 
-const OrderItemDetails = () => {
+type ShopOrderItemDetailsProps = { item: ShopItemType };
+
+const ShopOrderItemDetails = ({ item }: ShopOrderItemDetailsProps) => {
   return (
-    <div className="grid w-fit grid-cols-4 gap-[15px]">
-      <DetailSection label="Store" value="Amazon" />
-      <DetailSection label="Urgent Purchase" value="No" />
-      <DetailSection label="Item URL" value="htttp/jjnkkukja.jhgyjayjdjjhcjc" />
+    <>
+      <DetailSection label="Store" value={item.store} colSpanDesktop={4} />
       <DetailSection
-        label="Item Name"
-        value="Designer Bags"
-        colSpanMobile="full"
+        label="Urgent Purchase"
+        value={item.urgent ? "Yes" : "No"}
+        colSpanDesktop={4}
+      />
+      <DetailSection label="Item URL" value={item.url} />
+      <DetailSection label="Item Name" value={item.name} colSpanDesktop={4} />
+      <DetailSection
+        label="Item Original Cost"
+        value={`$${item.originalCost}`} // todo: format currency
         colSpanDesktop={2}
       />
       <DetailSection
-        label="Item Original Cost"
-        value="$45.00"
-        colSpanMobile="full"
-        colSpanDesktop={1}
-      />
-      <DetailSection
         label="Quantity"
-        value="4"
-        colSpanMobile="full"
-        colSpanDesktop={1}
+        value={item.quantity}
+        colSpanDesktop={3}
       />
-      <DetailSection
-        label="Weight"
-        value="67kg"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Height"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Length"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Width"
-        value="5 inches"
-        colSpanMobile={2}
-        colSpanDesktop={1}
-      />
-      <DetailSection
-        label="Product/Item Picture"
-        value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-        image
-      />
-      <DetailSection
-        label="Product Description"
-        value="Additonvnv ghss jgsjvsn"
-      />
-      <DetailSection label="Color" value="Blue" />
-      <DetailSection label="Stripes" value="5 inches" />
-    </div>
+      <DetailSection label="Weight" value="67kg" colSpanDesktop={2} />
+      <DetailSection label="Height" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Length" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Width" value="5 inches" colSpanDesktop={2} />
+      <DetailSection label="Product/Item Picture" value={item.image} image />
+      <DetailSection label="Product Description" value={item.description} />
+      <DetailSection label="Color" value="Blue" colSpanDesktop={2} />
+      <DetailSection label="Stripes" value="5 inches" colSpanDesktop={2} />
+    </>
   );
 };
 
@@ -365,19 +397,19 @@ const BillingAddressStep = () => {
         <SectionHeader title="Provide your shipping address" hr />
         <div className="flex flex-col items-center gap-[30px] md:pl-[34px]">
           <ShippingImportantNotice />
-          <DestinationShippingAddress />
+          <SelectDestinationShippingAddress />
         </div>
       </div>
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Confirm your Billing Information" />
-        <DefaultBillingAddress />
+        <BillingAddress />
       </div>
     </div>
   );
 };
 
-export const DefaultBillingAddress = () => {
+export const BillingAddress = () => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -385,7 +417,7 @@ export const DefaultBillingAddress = () => {
       <div className="flex w-full flex-col gap-[20px] py-[10px]">
         <div className="flex w-full items-center gap-[30px]">
           <h4 className="title-md md:title-lg text-gray-700">
-            Default Billing Address
+            Billing Address
           </h4>
           <div className="flex flex-grow justify-end">
             <AccordionButton {...{ open, toggle }} />
@@ -412,9 +444,8 @@ export const DefaultBillingAddress = () => {
             <DetailSection
               label="Email"
               value="Malibushdrack@gmail.com"
-              colSpanDesktop={4}
+              colSpanDesktop={5}
             />
-            <div className="col-span-2"></div>
             <DetailSection
               label="Country"
               value="Turkey"
@@ -450,7 +481,7 @@ export const DefaultBillingAddress = () => {
   );
 };
 
-export const DestinationShippingAddress = () => {
+export const SelectDestinationShippingAddress = () => {
   return (
     <div className="flex w-full items-center gap-[10px]">
       <SelectInput

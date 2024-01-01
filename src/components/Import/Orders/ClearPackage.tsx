@@ -1,6 +1,7 @@
 import { ArrowRight3 } from "iconsax-react";
 import { useEffect } from "react";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
@@ -13,11 +14,9 @@ import {
   DetailSection,
   ShippingMethod,
   Summary,
-  type OrderItemProps,
   type ShipmentCostsSummaryProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
-  NextButton,
   PaymentMethods,
   StepIndex,
   SubSectionTitle,
@@ -104,12 +103,12 @@ const ClearPackage = () => {
               <BackButton onClick={back} />
             </div>
           )}
-          <NextButton text="Proceed" next={next} />
+          <DoneButton text="Proceed" onClick={next} />
         </div>
       )}
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
-          <NextButton text="Done" next={handleFinish} />
+          <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
     </div>
@@ -126,13 +125,15 @@ const PackageConfirmation = () => {
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
       {orderPackages.map((item, i) => {
-        return <OrderItem key={item.orderId} index={i} />;
+        return <ImportOrderItem key={item.orderId} index={i} />;
       })}
     </div>
   );
 };
 
-export const OrderItem = ({ index }: OrderItemProps) => {
+type ImportOrderItemProps = { index: number };
+
+export const ImportOrderItem = ({ index }: ImportOrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -144,13 +145,13 @@ export const OrderItem = ({ index }: OrderItemProps) => {
           </h4>
           <AccordionButton {...{ open, toggle }} />
         </div>
-        {open && <OrderItemDetails />}
+        {open && <ImportOrderItemDetails />}
       </div>
     </SectionContentLayout>
   );
 };
 
-const OrderItemDetails = () => {
+const ImportOrderItemDetails = () => {
   return (
     <div className="grid w-fit grid-cols-4 gap-[15px]">
       <DetailSection

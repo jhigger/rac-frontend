@@ -1,15 +1,15 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect } from "react";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { DefaultBillingAddress } from "~/components/Shop/Orders/InitiateShipping";
+import { BillingAddress } from "~/components/Shop/Orders/InitiateShipping";
 import {
   AndLastly,
   Cost,
   ImportantNotice,
-  NextButton,
   PaymentMethods,
   StepIndex,
   SubSectionTitle,
@@ -24,7 +24,7 @@ import { useAutoImportContext } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { DestinationAddressDetails } from "../Requests/RequestOrder";
-import { OrderItem, PackageTable } from "./InitiateShipping";
+import { AutoImportOrderItem, PackageTable } from "./InitiateShipping";
 
 const ClearPackage = () => {
   const { handlePayNowAction } = useAutoImportContext();
@@ -94,12 +94,12 @@ const ClearPackage = () => {
               <BackButton onClick={back} />
             </div>
           )}
-          <NextButton text="Proceed" next={next} />
+          <DoneButton text="Proceed" onClick={next} />
         </div>
       )}
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
-          <NextButton text="Done" next={handleFinish} />
+          <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
     </div>
@@ -109,13 +109,19 @@ const ClearPackage = () => {
 const Step1 = () => {
   const { orderPackages } = useAutoImportContext();
 
-  if (!orderPackages) return;
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <SectionHeader title="Confirm that the Car(s) below are the car(s) you wish to clear" />
-      {orderPackages.map((item, i) => {
-        return <OrderItem key={item.orderId} index={i} />;
+      {orderPackage.items.map((item, i) => {
+        return <AutoImportOrderItem key={i} item={item} index={i} />;
       })}
     </div>
   );
@@ -125,7 +131,7 @@ const Step2 = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <DestinationAddressDetails />
-      <DefaultBillingAddress />
+      <BillingAddress />
     </div>
   );
 };

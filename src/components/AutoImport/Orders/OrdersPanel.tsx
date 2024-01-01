@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
+import { ClearPackageButton } from "~/components/Buttons/ClearPackageButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
@@ -14,12 +15,12 @@ import CongratulationImage from "~/components/CongratulationImage";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
   DetailSection,
   InitiateShippingButton,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
-  ClearPackageButton,
   ImageColumn,
   PickUpInstructions,
   TrackButton,
@@ -32,7 +33,6 @@ import {
   RequestFormHeader,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { type FilterCategoriesType } from "~/components/SearchBar";
 import { SHIPPING_STATUS } from "~/constants";
 import {
   useAutoImportContext,
@@ -180,6 +180,10 @@ const OrdersTable = () => {
           <ShippingStatus
             id={row.original.orderId}
             status={row.original.shippingStatus}
+            onClick={() => {
+              console.log(Number(row.id));
+              handleViewIndex(Number(row.id));
+            }}
           />
         ),
       }),
@@ -280,7 +284,7 @@ const OrdersTable = () => {
   );
 };
 
-const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
+const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
   const capitalizedWords = status
     .split(" ")
     .map((word) => {
@@ -319,14 +323,18 @@ const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
         {capitalizedWords}
       </button>
       {createPortal(
-        <ShippingStatusModal {...{ modalId, status }} />,
+        <ShippingStatusModal {...{ modalId, status, onClick }} />,
         document.body,
       )}
     </>
   );
 };
 
-const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
+const ShippingStatusModal = ({
+  modalId,
+  status,
+  onClick,
+}: ShippingStatusModalProps) => {
   const dataClose = `#${modalId}`;
 
   const content = {
@@ -457,7 +465,10 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
             {status === "ready for shipping" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
-                <InitiateShippingButton dataClose={dataClose} />
+                <InitiateShippingButton
+                  dataClose={dataClose}
+                  onClick={onClick}
+                />
               </div>
             )}
             {(status === "processing" || status === "in transit") && (
@@ -469,7 +480,7 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
             {status === "arrived destination" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
-                <ClearPackageButton dataClose={dataClose} />
+                <ClearPackageButton dataClose={dataClose} onClick={onClick} />
               </div>
             )}
           </div>

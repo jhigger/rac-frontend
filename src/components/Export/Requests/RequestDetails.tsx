@@ -1,5 +1,5 @@
 import { BackButton } from "~/components/Buttons/BackButton";
-import { OrderItem } from "~/components/Import/Orders/ClearPackage";
+import { ImportOrderItem } from "~/components/Import/Orders/ClearPackage";
 import {
   OrderInformation,
   PackageOrigin,
@@ -46,7 +46,7 @@ const RequestDetails = () => {
         <PackageOrigin />
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
-          return <OrderItem key={i} index={i} />;
+          return <ImportOrderItem key={i} index={i} />;
         })}
       </div>
       <div className="flex w-max gap-[10px] whitespace-nowrap">

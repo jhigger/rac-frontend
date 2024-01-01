@@ -14,13 +14,13 @@ import {
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
-import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
-import TabContentLayout from "../../Layouts/TabContentLayout";
-import { MoreButton } from "../../Buttons/MoreButton";
-import { ImageColumn } from "../Orders/OrdersPanel";
 import { CancelButton } from "../../Buttons/CancelButton";
+import { MoreButton } from "../../Buttons/MoreButton";
+import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import RequestOrderButton from "../../Buttons/RequestOrderButton";
+import TabContentLayout from "../../Layouts/TabContentLayout";
 import { type FilterCategoriesType } from "../../SearchBar";
+import { ImageColumn } from "../Orders/OrdersPanel";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
@@ -143,7 +143,11 @@ const RequestsTable = () => {
         id: "requestStatus",
         header: "Request Status",
         cell: ({ row }) => (
-          <RequestStatus id={row.id} status={row.original.requestStatus} />
+          <RequestStatus
+            id={row.id}
+            status={row.original.requestStatus}
+            onClick={() => handleViewIndex(Number(row.id))}
+          />
         ),
       }),
       columnHelper.accessor("requestLocalDate", {
@@ -188,9 +192,10 @@ const RequestsTable = () => {
 export type RequestStatusProps = {
   id: string;
   status: ShopRequestPackageType["requestStatus"];
+  onClick: () => void;
 };
 
-export const RequestStatus = ({ id, status }: RequestStatusProps) => {
+export const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);
@@ -208,6 +213,7 @@ export const RequestStatus = ({ id, status }: RequestStatusProps) => {
   return (
     <>
       <button
+        onClick={onClick}
         data-type="dialogs"
         data-target={dataTarget}
         aria-label={capitalizeWords(status)}
@@ -272,7 +278,7 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
   );
 };
 
-export type ModalCloseType = { dataClose: string };
+export type ModalCloseType = { dataClose: string; onClick?: () => void };
 
 type ProceedToCheckoutButtonProps = ModalCloseType;
 
@@ -290,7 +296,7 @@ export const ProceedToCheckoutButton = ({
       onClick={onClick}
       aria-label="Proceed to checkout"
       data-close={dataClose}
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+      className="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
       <Security size={18} variant="Bold" />
       <span className="label-lg text-white">Proceed to checkout</span>

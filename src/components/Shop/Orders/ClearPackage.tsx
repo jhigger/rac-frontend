@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { DoneButton } from "~/components/Buttons/DoneButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";
@@ -13,20 +14,20 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   AndLastly,
-  NextButton,
   PackageTable,
   PaymentMethods,
   StepIndex,
   SubSectionTitle,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
-import { HighlightedInfo } from "../Requests/RequestDetails";
+import { HighlightedInfo, LabelWithTooltip } from "../Requests/RequestDetails";
 import {
-  DefaultBillingAddress,
+  BillingAddress,
   DetailSection,
   PackageConfirmation,
   ShipmentCostsSummary,
   ShippingMethod,
+  type DetailSectionProps,
 } from "./InitiateShipping";
 import { PickUpInstructions } from "./OrdersPanel";
 
@@ -100,12 +101,12 @@ const ClearPackage = () => {
               <BackButton onClick={back} />
             </div>
           )}
-          <NextButton text="Proceed" next={next} />
+          <DoneButton text="Proceed" onClick={next} />
         </div>
       )}
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
-          <NextButton text="Done" next={handleFinish} />
+          <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
     </div>
@@ -116,7 +117,7 @@ export const BillingDetailsConfirmation = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <DestinationShippingAddress />
-      <DefaultBillingAddress />
+      <BillingAddress />
     </div>
   );
 };
@@ -152,26 +153,26 @@ export const DestinationShippingAddress = () => {
   );
 };
 
-type AddressDetail = {
-  label: string;
-  value: string;
-  colSpanMobile?: "full" | number;
-  colSpanDesktop?: "full" | number;
-};
-
-export const AddressDetail = ({
+export const PurpleDetailSection = ({
   label,
   value,
   colSpanMobile = "full",
   colSpanDesktop = "full",
-}: AddressDetail) => {
+  tooltip = false,
+}: DetailSectionProps) => {
   return (
     <div
       className={`col-span-${colSpanMobile} flex flex-col gap-[5px] md:col-span-${colSpanDesktop}`}
     >
-      <span className="body-md h-[40px] max-w-[100px] text-primary-600">
-        {label}:
-      </span>
+      {tooltip ? (
+        <div className="text-primary-600">
+          <LabelWithTooltip label={label} />
+        </div>
+      ) : (
+        <span className="body-md h-[40px] max-w-[128px] text-primary-600">
+          {label}:
+        </span>
+      )}
       <span className="title-md md:title-lg font-medium text-primary-900">
         {value}
       </span>
@@ -190,31 +191,39 @@ const DestinationAddressDetails = () => {
         <hr className="mx-[10px] flex-grow border-dashed border-primary-900" />
       </div>
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
-        <AddressDetail label="First Name" value="Malibu" colSpanDesktop={4} />
-        <AddressDetail label="Last Name" value="SHedrack" colSpanDesktop={4} />
-        <AddressDetail
+        <PurpleDetailSection
+          label="First Name"
+          value="Malibu"
+          colSpanDesktop={4}
+        />
+        <PurpleDetailSection
+          label="Last Name"
+          value="SHedrack"
+          colSpanDesktop={4}
+        />
+        <PurpleDetailSection
           label="Street Address"
           value="No, 1osolo way, ikeja road, behind scaint merry"
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Country"
           value="Nigeria"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="State"
           value="Lagos"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="City"
           value="Ikeja"
           colSpanMobile={1}
           colSpanDesktop={2}
         />
-        <AddressDetail
+        <PurpleDetailSection
           label="Zip/postal Code"
           value="98765"
           colSpanMobile={1}
@@ -271,18 +280,18 @@ const PickUpAddress = () => {
         </div>
 
         {open && (
-          <div className="grid w-fit grid-cols-4 gap-[15px]">
+          <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
             <DetailSection
               label="Pick up Address"
               value="No, 1osolo way, ikeja road, behind scaint merry"
             />
-            <DetailSection label="Country" value="Nigeria" colSpanDesktop={1} />
-            <DetailSection label="State" value="Lagos" colSpanDesktop={1} />
-            <DetailSection label="City" value="Ikeja" colSpanDesktop={1} />
+            <DetailSection label="Country" value="Nigeria" colSpanDesktop={2} />
+            <DetailSection label="State" value="Lagos" colSpanDesktop={2} />
+            <DetailSection label="City" value="Ikeja" colSpanDesktop={2} />
             <DetailSection
               label="Zip/postal Code"
               value="98765"
-              colSpanDesktop={1}
+              colSpanDesktop={2}
             />
           </div>
         )}

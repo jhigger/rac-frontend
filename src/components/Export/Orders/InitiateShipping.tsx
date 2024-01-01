@@ -2,6 +2,7 @@ import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import SelectCityInput from "~/components/Forms/Inputs/SelectCityInput";
@@ -9,7 +10,7 @@ import SelectCountryInput from "~/components/Forms/Inputs/SelectCountryInput";
 import SelectCountryPhoneCodeInput from "~/components/Forms/Inputs/SelectCountryPhoneCodeInput";
 import SelectStateInput from "~/components/Forms/Inputs/SelectStateInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
-import { OrderItem } from "~/components/Import/Orders/ClearPackage";
+import { ImportOrderItem } from "~/components/Import/Orders/ClearPackage";
 import { PackageTable } from "~/components/Import/Orders/InitiateShipping";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
@@ -22,7 +23,6 @@ import {
   AndLastly,
   CustomBillingAddress,
   DefaultBillingAddressRadio,
-  NextButton,
   PaymentMethods,
   StepIndex,
   SubSectionTitle,
@@ -108,12 +108,12 @@ const InitiateShipping = () => {
             <BackButton onClick={back} />
           </div>
         )}
-        {currentStepIndex === 0 && <NextButton text="Proceed" next={next} />}
-        {currentStepIndex === 1 && <NextButton text="Confirm" next={next} />}
+        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
+        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
       </div>
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
-          <NextButton text="Done" next={handleFinish} />
+          <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
     </div>
@@ -130,7 +130,7 @@ const PackageConfirmation = () => {
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
       {orderPackages.map((item, i) => {
-        return <OrderItem key={item.orderId} index={i} />;
+        return <ImportOrderItem key={item.orderId} index={i} />;
       })}
     </div>
   );

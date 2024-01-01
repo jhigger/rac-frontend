@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { ArrowRight3, ExportCircle, Ship } from "iconsax-react";
+import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -30,8 +30,8 @@ import {
   type stepsContentType,
 } from "../Requests/RequestCheckout";
 import { LabelWithTooltip } from "../Requests/RequestDetails";
-import { type ModalCloseType } from "../Requests/RequestsPanel";
 import { PurpleDetailSection } from "./ClearPackage";
+import { InitiateShippingButton } from "../../Buttons/InitiateShippingButton";
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -162,31 +162,6 @@ export const InitiateShippingAgreement = ({
         </a>
       </span>
     </div>
-  );
-};
-
-type InitiateShippingButtonProps = Partial<ModalCloseType>;
-
-export const InitiateShippingButton = ({
-  dataClose,
-  onClick,
-}: InitiateShippingButtonProps) => {
-  const { handleActiveAction, handleTabChange } = useTabContext();
-
-  const handleClick = () => {
-    handleTabChange("orders");
-    handleActiveAction("initiate shipping");
-  };
-
-  return (
-    <button
-      onClick={onClick ?? handleClick}
-      data-close={dataClose}
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-    >
-      <Ship size="18" variant="Bold" />
-      <span className="label-lg text-white">Initiate Shipping</span>
-    </button>
   );
 };
 

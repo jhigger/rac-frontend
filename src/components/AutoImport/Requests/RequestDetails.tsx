@@ -6,8 +6,8 @@ import { DetailsInitiateShippingButton } from "~/components/Shop/Orders";
 import {
   BillingAddress,
   DetailSection,
-  InitiateShippingButton,
 } from "~/components/Shop/Orders/InitiateShipping";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import {
   requestStatuses,
   type RequestInformationProps,

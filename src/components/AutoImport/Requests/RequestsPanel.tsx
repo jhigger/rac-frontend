@@ -11,7 +11,7 @@ import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
-import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import {

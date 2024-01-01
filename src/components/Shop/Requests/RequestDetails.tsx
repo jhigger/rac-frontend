@@ -19,7 +19,7 @@ import {
 
 const RequestDetails = () => {
   const { requestPackages } = useShopContext();
-  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+  const { viewIndex, handleActiveAction } = useTabContext();
 
   if (viewIndex === null) return;
 
@@ -33,11 +33,6 @@ const RequestDetails = () => {
     handleActiveAction(null);
   };
 
-  const handleProceed = () => {
-    handleTabChange("requests");
-    handleActiveAction("proceed to checkout");
-  };
-
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
@@ -47,7 +42,6 @@ const RequestDetails = () => {
           date: requestPackage.requestLocalDate.toLocaleString(),
           status,
         }}
-        onClick={handleProceed}
       />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
@@ -111,20 +105,23 @@ const RequestDetails = () => {
 
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        {status === "Responded" && (
-          <RedProceedToCheckoutButton onClick={handleProceed} />
-        )}
+        {status === "Responded" && <RedProceedToCheckoutButton />}
       </div>
     </div>
   );
 };
 
-type ProceedButtonProps = { onClick: () => void };
+export const RedProceedToCheckoutButton = () => {
+  const { handleActiveAction, handleTabChange } = useTabContext();
 
-export const RedProceedToCheckoutButton = ({ onClick }: ProceedButtonProps) => {
+  const handleClick = () => {
+    handleTabChange("requests");
+    handleActiveAction("proceed to checkout");
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       aria-label="Proceed"
       className="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
@@ -410,14 +407,11 @@ export const requestStatuses = {
   "Not Responded": <NotRespondedStatus />,
 };
 
-export type RequestInformationProps = Partial<ProceedButtonProps> & {
+export type RequestInformationProps = {
   info: { date: string; status: (typeof REQUEST_STATUS)[number] };
 };
 
-export const RequestInformation = ({
-  info,
-  onClick,
-}: RequestInformationProps) => {
+export const RequestInformation = ({ info }: RequestInformationProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -443,9 +437,7 @@ export const RequestInformation = ({
                 />
               </div>
               <div className="flex w-max items-center md:col-span-4">
-                {info.status === "Responded" && (
-                  <ProceedToCheckoutButton onClick={onClick} />
-                )}
+                {info.status === "Responded" && <ProceedToCheckoutButton />}
               </div>
             </div>
           )}
@@ -461,7 +453,7 @@ export const ProceedToCheckoutButton = ({
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const handleClick = () => {
-    handleTabChange("orders");
+    handleTabChange("requests");
     handleActiveAction("proceed to checkout");
   };
 

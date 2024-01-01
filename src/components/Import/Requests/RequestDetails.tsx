@@ -2,10 +2,8 @@ import { BackButton } from "~/components/Buttons/BackButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
 import { DetailsInitiateShippingButton } from "~/components/Shop/Orders";
-import {
-  DetailSection,
-  InitiateShippingButton,
-} from "~/components/Shop/Orders/InitiateShipping";
+import { DetailSection } from "~/components/Shop/Orders/InitiateShipping";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import {
   HighlightedInfo,
   requestStatuses,
@@ -25,7 +23,7 @@ import useAccordion from "~/hooks/useAccordion";
 
 const RequestDetails = () => {
   const { requestPackages } = useImportContext();
-  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+  const { viewIndex, handleActiveAction } = useTabContext();
 
   if (viewIndex === null) return;
 
@@ -33,15 +31,10 @@ const RequestDetails = () => {
 
   if (!requestPackage) return;
 
-  const status = requestPackage.requestStatus
+  const status = requestPackage.requestStatus;
 
   const handleBack = () => {
     handleActiveAction(null);
-  };
-
-  const handleProceed = () => {
-    handleTabChange("orders");
-    handleActiveAction("initiate shipping");
   };
 
   return (
@@ -53,7 +46,6 @@ const RequestDetails = () => {
           date: requestPackage.requestLocalDate.toLocaleString(),
           status,
         }}
-        onClick={handleProceed}
       />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
@@ -64,9 +56,7 @@ const RequestDetails = () => {
       </div>
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        {status === "Responded" && (
-          <InitiateShippingButton onClick={handleProceed} />
-        )}
+        {status === "Responded" && <InitiateShippingButton />}
       </div>
     </div>
   );

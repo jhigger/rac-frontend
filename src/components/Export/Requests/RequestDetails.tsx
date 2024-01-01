@@ -5,14 +5,14 @@ import {
   PackageOrigin,
 } from "~/components/Import/Requests/RequestDetails";
 import LabelId from "~/components/LabelId";
-import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 
 const RequestDetails = () => {
   const { requestPackages } = useExportContext();
-  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+  const { viewIndex, handleActiveAction } = useTabContext();
 
   if (viewIndex === null) return;
 
@@ -26,11 +26,6 @@ const RequestDetails = () => {
     handleActiveAction(null);
   };
 
-  const handleProceed = () => {
-    handleTabChange("orders");
-    handleActiveAction("initiate shipping");
-  };
-
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Export Order Request Details" />
@@ -40,7 +35,6 @@ const RequestDetails = () => {
           date: requestPackage.requestLocalDate.toLocaleString(),
           status,
         }}
-        onClick={handleProceed}
       />
       <div className="flex flex-col gap-[10px]">
         <PackageOrigin />
@@ -51,9 +45,7 @@ const RequestDetails = () => {
       </div>
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        {status === "Responded" && (
-          <InitiateShippingButton onClick={handleProceed} />
-        )}
+        {status === "Responded" && <InitiateShippingButton />}
       </div>
     </div>
   );

@@ -16,10 +16,8 @@ import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import { type FilterCategoriesType } from "~/components/SearchBar";
-import {
-  DetailSection,
-  InitiateShippingButton,
-} from "~/components/Shop/Orders/InitiateShipping";
+import { DetailSection } from "~/components/Shop/Orders/InitiateShipping";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import {
   ImageColumn,
   PickUpInstructions,

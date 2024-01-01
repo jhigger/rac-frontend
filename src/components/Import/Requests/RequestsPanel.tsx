@@ -11,7 +11,7 @@ import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
-import { InitiateShippingButton } from "~/components/Shop/Orders/InitiateShipping";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import {
@@ -131,7 +131,7 @@ const RequestsTable = () => {
           <RequestStatus
             id={row.id}
             status={row.original.requestStatus}
-            onClick={() => onClick(Number(row.id))}
+            onClick={() => handleViewIndex(Number(row.id))}
           />
         ),
       }),
@@ -218,13 +218,6 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
       "Your request has been responded to. Kindly proceed to initiate shipping for your package.",
   };
 
-  const { handleActiveAction, handleTabChange } = useTabContext();
-
-  const onClick = () => {
-    handleTabChange("orders");
-    handleActiveAction("initiate shipping");
-  };
-
   return (
     <div
       id={modalId}
@@ -249,10 +242,7 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
             {status === "Responded" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
-                <InitiateShippingButton
-                  dataClose={dataClose}
-                  onClick={onClick}
-                />
+                <InitiateShippingButton dataClose={dataClose} />
               </div>
             )}
           </div>

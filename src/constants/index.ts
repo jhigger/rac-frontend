@@ -46,6 +46,8 @@ export const ORIGINS = [
   "China Warehouse (Guangzhou city)",
 ] as const;
 
+export const DESTINATIONS = ["Nigeria Warehouse (Lagos)"] as const;
+
 export const STORES = [
   "Amazon",
   "Ebay",
@@ -83,7 +85,5 @@ export const NOTIFICATION_TYPES = [
   "payment rejection",
   "shipment arrival",
 ] as const;
-
-export const AUTO_IMPORT_ORIGINS = ["Nigeria Warehouse (Lagos)"] as const;
 
 export const CAR_CONDITIONS = ["Drivable", "Not Drivable"] as const;

@@ -33,6 +33,7 @@ import {
   TooltipButton,
   type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
+import { ORIGINS } from "~/constants";
 import {
   useImportContext,
   type ImportRequestPackageType,
@@ -494,6 +495,14 @@ const SelectOrigin = () => {
             <option value="" disabled hidden>
               Select Origin
             </option>
+
+            {ORIGINS.map((origin) => {
+              return (
+                <option key={origin} value={origin}>
+                  {origin}
+                </option>
+              );
+            })}
           </>
         }
       />

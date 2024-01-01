@@ -14,6 +14,7 @@ import {
   TooltipButton,
 } from "~/components/Shop/Requests/RequestOrder";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
+import { DESTINATIONS } from "~/constants";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -494,12 +495,20 @@ export const SelectDestinationShippingAddress = () => {
     <div className="flex w-full items-center gap-[10px]">
       <SelectInput
         id={"destinationShippingAddress"}
-        label={"Select destination"}
+        label={"Destination/Shipping Address"}
         options={
           <>
             <option value="" disabled hidden>
-              Select Origin
+              Select Destination
             </option>
+
+            {DESTINATIONS.map((destination) => {
+              return (
+                <option key={destination} value={destination}>
+                  {destination}
+                </option>
+              );
+            })}
           </>
         }
       />

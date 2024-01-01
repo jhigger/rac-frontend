@@ -351,6 +351,7 @@ const SelectWarehouseOriginSection = () => {
               <option value="" disabled hidden>
                 Select Origin
               </option>
+
               {ORIGINS.map((origin) => {
                 return (
                   <option key={origin} value={origin}>

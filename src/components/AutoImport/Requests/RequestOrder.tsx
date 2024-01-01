@@ -47,7 +47,7 @@ import {
   TooltipButton,
   type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
-import { AUTO_IMPORT_ORIGINS, CAR_CONDITIONS } from "~/constants";
+import { CAR_CONDITIONS, ORIGINS } from "~/constants";
 import {
   useAutoImportContext,
   type AutoImportItemType,
@@ -265,7 +265,7 @@ const SelectWarehouseOriginSection = () => {
                 Select Origin
               </option>
 
-              {AUTO_IMPORT_ORIGINS.map((origin) => {
+              {ORIGINS.map((origin) => {
                 return (
                   <option key={origin} value={origin}>
                     {origin}

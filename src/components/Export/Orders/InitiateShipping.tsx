@@ -1,5 +1,6 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -40,7 +41,7 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 
 const InitiateShipping = () => {
-  const { handlePayNowAction } = useExportContext();
+  const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -66,8 +67,8 @@ const InitiateShipping = () => {
   };
 
   useEffect(() => {
-    handlePayNowAction({ action: next });
-  }, []);
+    setPortal(document.getElementById("payNowButton"));
+  }, [step]);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -116,21 +117,27 @@ const InitiateShipping = () => {
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
 };
 
 const PackageConfirmation = () => {
   const { orderPackages } = useExportContext();
+  const { viewIndex } = useTabContext();
 
-  if (!orderPackages) return;
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <PackageOrigin />
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderPackages.map((item, i) => {
-        return <ImportOrderItem key={item.orderId} index={i} />;
+      {orderPackage.items.map((item, i) => {
+        return <ImportOrderItem key={i} item={item} index={i} />;
       })}
     </div>
   );
@@ -258,10 +265,6 @@ const InitiateShippingStep = () => {
 const ShipmentCostsSummary = ({
   payButton = false,
 }: ShipmentCostsSummaryProps) => {
-  const { payNowAction } = useExportContext();
-
-  if (!payNowAction) return;
-
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -288,8 +291,11 @@ const ShipmentCostsSummary = ({
           </div>
         </div>
         {payButton && (
-          <div className="w-full self-center md:max-w-[500px]">
-            <PayNowButton onClick={payNowAction.action} />
+          <div
+            className="w-full self-center md:max-w-[500px]"
+            id="payNowButton"
+          >
+            {/* portal for pay now button */}
           </div>
         )}
       </div>

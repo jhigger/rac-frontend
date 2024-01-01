@@ -17,11 +17,9 @@ export type ImportContextType = {
   clearDrafts: () => void;
   draftItems: ImportDraftPackageType[];
   orderPackages: ImportOrderPackageType[];
-  payNowAction: { action: () => void } | null;
   requestPackages: ImportRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
-  handlePayNowAction: (action: ImportContextType["payNowAction"]) => void;
   handleRequests: () => void;
 };
 
@@ -81,8 +79,6 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   const [orderPackages, setOrderPackages] = useState<ImportOrderPackageType[]>(
     [],
   );
-  const [payNowAction, setPayNowAction] =
-    useState<ImportContextType["payNowAction"]>(null);
   const [requestPackages, setRequestPackages] = useState<
     ImportRequestPackageType[]
   >([]);
@@ -99,10 +95,6 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
     setOrderPackages(importOrders);
   };
 
-  const handlePayNowAction = (action: ImportContextType["payNowAction"]) => {
-    setPayNowAction(action);
-  };
-
   const handleRequests = () => {
     setRequestPackages(importRequests);
   };
@@ -117,12 +109,10 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   const value: ImportContextType = {
     clearDrafts,
     draftItems: draftPackages,
-    orderPackages: orderPackages,
-    payNowAction,
-    requestPackages: requestPackages,
+    orderPackages,
+    requestPackages,
     handleDrafts,
     handleOrders,
-    handlePayNowAction,
     handleRequests,
   };
 

@@ -1,5 +1,6 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -27,7 +28,7 @@ import { DestinationAddressDetails } from "../Requests/RequestOrder";
 import { AutoImportOrderItem, PackageTable } from "./InitiateShipping";
 
 const ClearPackage = () => {
-  const { handlePayNowAction } = useAutoImportContext();
+  const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -53,8 +54,8 @@ const ClearPackage = () => {
   };
 
   useEffect(() => {
-    handlePayNowAction({ action: next });
-  }, []);
+    setPortal(document.getElementById("payNowButton"));
+  }, [step]);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -102,6 +103,7 @@ const ClearPackage = () => {
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
 };
@@ -178,10 +180,6 @@ const Summary = () => {
 };
 
 const CostsSummary = () => {
-  const { payNowAction } = useAutoImportContext();
-
-  if (!payNowAction) return;
-
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -201,8 +199,8 @@ const CostsSummary = () => {
             </span>
           </div>
         </div>
-        <div className="w-[168px]">
-          <PayNowButton onClick={payNowAction.action} />
+        <div className="w-[168px]" id="payNowButton">
+          {/* portal for pay now button */}
         </div>
       </div>
     </div>

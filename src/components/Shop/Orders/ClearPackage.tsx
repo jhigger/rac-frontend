@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
+import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";
@@ -8,7 +10,6 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -32,7 +33,7 @@ import {
 import { PickUpInstructions } from "./OrdersPanel";
 
 const ClearPackage = () => {
-  const { handlePayNowAction } = useShopContext();
+  const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -58,8 +59,8 @@ const ClearPackage = () => {
   };
 
   useEffect(() => {
-    handlePayNowAction({ action: next });
-  }, []);
+    setPortal(document.getElementById("payNowButton"));
+  }, [step]);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -109,6 +110,7 @@ const ClearPackage = () => {
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
 };

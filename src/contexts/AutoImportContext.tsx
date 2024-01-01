@@ -17,11 +17,9 @@ export type AutoImportContextType = {
   clearDrafts: () => void;
   draftItems: AutoImportDraftPackageType[];
   orderPackages: AutoImportOrderPackageType[];
-  payNowAction: { action: () => void } | null;
   requestPackages: AutoImportRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
-  handlePayNowAction: (action: AutoImportContextType["payNowAction"]) => void;
   handleRequests: () => void;
 };
 
@@ -116,8 +114,6 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   const [orderPackages, setOrderPackages] = useState<
     AutoImportOrderPackageType[]
   >([]);
-  const [payNowAction, setPayNowAction] =
-    useState<AutoImportContextType["payNowAction"]>(null);
   const [requestPackages, setRequestPackages] = useState<
     AutoImportRequestPackageType[]
   >([]);
@@ -134,12 +130,6 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
     setOrderPackages(autoImportOrders);
   };
 
-  const handlePayNowAction = (
-    action: AutoImportContextType["payNowAction"],
-  ) => {
-    setPayNowAction(action);
-  };
-
   const handleRequests = () => {
     setRequestPackages(autoImportRequests);
   };
@@ -154,12 +144,10 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   const value: AutoImportContextType = {
     clearDrafts,
     draftItems: draftPackages,
-    orderPackages: orderPackages,
-    payNowAction,
-    requestPackages: requestPackages,
+    orderPackages,
+    requestPackages,
     handleDrafts,
     handleOrders,
-    handlePayNowAction,
     handleRequests,
   };
 

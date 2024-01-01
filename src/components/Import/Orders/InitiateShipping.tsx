@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -36,7 +37,7 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
 const InitiateShipping = () => {
-  const { handlePayNowAction } = useImportContext();
+  const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -62,8 +63,8 @@ const InitiateShipping = () => {
   };
 
   useEffect(() => {
-    handlePayNowAction({ action: next });
-  }, []);
+    setPortal(document.getElementById("payNowButton"));
+  }, [step]);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -115,6 +116,7 @@ const InitiateShipping = () => {
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
 };
@@ -286,8 +288,6 @@ const InitiateShippingStep = () => {
 const ShipmentCostsSummary = ({
   payButton = false,
 }: ShipmentCostsSummaryProps) => {
-  const { payNowAction } = useImportContext();
-
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -315,8 +315,11 @@ const ShipmentCostsSummary = ({
           </div>
         </div>
         {payButton && (
-          <div className="w-full self-center md:max-w-[500px]">
-            <PayNowButton onClick={() => payNowAction?.action()} />
+          <div
+            className="w-full self-center md:max-w-[500px]"
+            id="payNowButton"
+          >
+            {/* portal for pay now button */}
           </div>
         )}
       </div>

@@ -17,11 +17,9 @@ export type ExportContextType = {
   clearDrafts: () => void;
   draftItems: ExportDraftPackageType[];
   orderPackages: ExportOrderPackageType[];
-  payNowAction: { action: () => void } | null;
   requestPackages: ExportRequestPackageType[];
   handleDrafts: () => void;
   handleOrders: () => void;
-  handlePayNowAction: (action: ExportContextType["payNowAction"]) => void;
   handleRequests: () => void;
 };
 
@@ -81,8 +79,6 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   const [orderPackages, setOrderPackages] = useState<ExportOrderPackageType[]>(
     [],
   );
-  const [payNowAction, setPayNowAction] =
-    useState<ExportContextType["payNowAction"]>(null);
   const [requestPackages, setRequestPackages] = useState<
     ExportRequestPackageType[]
   >([]);
@@ -97,10 +93,6 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleOrders = () => {
     setOrderPackages(exportOrders);
-  };
-
-  const handlePayNowAction = (action: ExportContextType["payNowAction"]) => {
-    setPayNowAction(action);
   };
 
   const handleRequests = () => {
@@ -118,11 +110,9 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
     clearDrafts,
     draftItems: draftPackages,
     orderPackages: orderPackages,
-    payNowAction,
     requestPackages: requestPackages,
     handleDrafts,
     handleOrders,
-    handlePayNowAction,
     handleRequests,
   };
 

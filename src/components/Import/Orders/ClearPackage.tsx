@@ -1,5 +1,5 @@
 import { ArrowRight3 } from "iconsax-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -35,9 +35,10 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { PackageTable } from "./InitiateShipping";
+import { createPortal } from "react-dom";
 
 const ClearPackage = () => {
-  const { handlePayNowAction } = useImportContext();
+  const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -63,8 +64,8 @@ const ClearPackage = () => {
   };
 
   useEffect(() => {
-    handlePayNowAction({ action: next });
-  }, []);
+    setPortal(document.getElementById("payNowButton"));
+  }, [step]);
 
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -114,6 +115,7 @@ const ClearPackage = () => {
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
 };
@@ -220,10 +222,6 @@ const ClearPackageStep = () => {
 const ShipmentCostsSummary = ({
   payButton = false,
 }: ShipmentCostsSummaryProps) => {
-  const { payNowAction } = useImportContext();
-
-  if (!payNowAction) return;
-
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary />
@@ -250,8 +248,11 @@ const ShipmentCostsSummary = ({
           </div>
         </div>
         {payButton && (
-          <div className="w-full self-center md:max-w-[500px]">
-            <PayNowButton onClick={payNowAction.action} />
+          <div
+            className="w-full self-center md:max-w-[500px]"
+            id="payNowButton"
+          >
+            {/* portal for pay now button */}
           </div>
         )}
       </div>

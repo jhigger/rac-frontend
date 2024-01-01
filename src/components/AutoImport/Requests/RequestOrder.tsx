@@ -52,6 +52,7 @@ import {
   useAutoImportContext,
   type AutoImportItemType,
   type AutoImportRequestPackageType,
+  type PickupDetailsType,
 } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -513,7 +514,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
     useFormContext<
       Pick<
         NonNullable<
-          AutoImportInputs["requestPackages"]["items"][number]["additionalDetails"]
+          AutoImportInputs["requestPackages"]["items"][number]["pickupDetails"]
         >,
         "country" | "state" | "city"
       >
@@ -544,20 +545,41 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
         <div className="flex flex-col flex-wrap items-center gap-[30px] px-[10px] md:flex-row md:pl-[34px]">
           <div className="flex w-full flex-col gap-[40px] py-[10px]">
             <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-              <div className="col-span-full md:col-span-4">
+              <div className="col-span-full md:col-span-6">
                 <TextInput
-                  id={"contactName"}
-                  label={"Pick up Contact Name"}
+                  id={"contactFirstName"}
+                  label={"Pick up Contact First Name"}
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.contactName`,
+                    `requestPackages.items.${index}.pickupDetails.contactFirstName`,
                   )}
                 />
               </div>
 
-              <div className="col-span-full md:col-span-4">
+              <div className="col-span-full md:col-span-6">
+                <TextInput
+                  id={"contactLastName"}
+                  label={"Pick up Contact Last Name"}
+                  {...register(
+                    `requestPackages.items.${index}.pickupDetails.contactLastName`,
+                  )}
+                />
+              </div>
+
+              <div className="col-span-full md:col-span-5">
+                <TextInput
+                  id={`pickUpEmail-${index}`}
+                  label="Pick up Contact Email Address"
+                  type="email"
+                  {...register(
+                    `requestPackages.items.${index}.pickupDetails.contactEmail`,
+                  )}
+                />
+              </div>
+
+              <div className="col-span-full md:col-span-3">
                 <SelectCountryPhoneCodeInput
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.countryCode`,
+                    `requestPackages.items.${index}.pickupDetails.countryCode`,
                   )}
                 />
               </div>
@@ -568,18 +590,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   label="Contact's Phone Number"
                   type="tel"
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.phoneNumber`,
-                  )}
-                />
-              </div>
-
-              <div className="col-span-full">
-                <TextInput
-                  id={`pickUpEmail-${index}`}
-                  label="Pick up Contact Email Address"
-                  type="email"
-                  {...register(
-                    `requestPackages.items.${index}.additionalDetails.contactEmail`,
+                    `requestPackages.items.${index}.pickupDetails.phoneNumber`,
                   )}
                 />
               </div>
@@ -589,7 +600,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={`pickUpAddress-${index}`}
                   label={"Pick up Address"}
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.contactAddress`,
+                    `requestPackages.items.${index}.pickupDetails.contactAddress`,
                   )}
                 />
               </div>
@@ -597,7 +608,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
               <div className="col-span-full md:col-span-4">
                 <SelectCountryInput
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.country`,
+                    `requestPackages.items.${index}.pickupDetails.country`,
                   )}
                 />
               </div>
@@ -606,7 +617,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <SelectStateInput
                   states={states}
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.state`,
+                    `requestPackages.items.${index}.pickupDetails.state`,
                   )}
                 />
               </div>
@@ -615,7 +626,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <SelectCityInput
                   cities={cities}
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.city`,
+                    `requestPackages.items.${index}.pickupDetails.city`,
                   )}
                 />
               </div>
@@ -627,7 +638,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   type="date"
                   min={new Date().toLocaleDateString()}
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.pickUpDate`,
+                    `requestPackages.items.${index}.pickupDetails.pickUpDate`,
                   )}
                 />
               </div>
@@ -637,7 +648,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={"locationType"}
                   label={"Pickup Location Type"}
                   {...register(
-                    `requestPackages.items.${index}.additionalDetails.locationType`,
+                    `requestPackages.items.${index}.pickupDetails.locationType`,
                   )}
                 />
               </div>
@@ -675,7 +686,7 @@ const CustomBillingAddress = () => {
     useFormContext<
       Pick<
         NonNullable<
-          AutoImportInputs["requestPackages"]["items"][number]["additionalDetails"]
+          AutoImportInputs["requestPackages"]["items"][number]["pickupDetails"]
         >,
         "country" | "state" | "city"
       >
@@ -793,7 +804,7 @@ const FillInShippingAddress = () => {
     useFormContext<
       Pick<
         NonNullable<
-          AutoImportInputs["requestPackages"]["items"][number]["additionalDetails"]
+          AutoImportInputs["requestPackages"]["items"][number]["pickupDetails"]
         >,
         "country" | "state" | "city"
       >
@@ -983,7 +994,9 @@ export const DestinationAddressDetails = () => {
   );
 };
 
-const PickUpDetails = () => {
+type PickUpDetailsProps = { pickupDetails: PickupDetailsType };
+
+const PickUpDetails = ({ pickupDetails }: PickUpDetailsProps) => {
   return (
     <>
       <span className="title-md md:title-lg text-primary-900">
@@ -993,61 +1006,61 @@ const PickUpDetails = () => {
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10 [&>*]:text-primary-900">
         <PurpleDetailSection
           label="Contact's First Name"
-          value="Malibu"
+          value={pickupDetails.contactFirstName}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Contact's Last Name"
-          value="SHedrack"
+          value={pickupDetails.contactLastName}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Contact Number"
-          value="+234 803 456 7845"
+          value={`${pickupDetails.countryCode} ${pickupDetails.phoneNumber}`}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Contact Email"
-          value="Malibushdrack@gmail.com"
+          value={pickupDetails.contactEmail}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Street Address"
-          value="No, 1osolo way, ikeja road, behind scaint merry"
+          value={pickupDetails.contactAddress}
         />
         <PurpleDetailSection
           label="Location of the Car (Country)"
-          value="Turkey"
+          value={pickupDetails.country}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="Location of the Car (State)"
-          value="Istanbul"
+          value={pickupDetails.state}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="Location of the Car (City)"
-          value="Cyprusic"
+          value={pickupDetails.city}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="Zip/postal Code"
-          value="98765"
+          value={pickupDetails.zipPostalCode}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
 
         <PurpleDetailSection
           label="Pick up Date"
-          value="10/02/2023"
+          value={pickupDetails.pickUpDate}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Location Type"
-          value="Mosque"
+          value={pickupDetails.locationType}
           colSpanDesktop={4}
         />
       </div>
@@ -1071,10 +1084,10 @@ export const AutoImportOrderItem = ({
           <AccordionButton {...{ open, toggle }} />
         </div>
         {open && <AutoImportOrderItemDetails item={item} />}
-        {index % 2 === 0 && (
+        {item.pickupDetails && (
           <>
             <hr className="block w-full border-dashed border-primary-600" />
-            <PickUpDetails />
+            <PickUpDetails pickupDetails={item.pickupDetails} />
           </>
         )}
       </div>
@@ -1084,65 +1097,66 @@ export const AutoImportOrderItem = ({
 
 type AutoImportOrderItemDetailsProps = { item: AutoImportItemType };
 
-export const AutoImportOrderItemDetails =
-  ({} // item, // todo: change hardcoded values to item prop data
-  : AutoImportOrderItemDetailsProps) => {
-    return (
-      <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-12">
-        <DetailSection
-          label="Car Model"
-          value="Designer Bags"
-          colSpanDesktop={5}
-        />
-        <DetailSection label="Model" value="Designer Bags" colSpanDesktop={5} />
-        <DetailSection
-          label="Production Year"
-          value="2022"
-          colSpanDesktop={2}
-        />
-        <DetailSection
-          label="Car Value"
-          value="$560,000,000.00"
-          colSpanDesktop={5}
-        />
-        <DetailSection
-          label="Car Condition"
-          value="Drivable"
-          colSpanDesktop={3}
-        />
-        <DetailSection
-          label="Car Color"
-          value="Blue"
-          colSpanMobile={1}
-          colSpanDesktop={2}
-        />
-        <DetailSection
-          label="Mileage"
-          value="77676km"
-          colSpanMobile={1}
-          colSpanDesktop={2}
-        />
-        <DetailSection
-          label="Car Picture"
-          value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-          image
-          colSpanDesktop={5}
-        />
-        <DetailSection
-          label="Copy of the Car Title"
-          value="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-          image
-          colSpanDesktop={5}
-        />
-        <DetailSection
-          label="Car Description"
-          value="Additonvnv ghss jgsjvsn"
-        />
-        <DetailSection label="Color" value="Blue" colSpanDesktop={3} />
-        <DetailSection label="Stripes" value="5 inches" colSpanDesktop={3} />
-      </div>
-    );
-  };
+export const AutoImportOrderItemDetails = ({
+  item,
+}: AutoImportOrderItemDetailsProps) => {
+  return (
+    <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-12">
+      <DetailSection label="Car Brand" value={item.brand} colSpanDesktop={5} />
+      <DetailSection label="Model" value={item.model} colSpanDesktop={5} />
+      <DetailSection
+        label="Production Year"
+        value={item.productionYear}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Car Value"
+        value={`$${item.value}`}
+        colSpanDesktop={5}
+      />
+      <DetailSection
+        label="Car Condition"
+        value={item.condition}
+        colSpanDesktop={3}
+      />
+      <DetailSection
+        label="Car Color"
+        value={item.color}
+        colSpanMobile={1}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Mileage"
+        value={`${item.mileage}km`}
+        colSpanMobile={1}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Car Picture"
+        value={item.image}
+        image
+        colSpanDesktop={5}
+      />
+      <DetailSection
+        label="Copy of the Car Title"
+        value={item.carTitleCopy}
+        image
+        colSpanDesktop={5}
+      />
+      <DetailSection label="Car Description" value={item.description} />
+
+      {item.properties?.map((property) => {
+        return (
+          <DetailSection
+            label={property.label}
+            value={property.value}
+            colSpanDesktop={3}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 export const PackageOrigin = () => {
   const { open, toggle } = useAccordion(true);

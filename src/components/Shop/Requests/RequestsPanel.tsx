@@ -195,7 +195,7 @@ export type RequestStatusProps = {
   onClick: () => void;
 };
 
-export const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
+const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);

@@ -281,13 +281,6 @@ const OrdersTable = () => {
 };
 
 const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
-  const capitalizedWords = status
-    .split(" ")
-    .map((word) => {
-      return word.slice(0, 1).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
-
   useEffect(() => {
     tailmater();
   }, []);
@@ -313,10 +306,10 @@ const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
       <button
         data-type="dialogs"
         data-target={dataTarget}
-        aria-label={capitalizedWords}
-        className={`btn relative w-full rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
+        aria-label={capitalizeWords(status)}
+        className={`btn title-sm relative w-[150px] rounded-[10px] px-[10px] py-[5px] text-center font-medium ${buttonStyle}`}
       >
-        {capitalizedWords}
+        {capitalizeWords(status)}
       </button>
       {createPortal(
         <ShippingStatusModal {...{ modalId, status }} />,

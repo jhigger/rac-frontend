@@ -5,13 +5,16 @@ import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
+import { CancelButton } from "~/components/Buttons/CancelButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
+import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
+import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { MoreButton } from "~/components/Buttons/MoreButton";
+import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
   DetailSection,
   InitiateShippingButton,
@@ -25,13 +28,10 @@ import {
   type ShippingStatusProps,
   type SomeStatusType,
 } from "~/components/Shop/Orders/OrdersPanel";
-import { CancelButton } from "~/components/Buttons/CancelButton";
-import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import {
   RequestFormHeader,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { type FilterCategoriesType } from "~/components/SearchBar";
 import { SHIPPING_STATUS } from "~/constants";
 import {
   useExportContext,
@@ -271,13 +271,6 @@ const OrdersTable = () => {
 };
 
 const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
-  const capitalizedWords = status
-    .split(" ")
-    .map((word) => {
-      return word.slice(0, 1).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
-
   useEffect(() => {
     tailmater();
   }, []);
@@ -303,10 +296,10 @@ const ShippingStatus = ({ id, status }: ShippingStatusProps) => {
       <button
         data-type="dialogs"
         data-target={dataTarget}
-        aria-label={capitalizedWords}
-        className={`btn relative w-full rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
+        aria-label={capitalizeWords(status)}
+        className={`btn title-sm relative w-[150px] rounded-[10px] px-[10px] py-[5px] text-center font-medium ${buttonStyle}`}
       >
-        {capitalizedWords}
+        {capitalizeWords(status)}
       </button>
       {createPortal(
         <ShippingStatusModal {...{ modalId, status }} />,

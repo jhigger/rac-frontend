@@ -48,11 +48,12 @@ export type AutoImportItemType = {
     label: string;
     value: string;
   }[];
-  additionalDetails?: AdditionalDetails;
+  pickupDetails?: PickupDetailsType;
 };
 
-export type AdditionalDetails = {
-  contactName: string;
+export type PickupDetailsType = {
+  contactFirstName: string;
+  contactLastName: string;
   countryCode: string;
   phoneNumber: string;
   contactEmail: string;
@@ -60,6 +61,7 @@ export type AdditionalDetails = {
   country: string;
   state: string;
   city: string;
+  zipPostalCode: string;
   pickUpDate: string;
   locationType: string;
 };

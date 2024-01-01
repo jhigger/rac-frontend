@@ -26,6 +26,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
+import { capitalizeWords } from "~/Utils";
 
 const AutoImportRequestsPanel = () => {
   const { requestPackages } = useAutoImportContext();
@@ -173,14 +174,7 @@ const RequestsTable = () => {
   );
 };
 
-const RequestStatus = ({ id, status }: RequestStatusProps) => {
-  const capitalizedWords = status
-    .split(" ")
-    .map((word) => {
-      return word.slice(0, 1).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
-
+const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);
@@ -198,12 +192,13 @@ const RequestStatus = ({ id, status }: RequestStatusProps) => {
   return (
     <>
       <button
+        onClick={onClick}
         data-type="dialogs"
         data-target={dataTarget}
-        aria-label={capitalizedWords}
-        className={`btn relative w-full rounded-[10px] px-[10px] py-[5px] text-center ${buttonStyle}`}
+        aria-label={capitalizeWords(status)}
+        className={`btn title-sm relative w-[150px] rounded-[10px] px-[10px] py-[5px] text-center font-medium ${buttonStyle}`}
       >
-        {capitalizedWords}
+        {capitalizeWords(status)}
       </button>
       {createPortal(
         <RequestStatusModal {...{ modalId, status }} />,

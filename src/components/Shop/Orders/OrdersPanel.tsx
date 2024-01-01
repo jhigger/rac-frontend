@@ -396,11 +396,7 @@ export type ShippingStatusProps = {
   onClick?: () => void;
 };
 
-export const ShippingStatus = ({
-  id,
-  status,
-  onClick,
-}: ShippingStatusProps) => {
+const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);

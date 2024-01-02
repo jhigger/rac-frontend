@@ -16,6 +16,7 @@ import { PackageTable } from "~/components/Import/Orders/InitiateShipping";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
+  DetailSection,
   ShippingMethod,
   Summary,
   type ShipmentCostsSummaryProps,
@@ -29,7 +30,10 @@ import {
   SubSectionTitle,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
-import { PackageOrigin } from "~/components/Shop/Requests/RequestDetails";
+import {
+  HighlightedInfo,
+  PackageOrigin,
+} from "~/components/Shop/Requests/RequestDetails";
 import {
   SectionContentLayout,
   SectionHeader,
@@ -134,7 +138,17 @@ const PackageConfirmation = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <PackageOrigin />
+      <SectionHeader title="Package Details" />
+      <PackageOrigin>
+        <HighlightedInfo
+          text="Your Items will be delivered here after we help you purchase your them
+        and they will be shipped from here to our pickup office in Nigeria"
+        />
+        <DetailSection
+          label="Country of Purchase"
+          value={orderPackage.originWarehouse}
+        />
+      </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
       {orderPackage.items.map((item, i) => {
         return <ImportOrderItem key={i} item={item} index={i} />;

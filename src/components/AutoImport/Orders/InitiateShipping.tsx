@@ -11,6 +11,7 @@ import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   BillingAddress,
+  DetailSection,
   type ShippingMethodProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
@@ -38,9 +39,13 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   AutoImportOrderItemDetails,
   DestinationAddressDetails,
-  PackageOrigin,
+  OriginWarehouseAddress,
   PickupDetails,
 } from "../Requests/RequestOrder";
+import {
+  HighlightedInfo,
+  PackageOrigin,
+} from "~/components/Shop/Requests/RequestDetails";
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -137,7 +142,15 @@ const Step1 = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <PackageOrigin />
+      <SectionHeader title="Package Details" />
+      <PackageOrigin>
+        <HighlightedInfo text="From the details you provided, your car(s) will be delivered and shipped from here to our your selected 'destination' in Nigeria" />
+        <DetailSection
+          label="Origin warehouse"
+          value={orderPackage.originWarehouse}
+        />
+        <OriginWarehouseAddress />
+      </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
       {orderPackage.items.map((item, i) => {
         return <AutoImportOrderItem key={i} item={item} index={i} />;

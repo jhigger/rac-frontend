@@ -8,6 +8,7 @@ import {
 import {
   type CONDITIONS,
   type ORDER_STATUS,
+  type ORIGINS,
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
@@ -87,6 +88,7 @@ export type AutoImportOrderPackageType = {
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shippingCost: number;
+  originWarehouse: (typeof ORIGINS)[number];
   items: AutoImportItemType[];
 };
 
@@ -94,6 +96,7 @@ export type AutoImportRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestLocalDate: string;
+  originWarehouse: (typeof ORIGINS)[number];
   items: AutoImportItemType[];
   shipmentDetails: ShipmentDetailsType;
   billingDetails: BillingDetailsType;

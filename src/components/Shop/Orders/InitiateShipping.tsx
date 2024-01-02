@@ -20,6 +20,7 @@ import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import { InitiateShippingButton } from "../../Buttons/InitiateShippingButton";
 import {
   AndLastly,
   Cost,
@@ -29,9 +30,8 @@ import {
   TotalCost,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
-import { LabelWithTooltip } from "../Requests/RequestDetails";
+import { LabelWithTooltip, PackageOrigin } from "../Requests/RequestDetails";
 import { PurpleDetailSection } from "./ClearPackage";
-import { InitiateShippingButton } from "../../Buttons/InitiateShippingButton";
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -177,7 +177,13 @@ export const PackageConfirmation = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <PackageOrigin />
+      <SectionHeader title="Package Details" />
+      <PackageOrigin>
+        <DetailSection
+          label="Country of Purchase"
+          value={orderPackage.originWarehouse}
+        />
+      </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
       {orderPackage.items.map((item, i) => {
         return <ShopOrderItem key={i} item={item} index={i} />;
@@ -342,36 +348,6 @@ const ShopOrderItemDetails = ({ item }: ShopOrderItemDetailsProps) => {
           />
         );
       })}
-    </>
-  );
-};
-
-const PackageOrigin = () => {
-  const { open, toggle } = useAccordion(true);
-
-  return (
-    <>
-      <SectionHeader title="Package Details" />
-      <SectionContentLayout>
-        <div className="flex w-full flex-col gap-[30px]">
-          <div className="flex w-full items-center justify-between">
-            <h4 className="title-md md:title-lg font-medium text-gray-700">
-              Package Origin
-            </h4>
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-          {open && (
-            <div className="flex flex-col gap-[5px]">
-              <span className="body-md max-w-[100px] text-gray-700">
-                Country of Purchase:
-              </span>
-              <span className="title-md md:title-lg font-medium text-neutral-900">
-                United States (Houston - warehouse)
-              </span>
-            </div>
-          )}
-        </div>
-      </SectionContentLayout>
     </>
   );
 };

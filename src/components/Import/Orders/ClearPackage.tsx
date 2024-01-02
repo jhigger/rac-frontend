@@ -1,5 +1,6 @@
 import { ArrowRight3 } from "iconsax-react";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -22,7 +23,10 @@ import {
   SubSectionTitle,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
-import { PackageOrigin } from "~/components/Shop/Requests/RequestDetails";
+import {
+  HighlightedInfo,
+  PackageOrigin,
+} from "~/components/Shop/Requests/RequestDetails";
 import {
   SectionContentLayout,
   SectionHeader,
@@ -35,7 +39,6 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { PackageTable } from "./InitiateShipping";
-import { createPortal } from "react-dom";
 
 const ClearPackage = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -133,7 +136,17 @@ const PackageConfirmation = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <PackageOrigin />
+      <SectionHeader title="Package Details" />
+      <PackageOrigin>
+        <HighlightedInfo
+          text="Your Items will be delivered here after we help you purchase your them
+        and they will be shipped from here to our pickup office in Nigeria"
+        />
+        <DetailSection
+          label="Country of Purchase"
+          value={orderPackage.originWarehouse}
+        />
+      </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
       {orderPackage.items.map((item, i) => {
         return <ImportOrderItem key={i} item={item} index={i} />;

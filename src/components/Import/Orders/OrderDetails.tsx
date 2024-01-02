@@ -19,7 +19,10 @@ import {
   BillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
-import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
+import {
+  HighlightedInfo,
+  PackageOrigin,
+} from "~/components/Shop/Requests/RequestDetails";
 import {
   RequestFormHeader,
   SectionContentLayout,
@@ -64,7 +67,13 @@ const OrderDetails = () => {
       />
 
       <div className="flex flex-col gap-[10px]">
-        <PackageOrigin />
+        <SectionHeader title="Package Details" />
+        <PackageOrigin>
+          <DetailSection
+            label="Origin warehouse"
+            value={orderPackage.originWarehouse}
+          />
+        </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
           return <ImportOrderItem key={i} item={item} index={i} />;
@@ -100,36 +109,6 @@ const OrderDetails = () => {
         <BackButton onClick={handleBack} />
       </div>
     </div>
-  );
-};
-
-const PackageOrigin = () => {
-  const { open, toggle } = useAccordion(true);
-
-  return (
-    <>
-      <SectionHeader title="Package Details" />
-      <SectionContentLayout>
-        <div className="flex w-full flex-col gap-[30px]">
-          <div className="flex w-full items-center justify-between">
-            <h4 className="title-md md:title-lg text-gray-700">
-              Package Origin
-            </h4>
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-          {open && (
-            <>
-              <div className="flex flex-col gap-[5px]">
-                <DetailSection
-                  label="Origin warehouse"
-                  value="Nigeria (Lagos - warehouse)"
-                />
-              </div>
-            </>
-          )}
-        </div>
-      </SectionContentLayout>
-    </>
   );
 };
 

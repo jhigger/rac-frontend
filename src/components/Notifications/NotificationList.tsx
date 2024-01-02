@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import { ExportCircle } from "iconsax-react";
 import { useEffect } from "react";
+import { PrimaryBackButton } from "~/components/Buttons/PrimaryBackButton";
 import { type NOTIFICATION_TYPES } from "~/constants";
 import { type AutoImportOrderPackageType } from "~/contexts/AutoImportContext";
-import { type ExportOrderPackageType } from "~/contexts/ExportContext";
 import { type ImportOrderPackageType } from "~/contexts/ImportContext";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
@@ -13,9 +13,8 @@ import {
 import { type ShopOrderPackageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
-import { PrimaryBackButton } from "~/components/Buttons/PrimaryBackButton";
-import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
+import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import CongratulationImage from "../CongratulationImage";
 import AccordionButton from "../Forms/AccordionButton";
 import OrderTrackingId from "../OrderTrackingId";
@@ -130,7 +129,6 @@ export type NotificationListItemProps = {
 type OrderType =
   | ShopOrderPackageType
   | ImportOrderPackageType
-  | ExportOrderPackageType
   | AutoImportOrderPackageType;
 
 type NotificationMessagesType = Record<

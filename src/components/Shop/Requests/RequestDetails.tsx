@@ -1,4 +1,5 @@
 import { ConvertCard, Security, Wallet } from "iconsax-react";
+import { type ReactNode } from "react";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
 import LabelId from "~/components/LabelId";
@@ -36,15 +37,28 @@ const RequestDetails = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
+
       <LabelId label="Request ID" id={requestPackage.requestId} />
+
       <RequestInformation
         info={{
           date: requestPackage.requestLocalDate.toLocaleString(),
           status,
         }}
       />
+
       <div className="flex flex-col gap-[10px]">
-        <PackageOrigin />
+        <SectionHeader title="Package Details" />
+        <PackageOrigin>
+          <HighlightedInfo
+            text="Your Items will be delivered here after we help you purchase your them
+        and they will be shipped from here to our pickup office in Nigeria"
+          />
+          <DetailSection
+            label="Country of Purchase"
+            value={requestPackage.originWarehouse}
+          />
+        </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
           return (
@@ -360,35 +374,21 @@ export const LabelWithTooltip = ({ label }: LabelWithTooltipProps) => {
   );
 };
 
-export const PackageOrigin = () => {
+type PackageOriginProps = { children: ReactNode };
+
+export const PackageOrigin = ({ children }: PackageOriginProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
-    <>
-      <SectionHeader title="Package Details" />
-      <SectionContentLayout>
-        <div className="flex w-full flex-col gap-[30px]">
-          <div className="flex w-full items-center justify-between">
-            <h4 className="title-md md:title-lg text-gray-700">
-              Package Origin
-            </h4>
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-          {open && (
-            <>
-              <HighlightedInfo
-                text="Your Items will be delivered here after we help you purchase your them
-        and they will be shipped from here to our pickup office in Nigeria"
-              />
-              <DetailSection
-                label="Country of Purchase"
-                value="United States (Houston - warehouse)"
-              />
-            </>
-          )}
+    <SectionContentLayout>
+      <div className="flex w-full flex-col gap-[30px]">
+        <div className="flex w-full items-center justify-between">
+          <h4 className="title-md md:title-lg text-gray-700">Package Origin</h4>
+          <AccordionButton {...{ open, toggle }} />
         </div>
-      </SectionContentLayout>
-    </>
+        {open && <>{children}</>}
+      </div>
+    </SectionContentLayout>
   );
 };
 

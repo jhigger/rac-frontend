@@ -22,7 +22,12 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 import AccordionButton from "../../Forms/AccordionButton";
-import { PackageOrigin, ShopRequestItem } from "./RequestDetails";
+import { DetailSection } from "../Orders/InitiateShipping";
+import {
+  HighlightedInfo,
+  PackageOrigin,
+  ShopRequestItem,
+} from "./RequestDetails";
 import {
   ChangeCurrencyButton,
   RequestFormHeader,
@@ -113,7 +118,17 @@ const PackageConfirmation = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <PackageOrigin />
+      <SectionHeader title="Package Details" />
+      <PackageOrigin>
+        <HighlightedInfo
+          text="Your Items will be delivered here after we help you purchase your them
+        and they will be shipped from here to our pickup office in Nigeria"
+        />
+        <DetailSection
+          label="Country of Purchase"
+          value={requestPackage.originWarehouse}
+        />
+      </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
       {requestPackage.items.map((item, i) => {
         return (

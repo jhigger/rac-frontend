@@ -37,7 +37,10 @@ import {
   StepIndex,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
-import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
+import {
+  HighlightedInfo,
+  PackageOrigin,
+} from "~/components/Shop/Requests/RequestDetails";
 import {
   AddButton,
   AddPropertiesSection,
@@ -64,6 +67,7 @@ export const emptyValue: AutoImportRequestPackageType = {
   requestId: "",
   requestStatus: "Not Responded",
   requestLocalDate: new Date().toLocaleString(),
+  originWarehouse: "US Warehouse (Richmond Texas)",
   items: [
     {
       brand: "",
@@ -897,7 +901,15 @@ export const Step3 = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <PackageOrigin />
+      <SectionHeader title="Package Details" />
+      <PackageOrigin>
+        <HighlightedInfo text="From the details you provided, your car(s) will be delivered and shipped from here to our your selected 'destination' in Nigeria" />
+        <DetailSection
+          label="Origin warehouse"
+          value={draftPackage.originWarehouse}
+        />
+        <OriginWarehouseAddress />
+      </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
       {draftPackage.items.map((item, i) => {
         return <AutoImportOrderItem key={i} item={item} index={i} />;
@@ -1152,36 +1164,6 @@ export const AutoImportOrderItemDetails = ({
         );
       })}
     </div>
-  );
-};
-
-export const PackageOrigin = () => {
-  const { open, toggle } = useAccordion(true);
-
-  return (
-    <>
-      <SectionHeader title="Package Details" />
-      <SectionContentLayout>
-        <div className="flex w-full flex-col gap-[30px]">
-          <div className="flex w-full items-center justify-between">
-            <h4 className="title-md md:title-lg text-gray-700">
-              Package Origin
-            </h4>
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-          {open && (
-            <>
-              <HighlightedInfo text="From the details you provided, your car(s) will be delivered and shipped from here to our your selected 'destination' in Nigeria" />
-              <DetailSection
-                label="Origin warehouse"
-                value=" United States (Houston - warehouse)"
-              />
-              <OriginWarehouseAddress />
-            </>
-          )}
-        </div>
-      </SectionContentLayout>
-    </>
   );
 };
 

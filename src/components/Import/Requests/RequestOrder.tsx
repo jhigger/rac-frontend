@@ -53,7 +53,7 @@ export const emptyValue: ImportRequestPackageType = {
   requestId: "",
   requestStatus: "Not Responded",
   requestLocalDate: new Date().toLocaleString(),
-  origin: "China Warehouse (Guangzhou city)",
+  originWarehouse: "China Warehouse (Guangzhou city)",
   deliveryStatus: "All delivered",
   items: [
     {
@@ -684,7 +684,7 @@ const SelectOrigin = () => {
             })}
           </>
         }
-        {...register("requestPackage.origin")}
+        {...register("requestPackage.originWarehouse")}
       />
       <TooltipButton />
     </div>

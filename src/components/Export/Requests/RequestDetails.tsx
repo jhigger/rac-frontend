@@ -1,12 +1,17 @@
 import { BackButton } from "~/components/Buttons/BackButton";
-import { ImportOrderItem } from "~/components/Import/Orders/ClearPackage";
-import {
-  OrderInformation,
-  PackageOrigin,
-} from "~/components/Import/Requests/RequestDetails";
-import LabelId from "~/components/LabelId";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
-import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
+import { ImportOrderItem } from "~/components/Import/Orders/ClearPackage";
+import { OrderInformation } from "~/components/Import/Requests/RequestDetails";
+import LabelId from "~/components/LabelId";
+import { DetailSection } from "~/components/Shop/Orders/InitiateShipping";
+import {
+  HighlightedInfo,
+  PackageOrigin,
+} from "~/components/Shop/Requests/RequestDetails";
+import {
+  RequestFormHeader,
+  SectionHeader,
+} from "~/components/Shop/Requests/RequestOrder";
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 
@@ -37,7 +42,16 @@ const RequestDetails = () => {
         }}
       />
       <div className="flex flex-col gap-[10px]">
-        <PackageOrigin />
+        <SectionHeader title="Package Details" />
+        <PackageOrigin>
+          <HighlightedInfo text="This is RAC Facility you claim to have dropped the package to" />
+          <div className="flex flex-col gap-[5px]">
+            <DetailSection
+              label="Origin warehouse"
+              value={requestPackage.originWarehouse}
+            />
+          </div>
+        </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
           return <ImportOrderItem key={i} item={item} index={i} />;

@@ -17,7 +17,7 @@ import {
   SortedOutStatus,
 } from ".";
 import AccordionButton from "../../Forms/AccordionButton";
-import { PackageOrigin } from "../Requests/RequestDetails";
+import { HighlightedInfo, PackageOrigin } from "../Requests/RequestDetails";
 import {
   RequestFormHeader,
   SectionContentLayout,
@@ -61,7 +61,17 @@ const OrderDetails = () => {
         }}
       />
       <div className="flex flex-col gap-[10px]">
-        <PackageOrigin />
+        <SectionHeader title="Package Details" />
+        <PackageOrigin>
+          <HighlightedInfo
+            text="Your Items will be delivered here after we help you purchase your them
+        and they will be shipped from here to our pickup office in Nigeria"
+          />
+          <DetailSection
+            label="Country of Purchase"
+            value={orderPackage.originWarehouse}
+          />
+        </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
           return <ShopOrderItem key={i} item={item} index={i} relatedCosts />;

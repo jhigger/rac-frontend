@@ -58,6 +58,7 @@ export type ImportOrderPackageType = {
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   shippingCost: number;
+  originWarehouse: (typeof ORIGINS)[number];
   items: ImportItemType[];
 };
 
@@ -65,7 +66,7 @@ export type ImportRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestLocalDate: string;
-  origin: (typeof ORIGINS)[number];
+  originWarehouse: (typeof ORIGINS)[number];
   deliveryStatus: (typeof PACKAGE_DELIVERY_STATUS)[number];
   items: ImportItemType[];
 };

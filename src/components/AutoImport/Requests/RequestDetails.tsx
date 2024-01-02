@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 import { BackButton } from "~/components/Buttons/BackButton";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
 import { DetailsInitiateShippingButton } from "~/components/Shop/Orders";
@@ -7,8 +8,8 @@ import {
   BillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
-import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import {
+  PackageOrigin,
   requestStatuses,
   type RequestInformationProps,
 } from "~/components/Shop/Requests/RequestDetails";
@@ -53,7 +54,14 @@ const RequestDetails = () => {
         }}
       />
       <div className="flex flex-col gap-[10px]">
-        <PackageOrigin />
+        <SectionHeader title="Package Details" />
+        <PackageOrigin>
+          <DetailSection
+            label="Origin warehouse"
+            value={requestPackage.originWarehouse}
+          />
+          <OriginWarehouseAddress />
+        </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {requestPackage.items.map((item, i) => {
           return <AutoImportOrderItem key={i} item={item} index={i} />;
@@ -156,35 +164,6 @@ const OrderInformation = ({ info }: RequestInformationProps) => {
         </div>
       </SectionContentLayout>
     </div>
-  );
-};
-
-export const PackageOrigin = () => {
-  const { open, toggle } = useAccordion(true);
-
-  return (
-    <>
-      <SectionHeader title="Package Details" />
-      <SectionContentLayout>
-        <div className="flex w-full flex-col gap-[30px]">
-          <div className="flex w-full items-center justify-between">
-            <h4 className="title-md md:title-lg text-gray-700">
-              Package Origin
-            </h4>
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-          {open && (
-            <>
-              <DetailSection
-                label="Origin warehouse"
-                value=" United States (Houston - warehouse)"
-              />
-              <OriginWarehouseAddress />
-            </>
-          )}
-        </div>
-      </SectionContentLayout>
-    </>
   );
 };
 

@@ -16,6 +16,7 @@ import {
   BillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
+import { PackageOrigin } from "~/components/Shop/Requests/RequestDetails";
 import {
   RequestFormHeader,
   SectionContentLayout,
@@ -24,8 +25,11 @@ import {
 import { useAutoImportContext } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
-import { PackageOrigin, PaymentsInformation } from "../Requests/RequestDetails";
-import { DestinationAddressDetails } from "../Requests/RequestOrder";
+import { PaymentsInformation } from "../Requests/RequestDetails";
+import {
+  DestinationAddressDetails,
+  OriginWarehouseAddress,
+} from "../Requests/RequestOrder";
 import { AutoImportOrderItem } from "./InitiateShipping";
 
 const OrderDetails = () => {
@@ -61,7 +65,14 @@ const OrderDetails = () => {
       />
 
       <div className="flex flex-col gap-[10px]">
-        <PackageOrigin />
+        <SectionHeader title="Package Details" />
+        <PackageOrigin>
+          <DetailSection
+            label="Origin warehouse"
+            value={orderPackage.originWarehouse}
+          />
+          <OriginWarehouseAddress />
+        </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
           return <AutoImportOrderItem key={i} item={item} index={i} />;

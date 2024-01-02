@@ -7,7 +7,6 @@ import {
   shippingStatuses,
   type OrderInformationProps,
 } from "~/components/Import/Orders/OrderDetails";
-import { PackageOrigin } from "~/components/Import/Requests/RequestDetails";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   DetailsClearedButton,
@@ -19,6 +18,10 @@ import {
   BillingAddress,
   DetailSection,
 } from "~/components/Shop/Orders/InitiateShipping";
+import {
+  HighlightedInfo,
+  PackageOrigin,
+} from "~/components/Shop/Requests/RequestDetails";
 import {
   RequestFormHeader,
   SectionContentLayout,
@@ -61,7 +64,16 @@ const OrderDetails = () => {
       />
 
       <div className="flex flex-col gap-[10px]">
-        <PackageOrigin />
+        <SectionHeader title="Package Details" />
+        <PackageOrigin>
+          <HighlightedInfo text="This is RAC Facility you claim to have dropped the package to" />
+          <div className="flex flex-col gap-[5px]">
+            <DetailSection
+              label="Origin warehouse"
+              value={orderPackage.originWarehouse}
+            />
+          </div>
+        </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
           return <ImportOrderItem key={i} item={item} index={i} />;

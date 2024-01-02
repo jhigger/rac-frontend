@@ -415,6 +415,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestId: "OD08751",
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         store: "Amazon",
@@ -433,6 +434,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestId: "OD08752",
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         store: "Amazon",
@@ -451,6 +453,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestId: "OD08753",
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         store: "Amazon",
@@ -469,6 +472,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestId: "OD08754",
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         store: "Amazon",
@@ -487,6 +491,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestId: "OD08755",
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         store: "Amazon",
@@ -505,6 +510,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestId: "OD08756",
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         store: "Amazon",
@@ -529,6 +535,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08751",
     shippingStatus: "not started",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         name: "Designer Bags",
@@ -551,6 +558,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         name: "Designer Bags",
@@ -573,6 +581,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         name: "Designer Bags",
@@ -595,6 +604,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08754",
     shippingStatus: "in transit",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         name: "Designer Bags",
@@ -617,6 +627,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08755",
     shippingStatus: "processing",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         name: "Designer Bags",
@@ -639,6 +650,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08756",
     shippingStatus: "cleared",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         name: "Designer Bags",
@@ -661,6 +673,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         name: "Designer Bags",
@@ -683,6 +696,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08758",
     shippingStatus: "delivered",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         name: "Designer Bags",
@@ -705,7 +719,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestId: "OD08751",
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
-    origin: "China Warehouse (Guangzhou city)",
+    originWarehouse: "China Warehouse (Guangzhou city)",
     deliveryStatus: "All delivered",
     items: [
       {
@@ -726,7 +740,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestId: "OD08752",
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
-    origin: "Dubai Warehouse",
+    originWarehouse: "Dubai Warehouse",
     deliveryStatus: "None delivered",
     items: [
       {
@@ -747,7 +761,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestId: "OD08753",
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
-    origin: "Nigeria Warehouse (Lagos)",
+    originWarehouse: "Nigeria Warehouse (Lagos)",
     deliveryStatus: "Some delivered",
     items: [
       {
@@ -780,7 +794,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestId: "OD08754",
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
-    origin: "UK Warehouse (London)",
+    originWarehouse: "UK Warehouse (London)",
     deliveryStatus: "All delivered",
     items: [
       {
@@ -801,7 +815,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestId: "OD08755",
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
-    origin: "US Warehouse (Richmond Texas)",
+    originWarehouse: "US Warehouse (Richmond Texas)",
     deliveryStatus: "None delivered",
     items: [
       {
@@ -822,7 +836,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestId: "OD08756",
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
-    origin: "US Warehouse (Richmond Texas)",
+    originWarehouse: "US Warehouse (Richmond Texas)",
     deliveryStatus: "Some delivered",
     items: [
       {
@@ -865,6 +879,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     trackingId: "SH08756",
     shippingStatus: "not started",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",
@@ -889,6 +904,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     trackingId: "SH08755",
     shippingStatus: "ready for shipping",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",
@@ -913,6 +929,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     trackingId: "SH08754",
     shippingStatus: "cleared",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",
@@ -937,6 +954,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     trackingId: "SH08753",
     shippingStatus: "processing",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",
@@ -962,6 +980,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     trackingId: "SH08752",
     shippingStatus: "in transit",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",
@@ -987,6 +1006,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     trackingId: "SH08751",
     shippingStatus: "arrived destination",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",
@@ -1011,6 +1031,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     trackingId: "SH08750",
     shippingStatus: "delivered",
     shippingCost: 107.76,
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",
@@ -1035,6 +1056,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
     requestId: "OD08756",
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",
@@ -1080,6 +1102,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
     requestId: "OD08755",
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
+    originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
         brand: "asd",

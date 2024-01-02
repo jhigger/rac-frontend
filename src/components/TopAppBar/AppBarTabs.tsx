@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { tabs, useTabContext } from "~/contexts/TabContext";
-import tailmater from "~/js/tailmater";
 import TabContentPanels from "./TabContentPanels";
 
 const AppBarTabs = () => {
@@ -15,14 +13,6 @@ const AppBarTabs = () => {
     if (tabsRef.current.length >= 3) tabsRef.current.shift();
     tabsRef.current.push(el);
   };
-
-  useEffect(() => {
-    if (router.asPath === "/login") return;
-    if (router.asPath === "/register") return;
-    if (router.asPath === "/home") return;
-
-    tailmater();
-  }, [activeNav]);
 
   return (
     <div className="tabs flex flex-col">

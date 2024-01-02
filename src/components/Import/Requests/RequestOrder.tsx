@@ -417,7 +417,7 @@ const ItemDetailsSection = ({
   );
 };
 
-type DeliveryStatusMapType = Record<
+export type DeliveryStatusMapType = Record<
   (typeof PACKAGE_DELIVERY_STATUS)[number],
   { imageText: JSX.Element; whatNext: JSX.Element }
 >;
@@ -536,7 +536,9 @@ export const Step3 = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       {deliveryStatusMap[draftPackage.deliveryStatus].imageText}
-      {draftPackage.deliveryStatus !== "All delivered" && <OfficeDeliverAddress />}
+      {draftPackage.deliveryStatus !== "All delivered" && (
+        <OfficeDeliverAddress />
+      )}
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="What Next?" />
         <SectionContentLayout>
@@ -547,7 +549,7 @@ export const Step3 = () => {
   );
 };
 
-const OfficeDeliverAddress = () => {
+export const OfficeDeliverAddress = () => {
   const { open, toggle } = useAccordion(true);
 
   return (

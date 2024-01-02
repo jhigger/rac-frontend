@@ -52,7 +52,11 @@ const DraftDetails = () => {
   });
 
   const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
-    console.log(data.requestPackage);
+    if (isSecondToLastStep) {
+      console.log(data.requestPackage);
+    } else if (currentStepIndex === 1) {
+      handleDraft(data.requestPackage);
+    }
     next();
   };
 
@@ -84,11 +88,7 @@ const DraftDetails = () => {
               {isFirstStep && <BackButton onClick={handleBack} />}
               {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
               <SaveAsDraftButton />
-              <ProceedButton
-                onClick={
-                  isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
-                }
-              />
+              <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
             </div>
             {/* for mobile screen */}
             <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
@@ -97,13 +97,7 @@ const DraftDetails = () => {
                 {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                <ProceedButton
-                  onClick={
-                    isSecondToLastStep
-                      ? formMethods.handleSubmit(onSubmit)
-                      : next
-                  }
-                />
+                <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
               <div className="col-span-full">
                 <SaveAsDraftButton />

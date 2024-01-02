@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
-import { Step2, emptyValue } from "~/components/Import/Requests/RequestOrder";
+import { Step2 } from "~/components/Import/Requests/RequestOrder";
 import LabelId from "~/components/LabelId";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
@@ -15,23 +14,25 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import { Step3, type ExportInputs } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
-  const [oops] = useState(false);
   const { step, next, isLastStep, isSecondToLastStep } = useMultiStepForm([
     <Step2 />,
-    <Step3 oops={oops} />,
+    <Step3 />,
   ]);
 
-  const { handleDraft } = useExportContext();
+  const { draftPackage, handleDraft } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ExportInputs>({
     defaultValues: {
-      requestPackage: emptyValue,
+      requestPackage: draftPackage ?? {},
     },
   });
 
   const onSubmit: SubmitHandler<ExportInputs> = async (data) => {
-    console.log(data.requestPackage);
+    if (isSecondToLastStep) {
+      console.log(data.requestPackage);
+      handleDraft(data.requestPackage);
+    }
     next();
   };
 
@@ -65,11 +66,7 @@ const DraftDetails = () => {
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               <BackButton onClick={handleBack} />
               <SaveAsDraftButton />
-              <ProceedButton
-                onClick={
-                  isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
-                }
-              />
+              <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
             </div>
             {/* for mobile screen */}
             <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
@@ -77,13 +74,7 @@ const DraftDetails = () => {
                 <BackButton onClick={handleBack} />
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                <ProceedButton
-                  onClick={
-                    isSecondToLastStep
-                      ? formMethods.handleSubmit(onSubmit)
-                      : next
-                  }
-                />
+                <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
               <div className="col-span-full">
                 <SaveAsDraftButton />

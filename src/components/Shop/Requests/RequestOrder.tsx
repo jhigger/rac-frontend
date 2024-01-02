@@ -34,6 +34,7 @@ import { useNavContext } from "~/contexts/NavigationContext";
 import {
   useShopContext,
   type ShopOrderPackageType,
+  type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -77,7 +78,7 @@ export const emptyValue: ShopOrderPackageType = {
 };
 
 export type ShopInputs = {
-  requestPackage: ShopOrderPackageType;
+  requestPackage: ShopRequestPackageType;
 };
 
 const RequestOrderForm = () => {
@@ -99,19 +100,21 @@ const RequestOrderForm = () => {
   });
 
   const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
-    data.requestPackage.items.every((item, index) => {
-      const value = item.urgent;
-      formMethods.setValue(
-        `requestPackage.items.${index}.urgent`,
-        Boolean(Number(value)),
-      );
-    });
-    console.log(data.requestPackage);
-    // console.log("submitting user package...");
-    // await mutateAsync(formMethods.getValues().requestPackage);
-    // console.log(status);
-    // console.log(error);
-    // if (isSuccess) next();
+    if (isSecondToLastStep) {
+      data.requestPackage.items.every((item, index) => {
+        const value = item.urgent;
+        formMethods.setValue(
+          `requestPackage.items.${index}.urgent`,
+          Boolean(Number(value)),
+        );
+      });
+      console.log(data.requestPackage);
+      // console.log("submitting user package...");
+      // await mutateAsync(formMethods.getValues().requestPackage);
+      // console.log(status);
+      // console.log(error);
+      // if (isSuccess) next();
+    }
     next();
   };
 
@@ -136,11 +139,7 @@ const RequestOrderForm = () => {
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               <BackButton onClick={handleBack} />
               <SaveAsDraftButton />
-              <ProceedButton
-                onClick={
-                  isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
-                }
-              />
+              <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
             </div>
             {/* for mobile screen */}
             <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
@@ -148,13 +147,7 @@ const RequestOrderForm = () => {
                 <BackButton onClick={handleBack} />
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                <ProceedButton
-                  onClick={
-                    isSecondToLastStep
-                      ? formMethods.handleSubmit(onSubmit)
-                      : next
-                  }
-                />
+                <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
               <div className="col-span-full">
                 <SaveAsDraftButton />

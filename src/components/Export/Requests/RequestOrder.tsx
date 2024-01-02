@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -8,11 +7,12 @@ import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import {
   Guidelines,
+  OfficeDeliverAddress,
   Step1,
   Step2,
   emptyValue,
+  type DeliveryStatusMapType,
   type InstructionsMapType,
-  type Step3Props,
 } from "~/components/Import/Requests/RequestOrder";
 import LabelId from "~/components/LabelId";
 import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
@@ -34,9 +34,8 @@ export type ExportInputs = {
 };
 
 const RequestOrder = () => {
-  const [oops] = useState(false);
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
-    useMultiStepForm([<Step1 />, <Step2 />, <Step3 oops={oops} />]);
+    useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
   const { handleRequests } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
@@ -127,18 +126,127 @@ const RequestOrder = () => {
   );
 };
 
-export const Step3 = ({ oops }: Step3Props) => {
+export const Step3 = () => {
+  const { draftPackage } = useExportContext();
+
+  if (!draftPackage) return;
+
+  const deliveryStatusMap: DeliveryStatusMapType = {
+    "None delivered": {
+      imageText: (
+        <CongratulationImage
+          title="OOPS... You can't request for an Export order yet"
+          description={
+            <>
+              Send your package to our Warehouse in United States (your selected
+              <b>&quot;Origin&quot;</b>)
+            </>
+          }
+        />
+      ),
+      whatNext: (
+        <Guidelines>
+          <StepDescription
+            stepNumber={1}
+            description="Once you are sure that this package has gotten to the warehouse address above, attempt requesting for a new export order and provide us information we need to Identify the package as yours."
+            backgroundColor="bg-primary-600"
+          />
+
+          <StepDescription
+            stepNumber={2}
+            description={
+              <span className="body-lg md:title-lg text-gray-900">
+                Here are some tip to help us quickly identify your package
+                <ul className="list-item pl-[30px] [&>*]:list-disc">
+                  <li>Attach your USER ID on the Package if you can.</li>
+                  <li>
+                    If you are purchasing the package directly from the seller,
+                    provide us the TRACKING ID or any other related ID on the
+                    package that is Unique to your order from the seller.
+                  </li>
+                  <li>
+                    If you have the actual picture of the package, provide it
+                    while requesting for the Export order on our website
+                  </li>
+                </ul>
+              </span>
+            }
+            backgroundColor="bg-primary-600"
+          />
+        </Guidelines>
+      ),
+    },
+    "All delivered": {
+      imageText: (
+        <CongratulationImage description="You have just successfully requested for Export service." />
+      ),
+      whatNext: <Instructions />,
+    },
+    "Some delivered": {
+      imageText: (
+        <CongratulationImage
+          title="OOPS... You can't request for an Export order yet"
+          description={
+            <>
+              Your request has been as <b>&quot;Draft&quot;</b>. To complete
+              your request, kindly send the remaining items in your package to
+              our Warehouse in United States (your selected{" "}
+              <b>&quot;Origin&quot;</b>)
+            </>
+          }
+        />
+      ),
+      whatNext: (
+        <Guidelines>
+          <StepDescription
+            stepNumber={1}
+            description={
+              <>
+                Once you are sure that all the items yet to be delivered in your
+                package have gotten to the warehouse address above, come to the
+                <b>'Draft'</b> folder to update the 'Item Delivery Status' of
+                these items and submit your request for a new export order
+              </>
+            }
+            backgroundColor="bg-primary-600"
+          />
+
+          <StepDescription
+            stepNumber={2}
+            description={
+              <span className="body-lg md:title-lg text-gray-900">
+                Here are some tip to help us quickly identify your package
+                <ul className="list-item pl-[30px] [&>*]:list-disc">
+                  <li>Attach your USER ID on the Package if you can.</li>
+                  <li>
+                    If you are purchasing the package directly from the seller,
+                    provide us the TRACKING ID or any other related ID on the
+                    package that is Unique to your order from the seller.
+                  </li>
+                  <li>
+                    If you have the actual picture of the package, provide it
+                    while requesting for the Export order on our website
+                  </li>
+                </ul>
+              </span>
+            }
+            backgroundColor="bg-primary-600"
+          />
+        </Guidelines>
+      ),
+    },
+  };
+
   return (
     <div className="flex flex-col gap-[30px]">
-      {oops ? (
-        <CongratulationImage description="Send your package to our Warehouse in United States (your selected “Origin”)" />
-      ) : (
-        <CongratulationImage description="You have just successfully requested for Export service." />
+      {deliveryStatusMap[draftPackage.deliveryStatus].imageText}
+      {draftPackage.deliveryStatus !== "All delivered" && (
+        <OfficeDeliverAddress />
       )}
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="What Next?" />
         <SectionContentLayout>
-          {oops ? <Guidelines /> : <Instructions />}
+          {deliveryStatusMap[draftPackage.deliveryStatus].whatNext}
         </SectionContentLayout>
       </div>
     </div>

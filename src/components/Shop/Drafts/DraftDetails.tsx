@@ -11,7 +11,6 @@ import {
   RequestFormHeader,
   RequestOrderStep1,
   RequestOrderStep2,
-  emptyValue,
   type ShopInputs,
 } from "../Requests/RequestOrder";
 
@@ -19,17 +18,20 @@ const DraftDetails = () => {
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
 
-  const { handleDraft } = useShopContext();
+  const { draftPackage, handleDraft } = useShopContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const formMethods = useForm<ShopInputs>({
     defaultValues: {
-      requestPackage: emptyValue,
+      requestPackage: draftPackage ?? {},
     },
   });
 
   const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
-    console.log(data.requestPackage);
+    if (isSecondToLastStep) {
+      console.log(data.requestPackage);
+      handleDraft(data.requestPackage);
+    }
     next();
   };
 
@@ -61,11 +63,7 @@ const DraftDetails = () => {
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               <BackButton onClick={handleBack} />
               <SaveAsDraftButton />
-              <ProceedButton
-                onClick={
-                  isSecondToLastStep ? formMethods.handleSubmit(onSubmit) : next
-                }
-              />
+              <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
             </div>
             {/* for mobile screen */}
             <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
@@ -73,13 +71,7 @@ const DraftDetails = () => {
                 <BackButton onClick={handleBack} />
               </div>
               <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                <ProceedButton
-                  onClick={
-                    isSecondToLastStep
-                      ? formMethods.handleSubmit(onSubmit)
-                      : next
-                  }
-                />
+                <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
               <div className="col-span-full">
                 <SaveAsDraftButton />

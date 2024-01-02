@@ -63,6 +63,7 @@ export type ShopRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestLocalDate: string;
+  originWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
 };
 

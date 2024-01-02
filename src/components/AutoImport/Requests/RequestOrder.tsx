@@ -994,15 +994,23 @@ export const DestinationAddressDetails = () => {
   );
 };
 
-type PickUpDetailsProps = { pickupDetails: PickupDetailsType };
+type PickupDetailsProps = {
+  pickupDetails: PickupDetailsType;
+  highlightedInfo?: boolean;
+};
 
-const PickUpDetails = ({ pickupDetails }: PickUpDetailsProps) => {
+export const PickupDetails = ({
+  pickupDetails,
+  highlightedInfo = false,
+}: PickupDetailsProps) => {
   return (
     <>
       <span className="title-md md:title-lg text-primary-900">
         Pickup Details
       </span>
-      <HighlightedInfo text="Your Car will be picked up from this address" />
+      {highlightedInfo && (
+        <HighlightedInfo text="Your Car will be picked up from this address" />
+      )}
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10 [&>*]:text-primary-900">
         <PurpleDetailSection
           label="Contact's First Name"
@@ -1087,7 +1095,7 @@ export const AutoImportOrderItem = ({
         {item.pickupDetails && (
           <>
             <hr className="block w-full border-dashed border-primary-600" />
-            <PickUpDetails pickupDetails={item.pickupDetails} />
+            <PickupDetails pickupDetails={item.pickupDetails} highlightedInfo />
           </>
         )}
       </div>

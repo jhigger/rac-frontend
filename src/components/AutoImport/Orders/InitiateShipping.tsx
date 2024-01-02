@@ -9,7 +9,6 @@ import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { PurpleDetailSection } from "~/components/Shop/Orders/ClearPackage";
 import {
   BillingAddress,
   type ShippingMethodProps,
@@ -40,6 +39,7 @@ import {
   AutoImportOrderItemDetails,
   DestinationAddressDetails,
   PackageOrigin,
+  PickupDetails,
 } from "../Requests/RequestOrder";
 
 const InitiateShipping = () => {
@@ -167,83 +167,14 @@ export const AutoImportOrderItem = ({
           <AccordionButton {...{ open, toggle }} />
         </div>
         {open && <AutoImportOrderItemDetails item={item} />}
-        {index % 2 === 0 && (
+        {item.pickupDetails && (
           <>
             <hr className="block w-full border-gray-500" />
-            <PickUpDetails />
+            <PickupDetails pickupDetails={item.pickupDetails} />
           </>
         )}
       </div>
     </SectionContentLayout>
-  );
-};
-
-export const PickUpDetails = () => {
-  return (
-    <>
-      <span className="title-md md:title-lg text-gray-700">Pickup Details</span>
-      <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10 [&>div>span:first-child]:text-gray-500 [&>div>span:nth-child(2)]:text-neutral-900">
-        <PurpleDetailSection
-          label="Contact's First Name"
-          value="Malibu"
-          colSpanDesktop={4}
-        />
-        <PurpleDetailSection
-          label="Contact's Last Name"
-          value="SHedrack"
-          colSpanDesktop={4}
-        />
-        <PurpleDetailSection
-          label="Contact Number"
-          value="+234 803 456 7845"
-          colSpanDesktop={4}
-        />
-        <PurpleDetailSection
-          label="Contact Email"
-          value="Malibushdrack@gmail.com"
-          colSpanDesktop={4}
-        />
-        <PurpleDetailSection
-          label="Street Address"
-          value="No, 1osolo way, ikeja road, behind scaint merry"
-        />
-        <PurpleDetailSection
-          label="Location of the Car (Country)"
-          value="Turkey"
-          colSpanMobile={1}
-          colSpanDesktop={2}
-        />
-        <PurpleDetailSection
-          label="Location of the Car (State)"
-          value="Istanbul"
-          colSpanMobile={1}
-          colSpanDesktop={2}
-        />
-        <PurpleDetailSection
-          label="Location of the Car (City)"
-          value="Cyprusic"
-          colSpanMobile={1}
-          colSpanDesktop={2}
-        />
-        <PurpleDetailSection
-          label="Zip/postal Code"
-          value="98765"
-          colSpanMobile={1}
-          colSpanDesktop={2}
-        />
-
-        <PurpleDetailSection
-          label="Pick up Date"
-          value="10/02/2023"
-          colSpanDesktop={4}
-        />
-        <PurpleDetailSection
-          label="Location Type"
-          value="Mosque"
-          colSpanDesktop={4}
-        />
-      </div>
-    </>
   );
 };
 

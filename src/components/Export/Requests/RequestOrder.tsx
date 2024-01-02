@@ -10,6 +10,7 @@ import {
   Guidelines,
   Step1,
   Step2,
+  emptyValue,
   type InstructionsItem,
   type Step3Props,
 } from "~/components/Import/Requests/RequestOrder";
@@ -28,27 +29,8 @@ import {
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
-export const emptyValue: ExportRequestPackageType = {
-  requestId: "",
-  requestStatus: "Not Responded",
-  requestLocalDate: new Date().toLocaleString(),
-  items: [
-    {
-      image: "",
-      name: "",
-      idType: "Tracking ID",
-      idNumber: "",
-      deliveryStatus: "",
-      deliveredBy: "",
-      originalCost: 1,
-      quantity: 1,
-      description: "",
-    },
-  ],
-};
-
 export type ExportInputs = {
-  requestPackages: ExportRequestPackageType;
+  requestPackage: ExportRequestPackageType;
 };
 
 const RequestOrder = () => {
@@ -61,12 +43,12 @@ const RequestOrder = () => {
 
   const formMethods = useForm<ExportInputs>({
     defaultValues: {
-      requestPackages: emptyValue,
+      requestPackage: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<ExportInputs> = async (data) => {
-    console.log(data.requestPackages);
+    console.log(data.requestPackage);
     next();
   };
 
@@ -89,7 +71,7 @@ const RequestOrder = () => {
         )}
         {isLastStep && (
           <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-            <LabelId label="Request:" id="R78667" />
+            <LabelId label="Request" id="R78667" />
           </div>
         )}
 

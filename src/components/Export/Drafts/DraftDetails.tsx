@@ -5,14 +5,14 @@ import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
-import { Step2 } from "~/components/Import/Requests/RequestOrder";
+import { Step2, emptyValue } from "~/components/Import/Requests/RequestOrder";
 import LabelId from "~/components/LabelId";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
-import { Step3, emptyValue, type ExportInputs } from "../Requests/RequestOrder";
+import { Step3, type ExportInputs } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
   const [oops] = useState(false);
@@ -26,12 +26,12 @@ const DraftDetails = () => {
 
   const formMethods = useForm<ExportInputs>({
     defaultValues: {
-      requestPackages: emptyValue,
+      requestPackage: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<ExportInputs> = async (data) => {
-    console.log(data.requestPackages);
+    console.log(data.requestPackage);
     next();
   };
 

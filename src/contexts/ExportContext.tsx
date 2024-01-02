@@ -5,13 +5,11 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import {
-  type ID_TYPE,
-  type ORDER_STATUS,
-  type REQUEST_STATUS,
-  type SHIPPING_STATUS,
-} from "~/constants";
 import { exportOrders, exportRequests } from "~/fake data";
+import {
+  type ImportOrderPackageType,
+  type ImportRequestPackageType,
+} from "./ImportContext";
 
 export type ExportContextType = {
   draftPackage: ExportDraftPackageType | null;
@@ -28,40 +26,11 @@ export const ExportContext = createContext<ExportContextType>(
 
 export const useExportContext = () => useContext(ExportContext);
 
-type ExportItemType = {
-  name: string;
-  idType: (typeof ID_TYPE)[number];
-  idNumber: string;
-  deliveryStatus: string;
-  deliveredBy: string;
-  originalCost: number;
-  quantity: number;
-  image: string;
-  description: string;
-  properties?: {
-    label: string;
-    value: string;
-  }[];
-};
-
 export type ExportDraftPackageType = ExportRequestPackageType;
 
-export type ExportOrderPackageType = {
-  orderId: string;
-  orderStatus: (typeof ORDER_STATUS)[number];
-  orderLocalDate: string;
-  trackingId: string;
-  shippingStatus: (typeof SHIPPING_STATUS)[number];
-  shippingCost: number;
-  items: ExportItemType[];
-};
+export type ExportOrderPackageType = ImportOrderPackageType;
 
-export type ExportRequestPackageType = {
-  requestId: string;
-  requestStatus: (typeof REQUEST_STATUS)[number];
-  requestLocalDate: string;
-  items: ExportItemType[];
-};
+export type ExportRequestPackageType = ImportRequestPackageType;
 
 export type PropertyType = { label: string; value: string | undefined };
 

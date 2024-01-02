@@ -30,12 +30,12 @@ const DraftDetails = () => {
 
   const formMethods = useForm<ImportInputs>({
     defaultValues: {
-      requestPackages: emptyValue,
+      requestPackage: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
-    console.log(data.requestPackages);
+    console.log(data.requestPackage);
     next();
   };
 

@@ -33,7 +33,13 @@ import {
   TooltipButton,
   type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
-import { ORIGINS } from "~/constants";
+import {
+  COURIERS,
+  ID_TYPE,
+  ITEM_DELIVERY_STATUS,
+  ORIGINS,
+  PACKAGE_DELIVERY_STATUS,
+} from "~/constants";
 import {
   useImportContext,
   type ImportRequestPackageType,
@@ -46,6 +52,8 @@ export const emptyValue: ImportRequestPackageType = {
   requestId: "",
   requestStatus: "Not Responded",
   requestLocalDate: new Date().toLocaleString(),
+  origin: "China Warehouse (Guangzhou city)",
+  deliveryStatus: "All delivered",
   items: [
     {
       image: "",
@@ -53,16 +61,17 @@ export const emptyValue: ImportRequestPackageType = {
       idType: "Tracking ID",
       idNumber: "",
       deliveryStatus: "",
-      deliveredBy: "",
+      deliveredBy: "Seller",
       originalCost: 1,
       quantity: 1,
       description: "",
+      itemDeliveryStatus: "Not yet delivered",
     },
   ],
 };
 
 export type ImportInputs = {
-  requestPackages: ImportRequestPackageType;
+  requestPackage: ImportRequestPackageType;
 };
 
 const RequestOrder = () => {
@@ -75,12 +84,12 @@ const RequestOrder = () => {
 
   const formMethods = useForm<ImportInputs>({
     defaultValues: {
-      requestPackages: emptyValue,
+      requestPackage: emptyValue,
     },
   });
 
   const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
-    console.log(data.requestPackages);
+    console.log(data.requestPackage);
     next();
   };
 
@@ -103,7 +112,7 @@ const RequestOrder = () => {
         )}
         {isLastStep && (
           <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-            <LabelId label="Request:" id="R78667" />
+            <LabelId label="Request" id="R78667" />
           </div>
         )}
 
@@ -178,7 +187,7 @@ export const Step2 = () => {
   const { control } = useFormContext<ImportInputs>();
   const { fields, append, remove } = useFieldArray<ImportInputs>({
     control,
-    name: "requestPackages.items",
+    name: "requestPackage.items",
   });
 
   const handleAddMore = () => {
@@ -246,7 +255,11 @@ const ItemDetailsSection = ({
             {open && (
               <div className="grid w-full grid-cols-1 gap-[30px] md:grid-cols-12">
                 <div className="col-span-full">
-                  <TextInput id={`itemName-${index}`} label={"Item Name"} />
+                  <TextInput
+                    id={`itemName-${index}`}
+                    label={"Item Name"}
+                    {...register(`requestPackage.items.${index}.name`)}
+                  />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-6">
@@ -256,16 +269,29 @@ const ItemDetailsSection = ({
                     options={
                       <>
                         <option value="" disabled hidden>
-                          Select a Store
+                          Select type of ID
                         </option>
+
+                        {ID_TYPE.map((idType) => {
+                          return (
+                            <option key={idType} value={idType}>
+                              {idType}
+                            </option>
+                          );
+                        })}
                       </>
                     }
+                    {...register(`requestPackage.items.${index}.idType`)}
                   />
                   <TooltipButton />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-6 ">
-                  <TextInput id={`idNumber-${index}`} label={"ID Number"} />
+                  <TextInput
+                    id={`idNumber-${index}`}
+                    label={"ID Number"}
+                    {...register(`requestPackage.items.${index}.idNumber`)}
+                  />
                   <TooltipButton />
                 </div>
 
@@ -278,8 +304,22 @@ const ItemDetailsSection = ({
                         <option value="" disabled hidden>
                           No
                         </option>
+
+                        {ITEM_DELIVERY_STATUS.map((itemDeliveryStatus) => {
+                          return (
+                            <option
+                              key={itemDeliveryStatus}
+                              value={itemDeliveryStatus}
+                            >
+                              {itemDeliveryStatus}
+                            </option>
+                          );
+                        })}
                       </>
                     }
+                    {...register(
+                      `requestPackage.items.${index}.itemDeliveryStatus`,
+                    )}
                   />
                   <TooltipButton />
                 </div>
@@ -291,8 +331,16 @@ const ItemDetailsSection = ({
                     options={
                       <>
                         <option value="" disabled hidden>
-                          No
+                          Select Courier
                         </option>
+
+                        {COURIERS.map((courier) => {
+                          return (
+                            <option key={courier} value={courier}>
+                              {courier}
+                            </option>
+                          );
+                        })}
                       </>
                     }
                   />
@@ -303,6 +351,7 @@ const ItemDetailsSection = ({
                   <CurrencyInput
                     id={`itemOriginalCost-${index}`}
                     label={"Item Original Cost"}
+                    {...register(`requestPackage.items.${index}.originalCost`)}
                   />
                 </div>
 
@@ -310,29 +359,23 @@ const ItemDetailsSection = ({
                   <QuantityInput
                     id={`quantity-${index}`}
                     label={"Quantity"}
-                    {...register(`requestPackages.items.${index}.quantity`, {
+                    {...register(`requestPackage.items.${index}.quantity`, {
                       valueAsNumber: true,
                     })}
                     handleAdd={() => {
                       const prev =
-                        getValues(`requestPackages.items.${index}.quantity`) ??
+                        getValues(`requestPackage.items.${index}.quantity`) ??
                         0;
                       const value = prev + 1;
-                      setValue(
-                        `requestPackages.items.${index}.quantity`,
-                        value,
-                      );
+                      setValue(`requestPackage.items.${index}.quantity`, value);
                     }}
                     handleSubtract={() => {
                       const prev =
-                        getValues(`requestPackages.items.${index}.quantity`) ??
+                        getValues(`requestPackage.items.${index}.quantity`) ??
                         0;
                       if (prev <= 1) return;
                       const value = prev - 1;
-                      setValue(
-                        `requestPackages.items.${index}.quantity`,
-                        value,
-                      );
+                      setValue(`requestPackage.items.${index}.quantity`, value);
                     }}
                   />
                 </div>
@@ -342,7 +385,9 @@ const ItemDetailsSection = ({
                     id={`itemPicture-${index}`}
                     label={"Upload Item Picture"}
                     value={filename}
-                    onChange={handleChange}
+                    {...register(`requestPackage.items.${index}.image`, {
+                      onChange: handleChange,
+                    })}
                   />
                 </div>
 
@@ -350,6 +395,7 @@ const ItemDetailsSection = ({
                   <TextAreaInput
                     id={`additionalItemDescription-${index}`}
                     label={"Additional Item Description"}
+                    {...register(`requestPackage.items.${index}.description`)}
                   />
                 </div>
 
@@ -485,6 +531,8 @@ export const Guidelines = () => {
 };
 
 const SelectOrigin = () => {
+  const { register } = useFormContext<ImportInputs>();
+
   return (
     <div className="flex items-center gap-[10px]">
       <SelectInput
@@ -505,6 +553,7 @@ const SelectOrigin = () => {
             })}
           </>
         }
+        {...register("requestPackage.origin")}
       />
       <TooltipButton />
     </div>
@@ -512,6 +561,8 @@ const SelectOrigin = () => {
 };
 
 const SelectPackageDeliveryStatus = () => {
+  const { register } = useFormContext<ImportInputs>();
+
   return (
     <div className="flex items-center gap-[10px]">
       <SelectInput
@@ -522,8 +573,17 @@ const SelectPackageDeliveryStatus = () => {
             <option value="" disabled hidden>
               Select a Delivery Status
             </option>
+
+            {PACKAGE_DELIVERY_STATUS.map((deliveryStatus) => {
+              return (
+                <option key={deliveryStatus} value={deliveryStatus}>
+                  {deliveryStatus}
+                </option>
+              );
+            })}
           </>
         }
+        {...register("requestPackage.deliveryStatus")}
       />
       <TooltipButton />
     </div>

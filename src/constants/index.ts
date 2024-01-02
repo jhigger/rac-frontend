@@ -87,3 +87,13 @@ export const NOTIFICATION_TYPES = [
 ] as const;
 
 export const CAR_CONDITIONS = ["Drivable", "Not Drivable"] as const;
+
+export const PACKAGE_DELIVERY_STATUS = [
+  "Some delivered",
+  "All delivered",
+  "None delivered",
+] as const;
+
+export const ITEM_DELIVERY_STATUS = ["Delivered", "Not yet delivered"] as const;
+
+export const COURIERS = ["Seller", "Someone else"] as const;

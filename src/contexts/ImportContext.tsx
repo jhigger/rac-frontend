@@ -6,8 +6,12 @@ import {
   type ReactNode,
 } from "react";
 import {
+  type COURIERS,
   type ID_TYPE,
+  type ITEM_DELIVERY_STATUS,
   type ORDER_STATUS,
+  type ORIGINS,
+  type PACKAGE_DELIVERY_STATUS,
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
@@ -33,11 +37,12 @@ export type ImportItemType = {
   idType: (typeof ID_TYPE)[number];
   idNumber: string;
   deliveryStatus: string;
-  deliveredBy: string;
+  deliveredBy: (typeof COURIERS)[number];
   originalCost: number;
   quantity: number;
   image: string;
   description: string;
+  itemDeliveryStatus: (typeof ITEM_DELIVERY_STATUS)[number];
   properties?: {
     label: string;
     value: string;
@@ -60,6 +65,8 @@ export type ImportRequestPackageType = {
   requestId: string;
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestLocalDate: string;
+  origin: (typeof ORIGINS)[number];
+  deliveryStatus: (typeof PACKAGE_DELIVERY_STATUS)[number];
   items: ImportItemType[];
 };
 

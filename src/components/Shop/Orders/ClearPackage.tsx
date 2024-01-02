@@ -260,7 +260,7 @@ export const ClearPackageStep = () => {
 export const Success = () => {
   return (
     <div className="flex flex-col gap-[30px]">
-      <PickUpAddress />
+      <OfficePickupAddress />
       <SectionHeader title="How to pick up" />
       <PickUpInstructions />
       <AndLastly />
@@ -268,7 +268,7 @@ export const Success = () => {
   );
 };
 
-const PickUpAddress = () => {
+const OfficePickupAddress = () => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -284,7 +284,7 @@ const PickUpAddress = () => {
         {open && (
           <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
             <DetailSection
-              label="Pick up Address"
+              label="Pickup Address"
               value="No, 1osolo way, ikeja road, behind scaint merry"
             />
             <DetailSection label="Country" value="Nigeria" colSpanDesktop={2} />

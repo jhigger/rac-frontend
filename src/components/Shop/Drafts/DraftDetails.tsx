@@ -19,7 +19,7 @@ const DraftDetails = () => {
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
 
-  const { clearDrafts } = useShopContext();
+  const { handleDraft } = useShopContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const formMethods = useForm<ShopInputs>({
@@ -36,7 +36,7 @@ const DraftDetails = () => {
   const handleFinish = () => {
     handleTabChange("requests");
     formMethods.handleSubmit(onSubmit);
-    clearDrafts();
+    handleDraft(null);
   };
 
   const handleBack = () => {

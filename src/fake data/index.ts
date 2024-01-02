@@ -3,18 +3,15 @@ import {
   type AutoImportRequestPackageType,
 } from "~/contexts/AutoImportContext";
 import {
-  type ExportDraftPackageType,
   type ExportOrderPackageType,
   type ExportRequestPackageType,
 } from "~/contexts/ExportContext";
 import {
-  type ImportDraftPackageType,
   type ImportOrderPackageType,
   type ImportRequestPackageType,
 } from "~/contexts/ImportContext";
 import { type NotificationItemType } from "~/contexts/NotificationContext";
 import {
-  type ShopDraftPackageType,
   type ShopOrderPackageType,
   type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
@@ -524,25 +521,6 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
 ];
 
-export const shopDrafts: ShopDraftPackageType[] = [
-  {
-    origin: "origin",
-    items: [
-      {
-        store: "Amazon",
-        urgent: false,
-        url: "",
-        name: "Designer Bags",
-        originalCost: 0,
-        quantity: 1,
-        shippingCost: 0,
-        image: src,
-        description: "",
-      },
-    ],
-  },
-];
-
 export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08751",
@@ -825,43 +803,6 @@ export const importRequests: ImportRequestPackageType[] = [
   },
 ];
 
-export const importDrafts: ImportDraftPackageType[] = [
-  {
-    origin: "origin",
-    packageDeliveryStatus: "not started",
-    items: [
-      {
-        name: "Designer Bags",
-        idType: "Tracking ID",
-        idNumber: "123456789",
-        deliveryStatus: "",
-        deliveredBy: "",
-        originalCost: 1,
-        quantity: 1,
-        image: src,
-        description: "",
-      },
-    ],
-  },
-  {
-    origin: "origin",
-    packageDeliveryStatus: "not started",
-    items: [
-      {
-        name: "Designer Bags",
-        idType: "Tracking ID",
-        idNumber: "123456789",
-        deliveryStatus: "",
-        deliveredBy: "",
-        originalCost: 1,
-        quantity: 1,
-        image: src,
-        description: "",
-      },
-    ],
-  },
-];
-
 export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08751",
@@ -1128,43 +1069,6 @@ export const exportRequests: ExportRequestPackageType[] = [
     requestId: "OD08756",
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
-    items: [
-      {
-        name: "Designer Bags",
-        idType: "Tracking ID",
-        idNumber: "123456789",
-        deliveryStatus: "",
-        deliveredBy: "",
-        originalCost: 1,
-        quantity: 1,
-        image: src,
-        description: "",
-      },
-    ],
-  },
-];
-
-export const exportDrafts: ExportDraftPackageType[] = [
-  {
-    origin: "origin",
-    packageDeliveryStatus: "not started",
-    items: [
-      {
-        name: "Designer Bags",
-        idType: "Tracking ID",
-        idNumber: "123456789",
-        deliveryStatus: "",
-        deliveredBy: "",
-        originalCost: 1,
-        quantity: 1,
-        image: src,
-        description: "",
-      },
-    ],
-  },
-  {
-    origin: "origin",
-    packageDeliveryStatus: "not started",
     items: [
       {
         name: "Designer Bags",

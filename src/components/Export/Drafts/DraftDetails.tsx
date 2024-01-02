@@ -21,7 +21,7 @@ const DraftDetails = () => {
     <Step3 oops={oops} />,
   ]);
 
-  const { clearDrafts } = useExportContext();
+  const { handleDraft } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ExportInputs>({
@@ -38,7 +38,7 @@ const DraftDetails = () => {
   const handleFinish = () => {
     handleTabChange("requests");
     formMethods.handleSubmit(onSubmit);
-    clearDrafts();
+    handleDraft(null);
   };
 
   const handleBack = () => {

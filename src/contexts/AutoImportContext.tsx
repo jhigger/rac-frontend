@@ -14,11 +14,10 @@ import {
 import { autoImportOrders, autoImportRequests } from "~/fake data";
 
 export type AutoImportContextType = {
-  clearDrafts: () => void;
-  draftItems: AutoImportDraftPackageType[];
+  draftPackage: AutoImportDraftPackageType | null;
   orderPackages: AutoImportOrderPackageType[];
   requestPackages: AutoImportRequestPackageType[];
-  handleDrafts: () => void;
+  handleDraft: (draftPackage: AutoImportDraftPackageType | null) => void;
   handleOrders: () => void;
   handleRequests: () => void;
 };
@@ -79,12 +78,7 @@ export type BillingDetailsType = {
 
 export type ShipmentDetailsType = BillingDetailsType;
 
-export type AutoImportOrderPackageInput = {
-  origin: string;
-  items: AutoImportItemType[];
-};
-
-export type AutoImportDraftPackageType = AutoImportOrderPackageInput;
+export type AutoImportDraftPackageType = AutoImportRequestPackageType;
 
 export type AutoImportOrderPackageType = {
   orderId: string;
@@ -108,9 +102,8 @@ export type AutoImportRequestPackageType = {
 export type PropertyType = { label: string; value: string | undefined };
 
 const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
-  const [draftPackages, setDraftPackages] = useState<
-    AutoImportDraftPackageType[]
-  >([]);
+  const [draftPackage, setDraftPackage] =
+    useState<AutoImportDraftPackageType | null>(null);
   const [orderPackages, setOrderPackages] = useState<
     AutoImportOrderPackageType[]
   >([]);
@@ -118,12 +111,8 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
     AutoImportRequestPackageType[]
   >([]);
 
-  const clearDrafts = () => {
-    setDraftPackages([]);
-  };
-
-  const handleDrafts = () => {
-    setDraftPackages([]);
+  const handleDraft = (draftPackage: AutoImportDraftPackageType | null) => {
+    setDraftPackage(draftPackage);
   };
 
   const handleOrders = () => {
@@ -138,15 +127,13 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     handleRequests();
     handleOrders();
-    handleDrafts();
   }, []);
 
   const value: AutoImportContextType = {
-    clearDrafts,
-    draftItems: draftPackages,
+    draftPackage,
     orderPackages,
     requestPackages,
-    handleDrafts,
+    handleDraft,
     handleOrders,
     handleRequests,
   };

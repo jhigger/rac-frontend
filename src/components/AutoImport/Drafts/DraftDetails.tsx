@@ -1,9 +1,9 @@
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
-import { BackButton } from "~/components/Buttons/BackButton";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import {
   StepIndex,
   type stepsContentType,
@@ -17,12 +17,11 @@ import {
   Step2,
   Step3,
   Step4,
-  emptyValue,
   type AutoImportInputs,
 } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
-  const { clearDrafts } = useAutoImportContext();
+  const { draftPackage, handleDraft } = useAutoImportContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -48,19 +47,19 @@ const DraftDetails = () => {
 
   const formMethods = useForm<AutoImportInputs>({
     defaultValues: {
-      requestPackages: emptyValue,
+      requestPackage: draftPackage ?? {},
     },
   });
 
   const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
-    console.log(data.requestPackages);
+    console.log(data.requestPackage);
     next();
   };
 
   const handleFinish = () => {
     handleTabChange("requests");
     formMethods.handleSubmit(onSubmit);
-    clearDrafts();
+    handleDraft(null);
   };
 
   const handleBack = () => {

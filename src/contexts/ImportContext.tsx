@@ -11,14 +11,13 @@ import {
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { importDrafts, importOrders, importRequests } from "~/fake data";
+import { importOrders, importRequests } from "~/fake data";
 
 export type ImportContextType = {
-  clearDrafts: () => void;
-  draftItems: ImportDraftPackageType[];
+  draftPackage: ImportDraftPackageType | null;
   orderPackages: ImportOrderPackageType[];
   requestPackages: ImportRequestPackageType[];
-  handleDrafts: () => void;
+  handleDraft: (draftPackage: ImportDraftPackageType | null) => void;
   handleOrders: () => void;
   handleRequests: () => void;
 };
@@ -45,13 +44,7 @@ export type ImportItemType = {
   }[];
 };
 
-export type ImportOrderPackageInput = {
-  origin: string;
-  packageDeliveryStatus: (typeof SHIPPING_STATUS)[number];
-  items: ImportItemType[];
-};
-
-export type ImportDraftPackageType = ImportOrderPackageInput;
+export type ImportDraftPackageType = ImportRequestPackageType;
 
 export type ImportOrderPackageType = {
   orderId: string;
@@ -73,9 +66,8 @@ export type ImportRequestPackageType = {
 export type PropertyType = { label: string; value: string | undefined };
 
 const ImportContextProvider = ({ children }: { children: ReactNode }) => {
-  const [draftPackages, setDraftPackages] = useState<ImportDraftPackageType[]>(
-    [],
-  );
+  const [draftPackage, setDraftPackages] =
+    useState<ImportDraftPackageType | null>(null);
   const [orderPackages, setOrderPackages] = useState<ImportOrderPackageType[]>(
     [],
   );
@@ -83,12 +75,8 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
     ImportRequestPackageType[]
   >([]);
 
-  const clearDrafts = () => {
-    setDraftPackages([]);
-  };
-
-  const handleDrafts = () => {
-    setDraftPackages(importDrafts);
+  const handleDraft = (draftPackage: ImportDraftPackageType | null) => {
+    setDraftPackages(draftPackage);
   };
 
   const handleOrders = () => {
@@ -103,15 +91,13 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     handleRequests();
     handleOrders();
-    handleDrafts();
   }, []);
 
   const value: ImportContextType = {
-    clearDrafts,
-    draftItems: draftPackages,
+    draftPackage,
     orderPackages,
     requestPackages,
-    handleDrafts,
+    handleDraft,
     handleOrders,
     handleRequests,
   };

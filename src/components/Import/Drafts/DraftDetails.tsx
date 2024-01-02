@@ -25,7 +25,7 @@ const DraftDetails = () => {
     <Step3 oops={oops} />,
   ]);
 
-  const { clearDrafts } = useImportContext();
+  const { handleDraft } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ImportInputs>({
@@ -42,7 +42,7 @@ const DraftDetails = () => {
   const handleFinish = () => {
     handleTabChange("requests");
     formMethods.handleSubmit(onSubmit);
-    clearDrafts();
+    handleDraft(null);
   };
 
   const handleBack = () => {

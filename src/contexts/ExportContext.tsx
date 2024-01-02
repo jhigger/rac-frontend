@@ -11,14 +11,13 @@ import {
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { exportDrafts, exportOrders, exportRequests } from "~/fake data";
+import { exportOrders, exportRequests } from "~/fake data";
 
 export type ExportContextType = {
-  clearDrafts: () => void;
-  draftItems: ExportDraftPackageType[];
+  draftPackage: ExportDraftPackageType | null;
   orderPackages: ExportOrderPackageType[];
   requestPackages: ExportRequestPackageType[];
-  handleDrafts: () => void;
+  handleDraft: (draftPackage: ExportDraftPackageType | null) => void;
   handleOrders: () => void;
   handleRequests: () => void;
 };
@@ -45,13 +44,7 @@ type ExportItemType = {
   }[];
 };
 
-export type ExportOrderPackageInput = {
-  origin: string;
-  packageDeliveryStatus: (typeof SHIPPING_STATUS)[number];
-  items: ExportItemType[];
-};
-
-export type ExportDraftPackageType = ExportOrderPackageInput;
+export type ExportDraftPackageType = ExportRequestPackageType;
 
 export type ExportOrderPackageType = {
   orderId: string;
@@ -73,9 +66,8 @@ export type ExportRequestPackageType = {
 export type PropertyType = { label: string; value: string | undefined };
 
 const ExportContextProvider = ({ children }: { children: ReactNode }) => {
-  const [draftPackages, setDraftPackages] = useState<ExportDraftPackageType[]>(
-    [],
-  );
+  const [draftPackage, setDraftPackage] =
+    useState<ExportDraftPackageType | null>(null);
   const [orderPackages, setOrderPackages] = useState<ExportOrderPackageType[]>(
     [],
   );
@@ -83,12 +75,8 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
     ExportRequestPackageType[]
   >([]);
 
-  const clearDrafts = () => {
-    setDraftPackages([]);
-  };
-
-  const handleDrafts = () => {
-    setDraftPackages(exportDrafts);
+  const handleDraft = (draftPackage: ExportDraftPackageType | null) => {
+    setDraftPackage(draftPackage);
   };
 
   const handleOrders = () => {
@@ -103,15 +91,13 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     handleRequests();
     handleOrders();
-    handleDrafts();
   }, []);
 
   const value: ExportContextType = {
-    clearDrafts,
-    draftItems: draftPackages,
-    orderPackages: orderPackages,
-    requestPackages: requestPackages,
-    handleDrafts,
+    draftPackage,
+    orderPackages,
+    requestPackages,
+    handleDraft,
     handleOrders,
     handleRequests,
   };

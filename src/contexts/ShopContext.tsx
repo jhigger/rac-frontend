@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import {
   type ORDER_STATUS,
@@ -14,18 +8,16 @@ import {
   type SHOP_FOR_ME_STATUS,
   type STORES,
 } from "~/constants";
-import { shopDrafts } from "~/fake data";
 import useFetchShopOrders from "~/hooks/useFetchShopOrders";
 import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 
 export type ShopContextType = {
-  draftPackages: ShopDraftPackageType[];
+  draftPackage: ShopDraftPackageType | null;
   orderPackages: ShopOrderPackageType[];
   requestPackages: ShopRequestPackageType[];
   isFetchingOrderPackages: boolean;
   isFetchingRequestPackages: boolean;
-  clearDrafts: () => void;
-  handleDrafts: () => void;
+  handleDraft: (draftPackage: ShopDraftPackageType | null) => void;
   handleOrders: () => void;
   handleRequests: () => void;
 };
@@ -52,12 +44,7 @@ export type ShopItemType = {
   }[];
 };
 
-export type ShopOrderPackageInput = {
-  origin: string;
-  items: ShopItemType[];
-};
-
-export type ShopDraftPackageType = ShopOrderPackageInput;
+export type ShopDraftPackageType = ShopRequestPackageType;
 
 export type ShopOrderPackageType = {
   orderId: string;
@@ -83,8 +70,8 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [cookies] = useCookies(["jwt"]);
   const token = cookies.jwt as string;
 
-  const [draftPackages, setDraftPackages] = useState<ShopDraftPackageType[]>(
-    [],
+  const [draftPackage, setDraftPackage] = useState<ShopDraftPackageType | null>(
+    null,
   );
 
   const {
@@ -99,12 +86,8 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     refetch: refetchRequestPackages,
   } = useFetchShopRequests(token);
 
-  const clearDrafts = () => {
-    setDraftPackages([]);
-  };
-
-  const handleDrafts = () => {
-    setDraftPackages(shopDrafts);
+  const handleDraft = (draftPackage: ShopDraftPackageType | null) => {
+    setDraftPackage(draftPackage);
   };
 
   const handleOrders = () => {
@@ -115,19 +98,13 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     void refetchRequestPackages();
   };
 
-  // testing purposes
-  useEffect(() => {
-    handleDrafts();
-  }, []);
-
   const value: ShopContextType = {
-    draftPackages,
+    draftPackage,
     orderPackages,
     requestPackages,
     isFetchingOrderPackages,
     isFetchingRequestPackages,
-    clearDrafts,
-    handleDrafts,
+    handleDraft,
     handleOrders,
     handleRequests,
   };

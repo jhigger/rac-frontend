@@ -6,9 +6,9 @@ import { useExportContext } from "~/contexts/ExportContext";
 import DraftDetails from "./DraftDetails";
 
 const ExportDraftsPanel = () => {
-  const { draftItems } = useExportContext();
+  const { draftPackage } = useExportContext();
 
-  if (Array.isArray(draftItems) && draftItems.length > 0) {
+  if (draftPackage) {
     return (
       <TabContentLayout>
         <DraftDetails />

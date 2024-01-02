@@ -1,4 +1,5 @@
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
@@ -20,6 +21,7 @@ const DraftDetails = () => {
 
   const { draftPackage, handleDraft } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
+  const [, setDraft] = useLocalStorage("Import", {});
 
   const formMethods = useForm<ImportInputs>({
     defaultValues: {
@@ -45,6 +47,11 @@ const DraftDetails = () => {
     handleActiveAction(null);
   };
 
+  const handleSaveAsDraft = () => {
+    handleTabChange("drafts");
+    setDraft(formMethods.getValues());
+  };
+
   return (
     <FormProvider {...formMethods}>
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -64,7 +71,7 @@ const DraftDetails = () => {
           <>
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               <BackButton onClick={handleBack} />
-              <SaveAsDraftButton />
+              <SaveAsDraftButton onClick={handleSaveAsDraft} />
               <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
             </div>
             {/* for mobile screen */}
@@ -76,7 +83,7 @@ const DraftDetails = () => {
                 <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
               <div className="col-span-full">
-                <SaveAsDraftButton />
+                <SaveAsDraftButton onClick={handleSaveAsDraft} />
               </div>
             </div>
           </>

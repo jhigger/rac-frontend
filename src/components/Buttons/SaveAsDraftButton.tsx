@@ -1,13 +1,8 @@
 import { SaveAdd } from "iconsax-react";
-import { useTabContext } from "~/contexts/TabContext";
 
-export const SaveAsDraftButton = () => {
-  const { handleTabChange } = useTabContext();
+type SaveAsDraftButtonProps = { onClick: () => void };
 
-  const onClick = () => {
-    handleTabChange("drafts");
-  };
-
+export const SaveAsDraftButton = ({ onClick }: SaveAsDraftButtonProps) => {
   return (
     <button
       onClick={onClick}

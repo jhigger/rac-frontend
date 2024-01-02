@@ -23,6 +23,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -92,6 +93,7 @@ const RequestOrderForm = () => {
 
   const { handleRequests } = useShopContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
+  const [, setDraft] = useLocalStorage("Shop", {});
 
   const formMethods = useForm<ShopInputs>({
     defaultValues: {
@@ -127,6 +129,11 @@ const RequestOrderForm = () => {
     handleActiveAction(null);
   };
 
+  const handleSaveAsDraft = () => {
+    handleTabChange("drafts");
+    setDraft(formMethods.getValues());
+  };
+
   return (
     <FormProvider {...formMethods}>
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -138,7 +145,7 @@ const RequestOrderForm = () => {
           <>
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               <BackButton onClick={handleBack} />
-              <SaveAsDraftButton />
+              <SaveAsDraftButton onClick={handleSaveAsDraft} />
               <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
             </div>
             {/* for mobile screen */}
@@ -150,7 +157,7 @@ const RequestOrderForm = () => {
                 <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
               <div className="col-span-full">
-                <SaveAsDraftButton />
+                <SaveAsDraftButton onClick={handleSaveAsDraft} />
               </div>
             </div>
           </>

@@ -7,6 +7,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -117,6 +118,7 @@ export type AutoImportInputs = {
 const RequestOrder = () => {
   const { handleRequests, handleDraft } = useAutoImportContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
+  const [, setDraft] = useLocalStorage("AutoImport", {});
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Details", content: <Step1 /> },
@@ -163,6 +165,11 @@ const RequestOrder = () => {
     handleActiveAction(null);
   };
 
+  const handleSaveAsDraft = () => {
+    handleTabChange("drafts");
+    setDraft(formMethods.getValues());
+  };
+
   return (
     <FormProvider {...formMethods}>
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -180,7 +187,7 @@ const RequestOrder = () => {
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               {isFirstStep && <BackButton onClick={handleBack} />}
               {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
-              <SaveAsDraftButton />
+              <SaveAsDraftButton onClick={handleSaveAsDraft} />
               <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
             </div>
             {/* for mobile screen */}
@@ -193,7 +200,7 @@ const RequestOrder = () => {
                 <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
               <div className="col-span-full">
-                <SaveAsDraftButton />
+                <SaveAsDraftButton onClick={handleSaveAsDraft} />
               </div>
             </div>
           </>

@@ -65,7 +65,7 @@ const ClearPackage = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       {!isLastStep && (
-        <CongratulationImage text="Your package have arrived its destination. Proceed to clear it." />
+        <CongratulationImage description="Your package have arrived its destination. Proceed to clear it." />
       )}
       <StepIndex
         currentIndex={currentStepIndex}
@@ -85,7 +85,7 @@ const ClearPackage = () => {
       )}
 
       {isLastStep && (
-        <CongratulationImage text='You can now pick up your package from our office in Nigeria (your selected "Destination")' />
+        <CongratulationImage description='You can now pick up your package from our office in Nigeria (your selected "Destination")' />
       )}
 
       {step}

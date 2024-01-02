@@ -60,7 +60,7 @@ const ClearPackage = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       {!isLastStep && (
-        <CongratulationImage text="You car(s) have arrived the port, proceed to clear it." />
+        <CongratulationImage description="You car(s) have arrived the port, proceed to clear it." />
       )}
       <StepIndex
         currentIndex={currentStepIndex}
@@ -79,7 +79,9 @@ const ClearPackage = () => {
         </div>
       )}
 
-      {isLastStep && <CongratulationImage text="Expect your car(s) soon" />}
+      {isLastStep && (
+        <CongratulationImage description="Expect your car(s) soon" />
+      )}
 
       {step}
 

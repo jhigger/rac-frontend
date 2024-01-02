@@ -59,7 +59,7 @@ const NotificationList = () => {
             trackingId={selectedNotification.order.trackingId}
           />
         </div>
-        <CongratulationImage text="We have confirmed your payment. You have just successfully placed a shop for me order by paying for only your shop for me cost." />
+        <CongratulationImage description="We have confirmed your payment. You have just successfully placed a shop for me order by paying for only your shop for me cost." />
         <SuccessImportantNotice />
         <div className="flex flex-col gap-[10px]">
           <SectionHeader title="Track your package" />

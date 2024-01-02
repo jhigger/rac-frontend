@@ -635,7 +635,7 @@ export const PackageTableHead = ({ th }: PackageTableHeadProps) => {
 const Success = () => {
   return (
     <div className="flex flex-col gap-[30px]">
-      <CongratulationImage text="You have just successfully placed a shop for me order by paying for your shop for me cost." />
+      <CongratulationImage description="You have just successfully placed a shop for me order by paying for your shop for me cost." />
       <SuccessImportantNotice />
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Track your package" />

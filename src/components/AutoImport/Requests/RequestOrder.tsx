@@ -1240,7 +1240,7 @@ export const Step4 = () => {
         <LabelId label="Request ID" id="R78667" />
       </div>
 
-      <CongratulationImage text="You have just successfully requested an order for Auto Import service." />
+      <CongratulationImage description="You have just successfully requested an order for Auto Import service." />
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="You have 4 more steps to take" />
         <SectionContentLayout>

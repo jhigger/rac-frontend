@@ -527,11 +527,11 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
         )}
 
         {status === "delivered" && (
-          <CongratulationImage text="Your package has been delivered." />
+          <CongratulationImage description="Your package has been delivered." />
         )}
         {status === "cleared" && (
           <>
-            <CongratulationImage text="you can now pick up your package from our office in Nigeria (your selected “Destination”)" />
+            <CongratulationImage description="you can now pick up your package from our office in Nigeria (your selected “Destination”)" />
 
             <div className="rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
               <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">

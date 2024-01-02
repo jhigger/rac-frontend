@@ -11,7 +11,7 @@ import {
   Step1,
   Step2,
   emptyValue,
-  type InstructionsItem,
+  type InstructionsMapType,
   type Step3Props,
 } from "~/components/Import/Requests/RequestOrder";
 import LabelId from "~/components/LabelId";
@@ -131,9 +131,9 @@ export const Step3 = ({ oops }: Step3Props) => {
   return (
     <div className="flex flex-col gap-[30px]">
       {oops ? (
-        <CongratulationImage text="Send your package to our Warehouse in United States (your selected “Origin”)" />
+        <CongratulationImage description="Send your package to our Warehouse in United States (your selected “Origin”)" />
       ) : (
-        <CongratulationImage text="You have just successfully requested for Export service." />
+        <CongratulationImage description="You have just successfully requested for Export service." />
       )}
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="What Next?" />
@@ -146,7 +146,7 @@ export const Step3 = ({ oops }: Step3Props) => {
 };
 
 const Instructions = () => {
-  const instructions: InstructionsItem[] = [
+  const instructions: InstructionsMapType[] = [
     {
       content: (
         <>

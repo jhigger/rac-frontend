@@ -73,7 +73,7 @@ const InitiateShipping = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       {!isLastStep && (
-        <CongratulationImage text="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
+        <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
       )}
       <StepIndex
         currentIndex={currentStepIndex}
@@ -93,7 +93,7 @@ const InitiateShipping = () => {
       )}
 
       {isLastStep && (
-        <CongratulationImage text="You have just successfully iInitiated shipment of your items" />
+        <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
       )}
 
       {step}

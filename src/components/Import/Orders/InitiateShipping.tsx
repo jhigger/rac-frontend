@@ -213,7 +213,7 @@ export const BillingAddressStep = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
-        <SectionHeader title="Provide your shipping address" hr />
+        <SectionHeader title="Fill in the Shipping Address" hr />
         <div className="flex flex-col items-center gap-[30px] md:pl-[34px]">
           <ShippingImportantNotice />
           <SelectDestinationShippingAddress />

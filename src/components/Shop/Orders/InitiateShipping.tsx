@@ -274,7 +274,7 @@ export type DetailSectionProps = {
   colSpanMobile?: "full" | number;
   colSpanDesktop?: "full" | number;
   image?: boolean;
-  tooltip?: boolean;
+  tooltip?: string | null;
 };
 
 export const DetailSection = ({
@@ -283,13 +283,13 @@ export const DetailSection = ({
   colSpanMobile = "full",
   colSpanDesktop = "full",
   image,
-  tooltip = false,
+  tooltip,
 }: DetailSectionProps) => (
   <div
     className={`col-span-${colSpanMobile} flex flex-col justify-between gap-[5px] text-gray-700 md:col-span-${colSpanDesktop}`}
   >
     {tooltip ? (
-      <LabelWithTooltip label={label} />
+      <LabelWithTooltip label={label} tooltip={tooltip} />
     ) : (
       <span className="body-md h-[40px] max-w-[100px]">{label}:</span>
     )}
@@ -465,7 +465,7 @@ export const SelectDestinationShippingAddress = () => {
           </>
         }
       />
-      <TooltipButton />
+      <TooltipButton label="" position="left" />
     </div>
   );
 };

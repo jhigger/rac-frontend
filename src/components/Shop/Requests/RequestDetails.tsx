@@ -94,25 +94,26 @@ const RequestDetails = () => {
             />
           </div>
           <DetailSection
-            label="Total Shipment Cost"
-            value="Not allocated yet"
+            label="Urgent purchase fee"
+            value="$0.00"
             colSpanDesktop={4}
           />
           <DetailSection
-            label="Payment Status"
-            value="Unpaid"
+            label="Processing fee"
+            value="$87,000.00"
+            colSpanDesktop={4}
+            tooltip={requestPackage.requestStatus === "Responded" ? "" : null}
+          />
+          <DetailSection
+            label="Shipping to Origin Warehouse Cost"
+            value="$87,000.00"
             colSpanDesktop={4}
           />
           <DetailSection
-            label="Total Shop For Me Cost"
-            value="$234,000.00"
+            label="Shop For Me Cost"
+            value="$87,000.00"
             colSpanDesktop={4}
-            tooltip={requestPackage.requestStatus === "Responded"}
-          />
-          <DetailSection
-            label="Payment Status"
-            value="Unpaid"
-            colSpanDesktop={4}
+            tooltip={requestPackage.requestStatus === "Responded" ? "" : null}
           />
         </PaymentsInformation>
       </div>
@@ -208,7 +209,7 @@ const ShopRequestItemDetails = ({
       <DetailSection
         label="Item Name"
         value={item.name}
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={4}
       />
       <DetailSection
@@ -224,45 +225,45 @@ const ShopRequestItemDetails = ({
       <DetailSection
         label="Weight"
         value="67kg"
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Height"
         value="5 inches"
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Length"
         value="5 inches"
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Width"
         value="5 inches"
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Product/Item Picture"
         value={item.image}
         image
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
       />
       <DetailSection label="Product Description" value={item.description} />
       <DetailSection
         label="Color"
         value="Blue"
         colSpanDesktop={2}
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
       />
       <DetailSection
         label="Stripes"
         value="5 inches"
         colSpanDesktop={2}
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
       />
     </>
   );
@@ -328,7 +329,7 @@ const ShopRequestItemRelatedCosts = ({
       <PurpleDetailSection
         label="Processing Fee"
         value={`$${"87,000.00"}`}
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={4}
       />
 
@@ -343,7 +344,7 @@ const ShopRequestItemRelatedCosts = ({
       <PurpleDetailSection
         label="Shop For Me Cost"
         value={`$${"87,000.00"}`}
-        tooltip={status === "Responded"}
+        tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={4}
       />
     </>
@@ -363,12 +364,12 @@ export const ChangeCurrencyButton = () => {
   );
 };
 
-type LabelWithTooltipProps = { label: string };
+type LabelWithTooltipProps = { label: string; tooltip: string };
 
-export const LabelWithTooltip = ({ label }: LabelWithTooltipProps) => {
+export const LabelWithTooltip = ({ label, tooltip }: LabelWithTooltipProps) => {
   return (
-    <div className="flex w-fit items-start gap-[10px]">
-      <TooltipButton />
+    <div className="flex w-fit items-center gap-[10px]">
+      <TooltipButton label={tooltip} position="right" />
       <span className="body-md h-[40px] max-w-[100px]">{label}</span>
     </div>
   );

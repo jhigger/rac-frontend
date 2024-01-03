@@ -361,17 +361,27 @@ const SelectWarehouseOriginSection = () => {
           }
           {...register("requestPackage.originWarehouse")}
         />
-        <TooltipButton />
+        <TooltipButton label="" position="left" />
       </div>
     </>
   );
 };
 
-export const TooltipButton = () => {
+type TooltipButtonProps = {
+  label: string;
+  position: "top" | "bottom" | "left" | "right";
+};
+
+export const TooltipButton = ({ label, position }: TooltipButtonProps) => {
   return (
-    <button className="flex h-[24px] w-[24px] items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400">
+    <div
+      aria-label={label}
+      data-microtip-position={position}
+      role="tooltip"
+      className="flex h-[24px] w-[24px] items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
+    >
       <InfoCircle className="text-neutral-500" />
-    </button>
+    </div>
   );
 };
 
@@ -437,7 +447,7 @@ const ItemDetailsSection = ({
                     }
                     {...register(`requestPackage.items.${index}.store`)}
                   />
-                  <TooltipButton />
+                  <TooltipButton label="" position="left" />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-4">
@@ -452,7 +462,7 @@ const ItemDetailsSection = ({
                     }
                     {...register(`requestPackage.items.${index}.urgent`)}
                   />
-                  <TooltipButton />
+                  <TooltipButton label="" position="left" />
                 </div>
 
                 <div className="col-span-full">

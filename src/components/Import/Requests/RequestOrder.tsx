@@ -281,7 +281,7 @@ const ItemDetailsSection = ({
                     }
                     {...register(`requestPackage.items.${index}.idType`)}
                   />
-                  <TooltipButton />
+                  <TooltipButton label="" position="left" />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-6 ">
@@ -290,7 +290,7 @@ const ItemDetailsSection = ({
                     label={"ID Number"}
                     {...register(`requestPackage.items.${index}.idNumber`)}
                   />
-                  <TooltipButton />
+                  <TooltipButton label="" position="left" />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px]">
@@ -319,7 +319,7 @@ const ItemDetailsSection = ({
                       `requestPackage.items.${index}.itemDeliveryStatus`,
                     )}
                   />
-                  <TooltipButton />
+                  <TooltipButton label="" position="left" />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px]">
@@ -342,7 +342,7 @@ const ItemDetailsSection = ({
                       </>
                     }
                   />
-                  <TooltipButton />
+                  <TooltipButton label="" position="left" />
                 </div>
 
                 <div className="col-span-full md:col-span-8">
@@ -691,7 +691,7 @@ const SelectOrigin = () => {
         }
         {...register("requestPackage.originWarehouse")}
       />
-      <TooltipButton />
+      <TooltipButton label="" position="left" />
     </div>
   );
 };
@@ -721,7 +721,7 @@ const SelectPackageDeliveryStatus = () => {
         }
         {...register("requestPackage.deliveryStatus")}
       />
-      <TooltipButton />
+      <TooltipButton label="" position="left" />
     </div>
   );
 };

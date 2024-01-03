@@ -160,7 +160,7 @@ export const PurpleDetailSection = ({
   value,
   colSpanMobile = "full",
   colSpanDesktop = "full",
-  tooltip = false,
+  tooltip,
 }: DetailSectionProps) => {
   return (
     <div
@@ -168,7 +168,7 @@ export const PurpleDetailSection = ({
     >
       {tooltip ? (
         <div className="text-primary-600">
-          <LabelWithTooltip label={label} />
+          <LabelWithTooltip label={label} tooltip={tooltip} />
         </div>
       ) : (
         <span className="body-md h-[40px] max-w-[128px] text-primary-600">

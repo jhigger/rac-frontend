@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
-import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
@@ -14,33 +14,34 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import { Step2, Step3, type ImportInputs } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
-  const { step, next, isLastStep, isSecondToLastStep } = useMultiStepForm([
-    <Step2 />,
-    <Step3 />,
-  ]);
+  const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
+    useMultiStepForm([<Step2 />, <Step3 />]);
 
-  const { draftPackage, handleDraft } = useImportContext();
+  const { localDraft, handleLocalDraft } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
-  const [, setDraft] = useLocalStorage("Import", {});
 
   const formMethods = useForm<ImportInputs>({
     defaultValues: {
-      requestPackage: draftPackage ?? {},
+      requestPackage: localDraft?.requestPackage ?? {},
     },
   });
+
+  useEffect(() => {
+    formMethods.reset({
+      requestPackage: localDraft?.requestPackage ?? {},
+    });
+  }, [localDraft?.requestPackage]);
 
   const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
     if (isSecondToLastStep) {
       console.log(data.requestPackage);
-      handleDraft(data.requestPackage);
     }
     next();
   };
 
   const handleFinish = () => {
     handleTabChange("requests");
-    formMethods.handleSubmit(onSubmit);
-    handleDraft(null);
+    handleLocalDraft(null);
   };
 
   const handleBack = () => {
@@ -49,7 +50,7 @@ const DraftDetails = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
-    setDraft(formMethods.getValues());
+    handleLocalDraft(formMethods.getValues());
   };
 
   return (
@@ -70,7 +71,7 @@ const DraftDetails = () => {
         {!isLastStep && (
           <>
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-              <BackButton onClick={handleBack} />
+              {!isFirstStep && <BackButton onClick={handleBack} />}
               <SaveAsDraftButton onClick={handleSaveAsDraft} />
               <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
             </div>

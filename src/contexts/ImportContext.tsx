@@ -5,6 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useLocalStorage } from "usehooks-ts";
 import {
   type COURIERS,
   type ID_TYPE,
@@ -19,9 +20,11 @@ import { importOrders, importRequests } from "~/fake data";
 
 export type ImportContextType = {
   draftPackage: ImportDraftPackageType | null;
+  localDraft: ImportLocalDraftType;
   orderPackages: ImportOrderPackageType[];
   requestPackages: ImportRequestPackageType[];
   handleDraft: (draftPackage: ImportDraftPackageType | null) => void;
+  handleLocalDraft: (localDraft: ImportLocalDraftType) => void;
   handleOrders: () => void;
   handleRequests: () => void;
 };
@@ -73,9 +76,21 @@ export type ImportRequestPackageType = {
 
 export type PropertyType = { label: string; value: string | undefined };
 
+type ImportLocalDraftType = {
+  requestPackage: ImportDraftPackageType | null | undefined;
+} | null;
+
 const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   const [draftPackage, setDraftPackages] =
     useState<ImportDraftPackageType | null>(null);
+
+  const [localDraft, setLocalDraft] = useLocalStorage<ImportLocalDraftType>(
+    "Import",
+    {
+      requestPackage: draftPackage,
+    },
+  );
+
   const [orderPackages, setOrderPackages] = useState<ImportOrderPackageType[]>(
     [],
   );
@@ -85,6 +100,10 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleDraft = (draftPackage: ImportDraftPackageType | null) => {
     setDraftPackages(draftPackage);
+  };
+
+  const handleLocalDraft = (localDraft: ImportLocalDraftType) => {
+    setLocalDraft(localDraft);
   };
 
   const handleOrders = () => {
@@ -103,9 +122,11 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value: ImportContextType = {
     draftPackage,
+    localDraft,
     orderPackages,
     requestPackages,
     handleDraft,
+    handleLocalDraft,
     handleOrders,
     handleRequests,
   };

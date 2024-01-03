@@ -6,7 +6,6 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -80,9 +79,8 @@ const RequestOrder = () => {
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
-  const { handleRequests, handleDraft } = useImportContext();
+  const { handleRequests, handleDraft, handleLocalDraft } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
-  const [, setDraft] = useLocalStorage("Import", {});
 
   const formMethods = useForm<ImportInputs>({
     defaultValues: {
@@ -101,7 +99,6 @@ const RequestOrder = () => {
   const handleFinish = () => {
     handleRequests();
     handleTabChange("requests");
-    formMethods.handleSubmit(onSubmit);
   };
 
   const handleBack = () => {
@@ -110,7 +107,7 @@ const RequestOrder = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
-    setDraft(formMethods.getValues());
+    handleLocalDraft(formMethods.getValues());
   };
 
   return (

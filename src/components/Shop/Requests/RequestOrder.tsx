@@ -23,7 +23,6 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -91,9 +90,8 @@ const RequestOrderForm = () => {
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
 
-  const { handleRequests } = useShopContext();
+  const { handleRequests, handleLocalDraft } = useShopContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
-  const [, setDraft] = useLocalStorage("Shop", {});
 
   const formMethods = useForm<ShopInputs>({
     defaultValues: {
@@ -131,7 +129,7 @@ const RequestOrderForm = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
-    setDraft(formMethods.getValues());
+    handleLocalDraft(formMethods.getValues());
   };
 
   return (

@@ -1,15 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
-import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
+import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import { useImportContext } from "~/contexts/ImportContext";
 import DraftDetails from "./DraftDetails";
 
 const ImportDraftsPanel = () => {
-  const { draftPackage } = useImportContext();
+  const { localDraft } = useImportContext();
 
-  if (draftPackage) {
+  if (localDraft?.requestPackage) {
     return (
       <TabContentLayout>
         <DraftDetails />

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { useCookies } from "react-cookie";
+import { useLocalStorage } from "usehooks-ts";
 import {
   type ORDER_STATUS,
   type ORIGINS,
@@ -13,11 +14,13 @@ import useFetchShopRequests from "~/hooks/useFetchShopRequests";
 
 export type ShopContextType = {
   draftPackage: ShopDraftPackageType | null;
+  localDraft: ShopLocalDraftType;
   orderPackages: ShopOrderPackageType[];
   requestPackages: ShopRequestPackageType[];
   isFetchingOrderPackages: boolean;
   isFetchingRequestPackages: boolean;
   handleDraft: (draftPackage: ShopDraftPackageType | null) => void;
+  handleLocalDraft: (localDraft: ShopLocalDraftType) => void;
   handleOrders: () => void;
   handleRequests: () => void;
 };
@@ -67,12 +70,23 @@ export type ShopRequestPackageType = {
   items: ShopItemType[];
 };
 
+type ShopLocalDraftType = {
+  requestPackage: ShopDraftPackageType | null | undefined;
+} | null;
+
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [cookies] = useCookies(["jwt"]);
   const token = cookies.jwt as string;
 
   const [draftPackage, setDraftPackage] = useState<ShopDraftPackageType | null>(
     null,
+  );
+
+  const [localDraft, setLocalDraft] = useLocalStorage<ShopLocalDraftType>(
+    "Shop",
+    {
+      requestPackage: draftPackage,
+    },
   );
 
   const {
@@ -91,6 +105,10 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     setDraftPackage(draftPackage);
   };
 
+  const handleLocalDraft = (localDraft: ShopLocalDraftType) => {
+    setLocalDraft(localDraft);
+  };
+
   const handleOrders = () => {
     void refetchOrderPackages();
   };
@@ -101,11 +119,13 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value: ShopContextType = {
     draftPackage,
+    localDraft,
     orderPackages,
     requestPackages,
     isFetchingOrderPackages,
     isFetchingRequestPackages,
     handleDraft,
+    handleLocalDraft,
     handleOrders,
     handleRequests,
   };

@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
-import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
@@ -22,9 +22,8 @@ import {
 } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
-  const { draftPackage, handleDraft } = useAutoImportContext();
+  const { localDraft, handleLocalDraft, handleDraft } = useAutoImportContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
-  const [, setDraft] = useLocalStorage("AutoImport", {});
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Details", content: <Step1 /> },
@@ -49,9 +48,15 @@ const DraftDetails = () => {
 
   const formMethods = useForm<AutoImportInputs>({
     defaultValues: {
-      requestPackage: draftPackage ?? {},
+      requestPackage: localDraft?.requestPackage ?? {},
     },
   });
+
+  useEffect(() => {
+    formMethods.reset({
+      requestPackage: localDraft?.requestPackage ?? {},
+    });
+  }, [localDraft?.requestPackage]);
 
   const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
     if (isSecondToLastStep) {
@@ -64,8 +69,8 @@ const DraftDetails = () => {
 
   const handleFinish = () => {
     handleTabChange("requests");
-    formMethods.handleSubmit(onSubmit);
     handleDraft(null);
+    handleLocalDraft(null);
   };
 
   const handleBack = () => {
@@ -73,7 +78,8 @@ const DraftDetails = () => {
   };
 
   const handleSaveAsDraft = () => {
-    setDraft(formMethods.getValues());
+    handleTabChange("drafts");
+    handleLocalDraft(formMethods.getValues());
   };
 
   return (
@@ -91,7 +97,7 @@ const DraftDetails = () => {
         {!isLastStep && (
           <>
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-              {isFirstStep && <BackButton onClick={handleBack} />}
+              {!isFirstStep && <BackButton onClick={handleBack} />}
               {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
               <SaveAsDraftButton onClick={handleSaveAsDraft} />
               <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />

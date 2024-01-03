@@ -7,7 +7,6 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -116,9 +115,9 @@ export type AutoImportInputs = {
 };
 
 const RequestOrder = () => {
-  const { handleRequests, handleDraft } = useAutoImportContext();
+  const { handleRequests, handleDraft, handleLocalDraft } =
+    useAutoImportContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
-  const [, setDraft] = useLocalStorage("AutoImport", {});
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Details", content: <Step1 /> },
@@ -167,7 +166,7 @@ const RequestOrder = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
-    setDraft(formMethods.getValues());
+    handleLocalDraft(formMethods.getValues());
   };
 
   return (
@@ -254,6 +253,8 @@ export const Step1 = () => {
 };
 
 const SelectWarehouseOriginSection = () => {
+  const { register } = useFormContext<AutoImportInputs>();
+
   return (
     <>
       <SectionHeader
@@ -279,6 +280,7 @@ const SelectWarehouseOriginSection = () => {
               })}
             </>
           }
+          {...register("requestPackage.originWarehouse")}
         />
         <TooltipButton />
       </div>

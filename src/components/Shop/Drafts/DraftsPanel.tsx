@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Balancer from "react-wrap-balancer";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { useShopContext } from "~/contexts/ShopContext";
@@ -7,9 +6,9 @@ import TabContentLayout from "../../Layouts/TabContentLayout";
 import DraftDetails from "./DraftDetails";
 
 const ShopDraftsPanel = () => {
-  const { draftPackage } = useShopContext();
+  const { localDraft } = useShopContext();
 
-  if (draftPackage) {
+  if (localDraft?.requestPackage) {
     return (
       <TabContentLayout>
         <DraftDetails />

@@ -1,5 +1,4 @@
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
-import { useLocalStorage } from "usehooks-ts";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
@@ -38,9 +37,8 @@ const RequestOrder = () => {
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
-  const { handleRequests } = useExportContext();
+  const { handleRequests, handleLocalDraft } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
-  const [, setDraft] = useLocalStorage("Export", {});
 
   const formMethods = useForm<ExportInputs>({
     defaultValues: {
@@ -58,7 +56,6 @@ const RequestOrder = () => {
   const handleFinish = () => {
     handleRequests();
     handleTabChange("requests");
-    formMethods.handleSubmit(onSubmit);
   };
 
   const handleBack = () => {
@@ -67,7 +64,7 @@ const RequestOrder = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
-    setDraft(formMethods.getValues());
+    handleLocalDraft(formMethods.getValues());
   };
 
   return (

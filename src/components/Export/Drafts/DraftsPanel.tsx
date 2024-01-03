@@ -1,14 +1,14 @@
 import Balancer from "react-wrap-balancer";
-import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
+import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import { useExportContext } from "~/contexts/ExportContext";
 import DraftDetails from "./DraftDetails";
 
 const ExportDraftsPanel = () => {
-  const { draftPackage } = useExportContext();
+  const { localDraft } = useExportContext();
 
-  if (draftPackage) {
+  if (localDraft?.requestPackage) {
     return (
       <TabContentLayout>
         <DraftDetails />

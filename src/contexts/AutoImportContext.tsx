@@ -5,6 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useLocalStorage } from "usehooks-ts";
 import {
   type CONDITIONS,
   type ORDER_STATUS,
@@ -16,9 +17,11 @@ import { autoImportOrders, autoImportRequests } from "~/fake data";
 
 export type AutoImportContextType = {
   draftPackage: AutoImportDraftPackageType | null;
+  localDraft: AutoImportLocalDraftType;
   orderPackages: AutoImportOrderPackageType[];
   requestPackages: AutoImportRequestPackageType[];
   handleDraft: (draftPackage: AutoImportDraftPackageType | null) => void;
+  handleLocalDraft: (localDraft: AutoImportLocalDraftType) => void;
   handleOrders: () => void;
   handleRequests: () => void;
 };
@@ -102,11 +105,23 @@ export type AutoImportRequestPackageType = {
   billingDetails: BillingDetailsType;
 };
 
+type AutoImportLocalDraftType = {
+  requestPackage: AutoImportDraftPackageType | null | undefined;
+} | null;
+
 export type PropertyType = { label: string; value: string | undefined };
 
 const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   const [draftPackage, setDraftPackage] =
     useState<AutoImportDraftPackageType | null>(null);
+
+  const [localDraft, setLocalDraft] = useLocalStorage<AutoImportLocalDraftType>(
+    "AutoImport",
+    {
+      requestPackage: draftPackage,
+    },
+  );
+
   const [orderPackages, setOrderPackages] = useState<
     AutoImportOrderPackageType[]
   >([]);
@@ -116,6 +131,10 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleDraft = (draftPackage: AutoImportDraftPackageType | null) => {
     setDraftPackage(draftPackage);
+  };
+
+  const handleLocalDraft = (localDraft: AutoImportLocalDraftType) => {
+    setLocalDraft(localDraft);
   };
 
   const handleOrders = () => {
@@ -134,9 +153,11 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value: AutoImportContextType = {
     draftPackage,
+    localDraft,
     orderPackages,
     requestPackages,
     handleDraft,
+    handleLocalDraft,
     handleOrders,
     handleRequests,
   };

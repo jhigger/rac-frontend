@@ -6,9 +6,9 @@ import { useAutoImportContext } from "~/contexts/AutoImportContext";
 import DraftDetails from "./DraftDetails";
 
 const AutoImportDraftsPanel = () => {
-  const { draftPackage } = useAutoImportContext();
+  const { localDraft } = useAutoImportContext();
 
-  if (draftPackage) {
+  if (localDraft?.requestPackage) {
     return (
       <TabContentLayout>
         <DraftDetails />

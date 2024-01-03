@@ -8,44 +8,62 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from "react";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import { type ACTION_CONST, type TAB_IDS } from "~/constants";
 import { useNavContext, type NavTitleType } from "./NavigationContext";
 
+const loading = () => (
+  <div className="h-full">
+    <LoadingSpinner />
+  </div>
+);
 const AutoImportDraftsPanel = dynamic(
   () => import("~/components/AutoImport/Drafts/DraftsPanel"),
+  { loading },
 );
 const AutoImportOrdersPanel = dynamic(
   () => import("~/components/AutoImport/Orders/OrdersPanel"),
+  { loading },
 );
 const AutoImportRequestsPanel = dynamic(
   () => import("~/components/AutoImport/Requests/RequestsPanel"),
+  { loading },
 );
 const ExportDraftsPanel = dynamic(
   () => import("~/components/Export/Drafts/DraftsPanel"),
+  { loading },
 );
 const ExportOrdersPanel = dynamic(
   () => import("~/components/Export/Orders/OrdersPanel"),
+  { loading },
 );
 const ExportRequestsPanel = dynamic(
   () => import("~/components/Export/Requests/RequestsPanel"),
+  { loading },
 );
 const ImportDraftsPanel = dynamic(
   () => import("~/components/Import/Drafts/DraftsPanel"),
+  { loading },
 );
 const ImportOrdersPanel = dynamic(
   () => import("~/components/Import/Orders/OrdersPanel"),
+  { loading },
 );
 const ImportRequestsPanel = dynamic(
   () => import("~/components/Import/Requests/RequestsPanel"),
+  { loading },
 );
 const ShopDraftsPanel = dynamic(
   () => import("~/components/Shop/Drafts/DraftsPanel"),
+  { loading },
 );
 const ShopOrdersPanel = dynamic(
   () => import("~/components/Shop/Orders/OrdersPanel"),
+  { loading },
 );
 const ShopRequestsPanel = dynamic(
   () => import("~/components/Shop/Requests/RequestsPanel"),
+  { loading },
 );
 
 export type TabContextType = {

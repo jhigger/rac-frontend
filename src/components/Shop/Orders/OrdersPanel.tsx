@@ -13,7 +13,6 @@ import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
-import { LoadingSpinner } from "~/components/LoadingScreen";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import { SHIPPING_STATUS, SHOP_FOR_ME_STATUS } from "~/constants";
 import {
@@ -37,18 +36,8 @@ import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const ShopOrdersPanel = () => {
-  const { orderPackages, isFetchingOrderPackages } = useShopContext();
+  const { orderPackages } = useShopContext();
   const { activeAction } = useTabContext();
-
-  if (isFetchingOrderPackages) {
-    return (
-      <TabContentLayout>
-        <div className="flex h-full items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      </TabContentLayout>
-    );
-  }
 
   if (activeAction === "clear package") {
     return (

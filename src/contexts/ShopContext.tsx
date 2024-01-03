@@ -17,8 +17,6 @@ export type ShopContextType = {
   localDraft: ShopLocalDraftType;
   orderPackages: ShopOrderPackageType[];
   requestPackages: ShopRequestPackageType[];
-  isFetchingOrderPackages: boolean;
-  isFetchingRequestPackages: boolean;
   handleDraft: (draftPackage: ShopDraftPackageType | null) => void;
   handleLocalDraft: (localDraft: ShopLocalDraftType) => void;
   handleOrders: () => void;
@@ -89,17 +87,11 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     },
   );
 
-  const {
-    data: orderPackages,
-    isFetching: isFetchingOrderPackages,
-    refetch: refetchOrderPackages,
-  } = useFetchShopOrders(token);
+  const { data: orderPackages, refetch: refetchOrderPackages } =
+    useFetchShopOrders(token);
 
-  const {
-    data: requestPackages,
-    isFetching: isFetchingRequestPackages,
-    refetch: refetchRequestPackages,
-  } = useFetchShopRequests(token);
+  const { data: requestPackages, refetch: refetchRequestPackages } =
+    useFetchShopRequests(token);
 
   const handleDraft = (draftPackage: ShopDraftPackageType | null) => {
     setDraftPackage(draftPackage);
@@ -122,8 +114,6 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     localDraft,
     orderPackages,
     requestPackages,
-    isFetchingOrderPackages,
-    isFetchingRequestPackages,
     handleDraft,
     handleLocalDraft,
     handleOrders,

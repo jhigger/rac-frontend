@@ -6,7 +6,6 @@ import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import LabelId from "~/components/LabelId";
-import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
 import {
   useShopContext,
@@ -26,18 +25,8 @@ import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
 
 const ShopRequestsPanel = () => {
-  const { requestPackages, isFetchingRequestPackages } = useShopContext();
+  const { requestPackages } = useShopContext();
   const { activeAction } = useTabContext();
-
-  if (isFetchingRequestPackages) {
-    return (
-      <TabContentLayout>
-        <div className="flex h-full items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      </TabContentLayout>
-    );
-  }
 
   if (activeAction === "request new order") {
     return (

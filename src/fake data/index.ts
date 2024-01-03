@@ -18,93 +18,6 @@ import {
 
 const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image";
 
-export const notificationItems: NotificationItemType[] = [
-  {
-    localDate: new Date().toLocaleString(),
-    type: "payment confirmation",
-    order: {
-      orderId: "OD08753",
-      orderStatus: "responded",
-      orderLocalDate: new Date().toLocaleString(),
-      trackingId: "SH08753",
-      shippingStatus: "ready for shipping",
-      shopForMeStatus: "Purchase completed",
-      shopForMeCost: 107.76,
-      shippingCost: 107.76,
-      originWarehouse: "China Warehouse (Guangzhou city)",
-      items: [
-        {
-          store: "Amazon",
-          urgent: false,
-          url: "",
-          name: "Designer Bags",
-          originalCost: 1,
-          quantity: 1,
-          shippingCost: 1,
-          image: src,
-          description: "",
-        },
-      ],
-    },
-  },
-  {
-    localDate: new Date("2022/12/12").toLocaleString(),
-    type: "shipment arrival",
-    order: {
-      orderId: "OD08753",
-      orderStatus: "responded",
-      orderLocalDate: new Date().toLocaleString(),
-      trackingId: "SH08753",
-      shippingStatus: "ready for shipping",
-      shopForMeStatus: "Purchase completed",
-      shopForMeCost: 107.76,
-      shippingCost: 107.76,
-      originWarehouse: "China Warehouse (Guangzhou city)",
-      items: [
-        {
-          store: "Amazon",
-          urgent: false,
-          url: "",
-          name: "Designer Bags",
-          originalCost: 1,
-          quantity: 1,
-          shippingCost: 1,
-          image: src,
-          description: "",
-        },
-      ],
-    },
-  },
-  {
-    localDate: new Date("2023/2/23").toLocaleString(),
-    type: "payment rejection",
-    order: {
-      orderId: "OD08751",
-      orderStatus: "processed",
-      orderLocalDate: new Date().toLocaleString(),
-      trackingId: "SH08751",
-      shippingStatus: "not started",
-      shopForMeStatus: "Purchase not started",
-      shopForMeCost: 107.76,
-      shippingCost: 107.76,
-      originWarehouse: "Nigeria Warehouse (Lagos)",
-      items: [
-        {
-          store: "Amazon",
-          urgent: false,
-          url: "",
-          name: "Designer Bags",
-          originalCost: 1,
-          quantity: 1,
-          shippingCost: 1,
-          image: src,
-          description: "",
-        },
-      ],
-    },
-  },
-];
-
 export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08751",
@@ -143,7 +56,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   },
   {
     orderId: "OD08752",
-    orderStatus: "not responded",
+    orderStatus: "processed",
     orderLocalDate: new Date("2023/2/23").toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
@@ -189,7 +102,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   },
   {
     orderId: "OD08753",
-    orderStatus: "responded",
+    orderStatus: "processed",
     orderLocalDate: new Date("2023/3/23").toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
@@ -314,7 +227,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   },
   {
     orderId: "OD08755",
-    orderStatus: "not responded",
+    orderStatus: "processed",
     orderLocalDate: new Date("2023/5/23").toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "processing",
@@ -338,7 +251,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   },
   {
     orderId: "OD08756",
-    orderStatus: "responded",
+    orderStatus: "processed",
     orderLocalDate: new Date("2023/6/23").toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
@@ -362,7 +275,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   },
   {
     orderId: "OD08757",
-    orderStatus: "responded",
+    orderStatus: "processed",
     orderLocalDate: new Date("2023/7/23").toLocaleString(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
@@ -386,7 +299,7 @@ export const shopOrders: ShopOrderPackageType[] = [
   },
   {
     orderId: "OD08758",
-    orderStatus: "responded",
+    orderStatus: "processed",
     orderLocalDate: new Date("2023/8/23").toLocaleString(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
@@ -553,7 +466,7 @@ export const importOrders: ImportOrderPackageType[] = [
   },
   {
     orderId: "OD08752",
-    orderStatus: "not responded",
+    orderStatus: "processed",
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
@@ -576,7 +489,7 @@ export const importOrders: ImportOrderPackageType[] = [
   },
   {
     orderId: "OD08753",
-    orderStatus: "responded",
+    orderStatus: "processed",
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
@@ -622,7 +535,7 @@ export const importOrders: ImportOrderPackageType[] = [
   },
   {
     orderId: "OD08755",
-    orderStatus: "not responded",
+    orderStatus: "processed",
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "processing",
@@ -645,7 +558,7 @@ export const importOrders: ImportOrderPackageType[] = [
   },
   {
     orderId: "OD08756",
-    orderStatus: "responded",
+    orderStatus: "processed",
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
@@ -668,7 +581,7 @@ export const importOrders: ImportOrderPackageType[] = [
   },
   {
     orderId: "OD08757",
-    orderStatus: "responded",
+    orderStatus: "processed",
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
@@ -691,7 +604,7 @@ export const importOrders: ImportOrderPackageType[] = [
   },
   {
     orderId: "OD08758",
-    orderStatus: "responded",
+    orderStatus: "processed",
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
@@ -1143,5 +1056,23 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
       city: "",
       zipPostalCode: "",
     },
+  },
+];
+
+export const notificationItems: NotificationItemType[] = [
+  {
+    localDate: new Date().toLocaleString(),
+    type: "payment confirmation",
+    order: shopOrders[2]!,
+  },
+  {
+    localDate: new Date("2022/12/12").toLocaleString(),
+    type: "shipment arrival",
+    order: shopOrders[2]!,
+  },
+  {
+    localDate: new Date("2023/2/23").toLocaleString(),
+    type: "payment rejection",
+    order: shopOrders[0]!,
   },
 ];

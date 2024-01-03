@@ -63,9 +63,7 @@ const TopAppBar = ({ hasTabs = true }: TopAppBarProps) => {
 
       {/* tabs */}
       {hasTabs ? (
-        <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
-          <AppBarTabs />
-        </div>
+        <AppBarTabs />
       ) : (
         <div className="h-[20px] overflow-hidden rounded-b-[20px] border-b-[1px] border-b-gray-200 bg-white"></div>
       )}

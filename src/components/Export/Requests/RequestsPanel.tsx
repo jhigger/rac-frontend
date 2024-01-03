@@ -49,7 +49,7 @@ const ExportRequestsPanel = () => {
   return (
     <TabContentLayout>
       <div className="flex w-full flex-grow flex-col items-center justify-center gap-[30px]">
-        <h2 className="title-lg max-w-[462px] text-center">
+        <h2 className="title-md md:title-lg max-w-[462px] text-center">
           <Balancer>
             You have not requested for any export order before, would you like
             to request for a new order?

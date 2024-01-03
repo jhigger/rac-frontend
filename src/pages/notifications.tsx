@@ -68,7 +68,7 @@ const Empty = () => {
 
   return (
     <div className="flex w-full flex-grow flex-col items-center justify-center gap-[30px]">
-      <h2 className="title-lg max-w-[462px] text-center">
+      <h2 className="title-md md:title-lg max-w-[462px] text-center">
         <Balancer>You don&apos;t have any notification here yet.</Balancer>
       </h2>
       <div className="w-max">

@@ -16,7 +16,7 @@ const AppBarTabs = () => {
 
   return (
     <div className="tabs flex flex-col">
-      <div className="relative flex flex-row items-center">
+      <div className="relative flex h-[50px] w-full flex-row items-center overflow-x-auto overflow-y-hidden rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
         {navItems.map(({ href }) => {
           return tabs.map(({ tabs: navTabs, nav: navTitle }) => {
             if (router.asPath !== href) return null;

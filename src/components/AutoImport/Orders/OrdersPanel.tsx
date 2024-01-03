@@ -8,6 +8,7 @@ import { capitalizeWords } from "~/Utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
 import { ClearPackageButton } from "~/components/Buttons/ClearPackageButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
@@ -17,7 +18,6 @@ import MainTable from "~/components/MainTable";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import { type FilterCategoriesType } from "~/components/SearchBar";
 import { DetailSection } from "~/components/Shop/Orders/InitiateShipping";
-import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import {
   ImageColumn,
   PickUpInstructions,
@@ -179,7 +179,6 @@ const OrdersTable = () => {
             id={row.original.orderId}
             status={row.original.shippingStatus}
             onClick={() => {
-              console.log(Number(row.id));
               handleViewIndex(Number(row.id));
             }}
           />
@@ -315,18 +314,14 @@ const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
         {capitalizeWords(status)}
       </button>
       {createPortal(
-        <ShippingStatusModal {...{ modalId, status, onClick }} />,
+        <ShippingStatusModal {...{ modalId, status }} />,
         document.body,
       )}
     </>
   );
 };
 
-const ShippingStatusModal = ({
-  modalId,
-  status,
-  onClick,
-}: ShippingStatusModalProps) => {
+const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
   const dataClose = `#${modalId}`;
 
   const content = {
@@ -457,10 +452,7 @@ const ShippingStatusModal = ({
             {status === "ready for shipping" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
-                <InitiateShippingButton
-                  dataClose={dataClose}
-                  onClick={onClick}
-                />
+                <InitiateShippingButton dataClose={dataClose} />
               </div>
             )}
             {(status === "processing" || status === "in transit") && (
@@ -472,7 +464,7 @@ const ShippingStatusModal = ({
             {status === "arrived destination" && (
               <div className="flex gap-[8px]">
                 <CancelButton dataClose={dataClose} />
-                <ClearPackageButton dataClose={dataClose} onClick={onClick} />
+                <ClearPackageButton dataClose={dataClose} />
               </div>
             )}
           </div>

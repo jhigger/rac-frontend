@@ -439,7 +439,6 @@ const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
 export type ShippingStatusModalProps = {
   modalId: string;
   status: ShippingStatusProps["status"];
-  onClick?: () => void;
 };
 
 export const excluded = ["not started", "cancelled", "cleared", "delivered"];

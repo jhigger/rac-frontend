@@ -169,7 +169,6 @@ const OrdersTable = () => {
             id={row.original.orderId}
             status={row.original.shippingStatus}
             onClick={() => {
-              console.log(Number(row.id));
               handleViewIndex(Number(row.id));
             }}
           />

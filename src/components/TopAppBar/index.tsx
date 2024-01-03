@@ -39,9 +39,9 @@ import BreadCrumbs from "./BreadCrumbs";
 
 dayjs.extend(relativeTime);
 
-type TopAppBarProps = { tabs?: boolean };
+type TopAppBarProps = { hasTabs?: boolean };
 
-const TopAppBar = ({ tabs = true }: TopAppBarProps) => {
+const TopAppBar = ({ hasTabs = true }: TopAppBarProps) => {
   return (
     <div className="sticky top-0 z-40 flex flex-col">
       <div className="flex w-full items-center justify-between gap-[10px] bg-white px-[20px] pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
@@ -60,14 +60,14 @@ const TopAppBar = ({ tabs = true }: TopAppBarProps) => {
       <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
         <TopAppBarHeader />
       </div>
-      {!tabs && (
-        <div className="h-[20px] overflow-hidden rounded-b-[20px] border-b-[1px] border-b-gray-200 bg-white"></div>
-      )}
+
       {/* tabs */}
-      {tabs && (
+      {hasTabs ? (
         <div className="h-[50px] w-full rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
           <AppBarTabs />
         </div>
+      ) : (
+        <div className="h-[20px] overflow-hidden rounded-b-[20px] border-b-[1px] border-b-gray-200 bg-white"></div>
       )}
     </div>
   );

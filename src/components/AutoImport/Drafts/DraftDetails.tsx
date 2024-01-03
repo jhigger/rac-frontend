@@ -79,6 +79,7 @@ const DraftDetails = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
+    handleDraft(formMethods.getValues().requestPackage);
     handleLocalDraft(formMethods.getValues());
   };
 
@@ -97,7 +98,7 @@ const DraftDetails = () => {
         {!isLastStep && (
           <>
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-              {!isFirstStep && <BackButton onClick={handleBack} />}
+              {isFirstStep && <BackButton onClick={handleBack} />}
               {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
               <SaveAsDraftButton onClick={handleSaveAsDraft} />
               <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />

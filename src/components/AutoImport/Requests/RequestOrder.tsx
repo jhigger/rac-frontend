@@ -1275,7 +1275,7 @@ const HaveAConcern = () => {
   return (
     <>
       <SectionHeader title="Have A Concern?" />
-      <div className="flex flex-col flex-wrap items-center gap-[30px] px-[10px] md:flex-row md:pl-[34px]">
+      <div className="flex flex-col flex-wrap gap-[30px] px-[10px] md:flex-row md:items-center md:pl-[34px]">
         <div className="flex max-w-[219px] flex-col gap-[10px]">
           <span className="body-md w-[219px]">
             Would you like to know the shipping cost of your package before

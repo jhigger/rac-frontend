@@ -37,7 +37,7 @@ const RequestOrder = () => {
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
-  const { handleRequests, handleLocalDraft } = useExportContext();
+  const { handleRequests, handleLocalDraft, handleDraft } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ExportInputs>({
@@ -49,6 +49,7 @@ const RequestOrder = () => {
   const onSubmit: SubmitHandler<ExportInputs> = async (data) => {
     if (isSecondToLastStep) {
       console.log(data.requestPackage);
+      handleDraft(data.requestPackage);
     }
     next();
   };
@@ -56,6 +57,7 @@ const RequestOrder = () => {
   const handleFinish = () => {
     handleRequests();
     handleTabChange("requests");
+    handleDraft(null);
   };
 
   const handleBack = () => {
@@ -83,12 +85,10 @@ const RequestOrder = () => {
         {step}
 
         {isFirstStep && (
-          <>
-            <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
-              <BackButton onClick={handleBack} />
-              <ProceedButton onClick={next} />
-            </div>
-          </>
+          <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
+            <BackButton onClick={handleBack} />
+            <ProceedButton onClick={next} />
+          </div>
         )}
         {!isFirstStep && !isLastStep && (
           <>

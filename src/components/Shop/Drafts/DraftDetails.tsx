@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
-import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
@@ -16,11 +15,13 @@ import {
 } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
-  const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
-    useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
+  const { step, next, isLastStep, isSecondToLastStep } = useMultiStepForm([
+    <RequestOrderStep1 />,
+    <RequestOrderStep2 />,
+  ]);
 
   const { localDraft, handleLocalDraft } = useShopContext();
-  const { handleTabChange, handleActiveAction } = useTabContext();
+  const { handleTabChange } = useTabContext();
 
   const formMethods = useForm<ShopInputs>({
     defaultValues: {
@@ -46,10 +47,6 @@ const DraftDetails = () => {
     handleLocalDraft(null);
   };
 
-  const handleBack = () => {
-    handleActiveAction(null);
-  };
-
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
     handleLocalDraft(formMethods.getValues());
@@ -64,26 +61,11 @@ const DraftDetails = () => {
         />
         {step}
 
-        {isFirstStep && (
-          <>
-            <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-              {!isFirstStep && <BackButton onClick={handleBack} />}
-              <SaveAsDraftButton onClick={handleSaveAsDraft} />
-              <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
-            </div>
-            {/* for mobile screen */}
-            <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
-              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                {!isFirstStep && <BackButton onClick={handleBack} />}
-              </div>
-              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
-              </div>
-              <div className="col-span-full">
-                <SaveAsDraftButton onClick={handleSaveAsDraft} />
-              </div>
-            </div>
-          </>
+        {!isLastStep && (
+          <div className="flex flex-col gap-[10px] md:flex md:flex-row md:[&>*]:w-max">
+            <SaveAsDraftButton onClick={handleSaveAsDraft} />
+            <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
+          </div>
         )}
         {isLastStep && (
           <div className="w-full md:w-[200px]">

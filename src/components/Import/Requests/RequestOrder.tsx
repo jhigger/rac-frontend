@@ -79,7 +79,7 @@ const RequestOrder = () => {
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
-  const { handleRequests, handleDraft, handleLocalDraft } = useImportContext();
+  const { handleRequests, handleLocalDraft, handleDraft } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ImportInputs>({
@@ -99,6 +99,7 @@ const RequestOrder = () => {
   const handleFinish = () => {
     handleRequests();
     handleTabChange("requests");
+    handleDraft(null);
   };
 
   const handleBack = () => {

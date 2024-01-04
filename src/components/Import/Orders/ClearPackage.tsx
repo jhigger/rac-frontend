@@ -1,5 +1,5 @@
 import { ArrowRight3 } from "iconsax-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -8,6 +8,7 @@ import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import PackageTable from "~/components/PackageTable";
 import {
   BillingDetailsConfirmation,
   Success,
@@ -39,7 +40,10 @@ import {
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
-import { PackageTable } from "./InitiateShipping";
+import {
+  ImportPackageTableFooter,
+  importPackageItemColumns,
+} from "./InitiateShipping";
 
 const ClearPackage = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -213,10 +217,25 @@ const ImportOrderItemDetails = ({ item }: ImportOrderItemDetailsProps) => {
 };
 
 const ClearPackageStep = () => {
+  const { orderPackages } = useImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const defaultColumns = useMemo(importPackageItemColumns, []);
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
-      <PackageTable />
+      <PackageTable
+        columns={defaultColumns}
+        data={orderPackage.items}
+        tableFooter={<ImportPackageTableFooter />}
+      />
 
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">

@@ -1,5 +1,5 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -12,9 +12,13 @@ import SelectCountryPhoneCodeInput from "~/components/Forms/Inputs/SelectCountry
 import SelectStateInput from "~/components/Forms/Inputs/SelectStateInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
 import { ImportOrderItem } from "~/components/Import/Orders/ClearPackage";
-import { PackageTable } from "~/components/Import/Orders/InitiateShipping";
+import {
+  ImportPackageTableFooter,
+  importPackageItemColumns,
+} from "~/components/Import/Orders/InitiateShipping";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import PackageTable from "~/components/PackageTable";
 import {
   DetailSection,
   ShippingMethod,
@@ -253,10 +257,25 @@ export const FillInShippingAddress = () => {
 };
 
 const InitiateShippingStep = () => {
+  const { orderPackages } = useExportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const defaultColumns = useMemo(importPackageItemColumns, []);
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
-      <PackageTable />
+      <PackageTable
+        columns={defaultColumns}
+        data={orderPackage.items}
+        tableFooter={<ImportPackageTableFooter />}
+      />
 
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">

@@ -66,6 +66,7 @@ export type PickupDetailsType = {
   zipPostalCode: string;
   pickUpDate: string;
   locationType: string;
+  pickupCost: number;
 };
 
 export type BillingDetailsType = {

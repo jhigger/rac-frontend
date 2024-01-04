@@ -1,11 +1,12 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import PackageTable from "~/components/PackageTable";
 import { BillingAddress } from "~/components/Shop/Orders/InitiateShipping";
 import {
   AndLastly,
@@ -26,7 +27,11 @@ import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { DestinationAddressDetails } from "../Requests/RequestOrder";
-import { AutoImportOrderItem, PackageTable } from "./InitiateShipping";
+import {
+  AutoImportOrderItem,
+  AutoImportPackageTableFooter,
+  autoImportPackageItemColumns,
+} from "./InitiateShipping";
 
 const ClearPackage = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -151,10 +156,25 @@ const Step2 = () => {
 };
 
 const Step3 = () => {
+  const { orderPackages } = useAutoImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const defaultColumns = useMemo(autoImportPackageItemColumns, []);
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
-      <PackageTable />
+      <PackageTable
+        columns={defaultColumns}
+        data={orderPackage.items}
+        tableFooter={<AutoImportPackageTableFooter />}
+      />
 
       <SectionHeader title="Payment Methods" />
       <div className="pl-[14px]">

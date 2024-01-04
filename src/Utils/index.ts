@@ -15,3 +15,7 @@ export const formatCurrency = (amount: number) => {
     minimumFractionDigits: 2,
   }).format(amount);
 };
+
+export const limitChars = (text: string, limit: number) => {
+  return `${text.slice(0, limit - 3)}${limit - 3 < 10 ? "..." : ""}`;
+};

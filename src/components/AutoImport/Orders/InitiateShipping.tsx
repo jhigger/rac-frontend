@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -9,6 +11,7 @@ import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import PackageTable from "~/components/PackageTable";
 import {
   BillingAddress,
   DetailSection,
@@ -22,7 +25,6 @@ import {
   StepIndex,
   SubSectionTitle,
   TotalCost,
-  type PackageTableHeadProps,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
 import {
@@ -218,10 +220,25 @@ const Step2 = () => {
 };
 
 const Step3 = () => {
+  const { orderPackages } = useAutoImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const defaultColumns = useMemo(autoImportPackageItemColumns, []);
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
-      <PackageTable />
+      <PackageTable
+        columns={defaultColumns}
+        data={orderPackage.items}
+        tableFooter={<AutoImportPackageTableFooter />}
+      />
 
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">
@@ -373,91 +390,58 @@ const ShippingMethod = ({
   );
 };
 
-export const PackageTable = () => {
-  const th = ["Items", "Car(s) color", "Car(s) value", "Pick up Cost"];
+export const autoImportPackageItemColumns = () => {
+  const columnHelper = createColumnHelper<AutoImportItemType>();
 
-  return (
-    <div className="overflow-x-auto ">
-      <table className="relative min-w-max table-auto text-left">
-        <PackageTableHead th={th} />
-        <PackageTableBody />
-        <Totals />
-      </table>
-    </div>
-  );
+  return [
+    columnHelper.display({
+      id: "item",
+      header: "Item",
+      cell: ({ row }) => (
+        <>
+          <div className="w-[62px] items-center overflow-hidden rounded-[10px]">
+            <img src={row.original.image} alt="item image" />
+          </div>
+          <div className="max-w-[160px] text-secondary-900">
+            {`${row.original.brand} ${row.original.model}`}
+          </div>
+        </>
+      ),
+    }),
+    columnHelper.accessor("color", {
+      header: "Car(s) color",
+      cell: ({ row }) => row.original.color,
+    }),
+    columnHelper.accessor("value", {
+      header: "Car(s) value",
+      cell: ({ row }) => formatCurrency(row.original.value),
+    }),
+    columnHelper.accessor("pickupDetails.pickupCost", {
+      header: "Pick up Cost",
+      cell: ({ row }) =>
+        row.original.pickupDetails
+          ? formatCurrency(row.original.pickupDetails.pickupCost)
+          : "---",
+    }),
+  ] as Array<ColumnDef<AutoImportItemType, unknown>>;
 };
 
-const PackageTableHead = ({ th }: PackageTableHeadProps) => {
+export const AutoImportPackageTableFooter = () => {
   return (
-    <thead className="title-sm sticky top-0 z-10 grid grid-cols-4 gap-[20px] rounded-t-[20px] border border-b-0 border-gray-200 bg-neutral-50 p-[30px] font-medium text-secondary-900">
-      {th.map((title) => {
-        return (
-          <tr key={title}>
-            <th className="max-w-[150px] border-0 p-0">
-              <span className="label-lg">{title}</span>
-            </th>
-          </tr>
-        );
-      })}
-    </thead>
-  );
-};
-
-const Totals = () => {
-  return (
-    <tfoot className="grid grid-cols-4 gap-y-[20px] rounded-b-[20px] border border-t-0 border-gray-200 bg-neutral-50 px-[30px] py-[10px] [&>tr>td]:border-0 [&>tr>td]:p-0">
-      <tr className="col-span-1 col-start-3 flex w-[100px] flex-col items-end gap-[5px]">
-        <td className="body-md text-end text-gray-700">
+    <>
+      <div className="col-span-1 col-start-3 flex w-[100px] flex-col items-end gap-[5px]">
+        <span className="body-md text-end text-gray-700">
           Total Declared value:
-        </td>
-        <td className="title-lg text-neutral-900">$345.00</td>
-      </tr>
-      <tr className="col-span-1 flex w-[100px] flex-col items-end gap-[5px]">
-        <td className="body-md text-end text-gray-700">Total pick up cost:</td>
-        <td className="title-lg text-neutral-900">$340.00</td>
-      </tr>
-    </tfoot>
-  );
-};
-
-const PackageTableBody = () => {
-  const limitChars = (text: string, limit: number) => {
-    return text.length < 20 ? text : `${text.slice(0, limit - 3)}...`;
-  };
-
-  const fakeData = {
-    image: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-    name: "Benz s10",
-    color: "Blue",
-    value: "$88.99",
-    pickUpCost: "$22.00",
-  };
-
-  return (
-    <tbody className="flex flex-col border-x border-gray-200 bg-white px-[20px] [&>tr]:border-b-[0.5px] [&>tr]:border-gray-500">
-      {Array<typeof fakeData>(2)
-        .fill(fakeData)
-        .map(({ image, name, color, value, pickUpCost }, i) => {
-          return (
-            <tr
-              key={i}
-              className="label-lg grid grid-cols-4 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
-            >
-              <td className="col-span-1 flex items-center gap-[10px]">
-                <div className="w-[62px] overflow-hidden rounded-[10px]">
-                  <img src={image} alt="item image" />
-                </div>
-                <div className="max-w-[160px] text-secondary-900">
-                  {limitChars(name, 80)}
-                </div>
-              </td>
-              <td className="col-span-1">{color}</td>
-              <td className="col-span-1">{value}</td>
-              <td className="col-span-1">{pickUpCost}</td>
-            </tr>
-          );
-        })}
-    </tbody>
+        </span>
+        <span className="title-lg text-neutral-900">$345.00</span>
+      </div>
+      <div className="col-span-1 flex w-[100px] flex-col items-end gap-[5px]">
+        <span className="body-md text-end text-gray-700">
+          Total pick up cost:
+        </span>
+        <span className="title-lg text-neutral-900">$340.00</span>
+      </div>
+    </>
   );
 };
 

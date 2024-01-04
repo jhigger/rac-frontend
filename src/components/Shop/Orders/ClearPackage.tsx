@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable @next/next/no-img-element */
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -6,6 +7,7 @@ import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import PackageTable from "~/components/PackageTable";
 import {
   SectionContentLayout,
   SectionHeader,
@@ -16,10 +18,11 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   AndLastly,
-  PackageTable,
   PaymentMethods,
+  ShopPackageTableFooter,
   StepIndex,
   SubSectionTitle,
+  shopPackageItemColumns,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
 import { HighlightedInfo, LabelWithTooltip } from "../Requests/RequestDetails";
@@ -247,10 +250,25 @@ const DestinationAddressDetails = () => {
 };
 
 export const ClearPackageStep = () => {
+  const { orderPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const defaultColumns = useMemo(shopPackageItemColumns, []);
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
-      <PackageTable />
+      <PackageTable
+        columns={defaultColumns}
+        data={orderPackage.items}
+        tableFooter={<ShopPackageTableFooter />}
+      />
 
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">

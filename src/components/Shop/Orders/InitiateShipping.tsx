@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -10,6 +10,7 @@ import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import PackageTable from "~/components/PackageTable";
 import {
   SectionContentLayout,
   SectionHeader,
@@ -26,10 +27,11 @@ import { InitiateShippingButton } from "../../Buttons/InitiateShippingButton";
 import {
   AndLastly,
   Cost,
-  PackageTable,
+  ShopPackageTableFooter,
   StepIndex,
   SubSectionTitle,
   TotalCost,
+  shopPackageItemColumns,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
 import { LabelWithTooltip, PackageOrigin } from "../Requests/RequestDetails";
@@ -509,10 +511,26 @@ export const ShippingImportantNotice = () => {
 };
 
 const InitiateShippingStep = () => {
+  const { orderPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const defaultColumns = useMemo(shopPackageItemColumns, []);
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
-      <PackageTable />
+
+      <PackageTable
+        columns={defaultColumns}
+        data={orderPackage.items}
+        tableFooter={<ShopPackageTableFooter />}
+      />
 
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">

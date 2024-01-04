@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowRight3, ExportCircle, Receipt2, TickCircle } from "iconsax-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
+import { formatCurrency, limitChars } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -14,9 +16,10 @@ import SelectStateInput from "~/components/Forms/Inputs/SelectStateInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import PackageTable from "~/components/PackageTable";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
-import { useShopContext } from "~/contexts/ShopContext";
+import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -300,10 +303,25 @@ export const CustomBillingAddress = () => {
 };
 
 const PlaceOrder = () => {
+  const { requestPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const requestPackage = requestPackages?.[viewIndex];
+
+  if (!requestPackage) return;
+
+  const defaultColumns = useMemo(shopPackageItemColumns, []);
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details" />
-      <PackageTable />
+      <PackageTable
+        columns={defaultColumns}
+        data={requestPackage.items}
+        tableFooter={<ShopPackageTableFooter />}
+      />
       <SectionHeader title="Payment Methods" />
       <div className="pl-[14px]">
         <SubSectionTitle title="Select the Payment Method You Wish to Use" />
@@ -346,27 +364,6 @@ export const PaymentMethods = () => {
         <PaymentMethod title="Pay Via PayPal" /> */}
       </fieldset>
     </form>
-  );
-};
-
-export const PackageTable = () => {
-  const th = [
-    "Item",
-    "Item URL",
-    "Item Cost from Store",
-    "Urgent Purchase",
-    "Quantity of items",
-    "Total value of item",
-  ];
-
-  return (
-    <div className="overflow-x-scroll ">
-      <table className="relative min-w-max table-auto text-left">
-        <PackageTableHead th={th} />
-        <PackageTableBody />
-        <Totals />
-      </table>
-    </div>
   );
 };
 
@@ -530,121 +527,91 @@ export const SubSectionTitle = ({ title }: SubSectionTitleProps) => {
   return <h4 className="title-md md:title-lg text-gray-700">{title}</h4>;
 };
 
-const Totals = () => {
-  return (
-    <tfoot className="grid h-[170px] grid-cols-4 grid-rows-2 items-end gap-y-[20px] rounded-b-[20px] border border-t-0 border-gray-200 bg-neutral-50 px-[30px] py-[10px] [&>tr>td]:border-0 [&>tr>td]:p-0">
-      <tr className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Total number of items:</td>
-        <td className="title-lg text-neutral-900">6</td>
-      </tr>
-      <tr className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Total Gross weight:</td>
-        <td className="title-lg text-neutral-900">30lbs</td>
-      </tr>
-      <tr className="col-span-2 row-span-1 flex flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Total Items Cost from Store:</td>
-        <td className="title-lg text-neutral-900">$345.00</td>
-      </tr>
+export const shopPackageItemColumns = () => {
+  const columnHelper = createColumnHelper<ShopItemType>();
 
-      <tr className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Processing fee:</td>
-        <td className="title-lg text-neutral-900">$345.00</td>
-      </tr>
-      <tr className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Urgent Purchase fee:</td>
-        <td className="title-lg text-neutral-900">$0.00</td>
-      </tr>
-      <tr className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <td className="body-md text-gray-700">
+  return [
+    columnHelper.display({
+      id: "item",
+      header: "Item",
+      cell: ({ row }) => (
+        <div className="flex items-center gap-[10px]">
+          <div className="w-[62px] items-center overflow-hidden rounded-[10px]">
+            <img src={row.original.image} alt="item image" />
+          </div>
+          <div className="w-[160px] text-secondary-900">
+            {limitChars(row.original.name, 80)}
+          </div>
+        </div>
+      ),
+    }),
+    columnHelper.accessor("url", {
+      header: "Item URL",
+      cell: ({ row }) => (
+        <a href={row.original.url} target="_blank" rel="noopener noreferrer">
+          {limitChars(row.original.url, 25)}
+        </a>
+      ),
+    }),
+    columnHelper.accessor("originalCost", {
+      header: "Item Cost from Store",
+      cell: ({ row }) => formatCurrency(row.original.originalCost),
+    }),
+    columnHelper.accessor("relatedCosts.urgentPurchaseFee", {
+      header: "Urgent Purchase",
+      cell: ({ row }) =>
+        formatCurrency(row.original.relatedCosts.urgentPurchaseFee),
+    }),
+    columnHelper.accessor("quantity", {
+      header: "Quantity of items",
+      cell: ({ row }) => row.original.quantity,
+    }),
+    columnHelper.display({
+      id: "itemTotalValue",
+      header: "Total value of item",
+      cell: ({ row }) =>
+        formatCurrency(row.original.quantity * row.original.originalCost),
+    }),
+  ] as Array<ColumnDef<ShopItemType, unknown>>;
+};
+
+export const ShopPackageTableFooter = () => {
+  return (
+    <>
+      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
+        <span className="body-md text-gray-700">Total number of items:</span>
+        <span className="title-lg text-neutral-900">6</span>
+      </div>
+      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
+        <span className="body-md text-gray-700">Total Gross weight:</span>
+        <span className="title-lg text-neutral-900">30lbs</span>
+      </div>
+      <div className="col-span-2 row-span-1 flex flex-col gap-[5px]">
+        <span className="body-md text-gray-700">
+          Total Items Cost from Store:
+        </span>
+        <span className="title-lg text-neutral-900">$345.00</span>
+      </div>
+
+      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
+        <span className="body-md text-gray-700">Processing fee:</span>
+        <span className="title-lg text-neutral-900">$345.00</span>
+      </div>
+      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
+        <span className="body-md text-gray-700">Urgent Purchase fee:</span>
+        <span className="title-lg text-neutral-900">$0.00</span>
+      </div>
+      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
+        <span className="body-md text-gray-700">
           Total Shipping to Origin Warehouse Cost:
-        </td>
-        <td className="title-lg text-neutral-900">$0.00</td>
-      </tr>
-      <tr className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <td className="title-lg text-gray-700">Total Shop For Me Cost:</td>
-        <td className="title-lg text-neutral-900">$0.00</td>
-      </tr>
-    </tfoot>
-  );
-};
-
-const PackageTableBody = () => {
-  const limitChars = (text: string, limit: number) => {
-    return `${text.slice(0, limit - 3)}...`;
-  };
-
-  const fakeData = {
-    image: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-    name: "SteelSeries Rival 5 Gaming Laptop with PrismSync RGB...",
-    url: "htttp/jjnkkukja.jhgyja...",
-    costFromStore: "$88.99",
-    urgentPurchase: "$88.99",
-    quantity: "3",
-    totalValue: "$112.49",
-  };
-
-  return (
-    <tbody className="flex flex-col border-x border-gray-200 bg-white px-[20px] [&>tr]:border-b-[0.5px] [&>tr]:border-gray-500">
-      {Array<typeof fakeData>(2)
-        .fill(fakeData)
-        .map(
-          (
-            {
-              image,
-              name,
-              url,
-              costFromStore,
-              urgentPurchase,
-              quantity,
-              totalValue,
-            },
-            i,
-          ) => {
-            return (
-              <tr
-                key={i}
-                className="label-lg grid grid-cols-8 items-center font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
-              >
-                <td className="col-span-2 flex gap-[10px]">
-                  <div className="w-[62px] items-center overflow-hidden rounded-[10px]">
-                    <img src={image} alt="item image" />
-                  </div>
-                  <div className="max-w-[160px] text-secondary-900">
-                    {limitChars(name, 80)}
-                  </div>
-                </td>
-                <td className="col-span-2 text-primary-600 underline">
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    {limitChars(url, 25)}
-                  </a>
-                </td>
-                <td className="col-span-1">{costFromStore}</td>
-                <td className="col-span-1">{urgentPurchase}9</td>
-                <td className="col-span-1">{quantity}</td>
-                <td className="col-span-1">{totalValue}</td>
-              </tr>
-            );
-          },
-        )}
-    </tbody>
-  );
-};
-
-export type PackageTableHeadProps = { th: string[] };
-
-export const PackageTableHead = ({ th }: PackageTableHeadProps) => {
-  return (
-    <thead className="title-sm sticky top-0 z-10 grid grid-cols-8 gap-[20px] rounded-t-[20px] border border-b-0 border-gray-200 bg-neutral-50 p-[30px] font-medium text-secondary-900">
-      {th.map((title, i) => {
-        return (
-          <tr key={title} className={`${(i === 0 || i === 1) && "col-span-2"}`}>
-            <th className="max-w-[150px] border-0 p-0">
-              <span className="label-lg">{title}</span>
-            </th>
-          </tr>
-        );
-      })}
-    </thead>
+        </span>
+        <span className="title-lg text-neutral-900">$0.00</span>
+      </div>
+      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
+        <span className="title-lg text-gray-700">Total Shop For Me Cost:</span>
+        <span className="title-lg text-neutral-900">$0.00</span>
+      </div>
+    </>
   );
 };
 

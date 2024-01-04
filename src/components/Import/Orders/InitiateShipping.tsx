@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { formatCurrency } from "~/Utils";
+import { formatCurrency, limitChars } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -10,6 +11,7 @@ import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
+import PackageTable from "~/components/PackageTable";
 import {
   DetailSection,
   InitiateShippingAgreement,
@@ -24,7 +26,6 @@ import {
   DefaultBillingAddressRadio,
   StepIndex,
   SubSectionTitle,
-  type PackageTableHeadProps,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
 import { PackageOrigin } from "~/components/Shop/Requests/RequestDetails";
@@ -231,10 +232,25 @@ export const BillingAddressStep = () => {
 };
 
 const InitiateShippingStep = () => {
+  const { orderPackages } = useImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const defaultColumns = useMemo(importPackageItemColumns, []);
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
-      <PackageTable />
+      <PackageTable
+        columns={defaultColumns}
+        data={orderPackage.items}
+        tableFooter={<ImportPackageTableFooter />}
+      />
 
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">
@@ -290,100 +306,59 @@ const ShipmentCostsSummary = ({
   );
 };
 
-export const PackageTable = () => {
-  const th = [
-    "Item",
-    "Value Per Item",
-    "Quantity of items",
-    "Total value of item",
-  ];
+export const importPackageItemColumns = () => {
+  const columnHelper = createColumnHelper<ImportItemType>();
 
-  return (
-    <div className="overflow-x-auto ">
-      <table className="relative min-w-max table-auto text-left">
-        <PackageTableHead th={th} />
-        <PackageTableBody />
-        <Totals />
-      </table>
-    </div>
-  );
+  return [
+    columnHelper.display({
+      id: "item",
+      header: "Item",
+      cell: ({ row }) => (
+        <>
+          <div className="w-[62px] items-center overflow-hidden rounded-[10px]">
+            <img src={row.original.image} alt="item image" />
+          </div>
+          <div className="max-w-[160px] text-secondary-900">
+            {limitChars(row.original.name, 80)}
+          </div>
+        </>
+      ),
+    }),
+    columnHelper.accessor("originalCost", {
+      header: "Value Per Item",
+      cell: ({ row }) => formatCurrency(row.original.originalCost),
+    }),
+    columnHelper.accessor("quantity", {
+      header: "Quantity of items",
+      cell: ({ row }) => row.original.quantity,
+    }),
+    columnHelper.display({
+      id: "itemTotalValue",
+      header: "Total value of item",
+      cell: ({ row }) =>
+        formatCurrency(row.original.quantity * row.original.originalCost),
+    }),
+  ] as Array<ColumnDef<ImportItemType, unknown>>;
 };
 
-const PackageTableHead = ({ th }: PackageTableHeadProps) => {
+export const ImportPackageTableFooter = () => {
   return (
-    <thead className="title-sm sticky top-0 z-10 grid grid-cols-4 gap-[20px] rounded-t-[20px] border border-b-0 border-gray-200 bg-neutral-50 p-[30px] font-medium text-secondary-900">
-      {th.map((title) => {
-        return (
-          <tr key={title} className="col-span-1">
-            <th className="max-w-[150px] border-0 p-0">
-              <span className="label-lg">{title}</span>
-            </th>
-          </tr>
-        );
-      })}
-    </thead>
-  );
-};
-
-const Totals = () => {
-  return (
-    <tfoot className="grid  grid-cols-3 gap-y-[20px] rounded-b-[20px] border border-t-0 border-gray-200 bg-neutral-50 px-[30px] py-[10px] [&>tr>td]:border-0 [&>tr>td]:p-0">
-      <tr className="col-span-1 flex flex-col gap-[5px]">
-        <td className="body-md h-[40px] w-[100px] text-gray-700">
+    <>
+      <div className="col-span-1 flex flex-col gap-[5px]">
+        <span className="body-md h-[40px] w-[100px] text-gray-700">
           Total number of items:
-        </td>
-        <td className="title-lg text-neutral-900">6</td>
-      </tr>
-      <tr className="col-span-1 flex h-[40px] w-[100px] flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Total Gross weight:</td>
-        <td className="title-lg text-neutral-900">30lbs</td>
-      </tr>
-      <tr className="col-span-1 flex h-[40px] w-[100px] flex-col gap-[5px]">
-        <td className="body-md text-gray-700">Total Declared Value:</td>
-        <td className="title-lg text-neutral-900">$345.00</td>
-      </tr>
-    </tfoot>
-  );
-};
-
-const PackageTableBody = () => {
-  const limitChars = (text: string, limit: number) => {
-    return `${text.slice(0, limit - 3)}...`;
-  };
-
-  const fakeData = {
-    image: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-    name: "SteelSeries Rival 5 Gaming Laptop with PrismSync RGB...",
-    valuePerItem: "$88.99",
-    quantity: "3",
-    totalValue: "$112.49",
-  };
-
-  return (
-    <tbody className="flex flex-col border-x border-gray-200 bg-white px-[20px] [&>tr]:border-b-[0.5px] [&>tr]:border-gray-500">
-      {Array<typeof fakeData>(2)
-        .fill(fakeData)
-        .map(({ image, name, valuePerItem, quantity, totalValue }, i) => {
-          return (
-            <tr
-              key={i}
-              className="label-lg grid grid-cols-4 items-center gap-[20px] font-medium [&>td]:border-0 [&>td]:px-0 [&>td]:py-[20px]"
-            >
-              <td className="col-span-1 flex items-center gap-[10px]">
-                <div className="w-[62px] overflow-hidden rounded-[10px]">
-                  <img src={image} alt="item image" />
-                </div>
-                <div className="max-w-[160px] text-secondary-900">
-                  {limitChars(name, 80)}
-                </div>
-              </td>
-              <td className="col-span-1">{valuePerItem}</td>
-              <td className="col-span-1">{quantity}</td>
-              <td className="col-span-1">{totalValue}</td>
-            </tr>
-          );
-        })}
-    </tbody>
+        </span>
+        <span className="title-lg text-neutral-900">6</span>
+      </div>
+      <div className="col-span-1 flex h-[40px] w-[100px] flex-col gap-[5px]">
+        <span className="body-md text-gray-700">Total Gross weight:</span>
+        <span className="title-lg text-neutral-900">30lbs</span>
+      </div>
+      <div className="col-span-1 flex h-[40px] w-[100px] flex-col gap-[5px]">
+        <span className="body-md text-gray-700">Total Declared Value:</span>
+        <span className="title-lg text-neutral-900">$345.00</span>
+      </div>
+    </>
   );
 };
 

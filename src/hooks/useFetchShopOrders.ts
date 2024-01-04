@@ -36,10 +36,6 @@ const useFetchShopOrders = (
         trackingId: order.trackingId,
         shippingStatus:
           order.ShippingStatus.toLowerCase() as ShopOrderPackageType["shippingStatus"],
-        shopForMeStatus:
-          order.shopForMeStatus as ShopOrderPackageType["shopForMeStatus"],
-        totalShopForMeCost: 0, // todo: missing
-        totalShippingCost: 0, // todo: missing
         originWarehouse:
           order.origin as ShopOrderPackageType["originWarehouse"],
         items: order.requestPackages.map((item) => {
@@ -57,6 +53,36 @@ const useFetchShopOrders = (
 
           return requestItem;
         }),
+        // todo: missing
+        shipmentDetails: {
+          firstName: "Malibu",
+          lastName: "SHedrack",
+          email: "Malibushdrack@gmail.com",
+          countryCode: "+234",
+          phoneNumber: "803 456 7845",
+          address: "No, 1osolo way, ikeja road, behind scaint merry",
+          country: "Turkey",
+          state: "Istanbul",
+          city: "Cyprusic",
+          zipPostalCode: "98765",
+        },
+        // todo: missing
+        billingDetails: {
+          firstName: "Malibu",
+          lastName: "SHedrack",
+          email: "Malibushdrack@gmail.com",
+          countryCode: "+234",
+          phoneNumber: "803 456 7845",
+          address: "No, 1osolo way, ikeja road, behind scaint merry",
+          country: "Turkey",
+          state: "Istanbul",
+          city: "Cyprusic",
+          zipPostalCode: "98765",
+        },
+        totalShopForMeCost: 0, // todo: missing
+        shopForMeStatus:
+          order.shopForMeStatus as ShopOrderPackageType["shopForMeStatus"],
+        totalShippingCost: 0, // todo: missing
         shippingPaymentStatus: "Unpaid", // todo: missing
       };
 

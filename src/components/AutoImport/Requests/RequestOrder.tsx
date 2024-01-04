@@ -931,7 +931,7 @@ export const Step3 = () => {
       <SectionHeader title="Confirm your Shipping Details" />
       <DestinationAddressDetails />
       <SectionHeader title="Confirm your Billing Details" />
-      <BillingAddress />
+      <BillingAddress billingDetails={draftPackage.billingDetails} />
     </div>
   );
 };

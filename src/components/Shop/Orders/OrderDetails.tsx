@@ -88,7 +88,7 @@ const OrderDetails = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Billing Details" />
-        <BillingAddress />
+        <BillingAddress billingDetails={orderPackage.billingDetails} />
         <PaymentsInformation>
           <DetailSection
             label="Total Shipment Cost"

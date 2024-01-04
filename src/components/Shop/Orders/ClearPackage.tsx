@@ -10,6 +10,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
+import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -116,10 +117,19 @@ const ClearPackage = () => {
 };
 
 export const BillingDetailsConfirmation = () => {
+  const { orderPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
   return (
     <div className="flex flex-col gap-[10px]">
       <DestinationShippingAddress />
-      <BillingAddress />
+      <BillingAddress billingDetails={orderPackage.billingDetails} />
     </div>
   );
 };

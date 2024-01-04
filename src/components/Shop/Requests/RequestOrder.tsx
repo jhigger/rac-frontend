@@ -78,6 +78,30 @@ export const emptyValue: ShopOrderPackageType = {
       description: "",
     },
   ],
+  shipmentDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
+  billingDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
 };
 
 export type ShopInputs = {

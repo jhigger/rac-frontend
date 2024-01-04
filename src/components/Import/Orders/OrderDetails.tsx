@@ -1,3 +1,4 @@
+import { formatCurrency } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
@@ -33,7 +34,6 @@ import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import { ImportOrderItem } from "./ClearPackage";
-import { formatCurrency } from "~/Utils";
 
 const OrderDetails = () => {
   const { orderPackages } = useImportContext();
@@ -88,7 +88,7 @@ const OrderDetails = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Billing Details" />
-        <BillingAddress />
+        <BillingAddress billingDetails={orderPackage.billingDetails} />
         <PaymentsInformation>
           <div className="col-span-full">
             <HighlightedInfo text="This Shipment Cost is subjected to increase to any Valid reason like delayed clearing and co. Also, you shall be paying the dollar equivalent in any of your chosen currency at the time of Clearing." />

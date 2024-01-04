@@ -12,6 +12,10 @@ import {
 } from "~/constants";
 import useFetchShopOrders from "~/hooks/useFetchShopOrders";
 import useFetchShopRequests from "~/hooks/useFetchShopRequests";
+import {
+  type BillingDetailsType,
+  type ShipmentDetailsType,
+} from "./AutoImportContext";
 
 export type ShopContextType = {
   draftPackage: ShopDraftPackageType | null;
@@ -56,6 +60,8 @@ export type ShopOrderPackageType = {
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   originWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
+  shipmentDetails: ShipmentDetailsType;
+  billingDetails: BillingDetailsType;
   totalShopForMeCost: number;
   shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
   totalShippingCost: number;

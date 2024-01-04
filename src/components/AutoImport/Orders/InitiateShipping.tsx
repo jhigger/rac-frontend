@@ -26,6 +26,10 @@ import {
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
 import {
+  HighlightedInfo,
+  PackageOrigin,
+} from "~/components/Shop/Requests/RequestDetails";
+import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
@@ -42,10 +46,6 @@ import {
   OriginWarehouseAddress,
   PickupDetails,
 } from "../Requests/RequestOrder";
-import {
-  HighlightedInfo,
-  PackageOrigin,
-} from "~/components/Shop/Requests/RequestDetails";
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -198,12 +198,21 @@ export const AutoImportOrderItem = ({
 };
 
 const Step2 = () => {
+  const { orderPackages } = useAutoImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
   return (
     <div className="flex flex-col gap-[10px]">
       <SectionHeader title="Confirm your Shipping Details" />
       <DestinationAddressDetails />
       <SectionHeader title="Confirm your Billing Information" />
-      <BillingAddress />
+      <BillingAddress billingDetails={orderPackage.billingDetails} />
     </div>
   );
 };

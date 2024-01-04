@@ -22,6 +22,7 @@ import {
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
 import { useAutoImportContext } from "~/contexts/AutoImportContext";
+import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { DestinationAddressDetails } from "../Requests/RequestOrder";
@@ -132,10 +133,19 @@ const Step1 = () => {
 };
 
 const Step2 = () => {
+  const { orderPackages } = useImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
   return (
     <div className="flex flex-col gap-[10px]">
       <DestinationAddressDetails />
-      <BillingAddress />
+      <BillingAddress billingDetails={orderPackage.billingDetails} />
     </div>
   );
 };

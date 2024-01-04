@@ -71,7 +71,7 @@ const RequestDetails = () => {
       <SectionHeader title="Shipping Details" />
       <DestinationAddressDetails />
       <SectionHeader title="Billing Details" />
-      <BillingAddress />
+      <BillingAddress billingDetails={requestPackage.billingDetails} />
       {status === "Responded" && (
         <PaymentsInformation>
           <DetailSection

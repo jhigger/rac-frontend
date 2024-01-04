@@ -93,6 +93,8 @@ export type AutoImportOrderPackageType = {
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   originWarehouse: (typeof ORIGINS)[number];
   items: AutoImportItemType[];
+  shipmentDetails: ShipmentDetailsType;
+  billingDetails: BillingDetailsType;
   totalShippingCost: number;
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
   totalClearingCost: number;

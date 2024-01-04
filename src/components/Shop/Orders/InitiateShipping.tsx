@@ -17,6 +17,7 @@ import {
 } from "~/components/Shop/Requests/RequestOrder";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { DESTINATIONS } from "~/constants";
+import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -354,6 +355,15 @@ const ShopOrderItemDetails = ({ item }: ShopOrderItemDetailsProps) => {
 };
 
 const BillingAddressStep = () => {
+  const { orderPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
@@ -366,13 +376,15 @@ const BillingAddressStep = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Confirm your Billing Information" />
-        <BillingAddress />
+        <BillingAddress billingDetails={orderPackage.billingDetails} />
       </div>
     </div>
   );
 };
 
-export const BillingAddress = () => {
+type BillingAddressProps = { billingDetails: BillingDetailsType };
+
+export const BillingAddress = ({ billingDetails }: BillingAddressProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -391,52 +403,49 @@ export const BillingAddress = () => {
           <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
             <DetailSection
               label="First Name"
-              value="Malibu"
+              value={billingDetails.firstName}
               colSpanDesktop={4}
             />
             <DetailSection
               label="Last Name"
-              value="SHedrack"
+              value={billingDetails.lastName}
               colSpanDesktop={4}
             />
             <DetailSection
               label="Contact Number"
-              value="+234 803 456 7845"
+              value={`${billingDetails.countryCode} ${billingDetails.phoneNumber}`}
               colSpanDesktop={4}
             />
             <DetailSection
               label="Email"
-              value="Malibushdrack@gmail.com"
+              value={billingDetails.email}
               colSpanDesktop={5}
             />
             <DetailSection
               label="Country"
-              value="Turkey"
+              value={billingDetails.country}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="State"
-              value="Istanbul"
+              value={billingDetails.state}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="City"
-              value="Cyprusic"
+              value={billingDetails.city}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="Zip/postal Code"
-              value="98765"
+              value={billingDetails.zipPostalCode}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
-            <DetailSection
-              label="Address"
-              value="No, 1osolo way, ikeja road, behind scaint merry"
-            />
+            <DetailSection label="Address" value={billingDetails.address} />
           </div>
         )}
       </div>

@@ -75,7 +75,7 @@ const OrderDetails = () => {
         </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
-          return <ShopOrderItem key={i} item={item} index={i} relatedCosts />;
+          return <ShopOrderItem key={i} item={item} index={i} />;
         })}
       </div>
 

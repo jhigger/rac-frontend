@@ -76,6 +76,12 @@ export const emptyValue: ShopOrderPackageType = {
       shippingCost: 1,
       image: "",
       description: "",
+      relatedCosts: {
+        urgentPurchaseFee: 0,
+        processingFee: 0,
+        shippingToOriginWarehouseCost: 0,
+        shopForMeCost: 0,
+      },
     },
   ],
   shipmentDetails: {

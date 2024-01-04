@@ -49,6 +49,13 @@ const useFetchShopOrders = (
             shippingCost: item.shippingCost,
             image: item.itemImage,
             description: item.description,
+            // todo: missing
+            relatedCosts: {
+              urgentPurchaseFee: 0,
+              processingFee: 87000,
+              shippingToOriginWarehouseCost: 87000,
+              shopForMeCost: 87000,
+            },
           };
 
           return requestItem;

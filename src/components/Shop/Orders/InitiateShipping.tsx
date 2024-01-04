@@ -197,15 +197,9 @@ export const PackageConfirmation = () => {
 type ShopOrderItemProps = {
   item: ShopItemType;
   index: number;
-  relatedCosts?: boolean;
 };
 
-// todo: refactor props to children instead
-export const ShopOrderItem = ({
-  item,
-  index,
-  relatedCosts = false,
-}: ShopOrderItemProps) => {
+export const ShopOrderItem = ({ item, index }: ShopOrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -220,7 +214,7 @@ export const ShopOrderItem = ({
         {open && (
           <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
             <ShopOrderItemDetails item={item} />
-            {relatedCosts && <ShopOrderItemRelatedCosts />}
+            <ShopOrderItemRelatedCosts relatedCosts={item.relatedCosts} />
           </div>
         )}
       </div>
@@ -228,7 +222,13 @@ export const ShopOrderItem = ({
   );
 };
 
-const ShopOrderItemRelatedCosts = () => {
+type ShopOrderItemRelatedCostsProps = {
+  relatedCosts: ShopItemType["relatedCosts"];
+};
+
+const ShopOrderItemRelatedCosts = ({
+  relatedCosts,
+}: ShopOrderItemRelatedCostsProps) => {
   return (
     <>
       <div className="col-span-full">
@@ -245,25 +245,25 @@ const ShopOrderItemRelatedCosts = () => {
 
       <PurpleDetailSection
         label="Urgent purchase fee"
-        value={`$${"0.00"}`}
+        value={formatCurrency(relatedCosts.urgentPurchaseFee)}
         colSpanDesktop={4}
       />
 
       <PurpleDetailSection
         label="Processing Fee"
-        value={`$${"87,000.00"}`}
+        value={formatCurrency(relatedCosts.processingFee)}
         colSpanDesktop={4}
       />
 
       <PurpleDetailSection
         label="Shipping to Origin Warehouse Cost"
-        value={`$${"87,000.00"}`}
+        value={formatCurrency(relatedCosts.shippingToOriginWarehouseCost)}
         colSpanDesktop={4}
       />
 
       <PurpleDetailSection
         label="Shop For Me Cost"
-        value={`$${"87,000.00"}`}
+        value={formatCurrency(relatedCosts.shopForMeCost)}
         colSpanDesktop={4}
       />
     </>

@@ -48,6 +48,12 @@ export type ShopItemType = {
     label: string;
     value: string;
   }[];
+  relatedCosts: {
+    urgentPurchaseFee: number;
+    processingFee: number;
+    shippingToOriginWarehouseCost: number;
+    shopForMeCost: number;
+  };
 };
 
 export type ShopDraftPackageType = ShopRequestPackageType;

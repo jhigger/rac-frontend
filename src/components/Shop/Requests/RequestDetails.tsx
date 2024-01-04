@@ -178,7 +178,10 @@ export const ShopRequestItem = ({
             />
             <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
               <ShopRequestItemDetails item={item} status={status} />
-              <ShopRequestItemRelatedCosts status={status} />
+              <ShopRequestItemRelatedCosts
+                relatedCosts={item.relatedCosts}
+                status={status}
+              />
             </div>
           </>
         )}
@@ -277,10 +280,12 @@ const ShopRequestItemDetails = ({
 };
 
 type ShopRequestItemRelatedCostsProps = {
+  relatedCosts: ShopItemType["relatedCosts"];
   status: (typeof REQUEST_STATUS)[number];
 };
 
 const ShopRequestItemRelatedCosts = ({
+  relatedCosts,
   status,
 }: ShopRequestItemRelatedCostsProps) => {
   return (
@@ -329,29 +334,29 @@ const ShopRequestItemRelatedCosts = ({
 
       <PurpleDetailSection
         label="Urgent purchase fee"
-        value={`$${"0.00"}`}
+        value={formatCurrency(relatedCosts.urgentPurchaseFee)}
         colSpanDesktop={4}
       />
 
       <PurpleDetailSection
         label="Processing Fee"
-        value={`$${"87,000.00"}`}
-        tooltip={status === "Responded" ? "" : null}
+        value={formatCurrency(relatedCosts.processingFee)}
+        tooltip={status === "Responded" ? "" : null} // todo: add tooltip
         colSpanDesktop={4}
       />
 
       {status === "Responded" && (
         <PurpleDetailSection
           label="Shipping to Origin Warehouse Cost"
-          value={`$${"87,000.00"}`}
+          value={formatCurrency(relatedCosts.shippingToOriginWarehouseCost)}
           colSpanDesktop={4}
         />
       )}
 
       <PurpleDetailSection
         label="Shop For Me Cost"
-        value={`$${"87,000.00"}`}
-        tooltip={status === "Responded" ? "" : null}
+        value={formatCurrency(relatedCosts.shopForMeCost)}
+        tooltip={status === "Responded" ? "" : null} // todo: add tooltip
         colSpanDesktop={4}
       />
     </>

@@ -209,7 +209,14 @@ const ShopRequestItemDetails = ({
       <DetailSection
         label="Item Name"
         value={item.name}
-        tooltip={status === "Responded" ? "" : null}
+        tooltip={
+          status === "Responded" ? (
+            <div className="flex flex-col">
+              <span> You provided: xxx</span>
+              <span>We verified: xxx</span>
+            </div>
+          ) : null
+        }
         colSpanDesktop={4}
       />
       <DetailSection
@@ -364,12 +371,12 @@ export const ChangeCurrencyButton = () => {
   );
 };
 
-type LabelWithTooltipProps = { label: string; tooltip: string };
+type LabelWithTooltipProps = { label: string; tooltip: ReactNode };
 
 export const LabelWithTooltip = ({ label, tooltip }: LabelWithTooltipProps) => {
   return (
-    <div className="flex w-fit items-center gap-[10px]">
-      <TooltipButton label={tooltip} position="right" />
+    <div className="flex w-fit items-start gap-[10px]">
+      <TooltipButton label={tooltip} position="right-start" />
       <span className="body-md h-[40px] max-w-[100px]">{label}</span>
     </div>
   );

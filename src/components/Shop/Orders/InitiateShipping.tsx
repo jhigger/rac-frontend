@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -274,7 +274,7 @@ export type DetailSectionProps = {
   colSpanMobile?: "full" | number;
   colSpanDesktop?: "full" | number;
   image?: boolean;
-  tooltip?: string | null;
+  tooltip?: ReactNode;
 };
 
 export const DetailSection = ({
@@ -465,7 +465,7 @@ export const SelectDestinationShippingAddress = () => {
           </>
         }
       />
-      <TooltipButton label="" position="left" />
+      <TooltipButton label="" position="left-start" />
     </div>
   );
 };

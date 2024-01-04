@@ -10,6 +10,7 @@ import {
 } from "iconsax-react";
 import {
   useEffect,
+  useId,
   useRef,
   useState,
   type ChangeEvent,
@@ -23,6 +24,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { Tooltip } from "react-tooltip";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -361,27 +363,37 @@ const SelectWarehouseOriginSection = () => {
           }
           {...register("requestPackage.originWarehouse")}
         />
-        <TooltipButton label="" position="left" />
+        <TooltipButton label="" position="left-start" />
       </div>
     </>
   );
 };
 
 type TooltipButtonProps = {
-  label: string;
-  position: "top" | "bottom" | "left" | "right";
+  label: ReactNode;
+  position: "right-start" | "left-start";
 };
 
 export const TooltipButton = ({ label, position }: TooltipButtonProps) => {
+  const id = useId();
+
   return (
-    <div
-      aria-label={label}
-      data-microtip-position={position}
-      role="tooltip"
-      className="flex h-[24px] w-[24px] items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
-    >
-      <InfoCircle className="text-neutral-500" />
-    </div>
+    <>
+      {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        <div
+          role="tooltip"
+          data-tooltip-id={id}
+          data-tooltip-place={position}
+          className="flex h-[24px] w-[24px] items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
+        >
+          <InfoCircle className="text-neutral-500" />
+        </div>
+      }
+
+      <Tooltip id={id} children={label} noArrow />
+    </>
   );
 };
 
@@ -447,7 +459,7 @@ const ItemDetailsSection = ({
                     }
                     {...register(`requestPackage.items.${index}.store`)}
                   />
-                  <TooltipButton label="" position="left" />
+                  <TooltipButton label="" position="left-start" />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-4">
@@ -462,7 +474,7 @@ const ItemDetailsSection = ({
                     }
                     {...register(`requestPackage.items.${index}.urgent`)}
                   />
-                  <TooltipButton label="" position="left" />
+                  <TooltipButton label="" position="left-start" />
                 </div>
 
                 <div className="col-span-full">

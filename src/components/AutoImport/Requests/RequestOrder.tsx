@@ -7,6 +7,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -282,7 +283,7 @@ const SelectWarehouseOriginSection = () => {
           }
           {...register("requestPackage.originWarehouse")}
         />
-        <TooltipButton label="" position="left" />
+        <TooltipButton label="" position="left-start" />
       </div>
     </>
   );
@@ -545,7 +546,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
               className="toggle-default transition-color relative block h-8 w-12 rounded-full duration-150 ease-out"
             ></label>
           </div>
-          <TooltipButton label="" position="left" />
+          <TooltipButton label="" position="left-start" />
         </div>
       </div>
       {open && (
@@ -1129,7 +1130,7 @@ export const AutoImportOrderItemDetails = ({
       />
       <DetailSection
         label="Car Value"
-        value={`$${item.value}`}
+        value={formatCurrency(item.value)}
         colSpanDesktop={5}
       />
       <DetailSection

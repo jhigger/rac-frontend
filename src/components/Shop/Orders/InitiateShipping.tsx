@@ -2,6 +2,7 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -324,7 +325,7 @@ const ShopOrderItemDetails = ({ item }: ShopOrderItemDetailsProps) => {
       <DetailSection label="Item Name" value={item.name} colSpanDesktop={4} />
       <DetailSection
         label="Item Original Cost"
-        value={`$${item.originalCost}`} // todo: format currency
+        value={formatCurrency(item.originalCost)}
         colSpanDesktop={2}
       />
       <DetailSection

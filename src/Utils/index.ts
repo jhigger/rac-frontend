@@ -6,3 +6,11 @@ export const capitalizeWords = (words: string) => {
     })
     .join(" ");
 };
+
+export const formatCurrency = (amount: number) => {
+  const locales = navigator.languages as string | string[] | undefined;
+  return new Intl.NumberFormat(locales, {
+    style: "currency",
+    currency: "USD",
+  }).format(amount);
+};

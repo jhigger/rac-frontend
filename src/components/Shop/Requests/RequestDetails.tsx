@@ -1,5 +1,6 @@
 import { ConvertCard, Security, Wallet } from "iconsax-react";
 import { type ReactNode } from "react";
+import { formatCurrency } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
 import LabelId from "~/components/LabelId";
@@ -211,7 +212,7 @@ const ShopRequestItemDetails = ({
         tooltip={
           status === "Responded" ? (
             <div className="flex flex-col">
-              <span> You provided: xxx</span>
+              <span>You provided: xxx</span>
               <span>We verified: xxx</span>
             </div>
           ) : null
@@ -220,7 +221,7 @@ const ShopRequestItemDetails = ({
       />
       <DetailSection
         label="Item Cost from Store"
-        value={`$${item.originalCost}`}
+        value={formatCurrency(item.originalCost)}
         colSpanDesktop={2}
       />
       <DetailSection

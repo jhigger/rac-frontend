@@ -1,15 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { shopOrders } from "~/fake data";
-import { type AutoImportOrderPackageType } from "./AutoImportContext";
-import { type ExportOrderPackageType } from "./ExportContext";
-import { type ImportOrderPackageType } from "./ImportContext";
-import { type ShopOrderPackageType } from "./ShopContext";
-
-type OrderPackageType =
-  | ShopOrderPackageType
-  | ImportOrderPackageType
-  | ExportOrderPackageType
-  | AutoImportOrderPackageType;
+import { type OrderPackageType } from "./NotificationContext";
 
 export type TrackingContextType = {
   orderPackage: OrderPackageType | null;

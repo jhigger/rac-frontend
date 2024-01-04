@@ -8,7 +8,6 @@ import {
 import { type NOTIFICATION_TYPES } from "~/constants";
 import { notificationItems } from "~/fake data";
 import { type AutoImportOrderPackageType } from "./AutoImportContext";
-import { type ExportOrderPackageType } from "./ExportContext";
 import { type ImportOrderPackageType } from "./ImportContext";
 import { type ShopOrderPackageType } from "./ShopContext";
 
@@ -25,10 +24,9 @@ export const NotificationContext = createContext<NotificationContextType>(
   {} as NotificationContextType,
 );
 
-type OrderPackageType =
+export type OrderPackageType =
   | ShopOrderPackageType
   | ImportOrderPackageType
-  | ExportOrderPackageType
   | AutoImportOrderPackageType;
 
 export type NotificationItemType = {

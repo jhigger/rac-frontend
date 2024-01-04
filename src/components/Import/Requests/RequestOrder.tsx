@@ -281,7 +281,7 @@ const ItemDetailsSection = ({
                     }
                     {...register(`requestPackage.items.${index}.idType`)}
                   />
-                  <TooltipButton label="" position="left" />
+                  <TooltipButton label="" position="left-start" />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-6 ">
@@ -290,7 +290,7 @@ const ItemDetailsSection = ({
                     label={"ID Number"}
                     {...register(`requestPackage.items.${index}.idNumber`)}
                   />
-                  <TooltipButton label="" position="left" />
+                  <TooltipButton label="" position="left-start" />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px]">
@@ -319,7 +319,7 @@ const ItemDetailsSection = ({
                       `requestPackage.items.${index}.itemDeliveryStatus`,
                     )}
                   />
-                  <TooltipButton label="" position="left" />
+                  <TooltipButton label="" position="left-start" />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px]">
@@ -342,7 +342,7 @@ const ItemDetailsSection = ({
                       </>
                     }
                   />
-                  <TooltipButton label="" position="left" />
+                  <TooltipButton label="" position="left-start" />
                 </div>
 
                 <div className="col-span-full md:col-span-8">
@@ -691,7 +691,7 @@ const SelectOrigin = () => {
         }
         {...register("requestPackage.originWarehouse")}
       />
-      <TooltipButton label="" position="left" />
+      <TooltipButton label="" position="left-start" />
     </div>
   );
 };
@@ -721,7 +721,7 @@ const SelectPackageDeliveryStatus = () => {
         }
         {...register("requestPackage.deliveryStatus")}
       />
-      <TooltipButton label="" position="left" />
+      <TooltipButton label="" position="left-start" />
     </div>
   );
 };

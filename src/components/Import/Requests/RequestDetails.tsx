@@ -1,3 +1,4 @@
+import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
@@ -105,7 +106,7 @@ const ImportRequestItemDetails = ({ item }: ImportRequestItemDetailsProps) => {
       <DetailSection label="Item Name" value={item.name} colSpanDesktop={4} />
       <DetailSection
         label="Item Original Cost"
-        value={`$${item.originalCost}`} // todo: format currency
+        value={formatCurrency(item.originalCost)}
         colSpanDesktop={2}
       />
       <DetailSection

@@ -1,3 +1,4 @@
+import { formatCurrency } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { DestinationAddressDetails } from "~/components/AutoImport/Requests/RequestOrder";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -91,12 +92,16 @@ const OrderDetails = () => {
         <PaymentsInformation>
           <DetailSection
             label="Total Shipment Cost"
-            value="$234,000.00"
+            value={
+              orderPackage.totalShippingCost > 0
+                ? formatCurrency(orderPackage.totalShippingCost)
+                : "Not allocated yet"
+            }
             colSpanDesktop={4}
           />
           <DetailSection
             label="Payment Status"
-            value="Unpaid"
+            value={orderPackage.shippingPaymentStatus}
             colSpanDesktop={4}
           />
         </PaymentsInformation>

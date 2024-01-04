@@ -33,6 +33,7 @@ import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import { ImportOrderItem } from "./ClearPackage";
+import { formatCurrency } from "~/Utils";
 
 const OrderDetails = () => {
   const { orderPackages } = useImportContext();
@@ -94,12 +95,16 @@ const OrderDetails = () => {
           </div>
           <DetailSection
             label="Total Shipment Cost"
-            value="$234,000.00"
+            value={
+              orderPackage.totalShippingCost > 0
+                ? formatCurrency(orderPackage.totalShippingCost)
+                : "Not allocated yet"
+            }
             colSpanDesktop={4}
           />
           <DetailSection
             label="Payment Status"
-            value="Unpaid"
+            value={orderPackage.shippingPaymentStatus}
             colSpanDesktop={4}
           />
         </PaymentsInformation>

@@ -4,6 +4,7 @@ import { useLocalStorage } from "usehooks-ts";
 import {
   type ORDER_STATUS,
   type ORIGINS,
+  type PAYMENT_STATUS,
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
   type SHOP_FOR_ME_STATUS,
@@ -53,11 +54,12 @@ export type ShopOrderPackageType = {
   orderLocalDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
-  shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
-  shopForMeCost: number;
-  shippingCost: number;
   originWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
+  totalShopForMeCost: number;
+  shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
+  totalShippingCost: number;
+  shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
 };
 
 export type ShopRequestPackageType = {
@@ -66,6 +68,7 @@ export type ShopRequestPackageType = {
   requestLocalDate: string;
   originWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
+  totalShopForMeCost: number;
 };
 
 type ShopLocalDraftType = {

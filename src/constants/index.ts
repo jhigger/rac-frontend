@@ -102,3 +102,5 @@ export const PACKAGE_DELIVERY_STATUS = [
 export const ITEM_DELIVERY_STATUS = ["Delivered", "Not yet delivered"] as const;
 
 export const COURIERS = ["Seller", "Someone else"] as const;
+
+export const PAYMENT_STATUS = ["Paid", "Unpaid"] as const;

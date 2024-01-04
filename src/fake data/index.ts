@@ -25,9 +25,10 @@ export const shopOrders: ShopOrderPackageType[] = [
     orderLocalDate: new Date("2023/1/23").toLocaleString(),
     trackingId: "SH08751",
     shippingStatus: "not started",
+    totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase not started",
-    shopForMeCost: 107.76,
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Unpaid",
     originWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
@@ -60,9 +61,10 @@ export const shopOrders: ShopOrderPackageType[] = [
     orderLocalDate: new Date("2023/2/23").toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
+    totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase in progress",
-    shopForMeCost: 107.76,
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -106,9 +108,10 @@ export const shopOrders: ShopOrderPackageType[] = [
     orderLocalDate: new Date("2023/3/23").toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
+    totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
-    shopForMeCost: 107.76,
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Unpaid",
     originWarehouse: "China Warehouse (Guangzhou city)",
     items: [
       {
@@ -163,9 +166,10 @@ export const shopOrders: ShopOrderPackageType[] = [
     orderLocalDate: new Date("2023/4/23").toLocaleString(),
     trackingId: "SH08754",
     shippingStatus: "in transit",
+    totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
-    shopForMeCost: 107.76,
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "Dubai Warehouse",
     items: [
       {
@@ -231,9 +235,10 @@ export const shopOrders: ShopOrderPackageType[] = [
     orderLocalDate: new Date("2023/5/23").toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "processing",
+    totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
-    shopForMeCost: 107.76,
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "UK Warehouse (London)",
     items: [
       {
@@ -255,9 +260,10 @@ export const shopOrders: ShopOrderPackageType[] = [
     orderLocalDate: new Date("2023/6/23").toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
+    totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
-    shopForMeCost: 107.76,
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -279,9 +285,10 @@ export const shopOrders: ShopOrderPackageType[] = [
     orderLocalDate: new Date("2023/7/23").toLocaleString(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
-    shopForMeStatus: "Purchase completed",
-    shopForMeCost: 107.76,
-    shippingCost: 107.76,
+    totalShopForMeCost: 107.76,
+    shopForMeStatus: "Purchase not started",
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Unpaid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -303,9 +310,10 @@ export const shopOrders: ShopOrderPackageType[] = [
     orderLocalDate: new Date("2023/8/23").toLocaleString(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
+    totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
-    shopForMeCost: 107.76,
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -342,6 +350,7 @@ export const shopRequests: ShopRequestPackageType[] = [
         description: "",
       },
     ],
+    totalShopForMeCost: 87000,
   },
   {
     requestId: "OD08752",
@@ -361,6 +370,7 @@ export const shopRequests: ShopRequestPackageType[] = [
         description: "",
       },
     ],
+    totalShopForMeCost: 87000,
   },
   {
     requestId: "OD08753",
@@ -380,6 +390,7 @@ export const shopRequests: ShopRequestPackageType[] = [
         description: "",
       },
     ],
+    totalShopForMeCost: 87000,
   },
   {
     requestId: "OD08754",
@@ -399,6 +410,7 @@ export const shopRequests: ShopRequestPackageType[] = [
         description: "",
       },
     ],
+    totalShopForMeCost: 87000,
   },
   {
     requestId: "OD08755",
@@ -418,6 +430,7 @@ export const shopRequests: ShopRequestPackageType[] = [
         description: "",
       },
     ],
+    totalShopForMeCost: 87000,
   },
   {
     requestId: "OD08756",
@@ -437,6 +450,7 @@ export const shopRequests: ShopRequestPackageType[] = [
         description: "",
       },
     ],
+    totalShopForMeCost: 87000,
   },
 ];
 
@@ -447,7 +461,8 @@ export const importOrders: ImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08751",
     shippingStatus: "not started",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Unpaid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -470,7 +485,8 @@ export const importOrders: ImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -493,7 +509,8 @@ export const importOrders: ImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Unpaid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -516,7 +533,8 @@ export const importOrders: ImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08754",
     shippingStatus: "in transit",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -539,7 +557,8 @@ export const importOrders: ImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "processing",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -562,7 +581,8 @@ export const importOrders: ImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "cleared",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -585,7 +605,8 @@ export const importOrders: ImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Unpaid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -608,7 +629,8 @@ export const importOrders: ImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08758",
     shippingStatus: "delivered",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
+    shippingPaymentStatus: "Paid",
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -791,7 +813,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08756",
     shippingStatus: "not started",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -809,6 +831,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
+    shippingPaymentStatus: "Unpaid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Unpaid",
   },
   {
     orderId: "OD08755",
@@ -816,7 +841,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08755",
     shippingStatus: "ready for shipping",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -834,6 +859,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
+    shippingPaymentStatus: "Unpaid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Unpaid",
   },
   {
     orderId: "OD08754",
@@ -841,7 +869,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08754",
     shippingStatus: "cleared",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -859,6 +887,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
+    shippingPaymentStatus: "Paid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Paid",
   },
   {
     orderId: "OD08753",
@@ -866,7 +897,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08753",
     shippingStatus: "processing",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -884,6 +915,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
+    shippingPaymentStatus: "Paid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Unpaid",
   },
 
   {
@@ -892,7 +926,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08752",
     shippingStatus: "in transit",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -910,6 +944,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
+    shippingPaymentStatus: "Paid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Unpaid",
   },
 
   {
@@ -918,7 +955,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08751",
     shippingStatus: "arrived destination",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -936,6 +973,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
+    shippingPaymentStatus: "Paid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Unpaid",
   },
   {
     orderId: "OD08750",
@@ -943,7 +983,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
     orderLocalDate: new Date().toLocaleString(),
     trackingId: "SH08750",
     shippingStatus: "delivered",
-    shippingCost: 107.76,
+    totalShippingCost: 107.76,
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -961,6 +1001,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
+    shippingPaymentStatus: "Paid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Paid",
   },
 ];
 
@@ -1010,6 +1053,10 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
       city: "",
       zipPostalCode: "",
     },
+    totalShippingCost: 234000,
+    shippingPaymentStatus: "Paid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Unpaid",
   },
   {
     requestId: "OD08755",
@@ -1056,6 +1103,10 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
       city: "",
       zipPostalCode: "",
     },
+    totalShippingCost: 234000,
+    shippingPaymentStatus: "Paid",
+    totalClearingCost: 234000,
+    clearingPaymentStatus: "Unpaid",
   },
 ];
 

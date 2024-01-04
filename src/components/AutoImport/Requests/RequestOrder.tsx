@@ -109,6 +109,10 @@ export const emptyValue: AutoImportRequestPackageType = {
     city: "",
     zipPostalCode: "",
   },
+  totalShippingCost: 0,
+  shippingPaymentStatus: "Unpaid",
+  totalClearingCost: 0,
+  clearingPaymentStatus: "Unpaid",
 };
 
 export type AutoImportInputs = {

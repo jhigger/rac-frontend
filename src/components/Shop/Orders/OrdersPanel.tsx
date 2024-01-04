@@ -184,21 +184,21 @@ const OrdersTable = () => {
           </span>
         ),
       }),
-      columnHelper.accessor("shopForMeCost", {
+      columnHelper.accessor("totalShopForMeCost", {
         header: "Shop For Me Cost",
         cell: ({ row }) => (
           <span className="title-md flex gap-[5px] font-medium">
             <TickSquare size="20" variant="Bold" className="text-primary-600" />
-            ${row.original.shopForMeCost}
+            ${row.original.totalShopForMeCost}
           </span>
         ),
       }),
-      columnHelper.accessor("shippingCost", {
+      columnHelper.accessor("totalShippingCost", {
         header: "Shipping Cost",
         cell: ({ row }) => (
           <span className="title-md flex gap-[5px] font-medium">
             <More size="20" variant="Bold" className="text-error-600" />$
-            {row.original.shippingCost}
+            {row.original.totalShippingCost}
           </span>
         ),
       }),

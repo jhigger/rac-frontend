@@ -60,9 +60,10 @@ export const emptyValue: ShopOrderPackageType = {
   orderLocalDate: new Date().toLocaleString(),
   trackingId: "",
   shippingStatus: "not started",
+  totalShopForMeCost: 0,
   shopForMeStatus: "Purchase not started",
-  shopForMeCost: 0,
-  shippingCost: 0,
+  totalShippingCost: 0,
+  shippingPaymentStatus: "Unpaid",
   originWarehouse: "China Warehouse (Guangzhou city)",
   items: [
     {
@@ -323,7 +324,7 @@ type SectionHeaderProps = { title: string; hr?: boolean };
 
 export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
   return (
-    <div className="flex items-start gap-[10px]">
+    <div className="flex items-start gap-[10px] md:items-center">
       <ArrowCircleRight variant="Bold" className="text-secondary-900" />
       <div className="flex w-full flex-col gap-[10px]">
         <h3 className="label-lg font-medium text-secondary-900">{title}</h3>

@@ -10,6 +10,7 @@ import {
   type CONDITIONS,
   type ORDER_STATUS,
   type ORIGINS,
+  type PAYMENT_STATUS,
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
@@ -90,9 +91,12 @@ export type AutoImportOrderPackageType = {
   orderLocalDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
-  shippingCost: number;
   originWarehouse: (typeof ORIGINS)[number];
   items: AutoImportItemType[];
+  totalShippingCost: number;
+  shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
+  totalClearingCost: number;
+  clearingPaymentStatus: (typeof PAYMENT_STATUS)[number];
 };
 
 export type AutoImportRequestPackageType = {
@@ -103,6 +107,10 @@ export type AutoImportRequestPackageType = {
   items: AutoImportItemType[];
   shipmentDetails: ShipmentDetailsType;
   billingDetails: BillingDetailsType;
+  totalShippingCost: number;
+  shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
+  totalClearingCost: number;
+  clearingPaymentStatus: (typeof PAYMENT_STATUS)[number];
 };
 
 type AutoImportLocalDraftType = {

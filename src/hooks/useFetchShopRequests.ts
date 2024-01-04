@@ -51,6 +51,7 @@ const useFetchShopRequests = (
 
             return requestItem;
           }),
+          totalShopForMeCost: 0, // todo: missing
         };
 
         return requestPackage;

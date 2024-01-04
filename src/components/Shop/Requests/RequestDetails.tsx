@@ -94,26 +94,25 @@ const RequestDetails = () => {
             />
           </div>
           <DetailSection
-            label="Urgent purchase fee"
-            value="$0.00"
+            label="Total Shipment Cost"
+            value="Not yet allocated"
             colSpanDesktop={4}
           />
           <DetailSection
-            label="Processing fee"
-            value="$87,000.00"
+            label="Payment Status"
+            value="Unpaid"
+            colSpanDesktop={4}
+          />
+          <DetailSection
+            label="Total Shop For Me Cost"
+            value={formatCurrency(requestPackage.totalShopForMeCost)}
             colSpanDesktop={4}
             tooltip={requestPackage.requestStatus === "Responded" ? "" : null}
           />
           <DetailSection
-            label="Shipping to Origin Warehouse Cost"
-            value="$87,000.00"
+            label="Payment Status"
+            value="Unpaid"
             colSpanDesktop={4}
-          />
-          <DetailSection
-            label="Shop For Me Cost"
-            value="$87,000.00"
-            colSpanDesktop={4}
-            tooltip={requestPackage.requestStatus === "Responded" ? "" : null}
           />
         </PaymentsInformation>
       </div>

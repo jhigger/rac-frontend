@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
@@ -75,22 +76,30 @@ const RequestDetails = () => {
         <PaymentsInformation>
           <DetailSection
             label="Total Shipment Cost"
-            value="$234,000.00"
+            value={
+              requestPackage.totalShippingCost > 0
+                ? formatCurrency(requestPackage.totalShippingCost)
+                : "Not allocated yet"
+            }
             colSpanDesktop={4}
           />
           <DetailSection
             label="Payment Status"
-            value="Unpaid"
+            value={requestPackage.shippingPaymentStatus}
             colSpanDesktop={4}
           />
           <DetailSection
             label="Total Clearing Cost:"
-            value="Not allocated yet"
+            value={
+              requestPackage.totalClearingCost > 0
+                ? formatCurrency(requestPackage.totalClearingCost)
+                : "Not allocated yet"
+            }
             colSpanDesktop={4}
           />
           <DetailSection
             label="Payment Status"
-            value="Unpaid"
+            value={requestPackage.clearingPaymentStatus}
             colSpanDesktop={4}
           />
         </PaymentsInformation>

@@ -13,6 +13,7 @@ import {
   type ORDER_STATUS,
   type ORIGINS,
   type PACKAGE_DELIVERY_STATUS,
+  type PAYMENT_STATUS,
   type REQUEST_STATUS,
   type SHIPPING_STATUS,
 } from "~/constants";
@@ -60,9 +61,10 @@ export type ImportOrderPackageType = {
   orderLocalDate: string;
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
-  shippingCost: number;
   originWarehouse: (typeof ORIGINS)[number];
   items: ImportItemType[];
+  totalShippingCost: number;
+  shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
 };
 
 export type ImportRequestPackageType = {

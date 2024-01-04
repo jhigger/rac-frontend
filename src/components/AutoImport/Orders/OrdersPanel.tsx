@@ -184,12 +184,12 @@ const OrdersTable = () => {
           />
         ),
       }),
-      columnHelper.accessor("shippingCost", {
+      columnHelper.accessor("totalShippingCost", {
         header: "Shipping Cost",
         cell: ({ row }) => (
           <span className="title-md flex gap-[5px] font-medium">
             <More size="20" variant="Bold" className="text-error-600" />$
-            {row.original.shippingCost}
+            {row.original.totalShippingCost}
           </span>
         ),
       }),

@@ -38,8 +38,8 @@ const useFetchShopOrders = (
           order.ShippingStatus.toLowerCase() as ShopOrderPackageType["shippingStatus"],
         shopForMeStatus:
           order.shopForMeStatus as ShopOrderPackageType["shopForMeStatus"],
-        shopForMeCost: 0, // todo: missing
-        shippingCost: 0, // todo: missing
+        totalShopForMeCost: 0, // todo: missing
+        totalShippingCost: 0, // todo: missing
         originWarehouse:
           order.origin as ShopOrderPackageType["originWarehouse"],
         items: order.requestPackages.map((item) => {
@@ -57,6 +57,7 @@ const useFetchShopOrders = (
 
           return requestItem;
         }),
+        shippingPaymentStatus: "Unpaid", // todo: missing
       };
 
       return orderPackage;

@@ -105,21 +105,27 @@ const InitiateShipping = () => {
 
       {step}
 
-      <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
-        {isFirstStep && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={handleBack} />
-          </div>
-        )}
-        {!isFirstStep && currentStepIndex <= 1 && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={back} />
-          </div>
-        )}
-        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
-        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
-      </div>
-      {currentStepIndex === 3 && (
+      {currentStepIndex <= 1 && (
+        <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
+          {isFirstStep && (
+            <div className="w-full md:max-w-[210px]">
+              <BackButton onClick={handleBack} />
+            </div>
+          )}
+          {!isFirstStep && (
+            <div className="w-full md:max-w-[210px]">
+              <BackButton onClick={back} />
+            </div>
+          )}
+          {currentStepIndex === 0 && (
+            <DoneButton text="Proceed" onClick={next} />
+          )}
+          {currentStepIndex === 1 && (
+            <DoneButton text="Confirm" onClick={next} />
+          )}
+        </div>
+      )}
+      {isLastStep && (
         <div className="w-[200px]">
           <DoneButton text="Done" onClick={handleFinish} />
         </div>

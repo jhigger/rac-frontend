@@ -330,19 +330,19 @@ export const PaymentMethods = () => {
         id="PaymentMethods"
         className="flex flex-col gap-[10px] md:pb-[40px]"
       >
-        <PaymentMethod
+        {/* <PaymentMethod
           title="Credit/Debit Cards - Pay with Dollar/US Cards"
           description="Valid for MasterCard and Visa Cards. Maximum allowed is $1,500"
           expanded
-        />
+        /> */}
         <PaymentMethod
           title="Paystack - Pay with Naira Card"
           description="Pay with Your Naira Card"
           expanded
         />
-        <PaymentMethod title="Pay At Bank in $ - Nigeria" />
+        {/* <PaymentMethod title="Pay At Bank in $ - Nigeria" />
         <PaymentMethod title="Pay At Bank in Naira - Nigeria" />
-        <PaymentMethod title="Pay Via PayPal" />
+        <PaymentMethod title="Pay Via PayPal" /> */}
       </fieldset>
     </form>
   );

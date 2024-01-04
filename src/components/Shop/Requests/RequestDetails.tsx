@@ -211,6 +211,7 @@ const ShopRequestItemDetails = ({
         value={item.name}
         tooltip={
           status === "Responded" ? (
+            // todo: refactor to reusable component
             <div className="flex flex-col">
               <span>You provided: xxx</span>
               <span>We verified: xxx</span>

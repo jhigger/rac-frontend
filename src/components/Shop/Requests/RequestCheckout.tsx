@@ -339,6 +339,7 @@ export const PaymentMethods = () => {
           title="Paystack - Pay with Naira Card"
           description="Pay with Your Naira Card"
           expanded
+          checked
         />
         {/* <PaymentMethod title="Pay At Bank in $ - Nigeria" />
         <PaymentMethod title="Pay At Bank in Naira - Nigeria" />

@@ -291,7 +291,7 @@ export const DetailSection = ({
     {tooltip ? (
       <LabelWithTooltip label={label} tooltip={tooltip} />
     ) : (
-      <span className="body-md h-[40px] max-w-[100px]">{label}:</span>
+      <span className="body-md h-[40px] max-w-[128px]">{label}:</span>
     )}
     {image ? (
       <span className="title-lg text-neutral-900">

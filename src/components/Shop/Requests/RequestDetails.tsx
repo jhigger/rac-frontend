@@ -10,7 +10,7 @@ import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
 import { NotRespondedStatus, RespondedStatus } from "../Orders";
 import { PurpleDetailSection } from "../Orders/ClearPackage";
-import { BillingAddress, DetailSection } from "../Orders/InitiateShipping";
+import { DetailSection } from "../Orders/InitiateShipping";
 import {
   RequestFormHeader,
   SectionContentLayout,
@@ -69,7 +69,6 @@ const RequestDetails = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Billing Details" />
-        <BillingAddress />
         <PaymentsInformation>
           <div className="col-span-full">
             <HighlightedInfo

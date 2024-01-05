@@ -659,7 +659,7 @@ export const Summary = ({
   title = "Shipment Cost Summary",
 }: SummaryProps) => {
   return (
-    <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[28px] py-[20px] text-white">
+    <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[14px] py-[20px] text-white md:px-[28px]">
       <span className="title-lg">{title}</span>
       <div className="flex flex-col gap-[10px]">{children}</div>
     </div>

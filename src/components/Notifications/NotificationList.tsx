@@ -52,14 +52,17 @@ const NotificationList = () => {
     // todo: make notification preview/modal folder and data structure
     return (
       <div className="flex max-w-[1094px] flex-col gap-[20px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
+        <SectionContentLayout>
           <OrderTrackingId
             orderId={selectedNotification.order.orderId}
             trackingId={selectedNotification.order.trackingId}
           />
-        </div>
+        </SectionContentLayout>
+
         <CongratulationImage description="We have confirmed your payment. You have just successfully placed a shop for me order by paying for only your shop for me cost." />
+
         <SuccessImportantNotice />
+
         <div className="flex flex-col gap-[10px]">
           <SectionHeader title="Track your package" />
           <SectionContentLayout>
@@ -87,7 +90,9 @@ const NotificationList = () => {
             </div>
           </SectionContentLayout>
         </div>
+
         <AndLastly />
+
         <div className="w-full md:w-[200px]">
           <PrimaryBackButton onClick={handleBack} />
         </div>

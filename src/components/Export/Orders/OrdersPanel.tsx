@@ -294,10 +294,11 @@ const ShippingStatus = ({ orderPackage, onClick }: ShippingStatusProps) => {
       >
         {capitalizeWords(status)}
       </button>
-      {createPortal(
-        <ShippingStatusModal {...{ modalId, orderPackage }} />,
-        document.body,
-      )}
+      {status !== "ready for shipping" &&
+        createPortal(
+          <ShippingStatusModal {...{ modalId, orderPackage }} />,
+          document.body,
+        )}
     </>
   );
 };

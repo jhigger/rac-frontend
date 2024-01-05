@@ -53,7 +53,14 @@ import useStatesCities from "~/hooks/useStatesCities";
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
-  const { handleActiveAction, handleTabChange } = useTabContext();
+  const { requestPackages } = useExportContext();
+  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const requestPackage = requestPackages?.[viewIndex];
+
+  if (!requestPackage) return;
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
@@ -86,25 +93,25 @@ const InitiateShipping = () => {
       {!isLastStep && (
         <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
       )}
+
       <StepIndex
         currentIndex={currentStepIndex}
         length={steps.length}
         title={currentTitle}
       />
 
-      {!isLastStep && (
+      {!isLastStep ? (
         <div className="w-full md:w-max">
-          <LabelId label="Request ID" id="R78667" />
+          <LabelId label="Request ID" id={requestPackage.requestId} />
         </div>
-      )}
-      {isLastStep && (
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
-        </div>
-      )}
-
-      {isLastStep && (
-        <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
+      ) : (
+        // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
+        <>
+          <SectionContentLayout>
+            <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
+          </SectionContentLayout>
+          <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
+        </>
       )}
 
       {step}
@@ -123,25 +130,27 @@ const InitiateShipping = () => {
         {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
         {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
       </div>
+
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+
       {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
 };
 
 const PackageConfirmation = () => {
-  const { orderPackages } = useExportContext();
+  const { requestPackages } = useExportContext();
   const { viewIndex } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderPackages?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
-  if (!orderPackage) return;
+  if (!requestPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
@@ -153,11 +162,11 @@ const PackageConfirmation = () => {
         />
         <DetailSection
           label="Country of Purchase"
-          value={orderPackage.originWarehouse}
+          value={requestPackage.originWarehouse}
         />
       </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderPackage.items.map((item, i) => {
+      {requestPackage.items.map((item, i) => {
         return <ImportOrderItem key={i} item={item} index={i} />;
       })}
     </div>
@@ -260,14 +269,14 @@ export const FillInShippingAddress = () => {
 };
 
 const InitiateShippingStep = () => {
-  const { orderPackages } = useExportContext();
+  const { requestPackages } = useExportContext();
   const { viewIndex } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderPackages?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
-  if (!orderPackage) return;
+  if (!requestPackage) return;
 
   const defaultColumns = useMemo(importPackageItemColumns, []);
 
@@ -276,7 +285,7 @@ const InitiateShippingStep = () => {
       <SectionHeader title="Package details Summary" />
       <PackageTable
         columns={defaultColumns}
-        data={orderPackage.items}
+        data={requestPackage.items}
         tableFooter={<ImportPackageTableFooter />}
       />
 
@@ -327,23 +336,23 @@ const ShipmentCostsSummary = ({
   footer,
   payButton = false,
 }: ShipmentCostsSummaryProps) => {
-  const { orderPackages } = useExportContext();
+  const { requestPackages } = useExportContext();
   const { viewIndex } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderPackages?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
-  if (!orderPackage) return;
+  if (!requestPackage) return;
 
   const total = [
-    orderPackage.totalShippingCost,
-    orderPackage.clearingPortHandlingCost,
-    orderPackage.otherCharges,
-    orderPackage.storageCharge,
-    orderPackage.insurance,
-    orderPackage.valueAddedTax,
-    orderPackage.paymentMethodSurcharge,
+    requestPackage.totalShippingCost,
+    requestPackage.clearingPortHandlingCost,
+    requestPackage.otherCharges,
+    requestPackage.storageCharge,
+    requestPackage.insurance,
+    requestPackage.valueAddedTax,
+    requestPackage.paymentMethodSurcharge,
   ].reduce((total, cost) => (total += cost));
 
   return (
@@ -351,37 +360,37 @@ const ShipmentCostsSummary = ({
       <Summary>
         <CostDetailSection
           label="Shipping Cost"
-          value={formatCurrency(orderPackage.totalShippingCost)}
+          value={formatCurrency(requestPackage.totalShippingCost)}
         />
         <CostDetailSection
           label="Clearing, Port Handling"
-          value={formatCurrency(orderPackage.clearingPortHandlingCost)}
+          value={formatCurrency(requestPackage.clearingPortHandlingCost)}
         />
         <CostDetailSection
           label="Other Charges"
-          value={formatCurrency(orderPackage.otherCharges)}
+          value={formatCurrency(requestPackage.otherCharges)}
         />
         <CostDetailSection
           label="Storage Charge"
-          value={formatCurrency(orderPackage.storageCharge)}
+          value={formatCurrency(requestPackage.storageCharge)}
         />
         <CostDetailSection
           label="Insurance"
-          value={formatCurrency(orderPackage.insurance)}
+          value={formatCurrency(requestPackage.insurance)}
         />
         <CostDetailSection
           label="VAT"
-          value={formatCurrency(orderPackage.valueAddedTax)}
+          value={formatCurrency(requestPackage.valueAddedTax)}
         />
         <CostDetailSection
           label="Payment Method Surcharge"
-          value={formatCurrency(orderPackage.paymentMethodSurcharge)}
+          value={formatCurrency(requestPackage.paymentMethodSurcharge)}
         />
         <CostDetailSection
           label="Discount"
-          value={`- ${formatCurrency(orderPackage.discount)}`}
+          value={`- ${formatCurrency(requestPackage.discount)}`}
         />
-        <TotalCost total={total - orderPackage.discount} />
+        <TotalCost total={total - requestPackage.discount} />
       </Summary>
       <div className="flex flex-col justify-center gap-[20px] p-[20px]">
         {footer}

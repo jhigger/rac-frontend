@@ -52,7 +52,14 @@ import {
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
-  const { handleActiveAction, handleTabChange } = useTabContext();
+  const { requestPackages } = useAutoImportContext();
+  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const requestPackage = requestPackages?.[viewIndex];
+
+  if (!requestPackage) return;
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <Step1 /> },
@@ -85,25 +92,25 @@ const InitiateShipping = () => {
       {!isLastStep && (
         <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
       )}
+
       <StepIndex
         currentIndex={currentStepIndex}
         length={steps.length}
         title={currentTitle}
       />
 
-      {!isLastStep && (
+      {!isLastStep ? (
         <div className="w-full md:w-max">
-          <LabelId label="Request ID" id="R78667" />
+          <LabelId label="Request ID" id={requestPackage.requestId} />
         </div>
-      )}
-      {isLastStep && (
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
-        </div>
-      )}
-
-      {isLastStep && (
-        <CongratulationImage description="You have just successfully placed an Auto-Import order." />
+      ) : (
+        // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
+        <>
+          <SectionContentLayout>
+            <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
+          </SectionContentLayout>
+          <CongratulationImage description="You have just successfully placed an Auto-Import order." />
+        </>
       )}
 
       {step}
@@ -128,26 +135,28 @@ const InitiateShipping = () => {
           )}
         </div>
       )}
+
       {isLastStep && (
         <div className="w-[200px]">
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+
       {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
 };
 
 const Step1 = () => {
-  const { orderPackages } = useAutoImportContext();
+  const { requestPackages } = useAutoImportContext();
 
   const { viewIndex } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderPackages?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
-  if (!orderPackage) return;
+  if (!requestPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
@@ -156,12 +165,12 @@ const Step1 = () => {
         <HighlightedInfo text="From the details you provided, your car(s) will be delivered and shipped from here to our your selected 'destination' in Nigeria" />
         <DetailSection
           label="Origin warehouse"
-          value={orderPackage.originWarehouse}
+          value={requestPackage.originWarehouse}
         />
         <OriginWarehouseAddress />
       </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
-      {orderPackage.items.map((item, i) => {
+      {requestPackage.items.map((item, i) => {
         return <AutoImportOrderItem key={i} item={item} index={i} />;
       })}
     </div>
@@ -201,34 +210,36 @@ export const AutoImportOrderItem = ({
 };
 
 const Step2 = () => {
-  const { orderPackages } = useAutoImportContext();
+  const { requestPackages } = useAutoImportContext();
+
   const { viewIndex } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderPackages?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
-  if (!orderPackage) return;
+  if (!requestPackage) return;
 
   return (
     <div className="flex flex-col gap-[10px]">
       <SectionHeader title="Confirm your Shipping Details" />
       <DestinationAddressDetails />
       <SectionHeader title="Confirm your Billing Information" />
-      <BillingAddress billingDetails={orderPackage.billingDetails} />
+      <BillingAddress billingDetails={requestPackage.billingDetails} />
     </div>
   );
 };
 
 const Step3 = () => {
-  const { orderPackages } = useAutoImportContext();
+  const { requestPackages } = useAutoImportContext();
+
   const { viewIndex } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderPackages?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
-  if (!orderPackage) return;
+  if (!requestPackage) return;
 
   const defaultColumns = useMemo(autoImportPackageItemColumns, []);
 
@@ -237,7 +248,7 @@ const Step3 = () => {
       <SectionHeader title="Package details Summary" />
       <PackageTable
         columns={defaultColumns}
-        data={orderPackage.items}
+        data={requestPackage.items}
         tableFooter={<AutoImportPackageTableFooter />}
       />
 
@@ -268,16 +279,17 @@ const Step3 = () => {
 };
 
 const CostsSummary = () => {
-  const { orderPackages } = useAutoImportContext();
+  const { requestPackages } = useAutoImportContext();
+
   const { viewIndex } = useTabContext();
 
   if (viewIndex === null) return;
 
-  const orderPackage = orderPackages?.[viewIndex];
+  const requestPackage = requestPackages?.[viewIndex];
 
-  if (!orderPackage) return;
+  if (!requestPackage) return;
 
-  const items = orderPackage.items;
+  const items = requestPackage.items;
 
   const totalPickupCost = items.reduce(
     (acc, item) => (acc += item.pickupDetails?.pickupCost ?? 0),
@@ -286,50 +298,52 @@ const CostsSummary = () => {
 
   const total = [
     totalPickupCost,
-    orderPackage.totalShippingCost,
-    orderPackage.otherCharges,
-    orderPackage.storageCharge,
-    orderPackage.insurance,
-    orderPackage.valueAddedTax,
-    orderPackage.paymentMethodSurcharge,
+    requestPackage.totalShippingCost,
+    requestPackage.otherCharges,
+    requestPackage.storageCharge,
+    requestPackage.insurance,
+    requestPackage.valueAddedTax,
+    requestPackage.paymentMethodSurcharge,
   ].reduce((total, cost) => (total += cost));
 
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary>
-        <CostDetailSection
-          label="Pickup Cost"
-          value={formatCurrency(totalPickupCost)}
-        />
+        {totalPickupCost > 0 && (
+          <CostDetailSection
+            label="Pickup Cost"
+            value={formatCurrency(totalPickupCost)}
+          />
+        )}
         <CostDetailSection
           label="Shipping Cost"
-          value={formatCurrency(orderPackage.totalShippingCost)}
+          value={formatCurrency(requestPackage.totalShippingCost)}
         />
         <CostDetailSection
           label="Other Charges"
-          value={formatCurrency(orderPackage.otherCharges)}
+          value={formatCurrency(requestPackage.otherCharges)}
         />
         <CostDetailSection
           label="Storage Charge"
-          value={formatCurrency(orderPackage.storageCharge)}
+          value={formatCurrency(requestPackage.storageCharge)}
         />
         <CostDetailSection
           label="Insurance"
-          value={formatCurrency(orderPackage.insurance)}
+          value={formatCurrency(requestPackage.insurance)}
         />
         <CostDetailSection
           label="VAT"
-          value={formatCurrency(orderPackage.valueAddedTax)}
+          value={formatCurrency(requestPackage.valueAddedTax)}
         />
         <CostDetailSection
           label="Payment Method Surcharge"
-          value={formatCurrency(orderPackage.paymentMethodSurcharge)}
+          value={formatCurrency(requestPackage.paymentMethodSurcharge)}
         />
         <CostDetailSection
           label="Discount"
-          value={`- ${formatCurrency(orderPackage.discount)}`}
+          value={`- ${formatCurrency(requestPackage.discount)}`}
         />
-        <TotalCost total={total - orderPackage.discount} />
+        <TotalCost total={total - requestPackage.discount} />
       </Summary>
       <div className="flex flex-col items-center justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">

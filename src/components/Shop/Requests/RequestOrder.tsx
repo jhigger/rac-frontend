@@ -31,6 +31,7 @@ import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
+import LabelId from "~/components/LabelId";
 import { ORIGINS, STORES } from "~/constants";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
@@ -177,6 +178,13 @@ const RequestOrderForm = () => {
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <RequestFormHeader title="Requesting For New Shop For Me Service" />
 
+        {isLastStep && (
+          // todo: submit response should have requestId
+          <SectionContentLayout>
+            <LabelId label="Request ID" id="R78667" center={true} />
+          </SectionContentLayout>
+        )}
+
         {step}
 
         {isFirstStep && (
@@ -200,11 +208,13 @@ const RequestOrderForm = () => {
             </div>
           </>
         )}
+
         {isLastStep && (
           <div className="w-full md:w-[200px]">
             <DoneButton onClick={handleFinish} />
           </div>
         )}
+
         <NeedHelpFAB />
       </div>
     </FormProvider>
@@ -252,12 +262,6 @@ export const RequestOrderStep1 = () => {
 export const RequestOrderStep2 = () => {
   return (
     <>
-      <SectionContentLayout>
-        <div className="flex w-full items-center justify-center gap-[5px] p-[10px]">
-          <span className="headline-md">Request ID:</span>
-          <span className="headline-md font-bold">R78667</span>
-        </div>
-      </SectionContentLayout>
       <div className="flex flex-col-reverse gap-[10px] rounded-[20px] bg-primary-600 px-[14px] py-[10px] md:flex-row">
         <img
           src="/images/drone_flying_with_package.png"

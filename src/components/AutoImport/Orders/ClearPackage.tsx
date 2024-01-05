@@ -27,7 +27,6 @@ import {
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
 import { useAutoImportContext } from "~/contexts/AutoImportContext";
-import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { DestinationAddressDetails } from "../Requests/RequestOrder";
@@ -72,25 +71,25 @@ const ClearPackage = () => {
       {!isLastStep && (
         <CongratulationImage description="You car(s) have arrived the port, proceed to clear it." />
       )}
+
       <StepIndex
         currentIndex={currentStepIndex}
         length={steps.length}
         title={currentTitle}
       />
 
-      {!isLastStep && (
+      {!isLastStep ? (
         <div className="w-full md:w-max">
           <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
         </div>
-      )}
-      {isLastStep && (
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
-        </div>
-      )}
-
-      {isLastStep && (
-        <CongratulationImage description="Expect your car(s) soon" />
+      ) : (
+        // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
+        <>
+          <SectionContentLayout>
+            <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
+          </SectionContentLayout>
+          <CongratulationImage description="Expect your car(s) soon" />
+        </>
       )}
 
       {step}
@@ -110,11 +109,13 @@ const ClearPackage = () => {
           <DoneButton text="Proceed" onClick={next} />
         </div>
       )}
-      {currentStepIndex === 3 && (
+
+      {isLastStep && (
         <div className="w-[200px]">
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+
       {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
@@ -142,7 +143,7 @@ const Step1 = () => {
 };
 
 const Step2 = () => {
-  const { orderPackages } = useImportContext();
+  const { orderPackages } = useAutoImportContext();
   const { viewIndex } = useTabContext();
 
   if (viewIndex === null) return;

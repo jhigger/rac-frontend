@@ -113,6 +113,12 @@ export const emptyValue: AutoImportRequestPackageType = {
   shippingPaymentStatus: "Unpaid",
   totalClearingCost: 0,
   clearingPaymentStatus: "Unpaid",
+  otherCharges: 0,
+  storageCharge: 0,
+  insurance: 0,
+  valueAddedTax: 0,
+  paymentMethodSurcharge: 0,
+  discount: 0,
 };
 
 export type AutoImportInputs = {
@@ -178,15 +184,26 @@ const RequestOrder = () => {
     <FormProvider {...formMethods}>
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <RequestFormHeader title="Requesting For New Auto Import Order" />
+
         <StepIndex
           currentIndex={currentStepIndex}
           length={steps.length}
           title={currentTitle}
         />
 
+        {isLastStep && (
+          // todo: submit response should have requestId
+          <>
+            <SectionContentLayout>
+              <LabelId label="Request ID" id="R78667" center />
+            </SectionContentLayout>
+            <CongratulationImage description="You have just successfully requested an order for Auto Import service." />
+          </>
+        )}
+
         {step}
 
-        {!isLastStep && (
+        {!isLastStep ? (
           <>
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
               {isFirstStep && <BackButton onClick={handleBack} />}
@@ -208,12 +225,12 @@ const RequestOrder = () => {
               </div>
             </div>
           </>
-        )}
-        {isLastStep && (
+        ) : (
           <div className="w-full md:w-[200px]">
             <DoneButton onClick={handleFinish} />
           </div>
         )}
+
         <NeedHelpFAB />
       </div>
     </FormProvider>
@@ -1232,11 +1249,6 @@ export const OriginWarehouseAddress = () => {
 export const Step4 = () => {
   return (
     <div className="flex flex-col gap-[20px]">
-      <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-        <LabelId label="Request ID" id="R78667" />
-      </div>
-
-      <CongratulationImage description="You have just successfully requested an order for Auto Import service." />
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="You have 4 more steps to take" />
         <SectionContentLayout>

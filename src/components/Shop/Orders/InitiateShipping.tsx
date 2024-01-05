@@ -10,12 +10,12 @@ import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import ShopPackageTable from "~/components/ShopPackageTable";
 import {
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
 } from "~/components/Shop/Requests/RequestOrder";
+import ShopPackageTable from "~/components/ShopPackageTable";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { DESTINATIONS } from "~/constants";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
@@ -39,7 +39,14 @@ import { PurpleDetailSection } from "./ClearPackage";
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
-  const { handleActiveAction, handleTabChange } = useTabContext();
+  const { orderPackages } = useShopContext();
+  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
@@ -72,27 +79,35 @@ const InitiateShipping = () => {
       {!isLastStep && (
         <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
       )}
+
       <StepIndex
         currentIndex={currentStepIndex}
         length={steps.length}
         title={currentTitle}
       />
 
-      {!isLastStep && (
+      {!isLastStep ? (
         <div className="w-full md:w-max">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
+          <OrderTrackingId
+            orderId={orderPackage.orderId}
+            trackingId={orderPackage.trackingId}
+          />
         </div>
-      )}
-      {isLastStep && (
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
-        </div>
+      ) : (
+        <>
+          <SectionContentLayout>
+            <OrderTrackingId
+              orderId={orderPackage.orderId}
+              trackingId={orderPackage.trackingId}
+              center
+            />
+          </SectionContentLayout>
+          <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
+        </>
       )}
 
-      {isLastStep && (
-        <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
-      )}
       {step}
+
       <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
         {isFirstStep && (
           <div className="w-full md:max-w-[210px]">
@@ -107,14 +122,17 @@ const InitiateShipping = () => {
         {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
         {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
       </div>
+
       {currentStepIndex === 2 && (
         <InitiateShippingAgreement back={back} next={next} />
       )}
+
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+
       {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );

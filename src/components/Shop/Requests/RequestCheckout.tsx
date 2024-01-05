@@ -42,7 +42,16 @@ export type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
+  const { requestPackages } = useShopContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
+
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const requestPackage = requestPackages?.[viewIndex];
+
+  if (!requestPackage) return;
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
@@ -73,18 +82,24 @@ const RequestCheckout = () => {
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Confirm and Place your Order" />
+
       <StepIndex
         currentIndex={currentStepIndex}
         length={steps.length}
         title={currentTitle}
       />
-      {!isLastStep && <LabelId label="Request ID" id="R78667" />}
-      {isLastStep && (
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
-        </div>
+
+      {!isLastStep ? (
+        <LabelId label="Request ID" id={requestPackage.requestId} />
+      ) : (
+        // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
+        <SectionContentLayout>
+          <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
+        </SectionContentLayout>
       )}
+
       {step}
+
       <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
         {isFirstStep && (
           <div className="w-full md:max-w-[210px]">
@@ -104,6 +119,7 @@ const RequestCheckout = () => {
           </div>
         )}
       </div>
+
       {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );

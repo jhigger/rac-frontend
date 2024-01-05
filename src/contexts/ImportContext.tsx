@@ -87,6 +87,14 @@ export type ImportRequestPackageType = {
   originWarehouse: (typeof ORIGINS)[number];
   deliveryStatus: (typeof PACKAGE_DELIVERY_STATUS)[number];
   items: ImportItemType[];
+  totalShippingCost: number;
+  clearingPortHandlingCost: number;
+  otherCharges: number;
+  storageCharge: number;
+  insurance: number;
+  valueAddedTax: number;
+  paymentMethodSurcharge: number;
+  discount: number;
 };
 
 export type PropertyType = { label: string; value: string | undefined };

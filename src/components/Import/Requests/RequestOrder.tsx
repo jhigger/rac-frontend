@@ -69,6 +69,14 @@ export const emptyValue: ImportRequestPackageType = {
       itemDeliveryStatus: "Not yet delivered",
     },
   ],
+  totalShippingCost: 0,
+  clearingPortHandlingCost: 0,
+  otherCharges: 0,
+  storageCharge: 0,
+  insurance: 0,
+  valueAddedTax: 0,
+  paymentMethodSurcharge: 0,
+  discount: 0,
 };
 
 export type ImportInputs = {
@@ -115,13 +123,14 @@ const RequestOrder = () => {
     <FormProvider {...formMethods}>
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <RequestFormHeader title="Requesting For New Import Order" />
-        {!isLastStep && (
+
+        {!isLastStep ? (
           <HighlightedInfo text="Provide as much Information as possible needed for our staffs to identify your package if it has been delivered. The more Information you provide, the easier we identify your package." />
-        )}
-        {isLastStep && (
-          <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-            <LabelId label="Request" id="R78667" />
-          </div>
+        ) : (
+          // todo: submit response should have requestId
+          <SectionContentLayout>
+            <LabelId label="Request ID" id="R78667" center={true} />
+          </SectionContentLayout>
         )}
 
         {step}
@@ -134,6 +143,7 @@ const RequestOrder = () => {
             </div>
           </>
         )}
+
         {!isFirstStep && !isLastStep && (
           <>
             <div className="hidden gap-[10px] md:flex [&>*]:w-max">
@@ -155,11 +165,13 @@ const RequestOrder = () => {
             </div>
           </>
         )}
+
         {isLastStep && (
           <div className="w-full md:w-[200px]">
             <DoneButton onClick={handleFinish} />
           </div>
         )}
+
         <NeedHelpFAB />
       </div>
     </FormProvider>

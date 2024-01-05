@@ -8,11 +8,11 @@ import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import ShopPackageTable from "~/components/ShopPackageTable";
 import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
+import ShopPackageTable from "~/components/ShopPackageTable";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -39,7 +39,14 @@ import { PickUpInstructions } from "./OrdersPanel";
 
 const ClearPackage = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
-  const { handleActiveAction, handleTabChange } = useTabContext();
+  const { orderPackages } = useShopContext();
+  const { viewIndex, handleActiveAction, handleTabChange } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
     { title: "Package Confirmation", content: <PackageConfirmation /> },
@@ -72,25 +79,31 @@ const ClearPackage = () => {
       {!isLastStep && (
         <CongratulationImage description="Your package have arrived its destination. Proceed to clear it." />
       )}
+
       <StepIndex
         currentIndex={currentStepIndex}
         length={steps.length}
         title={currentTitle}
       />
 
-      {!isLastStep && (
+      {!isLastStep ? (
         <div className="w-full md:w-max">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
+          <OrderTrackingId
+            orderId={orderPackage.orderId}
+            trackingId={orderPackage.trackingId}
+          />
         </div>
-      )}
-      {isLastStep && (
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 p-[20px]">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
-        </div>
-      )}
-
-      {isLastStep && (
-        <CongratulationImage description='You can now pick up your package from our office in Nigeria (your selected "Destination")' />
+      ) : (
+        <>
+          <SectionContentLayout>
+            <OrderTrackingId
+              orderId={orderPackage.orderId}
+              trackingId={orderPackage.trackingId}
+              center
+            />
+          </SectionContentLayout>
+          <CongratulationImage description='You can now pick up your package from our office in Nigeria (your selected "Destination")' />
+        </>
       )}
 
       {step}
@@ -110,17 +123,19 @@ const ClearPackage = () => {
           <DoneButton text="Proceed" onClick={next} />
         </div>
       )}
+
       {currentStepIndex === 3 && (
         <div className="w-[200px]">
           <DoneButton text="Done" onClick={handleFinish} />
         </div>
       )}
+
       {portal && createPortal(<PayNowButton onClick={next} />, portal)}
     </div>
   );
 };
 
-export const BillingDetailsConfirmation = () => {
+const BillingDetailsConfirmation = () => {
   const { orderPackages } = useShopContext();
   const { viewIndex } = useTabContext();
 

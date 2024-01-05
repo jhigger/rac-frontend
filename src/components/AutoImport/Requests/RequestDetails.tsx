@@ -89,7 +89,7 @@ const RequestDetails = () => {
             colSpanDesktop={4}
           />
           <DetailSection
-            label="Total Clearing Cost:"
+            label="Total Clearing Cost"
             value={
               requestPackage.totalClearingCost > 0
                 ? formatCurrency(requestPackage.totalClearingCost)

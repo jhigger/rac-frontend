@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { ArrowRight3 } from "iconsax-react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -280,7 +281,32 @@ export const ClearPackageStep = () => {
       <PaymentMethods />
 
       <SectionHeader title="Shipment costs" />
-      <ShipmentCostsSummary payButton />
+      <ShipmentCostsSummary
+        footer={
+          <div className="flex flex-col gap-[5px]">
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-error-600" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                The total you are paying now includes only the Shipping fees
+              </span>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-primary-900" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                Prices and subtotals are displayed including taxes
+              </span>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-primary-900" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                Discounts are calculated based on prices and subtotals taken
+                without considering taxes
+              </span>
+            </div>
+          </div>
+        }
+        payButton
+      />
     </div>
   );
 };

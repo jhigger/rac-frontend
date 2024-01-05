@@ -60,10 +60,6 @@ export const emptyValue: ShopOrderPackageType = {
   orderLocalDate: new Date().toLocaleString(),
   trackingId: "",
   shippingStatus: "not started",
-  totalShopForMeCost: 0,
-  shopForMeStatus: "Purchase not started",
-  totalShippingCost: 0,
-  shippingPaymentStatus: "Unpaid",
   originWarehouse: "China Warehouse (Guangzhou city)",
   items: [
     {
@@ -108,6 +104,17 @@ export const emptyValue: ShopOrderPackageType = {
     city: "",
     zipPostalCode: "",
   },
+  totalShopForMeCost: 0,
+  shopForMeStatus: "Purchase not started",
+  totalShippingCost: 0,
+  shippingPaymentStatus: "Unpaid",
+  clearingPortHandlingCost: 0,
+  otherCharges: 0,
+  storageCharge: 0,
+  insurance: 0,
+  valueAddedTax: 0,
+  paymentMethodSurcharge: 0,
+  discount: 0,
 };
 
 export type ShopInputs = {

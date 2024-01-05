@@ -91,6 +91,13 @@ const useFetchShopOrders = (
           order.shopForMeStatus as ShopOrderPackageType["shopForMeStatus"],
         totalShippingCost: 0, // todo: missing
         shippingPaymentStatus: "Unpaid", // todo: missing
+        clearingPortHandlingCost: 0, // todo: missing
+        otherCharges: 0, // todo: missing
+        storageCharge: 0, // todo: missing
+        insurance: 0, // todo: missing
+        valueAddedTax: 0, // todo: missing
+        paymentMethodSurcharge: 0, // todo: missing
+        discount: 0, // todo: missing
       };
 
       return orderPackage;

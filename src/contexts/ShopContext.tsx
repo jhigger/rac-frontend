@@ -72,6 +72,13 @@ export type ShopOrderPackageType = {
   shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
   totalShippingCost: number;
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
+  clearingPortHandlingCost: number;
+  otherCharges: number;
+  storageCharge: number;
+  insurance: number;
+  valueAddedTax: number;
+  paymentMethodSurcharge: number;
+  discount: number;
 };
 
 export type ShopRequestPackageType = {
@@ -81,6 +88,9 @@ export type ShopRequestPackageType = {
   originWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
   totalShopForMeCost: number;
+  valueAddedTax: number;
+  paymentMethodSurcharge: number;
+  discount: number;
 };
 
 type ShopLocalDraftType = {

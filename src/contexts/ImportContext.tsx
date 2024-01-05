@@ -71,6 +71,13 @@ export type ImportOrderPackageType = {
   billingDetails: BillingDetailsType;
   totalShippingCost: number;
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
+  clearingPortHandlingCost: number;
+  otherCharges: number;
+  storageCharge: number;
+  insurance: number;
+  valueAddedTax: number;
+  paymentMethodSurcharge: number;
+  discount: number;
 };
 
 export type ImportRequestPackageType = {

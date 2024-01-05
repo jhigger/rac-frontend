@@ -2,6 +2,7 @@ import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
+import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -27,11 +28,13 @@ import {
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
   AndLastly,
+  CostDetailSection,
   CustomBillingAddress,
   DefaultBillingAddressRadio,
   PaymentMethods,
   StepIndex,
   SubSectionTitle,
+  TotalCost,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
 import {
@@ -290,39 +293,98 @@ const InitiateShippingStep = () => {
       <PaymentMethods />
 
       <SectionHeader title="Shipment costs" />
-      <ShipmentCostsSummary payButton />
+      <ShipmentCostsSummary
+        footer={
+          <div className="flex flex-col gap-[5px]">
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-error-600" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                The total you are paying now includes only the Shipping fees
+              </span>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-primary-900" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                Prices and subtotals are displayed including taxes
+              </span>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-primary-900" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                Discounts are calculated based on prices and subtotals taken
+                without considering taxes
+              </span>
+            </div>
+          </div>
+        }
+        payButton
+      />
     </div>
   );
 };
 
 const ShipmentCostsSummary = ({
+  footer,
   payButton = false,
 }: ShipmentCostsSummaryProps) => {
+  const { orderPackages } = useExportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const total = [
+    orderPackage.totalShippingCost,
+    orderPackage.clearingPortHandlingCost,
+    orderPackage.otherCharges,
+    orderPackage.storageCharge,
+    orderPackage.insurance,
+    orderPackage.valueAddedTax,
+    orderPackage.paymentMethodSurcharge,
+  ].reduce((total, cost) => (total += cost));
+
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
-      <Summary />
+      <Summary>
+        <CostDetailSection
+          label="Shipping Cost"
+          value={formatCurrency(orderPackage.totalShippingCost)}
+        />
+        <CostDetailSection
+          label="Clearing, Port Handling"
+          value={formatCurrency(orderPackage.clearingPortHandlingCost)}
+        />
+        <CostDetailSection
+          label="Other Charges"
+          value={formatCurrency(orderPackage.otherCharges)}
+        />
+        <CostDetailSection
+          label="Storage Charge"
+          value={formatCurrency(orderPackage.storageCharge)}
+        />
+        <CostDetailSection
+          label="Insurance"
+          value={formatCurrency(orderPackage.insurance)}
+        />
+        <CostDetailSection
+          label="VAT"
+          value={formatCurrency(orderPackage.valueAddedTax)}
+        />
+        <CostDetailSection
+          label="Payment Method Surcharge"
+          value={formatCurrency(orderPackage.paymentMethodSurcharge)}
+        />
+        <CostDetailSection
+          label="Discount"
+          value={`- ${formatCurrency(orderPackage.discount)}`}
+        />
+        <TotalCost total={total - orderPackage.discount} />
+      </Summary>
       <div className="flex flex-col justify-center gap-[20px] p-[20px]">
-        <div className="flex flex-col gap-[5px]">
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-error-600" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              The total you are paying now includes only the Shipping fees
-            </span>
-          </div>
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-primary-900" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              Prices and subtotals are displayed including taxes
-            </span>
-          </div>
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-primary-900" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              Discounts are calculated based on prices and subtotals taken
-              without considering taxes
-            </span>
-          </div>
-        </div>
+        {footer}
         {payButton && (
           <div
             className="w-full self-center md:max-w-[500px]"

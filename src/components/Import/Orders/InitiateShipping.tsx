@@ -22,10 +22,12 @@ import {
   type ShipmentCostsSummaryProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
+  CostDetailSection,
   CustomBillingAddress,
   DefaultBillingAddressRadio,
   StepIndex,
   SubSectionTitle,
+  TotalCost,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
 import { PackageOrigin } from "~/components/Shop/Requests/RequestDetails";
@@ -259,40 +261,98 @@ const InitiateShippingStep = () => {
       <ShippingMethod checked disabled expanded />
 
       <SectionHeader title="Shipment costs" />
-      <ShipmentCostsSummary />
+      <ShipmentCostsSummary
+        footer={
+          <div className="flex flex-col gap-[5px]">
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-error-600" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                The total you are paying now includes only the Shipping fees and
+                is to be paid upon clearing/arrival of your package
+              </span>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-primary-900" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                Prices and subtotals are displayed including taxes
+              </span>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-primary-900" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                Discounts are calculated based on prices and subtotals taken
+                without considering taxes
+              </span>
+            </div>
+          </div>
+        }
+      />
     </div>
   );
 };
 
 const ShipmentCostsSummary = ({
   payButton = false,
+  footer,
 }: ShipmentCostsSummaryProps) => {
+  const { orderPackages } = useImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const total = [
+    orderPackage.totalShippingCost,
+    orderPackage.clearingPortHandlingCost,
+    orderPackage.otherCharges,
+    orderPackage.storageCharge,
+    orderPackage.insurance,
+    orderPackage.valueAddedTax,
+    orderPackage.paymentMethodSurcharge,
+  ].reduce((total, cost) => (total += cost));
+
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
-      <Summary />
+      <Summary>
+        <CostDetailSection
+          label="Shipping Cost"
+          value={formatCurrency(orderPackage.totalShippingCost)}
+        />
+        <CostDetailSection
+          label="Clearing, Port Handling"
+          value={formatCurrency(orderPackage.clearingPortHandlingCost)}
+        />
+        <CostDetailSection
+          label="Other Charges"
+          value={formatCurrency(orderPackage.otherCharges)}
+        />
+        <CostDetailSection
+          label="Storage Charge"
+          value={formatCurrency(orderPackage.storageCharge)}
+        />
+        <CostDetailSection
+          label="Insurance"
+          value={formatCurrency(orderPackage.insurance)}
+        />
+        <CostDetailSection
+          label="VAT"
+          value={formatCurrency(orderPackage.valueAddedTax)}
+        />
+        <CostDetailSection
+          label="Payment Method Surcharge"
+          value={formatCurrency(orderPackage.paymentMethodSurcharge)}
+        />
+        <CostDetailSection
+          label="Discount"
+          value={`- ${formatCurrency(orderPackage.discount)}`}
+        />
+        <TotalCost total={total - orderPackage.discount} />
+      </Summary>
       <div className="flex flex-col justify-center gap-[20px] p-[20px]">
-        <div className="flex flex-col gap-[5px]">
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-error-600" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              The total you are paying now includes only the Shipping fees and
-              is to be paid upon clearing/arrival of your package
-            </span>
-          </div>
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-primary-900" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              Prices and subtotals are displayed including taxes
-            </span>
-          </div>
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-primary-900" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              Discounts are calculated based on prices and subtotals taken
-              without considering taxes
-            </span>
-          </div>
-        </div>
+        {footer}
         {payButton && (
           <div
             className="w-full self-center md:max-w-[500px]"

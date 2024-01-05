@@ -25,7 +25,7 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 import AccordionButton from "../../Forms/AccordionButton";
-import { DetailSection } from "../Orders/InitiateShipping";
+import { DetailSection, Summary } from "../Orders/InitiateShipping";
 import {
   HighlightedInfo,
   PackageOrigin,
@@ -383,13 +383,16 @@ export const ImportantNotice = () => {
   );
 };
 
-type CostProps = { title: string; value: string };
+type CostDetailSectionProps = { label: string; value: string };
 
-export const Cost = ({ title, value }: CostProps) => {
+export const CostDetailSection = ({
+  label: title,
+  value,
+}: CostDetailSectionProps) => {
   return (
     <div className="flex flex-col gap-[10px]">
       <div className="label-lg flex items-center justify-between gap-[10px] font-medium">
-        <span>{title}</span>
+        <span>{title}:</span>
         <span>{value}</span>
       </div>
       <hr className="w-full border-gray-200" />
@@ -397,35 +400,14 @@ export const Cost = ({ title, value }: CostProps) => {
   );
 };
 
-const Summary = () => {
-  return (
-    <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[28px] py-[20px] text-white">
-      <span className="title-lg">Order Costs Summary</span>
-      <div className="flex flex-col gap-[10px]">
-        <Cost title="Total Urgent Purchase Cost:" value="$126.66" />
-        <Cost title="Total Cost of Items from Store:" value="$126.66" />
-        <Cost
-          title="Total Shipping to Origin Warehouse cost:"
-          value="$126.66"
-        />
-        <Cost title="Total Processing fee: " value="$126.66" />
-        <Cost title="VAT:" value="$126.66" />
-        <Cost title="Payment Method Surcharge:" value="$126.66" />
-        <Cost title="Discount:" value={`- ${"$126.66"}`} />
-        <TotalCost />
-      </div>
-    </div>
-  );
-};
-
-type TotalCostProps = { total?: number };
+type TotalCostProps = { total: number };
 
 export const TotalCost = ({ total }: TotalCostProps) => {
   return (
     <div className="mt-[10px] flex flex-col items-start justify-between gap-[20px] md:flex-row md:items-end">
       <div className="flex flex-col gap-[5px]">
         <span className="label-lg">Total:</span>
-        <span className="title-lg">${total}</span>
+        <span className="title-lg">{formatCurrency(total)}</span>
       </div>
       <div className="flex flex-col items-start justify-center gap-[10px] md:items-center">
         <span className="body-md text-primary-100">
@@ -438,15 +420,84 @@ export const TotalCost = ({ total }: TotalCostProps) => {
 };
 
 const CostsSummary = () => {
+  const { requestPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const requestPackage = requestPackages?.[viewIndex];
+
+  if (!requestPackage) return;
+
+  const items = requestPackage.items;
+
+  const totalUrgentPurchaseCost = items.reduce(
+    (acc, item) => (acc += item.relatedCosts.urgentPurchaseFee),
+    0,
+  );
+  const totalCostOfItems = items.reduce(
+    (acc, item) => (acc += item.originalCost),
+    0,
+  );
+  const totalShippingCost = items.reduce(
+    (acc, item) => (acc += item.relatedCosts.shippingToOriginWarehouseCost),
+    0,
+  );
+  const totalProcessingFee = items.reduce(
+    (acc, item) => (acc += item.relatedCosts.processingFee),
+    0,
+  );
+
+  const total = [
+    totalUrgentPurchaseCost,
+    totalCostOfItems,
+    totalShippingCost,
+    totalProcessingFee,
+    requestPackage.valueAddedTax,
+    requestPackage.paymentMethodSurcharge,
+  ].reduce((total, cost) => (total += cost));
+
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
-      <Summary />
+      <Summary title="Order Costs Summary">
+        <CostDetailSection
+          label="Total Urgent Purchase Cost"
+          value={formatCurrency(totalUrgentPurchaseCost)}
+        />
+        <CostDetailSection
+          label="Total Cost of Items from Store"
+          value={formatCurrency(totalCostOfItems)}
+        />
+        <CostDetailSection
+          label="Total Shipping to Origin Warehouse cost"
+          value={formatCurrency(totalShippingCost)}
+        />
+        <CostDetailSection
+          label="Total Processing fee "
+          value={formatCurrency(totalProcessingFee)}
+        />
+        <CostDetailSection
+          label="VAT"
+          value={formatCurrency(requestPackage.valueAddedTax)}
+        />
+        <CostDetailSection
+          label="Payment Method Surcharge"
+          value={formatCurrency(requestPackage.paymentMethodSurcharge)}
+        />
+        <CostDetailSection
+          label="Discount"
+          value={`- ${formatCurrency(requestPackage.paymentMethodSurcharge)}`}
+        />
+        <TotalCost total={total - requestPackage.discount} />
+      </Summary>
       <div className="flex flex-col items-center justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">
           <div className="flex items-center gap-[10px]">
             <ArrowRight3 className="text-error-600" variant="Bold" />
             <span className="label-md w-fit font-medium text-secondary-900">
-              The total you are paying now includes only the Shipping fees
+              The total you are paying now includes only the shop-for-me cost
+              and excludes Shipment Cost which you are to pay upon
+              arrival/clearing of your package
             </span>
           </div>
           <div className="flex items-center gap-[10px]">

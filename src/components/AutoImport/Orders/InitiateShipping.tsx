@@ -15,11 +15,12 @@ import PackageTable from "~/components/PackageTable";
 import {
   BillingAddress,
   DetailSection,
+  Summary,
   type ShippingMethodProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
   AndLastly,
-  Cost,
+  CostDetailSection,
   ImportantNotice,
   PaymentMethods,
   StepIndex,
@@ -266,29 +267,70 @@ const Step3 = () => {
   );
 };
 
-const Summary = () => {
-  return (
-    <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[28px] py-[20px] text-white">
-      <span className="title-lg">Order Costs Summary</span>
-      <div className="flex flex-col gap-[10px]">
-        <Cost title="Pickup Cost:" value="$126.66" />
-        <Cost title="Shipping Cost:" value="$126.66" />
-        <Cost title="Other Charges:" value="$126.66" />
-        <Cost title="Storage Charge:" value="$126.66" />
-        <Cost title="Insurance: " value="$126.66" />
-        <Cost title="VAT:" value="$126.66" />
-        <Cost title="Payment Method Surcharge:" value="$126.66" />
-        <Cost title="Discount:" value={`- ${"$126.66"}`} />
-        <TotalCost />
-      </div>
-    </div>
-  );
-};
-
 const CostsSummary = () => {
+  const { orderPackages } = useAutoImportContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const items = orderPackage.items;
+
+  const totalPickupCost = items.reduce(
+    (acc, item) => (acc += item.pickupDetails?.pickupCost ?? 0),
+    0,
+  );
+
+  const total = [
+    totalPickupCost,
+    orderPackage.totalShippingCost,
+    orderPackage.otherCharges,
+    orderPackage.storageCharge,
+    orderPackage.insurance,
+    orderPackage.valueAddedTax,
+    orderPackage.paymentMethodSurcharge,
+  ].reduce((total, cost) => (total += cost));
+
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
-      <Summary />
+      <Summary>
+        <CostDetailSection
+          label="Pickup Cost"
+          value={formatCurrency(totalPickupCost)}
+        />
+        <CostDetailSection
+          label="Shipping Cost"
+          value={formatCurrency(orderPackage.totalShippingCost)}
+        />
+        <CostDetailSection
+          label="Other Charges"
+          value={formatCurrency(orderPackage.otherCharges)}
+        />
+        <CostDetailSection
+          label="Storage Charge"
+          value={formatCurrency(orderPackage.storageCharge)}
+        />
+        <CostDetailSection
+          label="Insurance"
+          value={formatCurrency(orderPackage.insurance)}
+        />
+        <CostDetailSection
+          label="VAT"
+          value={formatCurrency(orderPackage.valueAddedTax)}
+        />
+        <CostDetailSection
+          label="Payment Method Surcharge"
+          value={formatCurrency(orderPackage.paymentMethodSurcharge)}
+        />
+        <CostDetailSection
+          label="Discount"
+          value={`- ${formatCurrency(orderPackage.discount)}`}
+        />
+        <TotalCost total={total - orderPackage.discount} />
+      </Summary>
       <div className="flex flex-col items-center justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">
           <div className="flex items-center gap-[10px]">
@@ -398,14 +440,14 @@ export const autoImportPackageItemColumns = () => {
       id: "item",
       header: "Item",
       cell: ({ row }) => (
-        <>
+        <div className="flex items-center gap-[10px]">
           <div className="w-[62px] items-center overflow-hidden rounded-[10px]">
             <img src={row.original.image} alt="item image" />
           </div>
           <div className="max-w-[160px] text-secondary-900">
             {`${row.original.brand} ${row.original.model}`}
           </div>
-        </>
+        </div>
       ),
     }),
     columnHelper.accessor("color", {

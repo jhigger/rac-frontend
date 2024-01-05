@@ -26,7 +26,7 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import { InitiateShippingButton } from "../../Buttons/InitiateShippingButton";
 import {
   AndLastly,
-  Cost,
+  CostDetailSection,
   ShopPackageTableFooter,
   StepIndex,
   SubSectionTitle,
@@ -539,42 +539,103 @@ const InitiateShippingStep = () => {
       <ShippingMethod checked disabled expanded />
 
       <SectionHeader title="Shipment costs" />
-      <ShipmentCostsSummary />
+      <ShipmentCostsSummary
+        footer={
+          <div className="flex flex-col gap-[5px]">
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-error-600" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                The total you are paying now includes only the Shipping fees and
+                is to be paid upon clearing/arrival of your package
+              </span>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-primary-900" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                Prices and subtotals are displayed including taxes
+              </span>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <ArrowRight3 className="text-primary-900" variant="Bold" />
+              <span className="label-md w-fit font-medium text-secondary-900">
+                Discounts are calculated based on prices and subtotals taken
+                without considering taxes
+              </span>
+            </div>
+          </div>
+        }
+      />
     </div>
   );
 };
 
-export type ShipmentCostsSummaryProps = { payButton?: boolean };
+export type ShipmentCostsSummaryProps = {
+  footer: JSX.Element;
+  payButton?: boolean;
+};
 
 export const ShipmentCostsSummary = ({
+  footer,
   payButton = false,
 }: ShipmentCostsSummaryProps) => {
+  const { orderPackages } = useShopContext();
+  const { viewIndex } = useTabContext();
+
+  if (viewIndex === null) return;
+
+  const orderPackage = orderPackages?.[viewIndex];
+
+  if (!orderPackage) return;
+
+  const total = [
+    orderPackage.totalShippingCost,
+    orderPackage.clearingPortHandlingCost,
+    orderPackage.otherCharges,
+    orderPackage.storageCharge,
+    orderPackage.insurance,
+    orderPackage.valueAddedTax,
+    orderPackage.paymentMethodSurcharge,
+  ].reduce((total, cost) => (total += cost));
+
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
-      <Summary />
+      <Summary>
+        <CostDetailSection
+          label="Shipping Cost"
+          value={formatCurrency(orderPackage.totalShippingCost)}
+        />
+        <CostDetailSection
+          label="Clearing, Port Handling"
+          value={formatCurrency(orderPackage.clearingPortHandlingCost)}
+        />
+        <CostDetailSection
+          label="Other Charges"
+          value={formatCurrency(orderPackage.otherCharges)}
+        />
+        <CostDetailSection
+          label="Storage Charge"
+          value={formatCurrency(orderPackage.storageCharge)}
+        />
+        <CostDetailSection
+          label="Insurance"
+          value={formatCurrency(orderPackage.insurance)}
+        />
+        <CostDetailSection
+          label="VAT"
+          value={formatCurrency(orderPackage.valueAddedTax)}
+        />
+        <CostDetailSection
+          label="Payment Method Surcharge"
+          value={formatCurrency(orderPackage.paymentMethodSurcharge)}
+        />
+        <CostDetailSection
+          label="Discount"
+          value={`- ${formatCurrency(orderPackage.discount)}`}
+        />
+        <TotalCost total={total - orderPackage.discount} />
+      </Summary>
       <div className="flex flex-col justify-center gap-[20px] p-[20px]">
-        <div className="flex flex-col gap-[5px]">
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-error-600" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              The total you are paying now includes only the Shipping fees and
-              is to be paid upon clearing/arrival of your package
-            </span>
-          </div>
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-primary-900" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              Prices and subtotals are displayed including taxes
-            </span>
-          </div>
-          <div className="flex items-center gap-[10px]">
-            <ArrowRight3 className="text-primary-900" variant="Bold" />
-            <span className="label-md w-fit font-medium text-secondary-900">
-              Discounts are calculated based on prices and subtotals taken
-              without considering taxes
-            </span>
-          </div>
-        </div>
+        {footer}
         {payButton && (
           <div
             className="w-full self-center md:max-w-[500px]"
@@ -588,21 +649,19 @@ export const ShipmentCostsSummary = ({
   );
 };
 
-export const Summary = () => {
+type SummaryProps = {
+  children: ReactNode;
+  title?: string;
+};
+
+export const Summary = ({
+  children,
+  title = "Shipment Cost Summary",
+}: SummaryProps) => {
   return (
     <div className="flex flex-col gap-[20px] rounded-[20px] bg-primary-900 px-[28px] py-[20px] text-white">
-      <span className="title-lg">Shipping Costs Summary</span>
-      <div className="flex flex-col gap-[10px]">
-        <Cost title="Shipping Cost:" value="$126.66" />
-        <Cost title="Clearing, Port Handling:" value="$126.66" />
-        <Cost title="Other Charges:" value="$126.66" />
-        <Cost title="Storage Charge:" value="$126.66" />
-        <Cost title="Insurance:" value="$126.66" />
-        <Cost title="VAT:" value="$126.66" />
-        <Cost title="Payment Method Surcharge:" value="$126.66" />
-        <Cost title="Discount:" value={`- ${"$126.66"}`} />
-        <TotalCost />
-      </div>
+      <span className="title-lg">{title}</span>
+      <div className="flex flex-col gap-[10px]">{children}</div>
     </div>
   );
 };

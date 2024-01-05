@@ -100,6 +100,12 @@ export type AutoImportOrderPackageType = {
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
   totalClearingCost: number;
   clearingPaymentStatus: (typeof PAYMENT_STATUS)[number];
+  otherCharges: number;
+  storageCharge: number;
+  insurance: number;
+  valueAddedTax: number;
+  paymentMethodSurcharge: number;
+  discount: number;
 };
 
 export type AutoImportRequestPackageType = {

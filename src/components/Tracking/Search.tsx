@@ -529,7 +529,7 @@ const RecentUpdate = () => {
             className="my-2"
           />
           <div className="flex flex-col gap-[1px] self-end pr-[10px]">
-            <span className="title-md font-bold">Origin:</span>
+            <span className="title-md font-bold">Destination:</span>
             <span className="label-lg">USA</span>
           </div>
         </div>

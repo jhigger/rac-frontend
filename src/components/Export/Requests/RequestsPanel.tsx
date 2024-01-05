@@ -1,14 +1,14 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import Balancer from "react-wrap-balancer";
+import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
+import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import { RequestStatus } from "~/components/Import/Requests/RequestsPanel";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
-import { MoreButton } from "~/components/Buttons/MoreButton";
-import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
-import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import { type FilterCategoriesType } from "~/components/SearchBar";
+import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import {
   useExportContext,
   type ExportRequestPackageType,
@@ -118,8 +118,7 @@ const RequestsTable = () => {
         header: "Request Status",
         cell: ({ row }) => (
           <RequestStatus
-            id={row.id}
-            status={row.original.requestStatus}
+            requestPackage={row.original}
             onClick={() => handleViewIndex(Number(row.id))}
           />
         ),

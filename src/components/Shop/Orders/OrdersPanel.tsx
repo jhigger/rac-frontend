@@ -7,14 +7,16 @@ import {
   Ship,
   TickSquare,
 } from "iconsax-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { SHIPPING_STATUS, SHOP_FOR_ME_STATUS } from "~/constants";
+import { SHIPPING_STATUS, SHOP_FOR_ME_STATUS, type ORIGINS } from "~/constants";
+import { type ShipmentDetailsType } from "~/contexts/AutoImportContext";
+import { type OrderPackageType } from "~/contexts/NotificationContext";
 import {
   useShopContext,
   type ShopOrderPackageType,
@@ -169,8 +171,7 @@ const OrdersTable = () => {
         header: "Shipping Status",
         cell: ({ row }) => (
           <ShippingStatus
-            id={row.original.orderId}
-            status={row.original.shippingStatus}
+            orderPackage={row.original}
             onClick={() => handleViewIndex(Number(row.id))}
           />
         ),
@@ -380,17 +381,16 @@ export const ImageColumn = ({ images }: ImageColumnProps) => {
 };
 
 export type ShippingStatusProps = {
-  id: string;
-  status: ShopOrderPackageType["shippingStatus"];
+  orderPackage: OrderPackageType;
   onClick: () => void;
 };
 
-const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
+const ShippingStatus = ({ orderPackage, onClick }: ShippingStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);
 
-  const modalId = `shipping-status-modal-${id}`;
+  const modalId = `shipping-status-modal-${orderPackage.orderId}`;
   const dataTarget = `#${modalId}`;
 
   const buttonStyles = {
@@ -404,6 +404,7 @@ const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
     cancelled: "bg-error-600 text-white",
   };
 
+  const status = orderPackage.shippingStatus;
   const buttonStyle = buttonStyles[status];
 
   return (
@@ -418,30 +419,156 @@ const ShippingStatus = ({ id, status, onClick }: ShippingStatusProps) => {
         {capitalizeWords(status)}
       </button>
       {createPortal(
-        <ShippingStatusModal {...{ modalId, status }} />,
+        <ShippingStatusModal {...{ modalId, orderPackage }} />,
         document.body,
       )}
     </>
   );
 };
 
-export type ShippingStatusModalProps = {
-  modalId: string;
-  status: ShippingStatusProps["status"];
-};
-
 export const excluded = ["not started", "cancelled", "cleared", "delivered"];
-
 const EXCLUDED_CONST = [...excluded] as const;
 
 export type SomeStatusType = Exclude<
-  ShippingStatusProps["status"],
+  (typeof SHIPPING_STATUS)[number],
   (typeof EXCLUDED_CONST)[number]
 >;
 
-const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
+export type ShippingStatusModalProps = {
+  modalId: string;
+  orderPackage: OrderPackageType;
+};
+
+const ShippingStatusModal = ({
+  modalId,
+  orderPackage,
+}: ShippingStatusModalProps) => {
   const dataClose = `#${modalId}`;
 
+  return (
+    <ShippingStatusModalLayout
+      modalId={modalId}
+      dataClose={dataClose}
+      orderPackage={orderPackage}
+    >
+      <StatusButtonMap
+        shippingStatus={orderPackage.shippingStatus}
+        dataClose={dataClose}
+      />
+    </ShippingStatusModalLayout>
+  );
+};
+
+type ShippingStatusModalLayoutProps = {
+  modalId: string;
+  dataClose: string;
+  orderPackage: OrderPackageType;
+  children: ReactNode;
+};
+
+export const ShippingStatusModalLayout = ({
+  modalId,
+  dataClose,
+  orderPackage,
+  children,
+}: ShippingStatusModalLayoutProps) => {
+  const shippingStatus = orderPackage.shippingStatus;
+  const maxWidth =
+    shippingStatus === "cleared" ? "max-w-[1000px] mt-60" : "max-w-[700px]";
+  const marginTop =
+    shippingStatus === "cleared" ? "mt-[400px] md:mt-[300px]" : "";
+
+  return (
+    <div
+      id={modalId}
+      className={
+        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+      }
+    >
+      <div
+        data-close={dataClose}
+        className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
+      ></div>
+      <div
+        className={`z-50 flex h-max w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px] ${maxWidth} ${marginTop}`}
+      >
+        <RequestFormHeader title="Shipping Status" />
+
+        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
+          <OrderTrackingId
+            orderId={orderPackage.orderId}
+            trackingId={orderPackage.trackingId}
+          />
+        </div>
+
+        {!excluded.includes(shippingStatus) && (
+          <ShipmentPath
+            origin={orderPackage.originWarehouse}
+            destination={orderPackage.shipmentDetails.country}
+            shippingStatus={shippingStatus}
+          />
+        )}
+        {shippingStatus === "delivered" && (
+          <CongratulationImage description="Your package has been delivered." />
+        )}
+        {shippingStatus === "cleared" && (
+          <PackageDestination shipmentDetails={orderPackage.shipmentDetails} />
+        )}
+
+        <ShippingStatusContentMap shippingStatus={shippingStatus} />
+
+        {children}
+      </div>
+    </div>
+  );
+};
+
+type StatusButtonMapProps = {
+  shippingStatus: (typeof SHIPPING_STATUS)[number];
+  dataClose: string;
+};
+
+export const StatusButtonMap = ({
+  shippingStatus,
+  dataClose,
+}: StatusButtonMapProps) => {
+  return (
+    <div className="flex flex-row items-end justify-end">
+      <div className="w-max whitespace-nowrap">
+        {["cancelled", "not started", "cleared", "delivered"].includes(
+          shippingStatus,
+        ) && <CloseModalButton dataClose={dataClose} />}
+        {shippingStatus === "ready for shipping" && (
+          <div className="flex gap-[8px]">
+            <CancelButton dataClose={dataClose} />
+            <InitiateShippingButton dataClose={dataClose} />
+          </div>
+        )}
+        {(shippingStatus === "processing" ||
+          shippingStatus === "in transit") && (
+          <div className="flex gap-[8px]">
+            <CancelButton dataClose={dataClose} />
+            <TrackButton dataClose={dataClose} />
+          </div>
+        )}
+        {shippingStatus === "arrived destination" && (
+          <div className="flex gap-[8px]">
+            <CancelButton dataClose={dataClose} />
+            <ClearPackageButton dataClose={dataClose} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+type ShippingStatusContentMapProps = {
+  shippingStatus: (typeof SHIPPING_STATUS)[number];
+};
+
+const ShippingStatusContentMap = ({
+  shippingStatus,
+}: ShippingStatusContentMapProps) => {
   const content = {
     cancelled:
       "Kindly note that the shipping for your package has been cancelled.",
@@ -456,6 +583,24 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
       "Your package has arrived its destination, you are required to clear it now before you can pick it up.",
   };
 
+  return (
+    <p className="title-lg text-neutral-900">
+      {content[shippingStatus as SomeStatusType]}
+    </p>
+  );
+};
+
+type ShipmentPathProps = {
+  origin: (typeof ORIGINS)[number];
+  destination: ShipmentDetailsType["country"];
+  shippingStatus: (typeof SHIPPING_STATUS)[number];
+};
+
+const ShipmentPath = ({
+  origin,
+  destination,
+  shippingStatus,
+}: ShipmentPathProps) => {
   const statusToImageMap = {
     "ready for shipping": "/images/shipping status modal/roadmap1_image.svg",
     processing: "/images/shipping status modal/roadmap1_image.svg",
@@ -463,120 +608,73 @@ const ShippingStatusModal = ({ modalId, status }: ShippingStatusModalProps) => {
     "arrived destination": "/images/shipping status modal/roadmap3_image.svg",
   };
 
-  const imagePath = statusToImageMap[status as SomeStatusType];
-
-  const maxWidth =
-    status === "cleared" ? "max-w-[1000px] mt-60" : "max-w-[700px]";
-
-  const marginTop = status === "cleared" ? "mt-[400px] md:mt-[300px]" : "";
+  const imagePath = statusToImageMap[shippingStatus as SomeStatusType];
 
   return (
-    <div
-      id={modalId}
-      className={
-        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center  justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
-      }
-    >
-      <div
-        data-close={dataClose}
-        className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
-      ></div>
-      <div
-        className={`z-50 flex h-max w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px] ${maxWidth} ${marginTop}`}
-      >
-        <RequestFormHeader title="Shipping Status" />
-
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" />
+    <div className="flex rounded-[20px] bg-primary-900 px-[20px] py-[10px] text-white">
+      <hr className="h-[65px] border-r border-solid border-white" />
+      <div className="flex flex-col">
+        <div className="flex flex-col gap-[1px] pl-[10px]">
+          <span className="title-md font-bold">Origin:</span>
+          <span className="label-lg">{origin}</span>
         </div>
-
-        {!excluded.includes(status) && (
-          <div className="flex rounded-[20px] bg-primary-900 px-[20px] py-[10px] text-white">
-            <hr className="h-[65px] border-r border-solid border-white" />
-            <div className="flex flex-col">
-              <div className="flex flex-col gap-[1px] pl-[10px]">
-                <span className="title-md font-bold">Origin:</span>
-                <span className="label-lg">Nigeria</span>
-              </div>
-              {imagePath && (
-                <img
-                  src={imagePath}
-                  alt={`roadmap ${status} image`}
-                  className="my-4 md:-my-2"
-                />
-              )}
-              <div className="flex flex-col gap-[1px] self-end pr-[10px]">
-                <span className="title-md font-bold">Origin:</span>
-                <span className="label-lg">USA</span>
-              </div>
-            </div>
-            <hr className="h-[65px] self-end border-r border-solid border-secondary-600" />
-          </div>
+        {imagePath && (
+          <img
+            src={imagePath}
+            alt={`roadmap ${shippingStatus} image`}
+            className="my-4 md:-my-2"
+          />
         )}
-
-        {status === "delivered" && (
-          <CongratulationImage description="Your package has been delivered." />
-        )}
-        {status === "cleared" && (
-          <>
-            <CongratulationImage description="you can now pick up your package from our office in Nigeria (your selected “Destination”)" />
-
-            <div className="rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
-              <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
-                <DetailSection
-                  label="Pick up Address"
-                  value="No, 1osolo way, ikeja road, behind scaint merry"
-                />
-                <DetailSection
-                  label="Country"
-                  value="Nigeria"
-                  colSpanDesktop={2}
-                />
-                <DetailSection label="State" value="Lagos" colSpanDesktop={2} />
-                <DetailSection label="City" value="Ikeja" colSpanDesktop={2} />
-                <DetailSection
-                  label="Zip/postal Code"
-                  value="98765"
-                  colSpanDesktop={2}
-                />
-              </div>
-            </div>
-            <SectionHeader title="What next?" />
-            <PickUpInstructions />
-          </>
-        )}
-
-        <p className="title-lg text-neutral-900">
-          {content[status as SomeStatusType]}
-        </p>
-
-        <div className="flex flex-row items-end justify-end">
-          <div className="w-max whitespace-nowrap">
-            {["cancelled", "not started", "cleared", "delivered"].includes(
-              status,
-            ) && <CloseModalButton dataClose={dataClose} />}
-            {status === "ready for shipping" && (
-              <div className="flex gap-[8px]">
-                <CancelButton dataClose={dataClose} />
-                <InitiateShippingButton dataClose={dataClose} />
-              </div>
-            )}
-            {(status === "processing" || status === "in transit") && (
-              <div className="flex gap-[8px]">
-                <CancelButton dataClose={dataClose} />
-                <TrackButton dataClose={dataClose} />
-              </div>
-            )}
-            {status === "arrived destination" && (
-              <div className="flex gap-[8px]">
-                <CancelButton dataClose={dataClose} />
-                <ClearPackageButton dataClose={dataClose} />
-              </div>
-            )}
-          </div>
+        <div className="flex flex-col gap-[1px] self-end pr-[10px]">
+          <span className="title-md font-bold">Destination:</span>
+          <span className="label-lg">{destination}</span>
         </div>
       </div>
+      <hr className="h-[65px] self-end border-r border-solid border-secondary-600" />
     </div>
+  );
+};
+
+type PackageDestinationProps = { shipmentDetails: ShipmentDetailsType };
+
+const PackageDestination = ({
+  shipmentDetails,
+}: PackageDestinationProps) => {
+  return (
+    <>
+      <CongratulationImage description="you can now pick up your package from our office in Nigeria (your selected &qout;Destination&qout;)" />
+
+      <div className="rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
+        <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
+          <DetailSection
+            label="Pick up Address"
+            value={shipmentDetails.address}
+          />
+          <DetailSection
+            label="Country"
+            value={shipmentDetails.country}
+            colSpanDesktop={2}
+          />
+          <DetailSection
+            label="State"
+            value={shipmentDetails.state}
+            colSpanDesktop={2}
+          />
+          <DetailSection
+            label="City"
+            value={shipmentDetails.city}
+            colSpanDesktop={2}
+          />
+          <DetailSection
+            label="Zip/postal Code"
+            value={shipmentDetails.zipPostalCode}
+            colSpanDesktop={2}
+          />
+        </div>
+      </div>
+      <SectionHeader title="What next?" />
+      <PickUpInstructions />
+    </>
   );
 };
 

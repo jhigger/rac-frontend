@@ -7,9 +7,18 @@ import {
 } from "react";
 import { type NOTIFICATION_TYPES } from "~/constants";
 import { notificationItems } from "~/fake data";
-import { type AutoImportOrderPackageType } from "./AutoImportContext";
-import { type ImportOrderPackageType } from "./ImportContext";
-import { type ShopOrderPackageType } from "./ShopContext";
+import {
+  type AutoImportOrderPackageType,
+  type AutoImportRequestPackageType,
+} from "./AutoImportContext";
+import {
+  type ImportOrderPackageType,
+  type ImportRequestPackageType,
+} from "./ImportContext";
+import {
+  type ShopOrderPackageType,
+  type ShopRequestPackageType,
+} from "./ShopContext";
 
 export type NotificationContextType = {
   notifications: NotificationItemType[];
@@ -28,6 +37,11 @@ export type OrderPackageType =
   | ShopOrderPackageType
   | ImportOrderPackageType
   | AutoImportOrderPackageType;
+
+export type RequestPackageType =
+  | ShopRequestPackageType
+  | ImportRequestPackageType
+  | AutoImportRequestPackageType;
 
 export type NotificationItemType = {
   localDate: string;

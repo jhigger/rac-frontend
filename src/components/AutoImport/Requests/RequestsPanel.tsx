@@ -2,19 +2,19 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
+import { capitalizeWords } from "~/Utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
+import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
-import LabelId from "~/components/LabelId";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
-import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
-import { RequestFormHeader } from "~/components/Shop/Requests/RequestOrder";
 import {
+  RequestStatusModalLayout,
   type RequestStatusModalProps,
   type RequestStatusProps,
 } from "~/components/Shop/Requests/RequestsPanel";
@@ -26,7 +26,6 @@ import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
-import { capitalizeWords } from "~/Utils";
 
 const AutoImportRequestsPanel = () => {
   const { requestPackages } = useAutoImportContext();
@@ -129,8 +128,7 @@ const RequestsTable = () => {
         header: "Request Status",
         cell: ({ row }) => (
           <RequestStatus
-            id={row.id}
-            status={row.original.requestStatus}
+            requestPackage={row.original}
             onClick={() => handleViewIndex(Number(row.id))}
           />
         ),
@@ -174,12 +172,12 @@ const RequestsTable = () => {
   );
 };
 
-const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
+const RequestStatus = ({ requestPackage, onClick }: RequestStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);
 
-  const modalId = `request-status-modal-${id}`;
+  const modalId = `request-status-modal-${requestPackage.requestId}`;
   const dataTarget = `#${modalId}`;
 
   const buttonStyles = {
@@ -187,6 +185,7 @@ const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
     Responded: "bg-brand-orange text-white",
   };
 
+  const status = requestPackage.requestStatus;
   const buttonStyle = buttonStyles[status];
 
   return (
@@ -201,54 +200,40 @@ const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
         {capitalizeWords(status)}
       </button>
       {createPortal(
-        <RequestStatusModal {...{ modalId, status }} />,
+        <RequestStatusModal {...{ modalId, requestPackage }} />,
         document.body,
       )}
     </>
   );
 };
 
-const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
+const RequestStatusModal = ({
+  modalId,
+  requestPackage,
+}: RequestStatusModalProps) => {
   const dataClose = `#${modalId}`;
-
-  const content = {
-    "Not Responded":
-      "Your request has not be responded to yet. Kindly check back later.",
-    Responded:
-      "Your request has been responded to. Kindly proceed to checkout.",
-  };
+  const requestStatus = requestPackage.requestStatus;
 
   return (
-    <div
-      id={modalId}
-      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+    <RequestStatusModalLayout
+      modalId={modalId}
+      dataClose={dataClose}
+      requestPackage={requestPackage}
     >
-      <div
-        data-close={dataClose}
-        className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
-      ></div>
-      <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
-        <RequestFormHeader title="Request Status" />
-
-        <LabelId label="Request ID" id="R78667" />
-
-        <p className="title-lg text-neutral-900">{content[status]}</p>
-
-        <div className="flex flex-row items-end justify-end">
-          <div className="w-max whitespace-nowrap">
-            {status === "Not Responded" && (
-              <CloseModalButton dataClose={dataClose} />
-            )}
-            {status === "Responded" && (
-              <div className="flex gap-[8px]">
-                <CancelButton dataClose={dataClose} />
-                <InitiateShippingButton dataClose={dataClose} />
-              </div>
-            )}
-          </div>
+      <div className="flex flex-row items-end justify-end">
+        <div className="w-max whitespace-nowrap">
+          {requestStatus === "Not Responded" && (
+            <CloseModalButton dataClose={dataClose} />
+          )}
+          {requestStatus === "Responded" && (
+            <div className="flex gap-[8px]">
+              <CancelButton dataClose={dataClose} />
+              <InitiateShippingButton dataClose={dataClose} />
+            </div>
+          )}
         </div>
       </div>
-    </div>
+    </RequestStatusModalLayout>
   );
 };
 

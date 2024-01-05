@@ -1,12 +1,14 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { Security } from "iconsax-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import LabelId from "~/components/LabelId";
 import MainTable from "~/components/MainTable";
+import { type REQUEST_STATUS } from "~/constants";
+import { type RequestPackageType } from "~/contexts/NotificationContext";
 import {
   useShopContext,
   type ShopRequestPackageType,
@@ -133,8 +135,7 @@ const RequestsTable = () => {
         header: "Request Status",
         cell: ({ row }) => (
           <RequestStatus
-            id={row.id}
-            status={row.original.requestStatus}
+            requestPackage={row.original}
             onClick={() => handleViewIndex(Number(row.id))}
           />
         ),
@@ -179,17 +180,16 @@ const RequestsTable = () => {
 };
 
 export type RequestStatusProps = {
-  id: string;
-  status: ShopRequestPackageType["requestStatus"];
+  requestPackage: RequestPackageType;
   onClick: () => void;
 };
 
-const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
+const RequestStatus = ({ requestPackage, onClick }: RequestStatusProps) => {
   useEffect(() => {
     tailmater();
   }, []);
 
-  const modalId = `request-status-modal-${id}`;
+  const modalId = `request-status-modal-${requestPackage.requestId}`;
   const dataTarget = `#${modalId}`;
 
   const buttonStyles = {
@@ -197,6 +197,7 @@ const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
     Responded: "bg-brand-orange text-white",
   };
 
+  const status = requestPackage.requestStatus;
   const buttonStyle = buttonStyles[status];
 
   return (
@@ -211,7 +212,7 @@ const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
         {capitalizeWords(status)}
       </button>
       {createPortal(
-        <RequestStatusModal {...{ modalId, status }} />,
+        <RequestStatusModal {...{ modalId, requestPackage }} />,
         document.body,
       )}
     </>
@@ -220,18 +221,70 @@ const RequestStatus = ({ id, status, onClick }: RequestStatusProps) => {
 
 export type RequestStatusModalProps = {
   modalId: string;
-  status: RequestStatusProps["status"];
+  requestPackage: RequestPackageType;
 };
 
-const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
+const RequestStatusModal = ({
+  modalId,
+  requestPackage,
+}: RequestStatusModalProps) => {
   const dataClose = `#${modalId}`;
+  const requestStatus = requestPackage.requestStatus;
 
+  return (
+    <RequestStatusModalLayout
+      modalId={modalId}
+      dataClose={dataClose}
+      requestPackage={requestPackage}
+    >
+      <div className="flex flex-row items-end justify-end">
+        <div className="w-max whitespace-nowrap">
+          {requestStatus === "Not Responded" && (
+            <CloseModalButton dataClose={dataClose} />
+          )}
+          {requestStatus === "Responded" && (
+            <div className="flex gap-[8px]">
+              <CancelButton dataClose={dataClose} />
+              <ProceedToCheckoutButton dataClose={dataClose} />
+            </div>
+          )}
+        </div>
+      </div>
+    </RequestStatusModalLayout>
+  );
+};
+
+type RequestStatusContentMapProps = {
+  requestStatus: (typeof REQUEST_STATUS)[number];
+};
+
+const RequestStatusContentMap = ({
+  requestStatus,
+}: RequestStatusContentMapProps) => {
   const content = {
     "Not Responded":
       "Your request has not be responded to yet. Kindly check back later.",
     Responded:
       "Your request has been responded to. Kindly proceed to checkout.",
   };
+
+  return <p className="title-lg text-neutral-900">{content[requestStatus]}</p>;
+};
+
+type RequestStatusModalLayoutProps = {
+  modalId: string;
+  dataClose: string;
+  requestPackage: RequestPackageType;
+  children: ReactNode;
+};
+
+export const RequestStatusModalLayout = ({
+  modalId,
+  dataClose,
+  requestPackage,
+  children,
+}: RequestStatusModalLayoutProps) => {
+  const requestStatus = requestPackage.requestStatus;
 
   return (
     <div
@@ -245,23 +298,11 @@ const RequestStatusModal = ({ modalId, status }: RequestStatusModalProps) => {
       <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Request Status" />
 
-        <LabelId label="Request ID" id="R78667" />
+        <LabelId label="Request ID" id={requestPackage.requestId} />
 
-        <p className="title-lg text-neutral-900">{content[status]}</p>
+        <RequestStatusContentMap requestStatus={requestStatus} />
 
-        <div className="flex flex-row items-end justify-end">
-          <div className="w-max whitespace-nowrap">
-            {status === "Not Responded" && (
-              <CloseModalButton dataClose={dataClose} />
-            )}
-            {status === "Responded" && (
-              <div className="flex gap-[8px]">
-                <CancelButton dataClose={dataClose} />
-                <ProceedToCheckoutButton dataClose={dataClose} />
-              </div>
-            )}
-          </div>
-        </div>
+        {children}
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ import SelectStateInput from "~/components/Forms/Inputs/SelectStateInput";
 import TextInput from "~/components/Forms/Inputs/TextInput";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import PackageTable from "~/components/PackageTable";
+import ShopPackageTable from "~/components/ShopPackageTable";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
@@ -317,7 +317,7 @@ const PlaceOrder = () => {
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details" />
-      <PackageTable
+      <ShopPackageTable
         columns={defaultColumns}
         data={requestPackage.items}
         tableFooter={<ShopPackageTableFooter />}
@@ -630,30 +630,36 @@ export const ShopPackageTableFooter = () => {
   return (
     <>
       <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md text-gray-700">Total number of items:</span>
+        <span className="body-md h-[40px] text-gray-700">
+          Total number of items:
+        </span>
         <span className="title-lg text-neutral-900">6</span>
       </div>
       <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md text-gray-700">Total Gross weight:</span>
+        <span className="body-md h-[40px] text-gray-700">
+          Total Gross weight:
+        </span>
         <span className="title-lg text-neutral-900">30lbs</span>
       </div>
       <div className="col-span-2 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md text-gray-700">
+        <span className="body-md h-[40px] text-gray-700">
           Total Items Cost from Store:
         </span>
         <span className="title-lg text-neutral-900">$345.00</span>
       </div>
 
       <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md text-gray-700">Processing fee:</span>
+        <span className="body-md h-[40px] text-gray-700">Processing fee:</span>
         <span className="title-lg text-neutral-900">$345.00</span>
       </div>
       <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md text-gray-700">Urgent Purchase fee:</span>
+        <span className="body-md h-[40px] text-gray-700">
+          Urgent Purchase fee:
+        </span>
         <span className="title-lg text-neutral-900">$0.00</span>
       </div>
       <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md text-gray-700">
+        <span className="body-md h-[40px] text-gray-700">
           Total Shipping to Origin Warehouse Cost:
         </span>
         <span className="title-lg text-neutral-900">$0.00</span>

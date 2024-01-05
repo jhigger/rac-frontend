@@ -374,14 +374,14 @@ export const importPackageItemColumns = () => {
       id: "item",
       header: "Item",
       cell: ({ row }) => (
-        <>
+        <div className="flex items-center gap-[10px]">
           <div className="w-[62px] items-center overflow-hidden rounded-[10px]">
             <img src={row.original.image} alt="item image" />
           </div>
           <div className="max-w-[160px] text-secondary-900">
             {limitChars(row.original.name, 80)}
           </div>
-        </>
+        </div>
       ),
     }),
     columnHelper.accessor("originalCost", {
@@ -404,18 +404,22 @@ export const importPackageItemColumns = () => {
 export const ImportPackageTableFooter = () => {
   return (
     <>
-      <div className="col-span-1 flex flex-col gap-[5px]">
-        <span className="body-md h-[40px] w-[100px] text-gray-700">
+      <div className="col-span-1 col-start-2 flex w-[100px] flex-col gap-[5px]">
+        <span className="body-md h-[40px] text-gray-700">
           Total number of items:
         </span>
         <span className="title-lg text-neutral-900">6</span>
       </div>
-      <div className="col-span-1 flex h-[40px] w-[100px] flex-col gap-[5px]">
-        <span className="body-md text-gray-700">Total Gross weight:</span>
+      <div className="col-span-1 flex w-[100px] flex-col gap-[5px]">
+        <span className="body-md h-[40px] text-gray-700">
+          Total Gross weight:
+        </span>
         <span className="title-lg text-neutral-900">30lbs</span>
       </div>
-      <div className="col-span-1 flex h-[40px] w-[100px] flex-col gap-[5px]">
-        <span className="body-md text-gray-700">Total Declared Value:</span>
+      <div className="col-span-1 flex w-[100px] flex-col gap-[5px]">
+        <span className="body-md h-[40px] text-gray-700">
+          Total Declared Value:
+        </span>
         <span className="title-lg text-neutral-900">$345.00</span>
       </div>
     </>

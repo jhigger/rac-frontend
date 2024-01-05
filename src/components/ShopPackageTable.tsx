@@ -12,7 +12,7 @@ interface ReactTableProps<T extends object> {
   tableFooter: ReactNode;
 }
 
-const PackageTable = <T extends object>({
+const ShopPackageTable = <T extends object>({
   data,
   columns,
   tableFooter,
@@ -26,7 +26,7 @@ const PackageTable = <T extends object>({
   return (
     <div className="flex flex-col gap-[20px]">
       <div className="flex w-full flex-col gap-[10px] overflow-hidden overflow-x-auto rounded-[20px] border border-gray-200 bg-white">
-        <div className="h-max w-max sm:w-full">
+        <div className="h-max w-max [@media(min-width:1398px)]:w-full">
           <table className="w-full">
             <thead className="title-sm bg-neutral-50 px-[30px] py-[20px] font-medium text-secondary-900">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -60,8 +60,10 @@ const PackageTable = <T extends object>({
               ))}
             </tbody>
           </table>
-          <div className="grid grid-cols-4 place-items-center gap-[20px] bg-neutral-50 px-[30px] py-[10px] [&>tr>td]:border-0 [&>tr>td]:p-0">
-            {tableFooter}
+          <div className="w-full bg-neutral-50">
+            <div className="grid max-w-[877px] grid-cols-4 items-end gap-[20px]  px-[30px] py-[10px] [&>tr>td]:border-0 [&>tr>td]:p-0">
+              {tableFooter}
+            </div>
           </div>
         </div>
       </div>
@@ -69,4 +71,4 @@ const PackageTable = <T extends object>({
   );
 };
 
-export default PackageTable;
+export default ShopPackageTable;

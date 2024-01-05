@@ -8,7 +8,7 @@ import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import PackageTable from "~/components/PackageTable";
+import ShopPackageTable from "~/components/ShopPackageTable";
 import {
   SectionContentLayout,
   SectionHeader,
@@ -265,7 +265,7 @@ export const ClearPackageStep = () => {
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
-      <PackageTable
+      <ShopPackageTable
         columns={defaultColumns}
         data={orderPackage.items}
         tableFooter={<ShopPackageTableFooter />}

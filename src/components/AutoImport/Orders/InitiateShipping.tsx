@@ -471,14 +471,14 @@ export const autoImportPackageItemColumns = () => {
 export const AutoImportPackageTableFooter = () => {
   return (
     <>
-      <div className="col-span-1 col-start-3 flex w-[100px] flex-col items-end gap-[5px]">
-        <span className="body-md text-end text-gray-700">
+      <div className="col-span-1 col-start-3 flex w-[100px] flex-col gap-[5px]">
+        <span className="body-md h-[40px] text-gray-700">
           Total Declared value:
         </span>
         <span className="title-lg text-neutral-900">$345.00</span>
       </div>
-      <div className="col-span-1 flex w-[100px] flex-col items-end gap-[5px]">
-        <span className="body-md text-end text-gray-700">
+      <div className="col-span-1 flex w-[100px] flex-col gap-[5px]">
+        <span className="body-md h-[40px] text-gray-700">
           Total pick up cost:
         </span>
         <span className="title-lg text-neutral-900">$340.00</span>

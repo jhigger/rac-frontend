@@ -11,6 +11,7 @@ import {
   Shop,
   Wallet3,
 } from "iconsax-react";
+import Error from "next/error";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -103,6 +104,7 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
   const previousRouteRef = useRef<string | null>(null);
   const [activeNav, setActiveNav] =
     useState<NavItemType["title"]>("Shop For Me");
+  const [notFound, setNotFound] = useState(false);
 
   const handleActiveNavChange = (navTitle: NavTitleType) => {
     setActiveNav(navTitle);
@@ -113,6 +115,7 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    setNotFound(false);
     const matchedNavItem = navItems.find(
       (navItem) => router.asPath === navItem.href,
     );
@@ -120,6 +123,8 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
     if (matchedNavItem) {
       handleActiveNavChange(matchedNavItem.title);
       redirectTo(router.asPath);
+    } else {
+      return setNotFound(true);
     }
 
     router.events?.on("routeChangeStart", () => {
@@ -132,6 +137,10 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
     previousRoute: previousRouteRef.current,
     handleActiveNavChange,
   };
+
+  if (notFound) {
+    return <Error statusCode={404} title="This page could not be found" />;
+  }
 
   return <NavContext.Provider value={value}>{children}</NavContext.Provider>;
 };

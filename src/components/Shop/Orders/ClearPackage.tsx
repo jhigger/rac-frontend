@@ -351,6 +351,7 @@ const OfficePickupAddress = () => {
         </div>
 
         {open && (
+          // todo: replace values with office address
           <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
             <DetailSection
               label="Pickup Address"

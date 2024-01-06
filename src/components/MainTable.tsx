@@ -15,7 +15,7 @@ import {
   ArrowSquareRight,
   ArrowSwapVertical,
 } from "iconsax-react";
-import { Fragment, useMemo, useState, type ChangeEventHandler } from "react";
+import { useMemo, useState, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
 import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "./Forms/AccordionButton";
@@ -289,7 +289,7 @@ const TableRow = <T extends object>({
   const { open, toggle } = useAccordion(false);
 
   return (
-    <Fragment>
+    <>
       <tr className="relative bg-gray-10">
         {row
           .getVisibleCells()
@@ -305,19 +305,13 @@ const TableRow = <T extends object>({
         </td>
 
         {open && (
-          <td className="absolute left-0 top-[76px] z-10 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
+          <td className="absolute left-0 top-[76px] z-20 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
             <SubTable data={[row.original]} columns={columns} />
           </td>
         )}
       </tr>
-      {open && (
-        <tr>
-          <td className="border-0 p-[8px]">
-            <div className="mb-[96px]"></div>
-          </td>
-        </tr>
-      )}
-    </Fragment>
+      {open && <tr className="h-[114px]"></tr>}
+    </>
   );
 };
 

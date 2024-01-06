@@ -293,7 +293,12 @@ const InitiateShippingStep = () => {
       <div className="pl-[14px]">
         <SubSectionTitle title="Select Shipping Method" />
       </div>
-      <ShippingMethod checked disabled expanded />
+      <ShippingMethod
+        packageCosts={requestPackage.packageCosts}
+        checked
+        disabled
+        expanded
+      />
 
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">

@@ -290,7 +290,12 @@ export const ClearPackageStep = () => {
       <div className="pl-[14px]">
         <SubSectionTitle title="Shipping Method Used" />
       </div>
-      <ShippingMethod checked disabled expanded />
+      <ShippingMethod
+        packageCosts={orderPackage.packageCosts}
+        checked
+        disabled
+        expanded
+      />
 
       <SectionHeader title="Payment Methods" />
       <PaymentMethods />

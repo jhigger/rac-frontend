@@ -19,7 +19,11 @@ import ShopPackageTable from "~/components/ShopPackageTable";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { DESTINATIONS } from "~/constants";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
-import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
+import {
+  useShopContext,
+  type PackageCostsType,
+  type ShopItemType,
+} from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -554,7 +558,12 @@ const InitiateShippingStep = () => {
       <div className="pl-[14px]">
         <SubSectionTitle title="Shipping Method Used" />
       </div>
-      <ShippingMethod checked disabled expanded />
+      <ShippingMethod
+        packageCosts={orderPackage.packageCosts}
+        checked
+        disabled
+        expanded
+      />
 
       <SectionHeader title="Shipment costs" />
       <ShipmentCostsSummary
@@ -693,19 +702,17 @@ export const Summary = ({
 };
 
 export type ShippingMethodProps = {
+  packageCosts: PackageCostsType;
   expanded?: boolean;
   checked?: boolean;
   disabled?: boolean;
-  onChange?: () => void;
 };
 
 export const ShippingMethod = ({
+  packageCosts,
   expanded = false,
-  checked,
-  disabled,
-  onChange = () => {
-    return;
-  },
+  checked = false,
+  disabled = false,
 }: ShippingMethodProps) => {
   const { open, toggle } = useAccordion(expanded);
 
@@ -713,20 +720,17 @@ export const ShippingMethod = ({
     <SectionContentLayout>
       <div className="flex w-full flex-col gap-[30px] py-[10px]">
         <div className="col-span-full flex items-center gap-[30px]">
-          <form>
-            <fieldset id="shippingMethods" className="flex items-center">
-              <input
-                disabled={disabled}
-                className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-                name="radio"
-                type="radio"
-                value="male"
-                aria-label="Custom Billing Address"
-                checked={checked}
-                onChange={onChange}
-              />
-            </fieldset>
-          </form>
+          <fieldset id="shippingMethods" className="flex items-center">
+            <input
+              disabled={disabled}
+              className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
+              name="Shipping Method"
+              type="radio"
+              value="Basic"
+              aria-label="Shipping Method"
+              checked={checked}
+            />
+          </fieldset>
           <h4 className="title-md md:title-lg text-black">Basic</h4>
           <div className="flex flex-grow justify-end">
             <AccordionButton {...{ open, toggle }} />
@@ -737,9 +741,13 @@ export const ShippingMethod = ({
           <div className="flex flex-col gap-[10px] pl-[10px]">
             <div className="label-lg grid w-full grid-cols-2 gap-[20px] font-medium text-neutral-900 md:w-max">
               <span className="col-span-1">Shipping Cost:</span>
-              <span className="col-span-1 place-self-end">$126.66</span>
+              <span className="col-span-1 place-self-end">
+                {formatCurrency(packageCosts.shippingCost)}
+              </span>
               <span className="col-span-1">Clearing, Port Handling:</span>
-              <span className="col-span-1 place-self-end">$126.66</span>
+              <span className="col-span-1 place-self-end">
+                {formatCurrency(packageCosts.clearingPortHandlingCost)}
+              </span>
             </div>
             <div className="body-md flex flex-col gap-[5px] text-gray-700">
               <p>

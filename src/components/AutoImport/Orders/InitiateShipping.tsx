@@ -256,7 +256,12 @@ const Step3 = () => {
       <div className="pl-[14px]">
         <SubSectionTitle title="Select The Shipping Method That Suites Your Need" />
       </div>
-      <ShippingMethod checked disabled expanded />
+      <ShippingMethod
+        packageCosts={requestPackage.packageCosts}
+        checked
+        disabled
+        expanded
+      />
 
       <SectionHeader title="Payment Methods" />
       <div className="pl-[14px]">
@@ -385,12 +390,10 @@ const CostsSummary = () => {
 };
 
 const ShippingMethod = ({
+  packageCosts,
   expanded = false,
   checked,
   disabled,
-  onChange = () => {
-    return;
-  },
 }: ShippingMethodProps) => {
   const { open, toggle } = useAccordion(expanded);
 
@@ -403,12 +406,11 @@ const ShippingMethod = ({
               <input
                 disabled={disabled}
                 className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-                name="radio"
+                name="Shipping Method"
                 type="radio"
-                value="male"
-                aria-label="Custom Billing Address"
+                value="Custom"
+                aria-label="Shipping Method"
                 checked={checked}
-                onChange={onChange}
               />
             </fieldset>
           </form>
@@ -422,7 +424,9 @@ const ShippingMethod = ({
           <div className="flex flex-col gap-[10px] pl-[10px]">
             <div className="label-lg grid w-full grid-cols-2 gap-[20px] font-medium text-neutral-900 md:w-max">
               <span className="col-span-1">Shipping Cost:</span>
-              <span className="col-span-1 place-self-end">$126.66</span>
+              <span className="col-span-1 place-self-end">
+                {formatCurrency(packageCosts.shippingCost)}
+              </span>
             </div>
             <div className="body-md flex flex-col gap-[5px] text-gray-700">
               <p>

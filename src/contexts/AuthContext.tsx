@@ -5,7 +5,6 @@ import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -70,12 +69,16 @@ export type RegisterType = {
 
 export type TwoFactorAuthenticationType = "email" | "TOTP" | null;
 
+export const restrictedPaths = [
+  "/login",
+  "/authentication",
+  "/register",
+  "/password-reset",
+];
+
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  const restrictedPaths = useMemo(
-    () => ["/login", "/authentication", "/register", "/password-reset"],
-    [],
-  );
+
   const [cookies, setCookie, removeCookie] = useCookies(["jwt"]);
   const [loginInputs, setLoginInputs] = useState<LoginInputs | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);

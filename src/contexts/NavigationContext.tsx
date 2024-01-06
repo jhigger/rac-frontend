@@ -22,6 +22,7 @@ import {
   type ReactNode,
 } from "react";
 import { type NAV_TITLES } from "~/constants";
+import { restrictedPaths } from "./AuthContext";
 
 export type NavContextType = {
   activeNav: NavTitleType;
@@ -123,8 +124,8 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
     if (matchedNavItem) {
       handleActiveNavChange(matchedNavItem.title);
       redirectTo(router.asPath);
-    } else {
-      return setNotFound(true);
+    } else if (!restrictedPaths.includes(router.asPath)) {
+      setNotFound(true);
     }
 
     router.events?.on("routeChangeStart", () => {

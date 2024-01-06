@@ -305,7 +305,7 @@ const TableRow = <T extends object>({
         </td>
 
         {open && (
-          <td className="absolute left-0 top-[76px] z-20 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
+          <td className="absolute left-0 top-[76px] z-10 w-full overflow-auto border-0 border-b border-gray-500 bg-gray-10 p-0">
             <SubTable data={[row.original]} columns={columns} />
           </td>
         )}

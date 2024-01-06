@@ -56,6 +56,17 @@ export type ShopItemType = {
   };
 };
 
+export type PackageCostsType = {
+  shippingCost: number;
+  clearingPortHandlingCost: number;
+  otherCharges: number;
+  storageCharge: number;
+  insurance: number;
+  valueAddedTax: number;
+  paymentMethodSurcharge: number;
+  discount: number;
+};
+
 export type ShopDraftPackageType = ShopRequestPackageType;
 
 export type ShopOrderPackageType = {
@@ -68,17 +79,11 @@ export type ShopOrderPackageType = {
   items: ShopItemType[];
   shipmentDetails: ShipmentDetailsType;
   billingDetails: BillingDetailsType;
-  totalShopForMeCost: number;
+  totalShopForMeCost: number; // aggregated data for table sorting
   shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
-  totalShippingCost: number;
+  totalShippingCost: number; // aggregated data for table sorting
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
-  clearingPortHandlingCost: number;
-  otherCharges: number;
-  storageCharge: number;
-  insurance: number;
-  valueAddedTax: number;
-  paymentMethodSurcharge: number;
-  discount: number;
+  packageCosts: PackageCostsType;
 };
 
 export type ShopRequestPackageType = {
@@ -87,10 +92,10 @@ export type ShopRequestPackageType = {
   requestLocalDate: string;
   originWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
-  totalShopForMeCost: number;
-  valueAddedTax: number;
-  paymentMethodSurcharge: number;
-  discount: number;
+  packageCosts: Pick<
+    PackageCostsType,
+    "valueAddedTax" | "paymentMethodSurcharge" | "discount"
+  >;
 };
 
 type ShopLocalDraftType = {

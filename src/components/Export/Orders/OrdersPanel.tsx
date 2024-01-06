@@ -4,7 +4,7 @@ import { BackSquare, More, TickSquare } from "iconsax-react";
 import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
-import { capitalizeWords } from "~/Utils";
+import { capitalizeWords, formatCurrency } from "~/Utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
@@ -164,12 +164,12 @@ const OrdersTable = () => {
           />
         ),
       }),
-      columnHelper.accessor("totalShippingCost", {
+      columnHelper.accessor("packageCosts.shippingCost", {
         header: "Shipping Cost",
         cell: ({ row }) => (
           <span className="title-md flex gap-[5px] font-medium">
             <More size="20" variant="Bold" className="text-error-600" />$
-            {row.original.totalShippingCost}
+            {formatCurrency(row.original.packageCosts.shippingCost)}
           </span>
         ),
       }),

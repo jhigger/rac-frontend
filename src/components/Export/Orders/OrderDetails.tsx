@@ -93,8 +93,8 @@ const OrderDetails = () => {
           <DetailSection
             label="Total Shipment Cost"
             value={
-              orderPackage.totalShippingCost > 0
-                ? formatCurrency(orderPackage.totalShippingCost)
+              orderPackage.packageCosts.shippingCost > 0
+                ? formatCurrency(orderPackage.packageCosts.shippingCost)
                 : "Not allocated yet"
             }
             colSpanDesktop={4}

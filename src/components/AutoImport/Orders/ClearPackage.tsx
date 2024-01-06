@@ -211,59 +211,36 @@ const CostsSummary = () => {
 
   if (!orderPackage) return;
 
-  const items = orderPackage.items;
-
-  const totalPickupCost = items.reduce(
-    (acc, item) => (acc += item.pickupDetails?.pickupCost ?? 0),
-    0,
-  );
+  const {
+    clearingPortHandlingCost,
+    valueAddedTax,
+    paymentMethodSurcharge,
+    discount,
+  } = orderPackage.packageCosts;
 
   const total = [
-    totalPickupCost,
-    orderPackage.totalShippingCost,
-    orderPackage.otherCharges,
-    orderPackage.storageCharge,
-    orderPackage.insurance,
-    orderPackage.valueAddedTax,
-    orderPackage.paymentMethodSurcharge,
+    clearingPortHandlingCost,
+    valueAddedTax,
+    paymentMethodSurcharge,
   ].reduce((total, cost) => (total += cost));
 
   return (
     <div className="flex flex-col rounded-[20px] border border-primary-100">
       <Summary>
         <CostDetailSection
-          label="Pickup Cost"
-          value={formatCurrency(totalPickupCost)}
+          label="Customs Clearing"
+          value={formatCurrency(clearingPortHandlingCost)}
         />
-        <CostDetailSection
-          label="Shipping Cost"
-          value={formatCurrency(orderPackage.totalShippingCost)}
-        />
-        <CostDetailSection
-          label="Other Charges"
-          value={formatCurrency(orderPackage.otherCharges)}
-        />
-        <CostDetailSection
-          label="Storage Charge"
-          value={formatCurrency(orderPackage.storageCharge)}
-        />
-        <CostDetailSection
-          label="Insurance"
-          value={formatCurrency(orderPackage.insurance)}
-        />
-        <CostDetailSection
-          label="VAT"
-          value={formatCurrency(orderPackage.valueAddedTax)}
-        />
+        <CostDetailSection label="VAT" value={formatCurrency(valueAddedTax)} />
         <CostDetailSection
           label="Payment Method Surcharge"
-          value={formatCurrency(orderPackage.paymentMethodSurcharge)}
+          value={formatCurrency(paymentMethodSurcharge)}
         />
         <CostDetailSection
           label="Discount"
-          value={`- ${formatCurrency(orderPackage.discount)}`}
+          value={`- ${formatCurrency(discount)}`}
         />
-        <TotalCost total={total - orderPackage.discount} />
+        <TotalCost total={total - discount} />
       </Summary>
       <div className="flex flex-col items-center justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">

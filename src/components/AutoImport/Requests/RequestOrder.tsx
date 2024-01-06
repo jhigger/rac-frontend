@@ -109,16 +109,18 @@ export const emptyValue: AutoImportRequestPackageType = {
     city: "",
     zipPostalCode: "",
   },
-  totalShippingCost: 0,
   shippingPaymentStatus: "Unpaid",
-  totalClearingCost: 0,
   clearingPaymentStatus: "Unpaid",
-  otherCharges: 0,
-  storageCharge: 0,
-  insurance: 0,
-  valueAddedTax: 0,
-  paymentMethodSurcharge: 0,
-  discount: 0,
+  packageCosts: {
+    shippingCost: 0,
+    clearingPortHandlingCost: 0,
+    otherCharges: 0,
+    storageCharge: 0,
+    insurance: 0,
+    valueAddedTax: 0,
+    paymentMethodSurcharge: 0,
+    discount: 0,
+  },
 };
 
 export type AutoImportInputs = {
@@ -579,7 +581,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={"contactFirstName"}
                   label={"Pick up Contact First Name"}
                   {...register(
-                    `requestPackage.items.${index}.pickupDetails.contactFirstName`,
+                    `requestPackage.items.${index}.pickupDetails.firstName`,
                   )}
                 />
               </div>
@@ -589,7 +591,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={"contactLastName"}
                   label={"Pick up Contact Last Name"}
                   {...register(
-                    `requestPackage.items.${index}.pickupDetails.contactLastName`,
+                    `requestPackage.items.${index}.pickupDetails.lastName`,
                   )}
                 />
               </div>
@@ -600,7 +602,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   label="Pick up Contact Email Address"
                   type="email"
                   {...register(
-                    `requestPackage.items.${index}.pickupDetails.contactEmail`,
+                    `requestPackage.items.${index}.pickupDetails.email`,
                   )}
                 />
               </div>
@@ -629,7 +631,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={`pickUpAddress-${index}`}
                   label={"Pick up Address"}
                   {...register(
-                    `requestPackage.items.${index}.pickupDetails.contactAddress`,
+                    `requestPackage.items.${index}.pickupDetails.address`,
                   )}
                 />
               </div>
@@ -1046,12 +1048,12 @@ export const PickupDetails = ({
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10 [&>*]:text-primary-900">
         <PurpleDetailSection
           label="Contact's First Name"
-          value={pickupDetails.contactFirstName}
+          value={pickupDetails.firstName}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Contact's Last Name"
-          value={pickupDetails.contactLastName}
+          value={pickupDetails.lastName}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
@@ -1061,12 +1063,12 @@ export const PickupDetails = ({
         />
         <PurpleDetailSection
           label="Contact Email"
-          value={pickupDetails.contactEmail}
+          value={pickupDetails.email}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Street Address"
-          value={pickupDetails.contactAddress}
+          value={pickupDetails.address}
         />
         <PurpleDetailSection
           label="Location of the Car (Country)"

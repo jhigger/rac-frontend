@@ -22,6 +22,7 @@ import {
   type BillingDetailsType,
   type ShipmentDetailsType,
 } from "./AutoImportContext";
+import { type PackageCostsType } from "./ShopContext";
 
 export type ImportContextType = {
   draftPackage: ImportDraftPackageType | null;
@@ -69,15 +70,8 @@ export type ImportOrderPackageType = {
   items: ImportItemType[];
   shipmentDetails: ShipmentDetailsType;
   billingDetails: BillingDetailsType;
-  totalShippingCost: number;
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
-  clearingPortHandlingCost: number;
-  otherCharges: number;
-  storageCharge: number;
-  insurance: number;
-  valueAddedTax: number;
-  paymentMethodSurcharge: number;
-  discount: number;
+  packageCosts: PackageCostsType;
 };
 
 export type ImportRequestPackageType = {
@@ -87,14 +81,7 @@ export type ImportRequestPackageType = {
   originWarehouse: (typeof ORIGINS)[number];
   deliveryStatus: (typeof PACKAGE_DELIVERY_STATUS)[number];
   items: ImportItemType[];
-  totalShippingCost: number;
-  clearingPortHandlingCost: number;
-  otherCharges: number;
-  storageCharge: number;
-  insurance: number;
-  valueAddedTax: number;
-  paymentMethodSurcharge: number;
-  discount: number;
+  packageCosts: PackageCostsType;
 };
 
 export type PropertyType = { label: string; value: string | undefined };

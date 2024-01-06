@@ -35,6 +35,11 @@ const RequestDetails = () => {
     handleActiveAction(null);
   };
 
+  const totalShopForMeCost = requestPackage.items.reduce(
+    (acc, item) => (acc += item.relatedCosts.shopForMeCost),
+    0,
+  );
+
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Request Details" />
@@ -105,7 +110,7 @@ const RequestDetails = () => {
           />
           <DetailSection
             label="Total Shop For Me Cost"
-            value={formatCurrency(requestPackage.totalShopForMeCost)}
+            value={formatCurrency(totalShopForMeCost)}
             colSpanDesktop={4}
             tooltip={requestPackage.requestStatus === "Responded" ? "" : null}
           />

@@ -77,8 +77,8 @@ const RequestDetails = () => {
           <DetailSection
             label="Total Shipment Cost"
             value={
-              requestPackage.totalShippingCost > 0
-                ? formatCurrency(requestPackage.totalShippingCost)
+              requestPackage.packageCosts.shippingCost > 0
+                ? formatCurrency(requestPackage.packageCosts.shippingCost)
                 : "Not allocated yet"
             }
             colSpanDesktop={4}
@@ -91,8 +91,10 @@ const RequestDetails = () => {
           <DetailSection
             label="Total Clearing Cost"
             value={
-              requestPackage.totalClearingCost > 0
-                ? formatCurrency(requestPackage.totalClearingCost)
+              requestPackage.packageCosts.clearingPortHandlingCost > 0
+                ? formatCurrency(
+                    requestPackage.packageCosts.clearingPortHandlingCost,
+                  )
                 : "Not allocated yet"
             }
             colSpanDesktop={4}

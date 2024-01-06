@@ -45,6 +45,16 @@ const OrderDetails = () => {
     handleActiveAction(null);
   };
 
+  const totalShippingCost = orderPackage.items.reduce(
+    (acc, item) => (acc += item.relatedCosts.shippingToOriginWarehouseCost),
+    0,
+  );
+
+  const totalShopForMeCost = orderPackage.items.reduce(
+    (acc, item) => (acc += item.relatedCosts.shopForMeCost),
+    0,
+  );
+
   return (
     <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
       <RequestFormHeader title="Shop For Me Order Details" />
@@ -93,8 +103,8 @@ const OrderDetails = () => {
           <DetailSection
             label="Total Shipment Cost"
             value={
-              orderPackage.totalShippingCost > 0
-                ? formatCurrency(orderPackage.totalShippingCost)
+              totalShippingCost > 0
+                ? formatCurrency(totalShippingCost)
                 : "Not allocated yet"
             }
             colSpanDesktop={4}
@@ -107,8 +117,8 @@ const OrderDetails = () => {
           <DetailSection
             label="Total Shop For Me Cost"
             value={
-              orderPackage.totalShopForMeCost > 0
-                ? formatCurrency(orderPackage.totalShippingCost)
+              totalShopForMeCost > 0
+                ? formatCurrency(totalShippingCost)
                 : "Not allocated yet"
             }
             colSpanDesktop={4}

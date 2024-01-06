@@ -464,13 +464,16 @@ const CostsSummary = () => {
     0,
   );
 
+  const { valueAddedTax, paymentMethodSurcharge, discount } =
+    requestPackage.packageCosts;
+
   const total = [
     totalUrgentPurchaseCost,
     totalCostOfItems,
     totalShippingCost,
     totalProcessingFee,
-    requestPackage.valueAddedTax,
-    requestPackage.paymentMethodSurcharge,
+    valueAddedTax,
+    paymentMethodSurcharge,
   ].reduce((total, cost) => (total += cost));
 
   return (
@@ -492,19 +495,16 @@ const CostsSummary = () => {
           label="Total Processing fee "
           value={formatCurrency(totalProcessingFee)}
         />
-        <CostDetailSection
-          label="VAT"
-          value={formatCurrency(requestPackage.valueAddedTax)}
-        />
+        <CostDetailSection label="VAT" value={formatCurrency(valueAddedTax)} />
         <CostDetailSection
           label="Payment Method Surcharge"
-          value={formatCurrency(requestPackage.paymentMethodSurcharge)}
+          value={formatCurrency(paymentMethodSurcharge)}
         />
         <CostDetailSection
           label="Discount"
-          value={`- ${formatCurrency(requestPackage.paymentMethodSurcharge)}`}
+          value={`- ${formatCurrency(paymentMethodSurcharge)}`}
         />
-        <TotalCost total={total - requestPackage.discount} />
+        <TotalCost total={total - discount} />
       </Summary>
       <div className="flex flex-col items-center justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">

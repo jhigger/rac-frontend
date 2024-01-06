@@ -58,10 +58,11 @@ const useFetchShopRequests = (
 
             return requestItem;
           }),
-          totalShopForMeCost: 0, // todo: missing
-          valueAddedTax: 0, // todo: missing
-          paymentMethodSurcharge: 0, // todo: missing
-          discount: 0, // todo: missing
+          packageCosts: {
+            valueAddedTax: 0, // todo: missing
+            paymentMethodSurcharge: 0, // todo: missing
+            discount: 0, // todo: missing
+          },
         };
 
         return requestPackage;

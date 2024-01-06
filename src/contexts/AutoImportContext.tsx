@@ -15,6 +15,7 @@ import {
   type SHIPPING_STATUS,
 } from "~/constants";
 import { autoImportOrders, autoImportRequests } from "~/fake data";
+import { type PackageCostsType } from "./ShopContext";
 
 export type AutoImportContextType = {
   draftPackage: AutoImportDraftPackageType | null;
@@ -53,17 +54,7 @@ export type AutoImportItemType = {
   pickupDetails?: PickupDetailsType;
 };
 
-export type PickupDetailsType = {
-  contactFirstName: string;
-  contactLastName: string;
-  countryCode: string;
-  phoneNumber: string;
-  contactEmail: string;
-  contactAddress: string;
-  country: string;
-  state: string;
-  city: string;
-  zipPostalCode: string;
+export type PickupDetailsType = BillingDetailsType & {
   pickUpDate: string;
   locationType: string;
   pickupCost: number;
@@ -96,16 +87,9 @@ export type AutoImportOrderPackageType = {
   items: AutoImportItemType[];
   shipmentDetails: ShipmentDetailsType;
   billingDetails: BillingDetailsType;
-  totalShippingCost: number;
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
-  totalClearingCost: number;
   clearingPaymentStatus: (typeof PAYMENT_STATUS)[number];
-  otherCharges: number;
-  storageCharge: number;
-  insurance: number;
-  valueAddedTax: number;
-  paymentMethodSurcharge: number;
-  discount: number;
+  packageCosts: PackageCostsType;
 };
 
 export type AutoImportRequestPackageType = {
@@ -116,16 +100,9 @@ export type AutoImportRequestPackageType = {
   items: AutoImportItemType[];
   shipmentDetails: ShipmentDetailsType;
   billingDetails: BillingDetailsType;
-  totalShippingCost: number;
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
-  totalClearingCost: number;
   clearingPaymentStatus: (typeof PAYMENT_STATUS)[number];
-  otherCharges: number;
-  storageCharge: number;
-  insurance: number;
-  valueAddedTax: number;
-  paymentMethodSurcharge: number;
-  discount: number;
+  packageCosts: PackageCostsType;
 };
 
 type AutoImportLocalDraftType = {

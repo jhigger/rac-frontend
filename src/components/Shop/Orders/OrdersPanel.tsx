@@ -10,7 +10,7 @@ import {
 import { useEffect, useMemo, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
-import { capitalizeWords } from "~/Utils";
+import { capitalizeWords, formatCurrency } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
@@ -190,7 +190,7 @@ const OrdersTable = () => {
         cell: ({ row }) => (
           <span className="title-md flex gap-[5px] font-medium">
             <TickSquare size="20" variant="Bold" className="text-primary-600" />
-            ${row.original.totalShopForMeCost}
+            {formatCurrency(row.original.totalShopForMeCost)}
           </span>
         ),
       }),
@@ -199,7 +199,7 @@ const OrdersTable = () => {
         cell: ({ row }) => (
           <span className="title-md flex gap-[5px] font-medium">
             <More size="20" variant="Bold" className="text-error-600" />$
-            {row.original.totalShippingCost}
+            {formatCurrency(row.original.totalShippingCost)}
           </span>
         ),
       }),

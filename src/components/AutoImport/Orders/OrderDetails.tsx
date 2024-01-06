@@ -92,8 +92,8 @@ const OrderDetails = () => {
           <DetailSection
             label="Total Shipment Cost"
             value={
-              orderPackage.totalShippingCost > 0
-                ? formatCurrency(orderPackage.totalShippingCost)
+              orderPackage.packageCosts.shippingCost > 0
+                ? formatCurrency(orderPackage.packageCosts.shippingCost)
                 : "Not allocated yet"
             }
             colSpanDesktop={4}
@@ -106,8 +106,10 @@ const OrderDetails = () => {
           <DetailSection
             label="Total Clearing Cost"
             value={
-              orderPackage.totalClearingCost > 0
-                ? formatCurrency(orderPackage.totalClearingCost)
+              orderPackage.packageCosts.clearingPortHandlingCost > 0
+                ? formatCurrency(
+                    orderPackage.packageCosts.clearingPortHandlingCost,
+                  )
                 : "Not allocated yet"
             }
             colSpanDesktop={4}

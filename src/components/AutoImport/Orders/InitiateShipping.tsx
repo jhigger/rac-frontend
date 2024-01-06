@@ -296,14 +296,24 @@ const CostsSummary = () => {
     0,
   );
 
+  const {
+    shippingCost,
+    otherCharges,
+    storageCharge,
+    insurance,
+    valueAddedTax,
+    paymentMethodSurcharge,
+    discount,
+  } = requestPackage.packageCosts;
+
   const total = [
     totalPickupCost,
-    requestPackage.totalShippingCost,
-    requestPackage.otherCharges,
-    requestPackage.storageCharge,
-    requestPackage.insurance,
-    requestPackage.valueAddedTax,
-    requestPackage.paymentMethodSurcharge,
+    shippingCost,
+    otherCharges,
+    storageCharge,
+    insurance,
+    valueAddedTax,
+    paymentMethodSurcharge,
   ].reduce((total, cost) => (total += cost));
 
   return (
@@ -317,33 +327,30 @@ const CostsSummary = () => {
         )}
         <CostDetailSection
           label="Shipping Cost"
-          value={formatCurrency(requestPackage.totalShippingCost)}
+          value={formatCurrency(shippingCost)}
         />
         <CostDetailSection
           label="Other Charges"
-          value={formatCurrency(requestPackage.otherCharges)}
+          value={formatCurrency(otherCharges)}
         />
         <CostDetailSection
           label="Storage Charge"
-          value={formatCurrency(requestPackage.storageCharge)}
+          value={formatCurrency(storageCharge)}
         />
         <CostDetailSection
           label="Insurance"
-          value={formatCurrency(requestPackage.insurance)}
+          value={formatCurrency(insurance)}
         />
-        <CostDetailSection
-          label="VAT"
-          value={formatCurrency(requestPackage.valueAddedTax)}
-        />
+        <CostDetailSection label="VAT" value={formatCurrency(valueAddedTax)} />
         <CostDetailSection
           label="Payment Method Surcharge"
-          value={formatCurrency(requestPackage.paymentMethodSurcharge)}
+          value={formatCurrency(paymentMethodSurcharge)}
         />
         <CostDetailSection
           label="Discount"
-          value={`- ${formatCurrency(requestPackage.discount)}`}
+          value={`- ${formatCurrency(discount)}`}
         />
-        <TotalCost total={total - requestPackage.discount} />
+        <TotalCost total={total - discount} />
       </Summary>
       <div className="flex flex-col items-center justify-center gap-[20px] p-[20px]">
         <div className="flex flex-col gap-[5px]">

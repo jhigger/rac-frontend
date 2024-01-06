@@ -69,14 +69,16 @@ export const emptyValue: ImportRequestPackageType = {
       itemDeliveryStatus: "Not yet delivered",
     },
   ],
-  totalShippingCost: 0,
-  clearingPortHandlingCost: 0,
-  otherCharges: 0,
-  storageCharge: 0,
-  insurance: 0,
-  valueAddedTax: 0,
-  paymentMethodSurcharge: 0,
-  discount: 0,
+  packageCosts: {
+    shippingCost: 0,
+    clearingPortHandlingCost: 0,
+    otherCharges: 0,
+    storageCharge: 0,
+    insurance: 0,
+    valueAddedTax: 0,
+    paymentMethodSurcharge: 0,
+    discount: 0,
+  },
 };
 
 export type ImportInputs = {

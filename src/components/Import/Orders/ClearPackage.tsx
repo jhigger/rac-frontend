@@ -327,14 +327,25 @@ const ShipmentCostsSummary = ({
 
   if (!orderPackage) return;
 
+  const {
+    shippingCost,
+    clearingPortHandlingCost,
+    otherCharges,
+    storageCharge,
+    insurance,
+    valueAddedTax,
+    paymentMethodSurcharge,
+    discount,
+  } = orderPackage.packageCosts;
+
   const total = [
-    orderPackage.totalShippingCost,
-    orderPackage.clearingPortHandlingCost,
-    orderPackage.otherCharges,
-    orderPackage.storageCharge,
-    orderPackage.insurance,
-    orderPackage.valueAddedTax,
-    orderPackage.paymentMethodSurcharge,
+    shippingCost,
+    clearingPortHandlingCost,
+    otherCharges,
+    storageCharge,
+    insurance,
+    valueAddedTax,
+    paymentMethodSurcharge,
   ].reduce((total, cost) => (total += cost));
 
   return (
@@ -342,37 +353,34 @@ const ShipmentCostsSummary = ({
       <Summary>
         <CostDetailSection
           label="Shipping Cost"
-          value={formatCurrency(orderPackage.totalShippingCost)}
+          value={formatCurrency(shippingCost)}
         />
         <CostDetailSection
           label="Clearing, Port Handling"
-          value={formatCurrency(orderPackage.clearingPortHandlingCost)}
+          value={formatCurrency(clearingPortHandlingCost)}
         />
         <CostDetailSection
           label="Other Charges"
-          value={formatCurrency(orderPackage.otherCharges)}
+          value={formatCurrency(otherCharges)}
         />
         <CostDetailSection
           label="Storage Charge"
-          value={formatCurrency(orderPackage.storageCharge)}
+          value={formatCurrency(storageCharge)}
         />
         <CostDetailSection
           label="Insurance"
-          value={formatCurrency(orderPackage.insurance)}
+          value={formatCurrency(insurance)}
         />
-        <CostDetailSection
-          label="VAT"
-          value={formatCurrency(orderPackage.valueAddedTax)}
-        />
+        <CostDetailSection label="VAT" value={formatCurrency(valueAddedTax)} />
         <CostDetailSection
           label="Payment Method Surcharge"
-          value={formatCurrency(orderPackage.paymentMethodSurcharge)}
+          value={formatCurrency(paymentMethodSurcharge)}
         />
         <CostDetailSection
           label="Discount"
-          value={`- ${formatCurrency(orderPackage.discount)}`}
+          value={`- ${formatCurrency(discount)}`}
         />
-        <TotalCost total={total - orderPackage.discount} />
+        <TotalCost total={total - discount} />
       </Summary>
       <div className="flex flex-col justify-center gap-[20px] p-[20px]">
         {footer}

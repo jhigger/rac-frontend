@@ -466,6 +466,14 @@ type ShippingStatusModalLayoutProps = {
   children: ReactNode;
 };
 
+const shipmentDetails = {
+  address: "29b Osolo way ajao estate, Isolo",
+  country: "Nigeria",
+  state: "Lagos",
+  city: "Ikeja",
+  zipPostalCode: "10011",
+};
+
 export const ShippingStatusModalLayout = ({
   modalId,
   dataClose,
@@ -505,7 +513,7 @@ export const ShippingStatusModalLayout = ({
         {!excluded.includes(shippingStatus) && (
           <ShipmentPath
             origin={orderPackage.originWarehouse}
-            destination={orderPackage.shipmentDetails.country}
+            destination={shipmentDetails.country}
             shippingStatus={shippingStatus}
           />
         )}
@@ -513,7 +521,7 @@ export const ShippingStatusModalLayout = ({
           <CongratulationImage description="Your package has been delivered." />
         )}
         {shippingStatus === "cleared" && (
-          <PackageDestination shipmentDetails={orderPackage.shipmentDetails} />
+          <PackageDestination shipmentDetails={shipmentDetails} />
         )}
 
         <ShippingStatusContentMap shippingStatus={shippingStatus} />
@@ -530,7 +538,7 @@ export const ModalSectionContentLayout = ({
   children,
 }: ModalSectionContentLayout) => {
   return (
-    <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
+    <div className="flex w-full flex-col gap-[20px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
       {children}
     </div>
   );
@@ -648,7 +656,7 @@ const ShipmentPath = ({
   );
 };
 
-type PackageDestinationProps = { shipmentDetails: ShipmentDetailsType };
+type PackageDestinationProps = { shipmentDetails: typeof shipmentDetails };
 
 const PackageDestination = ({ shipmentDetails }: PackageDestinationProps) => {
   return (
@@ -662,7 +670,10 @@ const PackageDestination = ({ shipmentDetails }: PackageDestinationProps) => {
         }
       />
 
-      <div className="rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
+      <ModalSectionContentLayout>
+        <span className="title-md md:title-lg text-gray-700">
+          Our office address to pick up your package
+        </span>
         <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
           <DetailSection
             label="Pick up Address"
@@ -689,9 +700,12 @@ const PackageDestination = ({ shipmentDetails }: PackageDestinationProps) => {
             colSpanDesktop={2}
           />
         </div>
+      </ModalSectionContentLayout>
+
+      <div className="flex flex-col gap-[10px]">
+        <SectionHeader title="What next?" />
+        <PickUpInstructions />
       </div>
-      <SectionHeader title="What next?" />
-      <PickUpInstructions />
     </>
   );
 };

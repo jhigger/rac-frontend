@@ -494,12 +494,13 @@ export const ShippingStatusModalLayout = ({
       >
         <RequestFormHeader title="Shipping Status" />
 
-        <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
+        <ModalSectionContentLayout>
           <OrderTrackingId
             orderId={orderPackage.orderId}
             trackingId={orderPackage.trackingId}
+            center
           />
-        </div>
+        </ModalSectionContentLayout>
 
         {!excluded.includes(shippingStatus) && (
           <ShipmentPath
@@ -519,6 +520,18 @@ export const ShippingStatusModalLayout = ({
 
         {children}
       </div>
+    </div>
+  );
+};
+
+type ModalSectionContentLayout = { children: ReactNode };
+
+export const ModalSectionContentLayout = ({
+  children,
+}: ModalSectionContentLayout) => {
+  return (
+    <div className="flex w-full items-center justify-center gap-[10px] rounded-[20px] border border-gray-200 bg-surface-200 p-[20px]">
+      {children}
     </div>
   );
 };
@@ -637,9 +650,7 @@ const ShipmentPath = ({
 
 type PackageDestinationProps = { shipmentDetails: ShipmentDetailsType };
 
-const PackageDestination = ({
-  shipmentDetails,
-}: PackageDestinationProps) => {
+const PackageDestination = ({ shipmentDetails }: PackageDestinationProps) => {
   return (
     <>
       <CongratulationImage description="you can now pick up your package from our office in Nigeria (your selected &qout;Destination&qout;)" />

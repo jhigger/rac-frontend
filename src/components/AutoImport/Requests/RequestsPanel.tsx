@@ -9,6 +9,7 @@ import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingBut
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
+import { RequestStatusContentMap } from "~/components/Import/Requests/RequestsPanel";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
@@ -220,6 +221,8 @@ const RequestStatusModal = ({
       dataClose={dataClose}
       requestPackage={requestPackage}
     >
+      <RequestStatusContentMap requestStatus={requestStatus} />
+
       <div className="flex flex-row items-end justify-end">
         <div className="w-max whitespace-nowrap">
           {requestStatus === "Not Responded" && (

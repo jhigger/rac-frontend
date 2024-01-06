@@ -15,6 +15,7 @@ import { type FilterCategoriesType } from "~/components/SearchBar";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import {
   RequestStatusModalLayout,
+  type RequestStatusContentMapProps,
   type RequestStatusModalProps,
   type RequestStatusProps,
 } from "~/components/Shop/Requests/RequestsPanel";
@@ -223,6 +224,8 @@ const RequestStatusModal = ({
       dataClose={dataClose}
       requestPackage={requestPackage}
     >
+      <RequestStatusContentMap requestStatus={requestStatus} />
+
       <div className="flex flex-row items-end justify-end">
         <div className="w-max whitespace-nowrap">
           {requestStatus === "Not Responded" && (
@@ -238,6 +241,19 @@ const RequestStatusModal = ({
       </div>
     </RequestStatusModalLayout>
   );
+};
+
+export const RequestStatusContentMap = ({
+  requestStatus,
+}: RequestStatusContentMapProps) => {
+  const content = {
+    "Not Responded":
+      "Your request has not be responded to yet. Kindly check back later.",
+    Responded:
+      "Your request has been responded to. Kindly proceed to initiate shipping.",
+  };
+
+  return <p className="title-lg text-neutral-900">{content[requestStatus]}</p>;
 };
 
 export default ImportRequestsPanel;

@@ -21,7 +21,7 @@ import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
 import RequestOrderButton from "../../Buttons/RequestOrderButton";
 import TabContentLayout from "../../Layouts/TabContentLayout";
 import { type FilterCategoriesType } from "../../SearchBar";
-import { ImageColumn } from "../Orders/OrdersPanel";
+import { ImageColumn, ModalSectionContentLayout } from "../Orders/OrdersPanel";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
@@ -237,6 +237,7 @@ const RequestStatusModal = ({
       dataClose={dataClose}
       requestPackage={requestPackage}
     >
+      <ShopRequestStatusContentMap requestStatus={requestStatus} />
       <div className="flex flex-row items-end justify-end">
         <div className="w-max whitespace-nowrap">
           {requestStatus === "Not Responded" && (
@@ -254,11 +255,11 @@ const RequestStatusModal = ({
   );
 };
 
-type RequestStatusContentMapProps = {
+export type RequestStatusContentMapProps = {
   requestStatus: (typeof REQUEST_STATUS)[number];
 };
 
-const RequestStatusContentMap = ({
+const ShopRequestStatusContentMap = ({
   requestStatus,
 }: RequestStatusContentMapProps) => {
   const content = {
@@ -271,7 +272,7 @@ const RequestStatusContentMap = ({
   return <p className="title-lg text-neutral-900">{content[requestStatus]}</p>;
 };
 
-type RequestStatusModalLayoutProps = {
+export type RequestStatusModalLayoutProps = {
   modalId: string;
   dataClose: string;
   requestPackage: RequestPackageType;
@@ -284,8 +285,6 @@ export const RequestStatusModalLayout = ({
   requestPackage,
   children,
 }: RequestStatusModalLayoutProps) => {
-  const requestStatus = requestPackage.requestStatus;
-
   return (
     <div
       id={modalId}
@@ -298,9 +297,9 @@ export const RequestStatusModalLayout = ({
       <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Request Status" />
 
-        <LabelId label="Request ID" id={requestPackage.requestId} />
-
-        <RequestStatusContentMap requestStatus={requestStatus} />
+        <ModalSectionContentLayout>
+          <LabelId label="Request ID" id={requestPackage.requestId} center />
+        </ModalSectionContentLayout>
 
         {children}
       </div>

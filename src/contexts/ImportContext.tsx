@@ -45,13 +45,12 @@ export type ImportItemType = {
   name: string;
   idType: (typeof ID_TYPE)[number];
   idNumber: string;
-  deliveryStatus: string;
+  deliveryStatus: (typeof ITEM_DELIVERY_STATUS)[number];
   deliveredBy: (typeof COURIERS)[number];
   originalCost: number;
   quantity: number;
   image: string;
   description: string;
-  itemDeliveryStatus: (typeof ITEM_DELIVERY_STATUS)[number];
   properties?: {
     label: string;
     value: string;

@@ -61,12 +61,11 @@ export const emptyValue: ImportRequestPackageType = {
       name: "",
       idType: "Tracking ID",
       idNumber: "",
-      deliveryStatus: "",
+      deliveryStatus: "Not yet delivered",
       deliveredBy: "Seller",
       originalCost: 1,
       quantity: 1,
       description: "",
-      itemDeliveryStatus: "Not yet delivered",
     },
   ],
   packageCosts: {
@@ -330,7 +329,7 @@ const ItemDetailsSection = ({
                       </>
                     }
                     {...register(
-                      `requestPackage.items.${index}.itemDeliveryStatus`,
+                      `requestPackage.items.${index}.deliveryStatus`,
                     )}
                   />
                   <TooltipButton label="" position="left-start" />

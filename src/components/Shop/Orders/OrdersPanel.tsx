@@ -653,7 +653,14 @@ type PackageDestinationProps = { shipmentDetails: ShipmentDetailsType };
 const PackageDestination = ({ shipmentDetails }: PackageDestinationProps) => {
   return (
     <>
-      <CongratulationImage description="you can now pick up your package from our office in Nigeria (your selected &qout;Destination&qout;)" />
+      <CongratulationImage
+        description={
+          <>
+            you can now pick up your package from our office in Nigeria (your
+            selected <b>&quot;Destination&quot;</b>)
+          </>
+        }
+      />
 
       <div className="rounded-[20px] border border-gray-200 bg-surface-200 px-[28px] py-[20px]">
         <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">

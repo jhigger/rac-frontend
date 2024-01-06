@@ -104,7 +104,7 @@ const InitiateShipping = () => {
           <SectionContentLayout>
             <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
           </SectionContentLayout>
-          <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
+          <CongratulationImage description="You have just successfully initiated shipment of your Package" />
         </>
       )}
 

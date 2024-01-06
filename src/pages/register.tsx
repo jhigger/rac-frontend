@@ -101,20 +101,23 @@ const register = () => {
             {registerError && (
               <span className="text-error-600">{registerError}</span>
             )}
+
             <div className="flex gap-4">
               {!isRegistering && !isFirstStep && (
                 <div className="w-full md:w-max">
                   <BackButton onClick={back} />
                 </div>
               )}
-              {!isLastStep && <ProceedButton onClick={next} />}
-              {isLastStep && (
+              {!isLastStep ? (
+                <ProceedButton onClick={next} />
+              ) : (
                 <CreateAccountButton
                   onClick={formMethods.handleSubmit(onSubmit)}
                   disabled={isRegistering}
                 />
               )}
             </div>
+
             {isLastStep && <TermsAndCondition />}
           </form>
         </FormProvider>

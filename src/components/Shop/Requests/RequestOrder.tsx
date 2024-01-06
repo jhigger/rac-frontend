@@ -36,7 +36,6 @@ import { ORIGINS, STORES } from "~/constants";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
   useShopContext,
-  type ShopOrderPackageType,
   type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
@@ -55,12 +54,10 @@ import TextInput from "../../Forms/Inputs/TextInput";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 
-export const emptyValue: ShopOrderPackageType = {
-  orderId: "",
-  orderStatus: "not responded",
-  orderLocalDate: new Date().toLocaleString(),
-  trackingId: "",
-  shippingStatus: "not started",
+export const emptyValue: ShopRequestPackageType = {
+  requestId: "",
+  requestStatus: "Not Responded",
+  requestLocalDate: new Date().toLocaleString(),
   originWarehouse: "China Warehouse (Guangzhou city)",
   items: [
     {
@@ -81,40 +78,7 @@ export const emptyValue: ShopOrderPackageType = {
       },
     },
   ],
-  shipmentDetails: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    countryCode: "",
-    phoneNumber: "",
-    address: "",
-    country: "",
-    state: "",
-    city: "",
-    zipPostalCode: "",
-  },
-  billingDetails: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    countryCode: "",
-    phoneNumber: "",
-    address: "",
-    country: "",
-    state: "",
-    city: "",
-    zipPostalCode: "",
-  },
-  totalShopForMeCost: 0,
-  shopForMeStatus: "Purchase not started",
-  totalShippingCost: 0,
-  shippingPaymentStatus: "Unpaid",
   packageCosts: {
-    shippingCost: 0,
-    clearingPortHandlingCost: 0,
-    otherCharges: 0,
-    storageCharge: 0,
-    insurance: 0,
     valueAddedTax: 0,
     paymentMethodSurcharge: 0,
     discount: 0,

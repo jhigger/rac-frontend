@@ -27,3 +27,11 @@ export const shortenFileName = (filename: string, length: number) => {
     filename.length - length,
   )}`;
 };
+
+export const formatWeight = (amount: number) => {
+  return `${amount}kg`;
+};
+
+export const formatDimension = (amount: number) => {
+  return `${amount} inches`;
+};

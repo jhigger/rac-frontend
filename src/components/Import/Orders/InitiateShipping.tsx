@@ -3,7 +3,12 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { formatCurrency, limitChars } from "~/Utils";
+import {
+  formatCurrency,
+  formatDimension,
+  formatWeight,
+  limitChars,
+} from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -203,10 +208,26 @@ const ImportOrderItemDetails = ({ item }: ImportOrderItemDetailsProps) => {
         value={item.quantity}
         colSpanDesktop={3}
       />
-      <DetailSection label="Weight" value="67kg" colSpanDesktop={2} />
-      <DetailSection label="Height" value="5 inches" colSpanDesktop={2} />
-      <DetailSection label="Length" value="5 inches" colSpanDesktop={2} />
-      <DetailSection label="Width" value="5 inches" colSpanDesktop={2} />
+      <DetailSection
+        label="Weight"
+        value={formatWeight(item.width)}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Height"
+        value={formatDimension(item.height)}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Length"
+        value={formatDimension(item.length)}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Width"
+        value={formatDimension(item.width)}
+        colSpanDesktop={2}
+      />
       <DetailSection label="Product/Item Picture" value={item.image} image />
       <DetailSection label="Product Description" value={item.description} />
 

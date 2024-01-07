@@ -49,6 +49,10 @@ export type ImportItemType = {
   deliveredBy: (typeof COURIERS)[number];
   originalCost: number;
   quantity: number;
+  weight: number;
+  height: number;
+  length: number;
+  width: number;
   image: string;
   description: string;
   properties?: {

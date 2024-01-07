@@ -2,7 +2,7 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { formatCurrency } from "~/Utils";
+import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -301,6 +301,7 @@ export type DetailSectionProps = {
   colSpanDesktop?: "full" | number;
   image?: boolean;
   tooltip?: ReactNode;
+  labelMaxWidth?: string;
 };
 
 export const DetailSection = ({
@@ -310,30 +311,31 @@ export const DetailSection = ({
   colSpanDesktop = "full",
   image,
   tooltip,
-}: DetailSectionProps) => (
-  <div
-    className={`col-span-${colSpanMobile} flex flex-col justify-between gap-[5px] text-gray-700 md:col-span-${colSpanDesktop}`}
-  >
-    {tooltip ? (
-      <LabelWithTooltip label={label} tooltip={tooltip} />
-    ) : (
-      <span className="body-md h-[40px] max-w-[128px]">{label}:</span>
-    )}
-    {image ? (
-      <span className="title-lg text-neutral-900">
+  labelMaxWidth = "max-w-[128px]",
+}: DetailSectionProps) => {
+  return (
+    <div
+      className={`col-span-${colSpanMobile} flex flex-col justify-between gap-[5px] text-gray-700 md:col-span-${colSpanDesktop}`}
+    >
+      {tooltip ? (
+        <LabelWithTooltip label={label} tooltip={tooltip} />
+      ) : (
+        <span className={`body-md h-[40px] ${labelMaxWidth}`}>{label}:</span>
+      )}
+      {image ? (
         <img
           src={image && (value as string)}
           alt=""
           className="w-[220px] rounded-[20px] bg-center object-cover"
         />
-      </span>
-    ) : (
-      <span className="title-md md:title-lg break-words font-medium text-neutral-900">
-        {value}
-      </span>
-    )}
-  </div>
-);
+      ) : (
+        <span className="title-md md:title-lg break-words font-medium text-neutral-900">
+          {value}
+        </span>
+      )}
+    </div>
+  );
+};
 
 type ShopOrderItemDetailsProps = { item: ShopItemType };
 
@@ -358,10 +360,26 @@ const ShopOrderItemDetails = ({ item }: ShopOrderItemDetailsProps) => {
         value={item.quantity}
         colSpanDesktop={3}
       />
-      <DetailSection label="Weight" value="67kg" colSpanDesktop={2} />
-      <DetailSection label="Height" value="5 inches" colSpanDesktop={2} />
-      <DetailSection label="Length" value="5 inches" colSpanDesktop={2} />
-      <DetailSection label="Width" value="5 inches" colSpanDesktop={2} />
+      <DetailSection
+        label="Weight"
+        value={formatWeight(item.weight)}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Height"
+        value={formatDimension(item.height)}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Length"
+        value={formatDimension(item.length)}
+        colSpanDesktop={2}
+      />
+      <DetailSection
+        label="Width"
+        value={formatDimension(item.width)}
+        colSpanDesktop={2}
+      />
       <DetailSection label="Product/Item Picture" value={item.image} image />
       <DetailSection label="Product Description" value={item.description} />
 

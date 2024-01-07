@@ -53,6 +53,7 @@ import QuantityInput from "../../Forms/Inputs/QuantityInput";
 import SelectInput from "../../Forms/Inputs/SelectInput";
 import TextAreaInput from "../../Forms/Inputs/TextAreaInput";
 import TextInput from "../../Forms/Inputs/TextInput";
+import { DetailSection } from "../Orders/InitiateShipping";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 
@@ -69,10 +70,14 @@ export const emptyValue: ShopRequestPackageType = {
       name: "Designer Bags",
       originalCost: 1,
       quantity: 1,
-      shippingCost: 1,
+      weight: 0,
+      height: 0,
+      length: 0,
+      width: 0,
       image: "",
       description: "",
       relatedCosts: {
+        shippingCost: 1,
         urgentPurchaseFee: 0,
         processingFee: 0,
         shippingToOriginWarehouseCost: 0,
@@ -578,7 +583,9 @@ const ItemDetailsSection = ({
                   <CurrencyInput
                     id={`shippingCost-${index}`}
                     label={"Total shipping cost to your warehouse & Sales Tax"}
-                    {...register(`requestPackage.items.${index}.shippingCost`)}
+                    {...register(
+                      `requestPackage.items.${index}.relatedCosts.shippingCost`,
+                    )}
                   />
                 </div>
 
@@ -974,7 +981,7 @@ const ItemPreview = ({ index, image, modalId }: ItemPreviewProps) => {
             </div>
           </div>
 
-          <div className="col-span-1 col-start-2">
+          <div className="col-span-1 md:col-start-2">
             <button
               aria-label="Back"
               data-close={dataClose}
@@ -997,84 +1004,46 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
 
   return (
     <div className="flex flex-col gap-[10px] overflow-y-auto rounded-[10px] bg-surface-500 px-[20px] py-[20px] md:max-h-[250px] md:gap-[20px] md:px-[24px] ">
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">Item Quantity:</label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {watch(`requestPackage.items.${index}.quantity`)}
-        </span>
-      </div>
-
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">Country Of Purchase:</label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {watch(`requestPackage.originWarehouse`)}
-        </span>
-      </div>
-
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">Item Link:</label>
-        <span
-          id="item-name"
-          className="title-md md:title-lg text-error-600 underline"
-        >
-          {watch(`requestPackage.items.${index}.url`)}
-        </span>
-      </div>
-
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">
-          Cost of item from Store:
-        </label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {formatCurrency(watch(`requestPackage.items.${index}.originalCost`))}
-        </span>
-      </div>
-
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">Store</label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {watch(`requestPackage.items.${index}.store`)}
-        </span>
-      </div>
-
-      {/* <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">Length:</label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          76in
-        </span>
-      </div>
-
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">Width:</label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          89in
-        </span>
-      </div>
-
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">Height:</label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          89in
-        </span>
-      </div> */}
-
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">
-          Total Shipping Cost to your Warehouse & Sales Tax:
-        </label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {formatCurrency(watch(`requestPackage.items.${index}.shippingCost`))}
-        </span>
-      </div>
-
-      <div className="flex flex-col px-[14px]">
-        <label className="body-md text-neutral-700">
-          Additional Item Description:
-        </label>
-        <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {watch(`requestPackage.items.${index}.description`)}
-        </span>
-      </div>
+      <DetailSection
+        label="Item Quantity"
+        value={watch(`requestPackage.items.${index}.quantity`)}
+      />
+      <DetailSection
+        label="Country Of Purchase"
+        value={watch(`requestPackage.originWarehouse`)}
+      />
+      <DetailSection
+        label="Item Link"
+        value={
+          <span className="title-md md:title-lg text-error-600 underline">
+            {watch(`requestPackage.items.${index}.url`)}
+          </span>
+        }
+      />
+      <DetailSection
+        label="Cost of item from Store"
+        value={formatCurrency(
+          watch(`requestPackage.items.${index}.originalCost`),
+        )}
+      />
+      <DetailSection
+        label="Store"
+        value={watch(`requestPackage.items.${index}.store`)}
+      />
+      {/* <DetailSection label="Length" value="76in" />
+      <DetailSection label="Width" value="89in" />
+      <DetailSection label="Height" value="89in" /> */}
+      <DetailSection
+        label="Total Shipping Cost to your Warehouse & Sales Tax"
+        labelMaxWidth="max-w-[210px]"
+        value={formatCurrency(
+          watch(`requestPackage.items.${index}.relatedCosts.shippingCost`),
+        )}
+      />
+      <DetailSection
+        label="Additional Item Description"
+        value={watch(`requestPackage.items.${index}.description`)}
+      />
     </div>
   );
 };

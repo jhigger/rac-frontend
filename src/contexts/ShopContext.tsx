@@ -38,7 +38,10 @@ export type ShopItemType = {
   name: string;
   originalCost: number;
   quantity: number;
-  shippingCost: number;
+  weight: number;
+  height: number;
+  length: number;
+  width: number;
   image: string;
   description: string;
   properties?: {
@@ -46,6 +49,7 @@ export type ShopItemType = {
     value: string;
   }[];
   relatedCosts: {
+    shippingCost: number;
     urgentPurchaseFee: number;
     processingFee: number;
     shippingToOriginWarehouseCost: number;

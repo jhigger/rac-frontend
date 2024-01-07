@@ -46,15 +46,18 @@ const useFetchShopOrders = (
             name: item.itemName,
             originalCost: item.cost,
             quantity: item.qty,
-            shippingCost: item.shippingCost,
+            weight: 67, // todo: missing
+            height: 5, // todo: missing
+            length: 5, // todo: missing
+            width: 5, // todo: missing
             image: item.itemImage,
             description: item.description,
-            // todo: missing
             relatedCosts: {
-              urgentPurchaseFee: 0,
-              processingFee: 87000,
-              shippingToOriginWarehouseCost: 87000,
-              shopForMeCost: 87000,
+              shippingCost: item.shippingCost,
+              urgentPurchaseFee: 0, // todo: missing
+              processingFee: 87000, // todo: missing
+              shippingToOriginWarehouseCost: 87000, // todo: missing
+              shopForMeCost: 87000, // todo: missing
             },
           };
 

@@ -1,6 +1,6 @@
 import { ConvertCard, Security, Wallet } from "iconsax-react";
 import { type ReactNode } from "react";
-import { formatCurrency } from "~/Utils";
+import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
 import LabelId from "~/components/LabelId";
@@ -239,25 +239,25 @@ const ShopRequestItemDetails = ({
       />
       <DetailSection
         label="Weight"
-        value="67kg"
+        value={formatWeight(item.weight)}
         tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Height"
-        value="5 inches"
+        value={formatDimension(item.height)}
         tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Length"
-        value="5 inches"
+        value={formatDimension(item.length)}
         tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Width"
-        value="5 inches"
+        value={formatDimension(item.width)}
         tooltip={status === "Responded" ? "" : null}
         colSpanDesktop={2}
       />

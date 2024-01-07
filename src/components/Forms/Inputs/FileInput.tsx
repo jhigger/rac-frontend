@@ -6,10 +6,12 @@ import {
   type HTMLInputTypeAttribute,
   type Ref,
 } from "react";
+import { shortenFileName } from "~/Utils";
 
 type FileInputProps = {
   id: string;
   label: string;
+  fileName: string;
   accept?: string;
   type?: HTMLInputTypeAttribute;
   value?: string;
@@ -18,25 +20,9 @@ type FileInputProps = {
 };
 
 const FileInput = (
-  { accept = "image/*", id, label, value, ...props }: FileInputProps,
+  { accept = "image/*", id, label, fileName, ...props }: FileInputProps,
   ref: Ref<HTMLInputElement>,
 ) => {
-  let filename;
-  if (value) {
-    if (value.length > 0) {
-      filename = value;
-    }
-  }
-
-  const shortenFileName = (filename: string | undefined, length: number) => {
-    if (!filename) return;
-    if (filename.length <= length + 10) return filename;
-
-    return `${filename.slice(0, length)}...${filename.slice(
-      filename.length - length,
-    )}`;
-  };
-
   return (
     <div className="relative flex w-full flex-col">
       <label
@@ -63,12 +49,8 @@ const FileInput = (
           </div>
         </div>
         <div className="segmented-item label-lg relative inline-flex h-10 w-1/2 flex-row items-center justify-center gap-x-2 border border-gray-500 py-2.5 text-neutral-900">
-          <div className="sm:hidden">
-            {shortenFileName(filename, 5) ?? "No file chosen"}
-          </div>
-          <div className="hidden sm:block">
-            {shortenFileName(filename, 10) ?? "No file chosen"}
-          </div>
+          <div className="sm:hidden">{shortenFileName(fileName, 5)}</div>
+          <div className="hidden sm:block">{shortenFileName(fileName, 10)}</div>
         </div>
       </div>
       <div className="hidden px-4 pt-1 text-xs tracking-[0.4px]">

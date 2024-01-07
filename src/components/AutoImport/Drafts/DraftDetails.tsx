@@ -26,7 +26,7 @@ const DraftDetails = () => {
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
-    { title: "Package Details", content: <Step1 /> },
+    { title: "Package Details", content: <Step1 isDraft /> },
     {
       title: "Shipping & Billing Address",
       content: <Step2 />,

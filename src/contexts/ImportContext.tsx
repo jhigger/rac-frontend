@@ -22,7 +22,7 @@ import {
   type BillingDetailsType,
   type ShipmentDetailsType,
 } from "./AutoImportContext";
-import { type PackageCostsType } from "./ShopContext";
+import { type DraftImageType, type PackageCostsType } from "./ShopContext";
 
 export type ImportContextType = {
   draftPackage: ImportDraftPackageType | null;
@@ -55,6 +55,7 @@ export type ImportItemType = {
     label: string;
     value: string;
   }[];
+  draftImage?: DraftImageType;
 };
 
 export type ImportDraftPackageType = ImportRequestPackageType;

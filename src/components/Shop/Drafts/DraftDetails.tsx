@@ -18,7 +18,7 @@ import {
 
 const DraftDetails = () => {
   const { step, next, isLastStep, isSecondToLastStep } = useMultiStepForm([
-    <RequestOrderStep1 />,
+    <RequestOrderStep1 isDraft />,
     <RequestOrderStep2 />,
   ]);
 
@@ -32,6 +32,7 @@ const DraftDetails = () => {
   });
 
   useEffect(() => {
+    console.log(localDraft?.requestPackage);
     formMethods.reset({
       requestPackage: localDraft?.requestPackage ?? {},
     });

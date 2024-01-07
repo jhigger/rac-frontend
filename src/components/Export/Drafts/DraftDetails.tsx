@@ -18,7 +18,7 @@ import { Step3, type ExportInputs } from "../Requests/RequestOrder";
 
 const DraftDetails = () => {
   const { step, next, isLastStep, isSecondToLastStep } = useMultiStepForm([
-    <Step2 />,
+    <Step2 isDraft />,
     <Step3 />,
   ]);
 

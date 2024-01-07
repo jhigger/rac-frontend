@@ -15,7 +15,7 @@ import {
   type SHIPPING_STATUS,
 } from "~/constants";
 import { autoImportOrders, autoImportRequests } from "~/fake data";
-import { type PackageCostsType } from "./ShopContext";
+import { type DraftImageType, type PackageCostsType } from "./ShopContext";
 
 export type AutoImportContextType = {
   draftPackage: AutoImportDraftPackageType | null;
@@ -52,6 +52,8 @@ export type AutoImportItemType = {
     value: string;
   }[];
   pickupDetails?: PickupDetailsType;
+  draftCarImage?: DraftImageType;
+  draftCarTitleImage?: DraftImageType;
 };
 
 export type PickupDetailsType = BillingDetailsType & {

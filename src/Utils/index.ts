@@ -19,3 +19,11 @@ export const formatCurrency = (amount: number) => {
 export const limitChars = (text: string, limit: number) => {
   return `${text.slice(0, limit - 3)}${limit - 3 < 10 ? "..." : ""}`;
 };
+
+export const shortenFileName = (filename: string, length: number) => {
+  if (filename.length <= length + 10) return filename;
+
+  return `${filename.slice(0, length)}...${filename.slice(
+    filename.length - length,
+  )}`;
+};

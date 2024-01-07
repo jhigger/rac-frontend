@@ -1,5 +1,5 @@
 import { Calculator, Whatsapp } from "iconsax-react";
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import {
   FormProvider,
   useFieldArray,
@@ -58,6 +58,7 @@ import {
   type AutoImportRequestPackageType,
   type PickupDetailsType,
 } from "~/contexts/AutoImportContext";
+import { type DraftImageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -239,7 +240,9 @@ const RequestOrder = () => {
   );
 };
 
-export const Step1 = () => {
+type Step1Props = { isDraft?: boolean };
+
+export const Step1 = ({ isDraft = false }: Step1Props) => {
   const { control } = useFormContext<AutoImportInputs>();
   const { fields, append, remove } = useFieldArray<AutoImportInputs>({
     control,
@@ -264,6 +267,7 @@ export const Step1 = () => {
               key={field.id}
               index={i}
               handleRemoveItem={() => handleRemove(i)}
+              isDraft={isDraft}
               expanded
             />
           );
@@ -314,28 +318,62 @@ const SelectWarehouseOriginSection = () => {
 
 const ItemDetailsSection = ({
   index,
+  isDraft,
   expanded = false,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
-  const { register } = useFormContext<AutoImportInputs>();
+  const { register, getValues, setValue } = useFormContext<AutoImportInputs>();
   const { open, toggle } = useAccordion(expanded);
-  const [filename1, setFilename1] = useState("");
 
-  const handleChange1 = (e: ChangeEvent<HTMLInputElement>) => {
+  const emptyImage = {
+    name: "No file chosen",
+    base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+  };
+  const draftImage: DraftImageType =
+    getValues(`requestPackage.items.${index}.draftCarImage`) ?? emptyImage;
+  const initialCarImage = isDraft ? draftImage : emptyImage;
+  const initialCarTitleImage = isDraft ? draftImage : emptyImage;
+
+  const [carImage, setCarImage] = useState<DraftImageType>(initialCarImage);
+  const [carTitleImage, setCarTitleImage] =
+    useState<DraftImageType>(initialCarTitleImage);
+
+  const handleCarImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files) return;
-    if (!files[0]) return;
-    setFilename1(files[0].name);
+    if (!(files instanceof FileList)) return;
+    if (!(files[0] instanceof Blob)) return;
+
+    const name = files[0].name;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64Data = reader.result;
+      const base64String = base64Data?.toString() ?? emptyImage.base64;
+      setCarImage({ name, base64: base64String });
+    };
+    reader.readAsDataURL(files[0] as Blob);
   };
 
-  const [filename2, setFilename2] = useState("");
-
-  const handleChange2 = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleCarTitleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files) return;
-    if (!files[0]) return;
-    setFilename2(files[0].name);
+    if (!(files instanceof FileList)) return;
+    if (!(files[0] instanceof Blob)) return;
+
+    const name = files[0].name;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64Data = reader.result;
+      const base64String = base64Data?.toString() ?? emptyImage.base64;
+      setCarTitleImage({ name, base64: base64String });
+    };
+    reader.readAsDataURL(files[0] as Blob);
   };
+
+  useEffect(() => {
+    setValue(`requestPackage.items.${index}.draftCarImage`, carImage);
+    setValue(`requestPackage.items.${index}.draftCarTitleImage`, carTitleImage);
+  }, [carImage, carTitleImage]);
 
   return (
     <>
@@ -468,9 +506,9 @@ const ItemDetailsSection = ({
                   <FileInput
                     id={`carPicture-${index}`}
                     label={"Upload Car Picture"}
-                    value={filename1}
+                    fileName={carImage.name}
                     {...register(`requestPackage.items.${index}.image`, {
-                      onChange: handleChange1,
+                      onChange: handleCarImageChange,
                     })}
                   />
                 </div>
@@ -479,9 +517,9 @@ const ItemDetailsSection = ({
                   <FileInput
                     id={`carTitle-${index}`}
                     label={"Upload Copy of Car Title"}
-                    value={filename2}
+                    fileName={carTitleImage.name}
                     {...register(`requestPackage.items.${index}.image`, {
-                      onChange: handleChange2,
+                      onChange: handleCarTitleImageChange,
                     })}
                   />
                 </div>
@@ -500,9 +538,7 @@ const ItemDetailsSection = ({
                   <TextAreaInput
                     id={`additionalCarDescription-${index}`}
                     label={"Additional Car Description"}
-                    {...register(`requestPackage.items.${index}.image`, {
-                      onChange: handleChange2,
-                    })}
+                    {...register(`requestPackage.items.${index}.description`)}
                   />
                 </div>
 

@@ -51,6 +51,12 @@ export type ShopItemType = {
     shippingToOriginWarehouseCost: number;
     shopForMeCost: number;
   };
+  draftImage?: DraftImageType;
+};
+
+export type DraftImageType = {
+  name: string;
+  base64: string;
 };
 
 export type PackageCostsType = {

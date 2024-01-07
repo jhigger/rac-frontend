@@ -11,11 +11,11 @@ import {
 import {
   useEffect,
   useId,
-  useRef,
   useState,
   type ChangeEvent,
   type ReactNode,
 } from "react";
+import { createPortal } from "react-dom";
 import {
   Controller,
   FormProvider,
@@ -25,6 +25,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
+import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -36,6 +37,7 @@ import { ORIGINS, STORES } from "~/constants";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
   useShopContext,
+  type DraftImageType,
   type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
@@ -76,6 +78,10 @@ export const emptyValue: ShopRequestPackageType = {
         shippingToOriginWarehouseCost: 0,
         shopForMeCost: 0,
       },
+      draftImage: {
+        name: "No file chosen",
+        base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+      },
     },
   ],
   packageCosts: {
@@ -109,14 +115,15 @@ const RequestOrderForm = () => {
 
   const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
     if (isSecondToLastStep) {
+      // select input can only return string/number
+      // urgent returns 0 or 1 that needs to be parsed to boolean
       data.requestPackage.items.every((item, index) => {
         const value = item.urgent;
         formMethods.setValue(
           `requestPackage.items.${index}.urgent`,
-          Boolean(Number(value)),
+          Boolean(value),
         );
       });
-      console.log(data.requestPackage);
       // console.log("submitting user package...");
       // await mutateAsync(formMethods.getValues().requestPackage);
       // console.log(status);
@@ -137,6 +144,7 @@ const RequestOrderForm = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
+    console.log(formMethods.getValues());
     handleLocalDraft(formMethods.getValues());
   };
 
@@ -188,7 +196,11 @@ const RequestOrderForm = () => {
   );
 };
 
-export const RequestOrderStep1 = () => {
+type RequestOrderStep1Props = { isDraft?: boolean };
+
+export const RequestOrderStep1 = ({
+  isDraft = false,
+}: RequestOrderStep1Props) => {
   const { control } = useFormContext<ShopInputs>();
   const { fields, append, remove } = useFieldArray<ShopInputs>({
     control,
@@ -202,6 +214,7 @@ export const RequestOrderStep1 = () => {
   const handleRemove = (index: number) => {
     remove(index);
   };
+
   return (
     <>
       <ImportantNotice />
@@ -214,6 +227,7 @@ export const RequestOrderStep1 = () => {
               key={field.id}
               index={i}
               handleRemoveItem={() => handleRemove(i)}
+              isDraft={isDraft}
               expanded
             />
           );
@@ -334,7 +348,7 @@ export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
   return (
     <div className="flex items-start gap-[10px] md:items-center">
       <ArrowCircleRight variant="Bold" className="text-secondary-900" />
-      <div className="flex w-full flex-col justify-center gap-[10px] h-full">
+      <div className="flex h-full w-full flex-col justify-center gap-[10px]">
         <h3 className="label-lg font-medium text-secondary-900">{title}</h3>
         {hr && <hr className="hidden w-full border-gray-500 md:block" />}
       </div>
@@ -342,7 +356,7 @@ export const SectionHeader = ({ title, hr = false }: SectionHeaderProps) => {
   );
 };
 
-const SelectWarehouseOriginSection = () => {
+export const SelectWarehouseOriginSection = () => {
   const { register } = useFormContext<ShopInputs>();
 
   return (
@@ -408,6 +422,7 @@ export const TooltipButton = ({ label, position }: TooltipButtonProps) => {
 
 export type ItemDetailsSectionProps = {
   index: number;
+  isDraft: boolean;
   expanded?: boolean;
   handleRemoveItem: () => void;
 };
@@ -415,19 +430,41 @@ export type ItemDetailsSectionProps = {
 const ItemDetailsSection = ({
   index,
   expanded = false,
+  isDraft,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
   const { register, getValues, setValue } = useFormContext<ShopInputs>();
   const { open, toggle } = useAccordion(expanded);
-  const [filename, setFilename] = useState("");
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-    if (!files[0]) return;
-
-    setFilename(files[0].name);
+  const emptyImage = {
+    name: "No file chosen",
+    base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
   };
+  const draftImage: DraftImageType =
+    getValues(`requestPackage.items.${index}.draftImage`) ?? emptyImage;
+  const initialImage = isDraft ? draftImage : emptyImage;
+
+  const [image, setImage] = useState<DraftImageType>(initialImage);
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!(files instanceof FileList)) return;
+    if (!(files[0] instanceof Blob)) return;
+
+    const name = files[0].name;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64Data = reader.result;
+      const base64String = base64Data?.toString() ?? emptyImage.base64;
+      setImage({ name, base64: base64String });
+    };
+    reader.readAsDataURL(files[0] as Blob);
+  };
+
+  useEffect(() => {
+    setValue(`requestPackage.items.${index}.draftImage`, image);
+  }, [image]);
 
   return (
     <>
@@ -439,7 +476,7 @@ const ItemDetailsSection = ({
                 Item - <span className="text-primary-600">#{index + 1}</span>
               </h4>
               <div className="hidden md:block">
-                <PreviewItemButton index={index} />
+                <PreviewItemButton index={index} image={image.base64} />
               </div>
               <div className="flex flex-grow justify-end">
                 <AccordionButton {...{ open, toggle }} />
@@ -477,11 +514,13 @@ const ItemDetailsSection = ({
                     label={"Urgent Purchase"}
                     options={
                       <>
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
+                        <option value={1}>Yes</option>
+                        <option value={0}>No</option>
                       </>
                     }
-                    {...register(`requestPackage.items.${index}.urgent`)}
+                    {...register(`requestPackage.items.${index}.urgent`, {
+                      valueAsNumber: true,
+                    })}
                   />
                   <TooltipButton label="" position="left-start" />
                 </div>
@@ -547,9 +586,9 @@ const ItemDetailsSection = ({
                   <FileInput
                     id={`itemPicture-${index}`}
                     label={"Upload Item Picture"}
-                    value={filename}
+                    fileName={image.name}
                     {...register(`requestPackage.items.${index}.image`, {
-                      onChange: handleChange,
+                      onChange: handleImageChange,
                     })}
                   />
                 </div>
@@ -574,8 +613,9 @@ const ItemDetailsSection = ({
               </div>
             )}
 
+            {/* mobile version */}
             <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 p-[10px] md:hidden">
-              <PreviewItemButton index={index} />
+              <PreviewItemButton index={index} image={image.base64} />
               <DeleteItemButton onClick={handleRemoveItem} />
             </div>
           </div>
@@ -584,7 +624,6 @@ const ItemDetailsSection = ({
           <DeleteButtonIcon onClick={handleRemoveItem} />
         </div>
       </div>
-      <ItemPreview index={index} />
     </>
   );
 };
@@ -826,54 +865,54 @@ export const SectionContentLayout = ({
   );
 };
 
-type PreviewItemButtonProps = { index: number };
+type PreviewItemButtonProps = { index: number; image: string };
 
-const PreviewItemButton = ({ index }: PreviewItemButtonProps) => {
-  const dataTarget = `#preview-item-${index}`;
+const PreviewItemButton = ({ index, image }: PreviewItemButtonProps) => {
+  const id = useId().replaceAll(":", "");
+  const modalId = `preview-item-${id}`;
+  const dataTarget = `#${modalId}`;
 
   useEffect(() => {
     tailmater();
   }, []);
 
   return (
-    <button
-      aria-label="Preview Item"
-      data-type="dialogs"
-      data-target={dataTarget}
-      className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-    >
-      <Eye size={18} variant="Bold" />
-      <span>Preview Item</span>
-    </button>
+    <>
+      <button
+        aria-label="Preview Item"
+        data-type="dialogs"
+        data-target={dataTarget}
+        className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+      >
+        <Eye size={18} variant="Bold" />
+        <span>Preview Item</span>
+      </button>
+      {createPortal(
+        <ItemPreview index={index} image={image} modalId={modalId} />,
+        document.body,
+      )}
+    </>
   );
 };
 
-type ItemPreviewProps = PreviewItemButtonProps;
+type ItemPreviewProps = PreviewItemButtonProps & {
+  modalId: string;
+};
 
-const ItemPreview = ({ index }: ItemPreviewProps) => {
-  const id = `preview-item-${index}`;
-  const dataClose = `#${id}`;
+const ItemPreview = ({ index, image, modalId }: ItemPreviewProps) => {
+  const { watch } = useFormContext<ShopInputs>();
 
-  const { getValues, watch } = useFormContext<ShopInputs>();
-  const ref = useRef<HTMLImageElement>(null);
+  const dataClose = `#${modalId}`;
+  // select input can only return string/number
+  // urgent returns 0 or 1 that needs to be parsed to boolean
+  const urgent = Boolean(watch(`requestPackage.items.${index}.urgent`));
 
-  const handleGetImage = () => {
-    const files = getValues(`requestPackage.items.${index}.image`);
-    if (!files ?? files[0]) return;
-
-    const src = URL.createObjectURL(files[0] as unknown as Blob);
-    if (ref.current) {
-      ref.current.setAttribute("src", src);
-    }
-  };
-
-  useEffect(() => {
-    handleGetImage();
-  }, [watch(`requestPackage.items.${index}.image`)]);
+  const urgentPurchaseCost = urgent ? 999 : 0; // todo: get this from server
+  const processingFee = 999; // todo: get this from server
 
   return (
     <div
-      id={id}
+      id={modalId}
       className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center  [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
     >
       <div
@@ -885,9 +924,8 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2">
           <div className="col-span-1 flex flex-col gap-[30px] text-2xl font-normal text-gray-900">
             <img
-              ref={ref}
-              src="https://placehold.co/500x500/cac4d0/1d192b?text=Image"
-              alt=""
+              src={image}
+              alt="preview image"
               className="aspect-square rounded-[20px] bg-center object-cover"
             />
             <div className="flex flex-col px-[14px]">
@@ -895,51 +933,52 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
                 Item Name:
               </label>
               <span id="item-name" className="title-lg text-neutral-900">
-                {getValues(`requestPackage.items.${index}.name`)}
+                {watch(`requestPackage.items.${index}.name`)}
               </span>
             </div>
           </div>
+
           <div className="col-span-1 flex flex-col gap-[10px] text-sm leading-5 tracking-[0.25px]">
             <ItemPreviewDetails index={index} />
 
             <div className="flex flex-col gap-[20px] rounded-[20px] bg-secondary-600 px-[24px] py-[20px] text-primary-10">
               <span className="title-lg">Shop For Me Costs</span>
               <div className="flex flex-col gap-[10px]">
-                <div className="label-lg flex justify-between">
+                <div className="flex justify-between">
                   <span>Urgent Purchase Cost:</span>
-                  <span>
-                    $
-                    {(getValues(
-                      `requestPackage.items.${index}.urgent`,
-                    ) as unknown as string) === "Yes"
-                      ? 999
-                      : 0}
-                  </span>
+                  <span>{formatCurrency(urgentPurchaseCost)}</span>
                 </div>
                 <hr className="bg-gray-200" />
                 <div className="flex justify-between">
                   <span>Cost of Item from Store</span>
                   <span>
-                    ${getValues(`requestPackage.items.${index}.originalCost`)}
+                    {formatCurrency(
+                      watch(`requestPackage.items.${index}.originalCost`),
+                    )}
                   </span>
                 </div>
                 <hr className="bg-gray-200" />
                 <div className="flex justify-between">
                   <span>Processing Fee:</span>
-                  <span>$999</span>
+                  <span>{formatCurrency(processingFee)}</span>
                 </div>
                 <hr className="bg-gray-200" />
               </div>
-              <TotalCost total={1000} />
+              <TotalCost
+                total={
+                  urgentPurchaseCost +
+                  watch(`requestPackage.items.${index}.originalCost`) +
+                  processingFee
+                }
+              />
             </div>
           </div>
-        </div>
-        <div className="flex flex-row items-end justify-end">
-          <div className="w-1/2">
+
+          <div className="col-span-1 col-start-2">
             <button
               aria-label="Back"
               data-close={dataClose}
-              className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+              className="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
             >
               <ArrowCircleLeft2 variant="Bold" />
               <span className="label-lg text-white">Back</span>
@@ -954,21 +993,21 @@ const ItemPreview = ({ index }: ItemPreviewProps) => {
 type ItemPreviewDetailsProps = { index: number };
 
 const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
-  const { getValues } = useFormContext<ShopInputs>();
+  const { watch } = useFormContext<ShopInputs>();
 
   return (
     <div className="flex flex-col gap-[10px] overflow-y-auto rounded-[10px] bg-surface-500 px-[20px] py-[20px] md:max-h-[250px] md:gap-[20px] md:px-[24px] ">
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Item Quantity:</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {getValues(`requestPackage.items.${index}.quantity`)}
+          {watch(`requestPackage.items.${index}.quantity`)}
         </span>
       </div>
 
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Country Of Purchase:</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {getValues(`requestPackage.originWarehouse`)}
+          {watch(`requestPackage.originWarehouse`)}
         </span>
       </div>
 
@@ -978,7 +1017,7 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
           id="item-name"
           className="title-md md:title-lg text-error-600 underline"
         >
-          {getValues(`requestPackage.items.${index}.url`)}
+          {watch(`requestPackage.items.${index}.url`)}
         </span>
       </div>
 
@@ -987,14 +1026,14 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
           Cost of item from Store:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          ${getValues(`requestPackage.items.${index}.originalCost`)}
+          {formatCurrency(watch(`requestPackage.items.${index}.originalCost`))}
         </span>
       </div>
 
       <div className="flex flex-col px-[14px]">
         <label className="body-md text-neutral-700">Store</label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {getValues(`requestPackage.items.${index}.store`)}
+          {watch(`requestPackage.items.${index}.store`)}
         </span>
       </div>
 
@@ -1024,7 +1063,7 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
           Total Shipping Cost to your Warehouse & Sales Tax:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          ${getValues(`requestPackage.items.${index}.shippingCost`)}
+          {formatCurrency(watch(`requestPackage.items.${index}.shippingCost`))}
         </span>
       </div>
 
@@ -1033,7 +1072,7 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
           Additional Item Description:
         </label>
         <span id="item-name" className="title-md md:title-lg text-neutral-900">
-          {getValues(`requestPackage.items.${index}.description`)}
+          {watch(`requestPackage.items.${index}.description`)}
         </span>
       </div>
     </div>

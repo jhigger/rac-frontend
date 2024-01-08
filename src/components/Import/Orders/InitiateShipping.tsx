@@ -3,7 +3,6 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { useFormContext } from "react-hook-form";
 import {
   formatCurrency,
   formatDimension,
@@ -51,7 +50,6 @@ import {
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
-import { type ImportInputs } from "../Requests/RequestOrder";
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -248,7 +246,7 @@ const ImportOrderItemDetails = ({ item }: ImportOrderItemDetailsProps) => {
   );
 };
 
-export const BillingAddressStep = () => {
+const BillingAddressStep = () => {
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
@@ -269,7 +267,7 @@ export const BillingAddressStep = () => {
 };
 
 const SelectDestinationShippingAddress = () => {
-  const { register } = useFormContext<ImportInputs>();
+  // const { register } = useFormContext<ImportInputs>();
 
   return (
     <div className="flex w-full items-center gap-[10px]">
@@ -291,7 +289,7 @@ const SelectDestinationShippingAddress = () => {
             })}
           </>
         }
-        {...register("requestPackage.destinationWarehouse")}
+        // {...register("requestPackage.destinationWarehouse")}
       />
       <TooltipButton
         label="This is your shipping address, it is the location your package will be delivered to. You can then request for doorstep delivery upon arrival."

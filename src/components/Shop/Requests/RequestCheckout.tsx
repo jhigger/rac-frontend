@@ -696,42 +696,45 @@ export const ShopPackageTableFooter = ({
 
   return (
     <>
-      <div className="col-span-1 row-span-1">
+      <div className="col-span-1">
         <DetailSection label="Total number of items" value={numberOfItems} />
       </div>
-      <div className="col-span-1 row-span-1">
+      <div className="col-span-1">
         <DetailSection
           label="Total Gross weight"
           value={formatWeight(grossWeight)}
         />
       </div>
-      <div className="col-span-1 row-span-1">
+      <div className="col-span-2">
         <DetailSection
           label="Total Items Cost from Store"
+          labelMaxWidth="max-w-[125px]"
           value={formatCurrency(itemsCostFromStore)}
         />
       </div>
-      <div className="col-span-1 row-span-1">
+      <div className="col-span-1">
         <DetailSection
           label="Processing fee"
           value={formatCurrency(processingFee)}
         />
       </div>
-      <div className="col-span-1 row-span-1">
+      <div className="col-span-1">
         <DetailSection
           label="Urgent Purchase fee"
           value={formatCurrency(urgentPurchaseFee)}
         />
       </div>
-      <div className="col-span-1 row-span-1">
+      <div className="col-span-1">
         <DetailSection
           label="Total Shipping to Origin Warehouse Cost"
-          labelMaxWidth="max-width-[182px]"
+          labelMaxWidth="max-w-[182px]"
           value={formatCurrency(shippingToOriginWarehouseCost)}
         />
       </div>
-      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="title-lg text-gray-700">Total Shop For Me Cost:</span>
+      <div className="col-span-1 flex flex-col gap-[5px]">
+        <span className="title-lg max-w-[162px] text-gray-700">
+          Total Shop For Me Cost:
+        </span>
         <span className="title-lg md:headline-sm text-neutral-900">
           {formatCurrency(shopForMeCost)}
         </span>

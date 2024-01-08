@@ -482,15 +482,14 @@ export const ShippingStatusModalLayout = ({
 }: ShippingStatusModalLayoutProps) => {
   const shippingStatus = orderPackage.shippingStatus;
   const maxWidth =
-    shippingStatus === "cleared" ? "max-w-[1000px] mt-60" : "max-w-[700px]";
-  const marginTop =
-    shippingStatus === "cleared" ? "mt-[400px] md:mt-[300px]" : "";
+    shippingStatus === "cleared" ? "max-w-[1000px]" : "max-w-[700px]";
+  const marginTop = shippingStatus === "cleared" ? "md:mt-[345px]" : "";
 
   return (
     <div
       id={modalId}
       className={
-        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-start justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
       }
     >
       <div

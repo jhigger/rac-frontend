@@ -36,6 +36,7 @@ const useFetchShopRequests = (
           requestLocalDate: new Date(request.createdAt).toLocaleString(),
           originWarehouse:
             request.origin as ShopRequestPackageType["originWarehouse"],
+          destinationWarehouse: "Nigeria Warehouse (Lagos)", // todo: missing
           items: request.requestPackages.map((item) => {
             const requestItem: ShopItemType = {
               store: item.store as ShopItemType["store"],
@@ -52,10 +53,9 @@ const useFetchShopRequests = (
               description: item.description,
               // todo: missing
               relatedCosts: {
-                shippingCost: item.shippingCost,
                 urgentPurchaseFee: 0, // todo: missing
                 processingFee: 87000, // todo: missing
-                shippingToOriginWarehouseCost: 87000, // todo: missing
+                shippingToOriginWarehouseCost: item.shippingCost,
                 shopForMeCost: 87000, // todo: missing
               },
             };

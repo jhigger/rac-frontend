@@ -268,18 +268,17 @@ const ShopRequestItemDetails = ({
         tooltip={status === "Responded" ? "" : null}
       />
       <DetailSection label="Product Description" value={item.description} />
-      <DetailSection
-        label="Color"
-        value="Blue"
-        colSpanDesktop={2}
-        tooltip={status === "Responded" ? "" : null}
-      />
-      <DetailSection
-        label="Stripes"
-        value="5 inches"
-        colSpanDesktop={2}
-        tooltip={status === "Responded" ? "" : null}
-      />
+
+      {item.properties?.map((property) => {
+        return (
+          <DetailSection
+            label={property.label}
+            value={property.value}
+            colSpanDesktop={3}
+            tooltip={status === "Responded" ? "" : null}
+          />
+        );
+      })}
     </>
   );
 };

@@ -61,7 +61,7 @@ const ShopPackageTable = <T extends object>({
             </tbody>
           </table>
           <div className="w-full bg-neutral-50">
-            <div className="grid max-w-[877px] grid-cols-4 items-end gap-[20px]  px-[30px] py-[10px] [&>tr>td]:border-0 [&>tr>td]:p-0">
+            <div className="grid max-w-[877px] grid-cols-4 items-end gap-[20px] px-[30px] py-[10px] [&>tr>td]:border-0 [&>tr>td]:p-0">
               {tableFooter}
             </div>
           </div>

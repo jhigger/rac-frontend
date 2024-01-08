@@ -92,7 +92,9 @@ const OrderDetails = () => {
       {orderPackage.shopForMeStatus !== "Purchase not started" && (
         <div className="flex flex-col gap-[10px]">
           <SectionHeader title="Shipping Details" />
-          <DestinationShippingAddress />
+          <DestinationShippingAddress
+            destinationWarehouse={orderPackage.destinationWarehouse}
+          />
         </div>
       )}
 

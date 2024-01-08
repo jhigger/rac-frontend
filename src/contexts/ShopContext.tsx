@@ -49,7 +49,6 @@ export type ShopItemType = {
     value: string;
   }[];
   relatedCosts: {
-    shippingCost: number;
     urgentPurchaseFee: number;
     processingFee: number;
     shippingToOriginWarehouseCost: number;
@@ -83,6 +82,7 @@ export type ShopOrderPackageType = {
   trackingId: string;
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   originWarehouse: (typeof ORIGINS)[number];
+  destinationWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
   billingDetails: BillingDetailsType;
   totalShopForMeCost: number; // aggregated data for table sorting
@@ -97,6 +97,7 @@ export type ShopRequestPackageType = {
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestLocalDate: string;
   originWarehouse: (typeof ORIGINS)[number];
+  destinationWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
   packageCosts: Pick<
     PackageCostsType,

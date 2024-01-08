@@ -26,6 +26,7 @@ export const shopOrders: ShopOrderPackageType[] = [
     trackingId: "SH08751",
     shippingStatus: "not started",
     originWarehouse: "Nigeria Warehouse (Lagos)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -41,7 +42,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -62,7 +62,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -104,6 +103,7 @@ export const shopOrders: ShopOrderPackageType[] = [
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -119,7 +119,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -140,7 +139,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -161,7 +159,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -203,6 +200,7 @@ export const shopOrders: ShopOrderPackageType[] = [
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     originWarehouse: "China Warehouse (Guangzhou city)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -218,7 +216,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -239,7 +236,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -260,7 +256,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -281,7 +276,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -323,6 +317,7 @@ export const shopOrders: ShopOrderPackageType[] = [
     trackingId: "SH08754",
     shippingStatus: "in transit",
     originWarehouse: "Dubai Warehouse",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -338,7 +333,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -359,7 +353,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -380,7 +373,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -401,7 +393,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -422,7 +413,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -464,6 +454,7 @@ export const shopOrders: ShopOrderPackageType[] = [
     trackingId: "SH08755",
     shippingStatus: "processing",
     originWarehouse: "UK Warehouse (London)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -479,7 +470,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -521,6 +511,7 @@ export const shopOrders: ShopOrderPackageType[] = [
     trackingId: "SH08756",
     shippingStatus: "cleared",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -536,7 +527,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -578,6 +568,7 @@ export const shopOrders: ShopOrderPackageType[] = [
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -593,7 +584,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -635,6 +625,7 @@ export const shopOrders: ShopOrderPackageType[] = [
     trackingId: "SH08758",
     shippingStatus: "delivered",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -650,7 +641,6 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -693,6 +683,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -708,12 +699,15 @@ export const shopRequests: ShopRequestPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
         },
+        properties: [
+          { label: "Color", value: "Blue" },
+          { label: "Stripes", value: "5 inches" },
+        ],
       },
     ],
     packageCosts: {
@@ -727,6 +721,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -742,7 +737,6 @@ export const shopRequests: ShopRequestPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -761,6 +755,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -776,7 +771,6 @@ export const shopRequests: ShopRequestPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -795,6 +789,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -810,7 +805,6 @@ export const shopRequests: ShopRequestPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -829,6 +823,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -844,7 +839,6 @@ export const shopRequests: ShopRequestPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -863,6 +857,7 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -878,7 +873,6 @@ export const shopRequests: ShopRequestPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          shippingCost: 1,
           urgentPurchaseFee: 0,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
@@ -902,6 +896,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08751",
     shippingStatus: "not started",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -962,6 +957,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1022,6 +1018,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08754",
     shippingStatus: "in transit",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1082,6 +1079,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08755",
     shippingStatus: "processing",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1142,6 +1140,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08756",
     shippingStatus: "cleared",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1202,6 +1201,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1262,6 +1262,7 @@ export const importOrders: ImportOrderPackageType[] = [
     trackingId: "SH08758",
     shippingStatus: "delivered",
     originWarehouse: "US Warehouse (Richmond Texas)",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1324,6 +1325,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "China Warehouse (Guangzhou city)",
     deliveryStatus: "All delivered",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1358,6 +1360,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "Dubai Warehouse",
     deliveryStatus: "None delivered",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1392,6 +1395,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "Nigeria Warehouse (Lagos)",
     deliveryStatus: "Some delivered",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1441,6 +1445,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "UK Warehouse (London)",
     deliveryStatus: "All delivered",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1475,6 +1480,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
     deliveryStatus: "None delivered",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1509,6 +1515,7 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
     deliveryStatus: "Some delivered",
+    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",

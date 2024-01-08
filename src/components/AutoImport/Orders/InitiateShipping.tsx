@@ -243,13 +243,24 @@ const Step3 = () => {
 
   const defaultColumns = useMemo(autoImportPackageItemColumns, []);
 
+  const totals = {
+    declaredValue: requestPackage.items.reduce(
+      (acc, item) => (acc += item.value),
+      0,
+    ),
+    pickupCost: requestPackage.items.reduce(
+      (acc, item) => (acc += item.pickupDetails?.pickupCost ?? 0),
+      0,
+    ),
+  };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
       <PackageTable
         columns={defaultColumns}
         data={requestPackage.items}
-        tableFooter={<AutoImportPackageTableFooter />}
+        tableFooter={<AutoImportPackageTableFooter totals={totals} />}
       />
 
       <SectionHeader title="Shipping Methods" />
@@ -493,20 +504,31 @@ export const autoImportPackageItemColumns = () => {
   ] as Array<ColumnDef<AutoImportItemType, unknown>>;
 };
 
-export const AutoImportPackageTableFooter = () => {
+type AutoImportPackageTableFooterProps = {
+  totals: {
+    declaredValue: number;
+    pickupCost: number;
+  };
+};
+
+export const AutoImportPackageTableFooter = ({
+  totals,
+}: AutoImportPackageTableFooterProps) => {
+  const { declaredValue, pickupCost } = totals;
+
   return (
     <>
-      <div className="col-span-1 col-start-3 flex w-[100px] flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total Declared value:
-        </span>
-        <span className="title-lg text-neutral-900">$345.00</span>
+      <div className="col-span-1 col-start-3">
+        <DetailSection
+          label="Total Declared Value"
+          value={formatCurrency(declaredValue)}
+        />
       </div>
-      <div className="col-span-1 flex w-[100px] flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total pick up cost:
-        </span>
-        <span className="title-lg text-neutral-900">$340.00</span>
+      <div className="col-span-1">
+        <DetailSection
+          label="Total pick up cost"
+          value={formatCurrency(pickupCost)}
+        />
       </div>
     </>
   );

@@ -36,6 +36,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
+import { WAREHOUSE_LOCATIONS } from "~/constants";
 import {
   useImportContext,
   type ImportItemType,
@@ -66,7 +67,14 @@ const ClearPackage = () => {
       content: <BillingDetailsConfirmation />,
     },
     { title: "Clear Package", content: <ClearPackageStep /> },
-    { title: "Success", content: <Success /> },
+    {
+      title: "Success",
+      content: (
+        <Success
+          officeLocation={WAREHOUSE_LOCATIONS[orderPackage.originWarehouse]}
+        />
+      ),
+    },
   ];
   const stepsContent = steps.map((step) => step.content);
   const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
@@ -262,7 +270,9 @@ const BillingDetailsConfirmation = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <DestinationShippingAddress />
+      <DestinationShippingAddress
+        destinationWarehouse={orderPackage.destinationWarehouse}
+      />
       <BillingAddress billingDetails={orderPackage.billingDetails} />
     </div>
   );
@@ -280,13 +290,25 @@ const ClearPackageStep = () => {
 
   const defaultColumns = useMemo(importPackageItemColumns, []);
 
+  const totals = {
+    numberOfItems: orderPackage.items.length,
+    grossWeight: orderPackage.items.reduce(
+      (acc, item) => (acc += item.weight),
+      0,
+    ),
+    declaredValue: orderPackage.items.reduce(
+      (acc, item) => (acc += item.originalCost),
+      0,
+    ),
+  };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
       <PackageTable
         columns={defaultColumns}
         data={orderPackage.items}
-        tableFooter={<ImportPackageTableFooter />}
+        tableFooter={<ImportPackageTableFooter totals={totals} />}
       />
 
       <SectionHeader title="Shipping Methods" />

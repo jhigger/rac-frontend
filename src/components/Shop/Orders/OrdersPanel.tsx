@@ -14,7 +14,12 @@ import { capitalizeWords, formatCurrency } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
-import { SHIPPING_STATUS, SHOP_FOR_ME_STATUS, type ORIGINS } from "~/constants";
+import {
+  SHIPPING_STATUS,
+  SHOP_FOR_ME_STATUS,
+  WAREHOUSE_LOCATIONS,
+  type ORIGINS,
+} from "~/constants";
 import { type ShipmentDetailsType } from "~/contexts/AutoImportContext";
 import { type OrderPackageType } from "~/contexts/NotificationContext";
 import {
@@ -466,14 +471,6 @@ type ShippingStatusModalLayoutProps = {
   children: ReactNode;
 };
 
-const shipmentDetails = {
-  address: "29b Osolo way ajao estate, Isolo",
-  country: "Nigeria",
-  state: "Lagos",
-  city: "Ikeja",
-  zipPostalCode: "10011",
-};
-
 export const ShippingStatusModalLayout = ({
   modalId,
   dataClose,
@@ -484,6 +481,8 @@ export const ShippingStatusModalLayout = ({
   const maxWidth =
     shippingStatus === "cleared" ? "max-w-[1000px]" : "max-w-[700px]";
   const marginTop = shippingStatus === "cleared" ? "md:mt-[345px]" : "";
+
+  const shipmentDetails = WAREHOUSE_LOCATIONS["Nigeria Warehouse (Lagos)"];
 
   return (
     <div
@@ -655,7 +654,9 @@ const ShipmentPath = ({
   );
 };
 
-type PackageDestinationProps = { shipmentDetails: typeof shipmentDetails };
+type PackageDestinationProps = {
+  shipmentDetails: (typeof WAREHOUSE_LOCATIONS)["Nigeria Warehouse (Lagos)"];
+};
 
 const PackageDestination = ({ shipmentDetails }: PackageDestinationProps) => {
   return (

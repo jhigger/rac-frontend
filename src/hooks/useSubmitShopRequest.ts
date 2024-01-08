@@ -16,7 +16,7 @@ const useSubmitShopRequest = (token: string) => {
           itemPrice: item.originalCost, // todo: price? === cost?
           cost: item.originalCost,
           qty: item.quantity,
-          shippingCost: item.relatedCosts.shippingCost,
+          shippingCost: item.relatedCosts.shippingToOriginWarehouseCost,
           description: item.description,
         };
 

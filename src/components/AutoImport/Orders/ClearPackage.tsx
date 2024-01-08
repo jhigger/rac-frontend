@@ -172,13 +172,24 @@ const Step3 = () => {
 
   const defaultColumns = useMemo(autoImportPackageItemColumns, []);
 
+  const totals = {
+    declaredValue: orderPackage.items.reduce(
+      (acc, item) => (acc += item.value),
+      0,
+    ),
+    pickupCost: orderPackage.items.reduce(
+      (acc, item) => (acc += item.pickupDetails?.pickupCost ?? 0),
+      0,
+    ),
+  };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
       <PackageTable
         columns={defaultColumns}
         data={orderPackage.items}
-        tableFooter={<AutoImportPackageTableFooter />}
+        tableFooter={<AutoImportPackageTableFooter totals={totals} />}
       />
 
       <SectionHeader title="Payment Methods" />

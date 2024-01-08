@@ -38,6 +38,7 @@ const useFetchShopOrders = (
           order.ShippingStatus.toLowerCase() as ShopOrderPackageType["shippingStatus"],
         originWarehouse:
           order.origin as ShopOrderPackageType["originWarehouse"],
+        destinationWarehouse: "Nigeria Warehouse (Lagos)", // todo: missing
         items: order.requestPackages.map((item) => {
           const requestItem: ShopItemType = {
             store: item.store as ShopItemType["store"],
@@ -53,10 +54,9 @@ const useFetchShopOrders = (
             image: item.itemImage,
             description: item.description,
             relatedCosts: {
-              shippingCost: item.shippingCost,
               urgentPurchaseFee: 0, // todo: missing
               processingFee: 87000, // todo: missing
-              shippingToOriginWarehouseCost: 87000, // todo: missing
+              shippingToOriginWarehouseCost: item.shippingCost,
               shopForMeCost: 87000, // todo: missing
             },
           };

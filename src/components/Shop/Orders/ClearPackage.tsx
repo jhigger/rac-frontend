@@ -13,6 +13,7 @@ import {
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
 import ShopPackageTable from "~/components/ShopPackageTable";
+import { WAREHOUSE_LOCATIONS, type ORIGINS } from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -55,7 +56,14 @@ const ClearPackage = () => {
       content: <BillingDetailsConfirmation />,
     },
     { title: "Clear Package", content: <ClearPackageStep /> },
-    { title: "Success", content: <Success /> },
+    {
+      title: "Success",
+      content: (
+        <Success
+          officeLocation={WAREHOUSE_LOCATIONS[orderPackage.originWarehouse]}
+        />
+      ),
+    },
   ];
   const stepsContent = steps.map((step) => step.content);
   const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
@@ -147,13 +155,21 @@ const BillingDetailsConfirmation = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <DestinationShippingAddress />
+      <DestinationShippingAddress
+        destinationWarehouse={orderPackage.destinationWarehouse}
+      />
       <BillingAddress billingDetails={orderPackage.billingDetails} />
     </div>
   );
 };
 
-export const DestinationShippingAddress = () => {
+type DestinationShippingAddressProps = {
+  destinationWarehouse: (typeof ORIGINS)[number];
+};
+
+export const DestinationShippingAddress = ({
+  destinationWarehouse,
+}: DestinationShippingAddressProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -165,18 +181,16 @@ export const DestinationShippingAddress = () => {
           </h4>
           <AccordionButton {...{ open, toggle }} />
         </div>
+
         {open && (
           <div className="flex flex-col gap-[30px]">
             <div className="flex flex-col gap-[10px]">
               <HighlightedInfo text="Your Items have been delivered to this RAC Logistics warehouse in Nigeria where you can pickup from when it arrives Nigeria." />
-              <span className="body-md max-w-[100px] text-gray-700">
-                Destination:
-              </span>
-              <span className="title-md md:title-lg font-medium text-neutral-900">
-                Nigeria (Lagos - warehouse)
-              </span>
+              <DetailSection label="Destination" value={destinationWarehouse} />
             </div>
-            <DestinationAddressDetails />
+            <DestinationAddressDetails
+              warehouseLocation={WAREHOUSE_LOCATIONS[destinationWarehouse]}
+            />
           </div>
         )}
       </div>
@@ -211,7 +225,15 @@ export const PurpleDetailSection = ({
   );
 };
 
-const DestinationAddressDetails = () => {
+type DestinationAddressDetailsProps = {
+  warehouseLocation: (typeof WAREHOUSE_LOCATIONS)[(typeof ORIGINS)[number]];
+};
+
+const DestinationAddressDetails = ({
+  warehouseLocation,
+}: DestinationAddressDetailsProps) => {
+  const { address, country, state, city, zipPostalCode } = warehouseLocation;
+
   return (
     <>
       <div className="flex items-center">
@@ -224,39 +246,32 @@ const DestinationAddressDetails = () => {
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
         <PurpleDetailSection
           label="First Name"
-          value="Malibu"
+          value="N/A"
           colSpanDesktop={4}
         />
-        <PurpleDetailSection
-          label="Last Name"
-          value="SHedrack"
-          colSpanDesktop={4}
-        />
-        <PurpleDetailSection
-          label="Street Address"
-          value="No, 1osolo way, ikeja road, behind scaint merry"
-        />
+        <PurpleDetailSection label="Last Name" value="N/A" colSpanDesktop={4} />
+        <PurpleDetailSection label="Street Address" value={address} />
         <PurpleDetailSection
           label="Country"
-          value="Nigeria"
+          value={country}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="State"
-          value="Lagos"
+          value={state}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="City"
-          value="Ikeja"
+          value={city}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="Zip/postal Code"
-          value="98765"
+          value={zipPostalCode}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
@@ -277,13 +292,41 @@ export const ClearPackageStep = () => {
 
   const defaultColumns = useMemo(shopPackageItemColumns, []);
 
+  const totals = {
+    numberOfItems: orderPackage.items.length,
+    grossWeight: orderPackage.items.reduce(
+      (acc, item) => (acc += item.weight),
+      0,
+    ),
+    itemsCostFromStore: orderPackage.items.reduce(
+      (acc, item) => (acc += item.originalCost),
+      0,
+    ),
+    processingFee: orderPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.processingFee),
+      0,
+    ),
+    urgentPurchaseFee: orderPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.urgentPurchaseFee),
+      0,
+    ),
+    shippingToOriginWarehouseCost: orderPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.shippingToOriginWarehouseCost),
+      0,
+    ),
+    shopForMeCost: orderPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.shopForMeCost),
+      0,
+    ),
+  };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
       <ShopPackageTable
         columns={defaultColumns}
         data={orderPackage.items}
-        tableFooter={<ShopPackageTableFooter />}
+        tableFooter={<ShopPackageTableFooter totals={totals} />}
       />
 
       <SectionHeader title="Shipping Methods" />
@@ -331,10 +374,14 @@ export const ClearPackageStep = () => {
   );
 };
 
-export const Success = () => {
+type SuccessProps = {
+  officeLocation: (typeof WAREHOUSE_LOCATIONS)[(typeof ORIGINS)[number]];
+};
+
+export const Success = ({ officeLocation }: SuccessProps) => {
   return (
     <div className="flex flex-col gap-[30px]">
-      <OfficePickupAddress />
+      <OfficePickupAddress officeLocation={officeLocation} />
       <SectionHeader title="How to pick up" />
       <PickUpInstructions />
       <AndLastly />
@@ -342,8 +389,11 @@ export const Success = () => {
   );
 };
 
-const OfficePickupAddress = () => {
+type OfficePickupAddressProps = SuccessProps;
+
+const OfficePickupAddress = ({ officeLocation }: OfficePickupAddressProps) => {
   const { open, toggle } = useAccordion(true);
+  const { address, country, state, city, zipPostalCode } = officeLocation;
 
   return (
     <SectionContentLayout>
@@ -356,18 +406,14 @@ const OfficePickupAddress = () => {
         </div>
 
         {open && (
-          // todo: replace values with office address
           <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
-            <DetailSection
-              label="Pickup Address"
-              value="No, 1osolo way, ikeja road, behind scaint merry"
-            />
-            <DetailSection label="Country" value="Nigeria" colSpanDesktop={2} />
-            <DetailSection label="State" value="Lagos" colSpanDesktop={2} />
-            <DetailSection label="City" value="Ikeja" colSpanDesktop={2} />
+            <DetailSection label="Pickup Address" value={address} />
+            <DetailSection label="Country" value={country} colSpanDesktop={2} />
+            <DetailSection label="State" value={state} colSpanDesktop={2} />
+            <DetailSection label="City" value={city} colSpanDesktop={2} />
             <DetailSection
               label="Zip/postal Code"
-              value="98765"
+              value={zipPostalCode}
               colSpanDesktop={2}
             />
           </div>

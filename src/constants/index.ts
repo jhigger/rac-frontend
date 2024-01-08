@@ -47,7 +47,9 @@ export const ORIGINS = [
   "China Warehouse (Guangzhou city)",
 ] as const;
 
-export const DESTINATIONS = ["Nigeria Warehouse (Lagos)"] as const;
+export const DESTINATIONS: (typeof ORIGINS)[number][] = [
+  "Nigeria Warehouse (Lagos)",
+] as const;
 
 export const STORES = [
   "Amazon",
@@ -100,3 +102,53 @@ export const ITEM_DELIVERY_STATUS = ["Delivered", "Not yet delivered"] as const;
 export const COURIERS = ["Seller", "Someone else"] as const;
 
 export const PAYMENT_STATUS = ["Paid", "Unpaid"] as const;
+
+type WarehouseLocationType = Record<
+  (typeof ORIGINS)[number],
+  {
+    address: string;
+    country: string;
+    state: string;
+    city: string;
+    zipPostalCode: string;
+  }
+>;
+
+export const WAREHOUSE_LOCATIONS: WarehouseLocationType = {
+  "China Warehouse (Guangzhou city)": {
+    address:
+      "Guangyuan West Road, Yuexiu District, Guangzhou City, Tongtong Commercial Trade City A Block AB03",
+    country: "China",
+    state: "Guangdong",
+    city: "Guangzhou",
+    zipPostalCode: "628017",
+  },
+  "Dubai Warehouse": {
+    address: "Al Rolla Rd, Al Khaleej Center, Dubai, 6th floor, 616",
+    country: "United Arab Emirates",
+    state: "Dubai",
+    city: "Dubai",
+    zipPostalCode: "00000",
+  },
+  "Nigeria Warehouse (Lagos)": {
+    address: "29b Osolo Way Ajao Estate, Isolo",
+    country: "Nigeria",
+    state: "Lagos",
+    city: "Ikeja",
+    zipPostalCode: "10011",
+  },
+  "UK Warehouse (London)": {
+    address: "Unit 1, Loughborough Centre, 105 Angell Road",
+    country: "United Kingdom",
+    state: "England",
+    city: "Brixton",
+    zipPostalCode: "SW9 7PD",
+  },
+  "US Warehouse (Richmond Texas)": {
+    address: "13107 Orchard Mill Drive",
+    country: "United States",
+    state: "Texas",
+    city: "Richmond",
+    zipPostalCode: "77407",
+  },
+} as const;

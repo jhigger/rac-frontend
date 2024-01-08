@@ -3,6 +3,7 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { useFormContext } from "react-hook-form";
 import {
   formatCurrency,
   formatDimension,
@@ -14,13 +15,13 @@ import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import AccordionButton from "~/components/Forms/AccordionButton";
+import SelectInput from "~/components/Forms/Inputs/SelectInput";
 import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import PackageTable from "~/components/PackageTable";
 import {
   DetailSection,
   InitiateShippingAgreement,
-  SelectDestinationShippingAddress,
   ShippingImportantNotice,
   ShippingMethod,
   Summary,
@@ -39,8 +40,10 @@ import { PackageOrigin } from "~/components/Shop/Requests/RequestDetails";
 import {
   SectionContentLayout,
   SectionHeader,
+  TooltipButton,
 } from "~/components/Shop/Requests/RequestOrder";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
+import { ORIGINS } from "~/constants";
 import {
   useImportContext,
   type ImportItemType,
@@ -48,6 +51,7 @@ import {
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import { type ImportInputs } from "../Requests/RequestOrder";
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -264,6 +268,39 @@ export const BillingAddressStep = () => {
   );
 };
 
+const SelectDestinationShippingAddress = () => {
+  const { register } = useFormContext<ImportInputs>();
+
+  return (
+    <div className="flex w-full items-center gap-[10px]">
+      <SelectInput
+        id={"destinationShippingAddress"}
+        label={"Destination/Shipping Address"}
+        options={
+          <>
+            <option value="" disabled hidden>
+              Select Destination
+            </option>
+
+            {ORIGINS.map((origins) => {
+              return (
+                <option key={origins} value={origins}>
+                  {origins}
+                </option>
+              );
+            })}
+          </>
+        }
+        {...register("requestPackage.destinationWarehouse")}
+      />
+      <TooltipButton
+        label="This is your shipping address, it is the location your package will be delivered to. You can then request for doorstep delivery upon arrival."
+        position="left-start"
+      />
+    </div>
+  );
+};
+
 const InitiateShippingStep = () => {
   const { requestPackages } = useImportContext();
   const { viewIndex } = useTabContext();
@@ -276,13 +313,25 @@ const InitiateShippingStep = () => {
 
   const defaultColumns = useMemo(importPackageItemColumns, []);
 
+  const totals = {
+    numberOfItems: requestPackage.items.length,
+    grossWeight: requestPackage.items.reduce(
+      (acc, item) => (acc += item.weight),
+      0,
+    ),
+    declaredValue: requestPackage.items.reduce(
+      (acc, item) => (acc += item.originalCost),
+      0,
+    ),
+  };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
       <PackageTable
         columns={defaultColumns}
         data={requestPackage.items}
-        tableFooter={<ImportPackageTableFooter />}
+        tableFooter={<ImportPackageTableFooter totals={totals} />}
       />
 
       <SectionHeader title="Shipping Methods" />
@@ -445,26 +494,35 @@ export const importPackageItemColumns = () => {
   ] as Array<ColumnDef<ImportItemType, unknown>>;
 };
 
-export const ImportPackageTableFooter = () => {
+type ImportPackageTableFooterProps = {
+  totals: {
+    numberOfItems: number;
+    grossWeight: number;
+    declaredValue: number;
+  };
+};
+
+export const ImportPackageTableFooter = ({
+  totals,
+}: ImportPackageTableFooterProps) => {
+  const { numberOfItems, grossWeight, declaredValue } = totals;
+
   return (
     <>
-      <div className="col-span-1 col-start-2 flex w-[100px] flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total number of items:
-        </span>
-        <span className="title-lg text-neutral-900">6</span>
+      <div className="col-span-1 col-start-2">
+        <DetailSection label="Total number of items" value={numberOfItems} />
       </div>
-      <div className="col-span-1 flex w-[100px] flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total Gross weight:
-        </span>
-        <span className="title-lg text-neutral-900">30lbs</span>
+      <div className="col-span-1">
+        <DetailSection
+          label="Total Gross weight"
+          value={formatWeight(grossWeight)}
+        />
       </div>
-      <div className="col-span-1 flex w-[100px] flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total Declared Value:
-        </span>
-        <span className="title-lg text-neutral-900">$345.00</span>
+      <div className="col-span-1">
+        <DetailSection
+          label="Total Declared Value"
+          value={formatCurrency(declaredValue)}
+        />
       </div>
     </>
   );

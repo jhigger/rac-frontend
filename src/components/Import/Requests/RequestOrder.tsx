@@ -55,6 +55,7 @@ export const emptyValue: ImportRequestPackageType = {
   requestStatus: "Not Responded",
   requestLocalDate: new Date().toLocaleString(),
   originWarehouse: "China Warehouse (Guangzhou city)",
+  destinationWarehouse: "Nigeria Warehouse (Lagos)",
   deliveryStatus: "All delivered",
   items: [
     {
@@ -325,7 +326,10 @@ const ItemDetailsSection = ({
                     }
                     {...register(`requestPackage.items.${index}.idType`)}
                   />
-                  <TooltipButton label="" position="left-start" />
+                  <TooltipButton
+                    label="What ID Type can we see attached to the package for easy recoginition"
+                    position="left-start"
+                  />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-6 ">
@@ -334,7 +338,10 @@ const ItemDetailsSection = ({
                     label={"ID Number"}
                     {...register(`requestPackage.items.${index}.idNumber`)}
                   />
-                  <TooltipButton label="" position="left-start" />
+                  <TooltipButton
+                    label="The ID Number that Corresponds to the one you selected"
+                    position="left-start"
+                  />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px]">
@@ -363,7 +370,10 @@ const ItemDetailsSection = ({
                       `requestPackage.items.${index}.deliveryStatus`,
                     )}
                   />
-                  <TooltipButton label="" position="left-start" />
+                  <TooltipButton
+                    label="Let us know if you have dropped this particular items at the Package Origin you selected"
+                    position="left-start"
+                  />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px]">
@@ -386,7 +396,10 @@ const ItemDetailsSection = ({
                       </>
                     }
                   />
-                  <TooltipButton label="" position="left-start" />
+                  <TooltipButton
+                    label="Let us know who delivered this item to the Package Origin you selected above"
+                    position="left-start"
+                  />
                 </div>
 
                 <div className="col-span-full md:col-span-8">
@@ -735,7 +748,10 @@ const SelectOrigin = () => {
         }
         {...register("requestPackage.originWarehouse")}
       />
-      <TooltipButton label="" position="left-start" />
+      <TooltipButton
+        label="This is the location you want your package to be imported from."
+        position="left-start"
+      />
     </div>
   );
 };
@@ -765,7 +781,10 @@ const SelectPackageDeliveryStatus = () => {
         }
         {...register("requestPackage.deliveryStatus")}
       />
-      <TooltipButton label="" position="left-start" />
+      <TooltipButton
+        label="Let us know if you have dropped Some/All/None of your package items at the Package Origin you selected"
+        position="left-start"
+      />
     </div>
   );
 };

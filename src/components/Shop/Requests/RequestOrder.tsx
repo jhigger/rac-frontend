@@ -62,6 +62,7 @@ export const emptyValue: ShopRequestPackageType = {
   requestStatus: "Not Responded",
   requestLocalDate: new Date().toLocaleString(),
   originWarehouse: "China Warehouse (Guangzhou city)",
+  destinationWarehouse: "Nigeria Warehouse (Lagos)",
   items: [
     {
       store: "Aliexpress",
@@ -77,7 +78,6 @@ export const emptyValue: ShopRequestPackageType = {
       image: "",
       description: "",
       relatedCosts: {
-        shippingCost: 1,
         urgentPurchaseFee: 0,
         processingFee: 0,
         shippingToOriginWarehouseCost: 0,
@@ -584,7 +584,7 @@ const ItemDetailsSection = ({
                     id={`shippingCost-${index}`}
                     label={"Total shipping cost to your warehouse & Sales Tax"}
                     {...register(
-                      `requestPackage.items.${index}.relatedCosts.shippingCost`,
+                      `requestPackage.items.${index}.relatedCosts.shippingToOriginWarehouseCost`,
                     )}
                   />
                 </div>
@@ -1037,7 +1037,9 @@ const ItemPreviewDetails = ({ index }: ItemPreviewDetailsProps) => {
         label="Total Shipping Cost to your Warehouse & Sales Tax"
         labelMaxWidth="max-w-[210px]"
         value={formatCurrency(
-          watch(`requestPackage.items.${index}.relatedCosts.shippingCost`),
+          watch(
+            `requestPackage.items.${index}.relatedCosts.shippingToOriginWarehouseCost`,
+          ),
         )}
       />
       <DetailSection

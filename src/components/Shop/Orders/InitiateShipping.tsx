@@ -2,6 +2,7 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { useFormContext } from "react-hook-form";
 import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -14,6 +15,7 @@ import {
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
+  type ShopInputs,
 } from "~/components/Shop/Requests/RequestOrder";
 import ShopPackageTable from "~/components/ShopPackageTable";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
@@ -311,7 +313,7 @@ export const DetailSection = ({
   colSpanDesktop = "full",
   image,
   tooltip,
-  labelMaxWidth = "max-w-[128px]",
+  labelMaxWidth = "max-w-[100px]",
 }: DetailSectionProps) => {
   return (
     <div
@@ -329,7 +331,7 @@ export const DetailSection = ({
           className="w-[220px] rounded-[20px] bg-center object-cover"
         />
       ) : (
-        <span className="title-md md:title-lg break-words font-medium text-neutral-900">
+        <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
           {value}
         </span>
       )}
@@ -495,7 +497,9 @@ export const BillingAddress = ({ billingDetails }: BillingAddressProps) => {
   );
 };
 
-export const SelectDestinationShippingAddress = () => {
+const SelectDestinationShippingAddress = () => {
+  const { register } = useFormContext<ShopInputs>();
+
   return (
     <div className="flex w-full items-center gap-[10px]">
       <SelectInput
@@ -516,8 +520,12 @@ export const SelectDestinationShippingAddress = () => {
             })}
           </>
         }
+        {...register("requestPackage.destinationWarehouse")}
       />
-      <TooltipButton label="" position="left-start" />
+      <TooltipButton
+        label="This is your shipping address, it is the location your package will be delivered to. You can then request for doorstep delivery upon arrival."
+        position="left-start"
+      />
     </div>
   );
 };
@@ -562,6 +570,34 @@ const InitiateShippingStep = () => {
 
   const defaultColumns = useMemo(shopPackageItemColumns, []);
 
+  const totals = {
+    numberOfItems: orderPackage.items.length,
+    grossWeight: orderPackage.items.reduce(
+      (acc, item) => (acc += item.weight),
+      0,
+    ),
+    itemsCostFromStore: orderPackage.items.reduce(
+      (acc, item) => (acc += item.originalCost),
+      0,
+    ),
+    processingFee: orderPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.processingFee),
+      0,
+    ),
+    urgentPurchaseFee: orderPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.urgentPurchaseFee),
+      0,
+    ),
+    shippingToOriginWarehouseCost: orderPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.shippingToOriginWarehouseCost),
+      0,
+    ),
+    shopForMeCost: orderPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.shopForMeCost),
+      0,
+    ),
+  };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
@@ -569,7 +605,7 @@ const InitiateShippingStep = () => {
       <ShopPackageTable
         columns={defaultColumns}
         data={orderPackage.items}
-        tableFooter={<ShopPackageTableFooter />}
+        tableFooter={<ShopPackageTableFooter totals={totals} />}
       />
 
       <SectionHeader title="Shipping Methods" />

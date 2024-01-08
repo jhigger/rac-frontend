@@ -280,13 +280,25 @@ const InitiateShippingStep = () => {
 
   const defaultColumns = useMemo(importPackageItemColumns, []);
 
+  const totals = {
+    numberOfItems: requestPackage.items.length,
+    grossWeight: requestPackage.items.reduce(
+      (acc, item) => (acc += item.weight),
+      0,
+    ),
+    declaredValue: requestPackage.items.reduce(
+      (acc, item) => (acc += item.originalCost),
+      0,
+    ),
+  };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details Summary" />
       <PackageTable
         columns={defaultColumns}
         data={requestPackage.items}
-        tableFooter={<ImportPackageTableFooter />}
+        tableFooter={<ImportPackageTableFooter totals={totals} />}
       />
 
       <SectionHeader title="Shipping Methods" />

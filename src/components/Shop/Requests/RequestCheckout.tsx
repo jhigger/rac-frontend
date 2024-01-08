@@ -4,7 +4,7 @@ import { ArrowRight3, ExportCircle, Receipt2, TickCircle } from "iconsax-react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { formatCurrency, limitChars } from "~/Utils";
+import { formatCurrency, formatWeight, limitChars } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -25,7 +25,11 @@ import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 import AccordionButton from "../../Forms/AccordionButton";
-import { DetailSection, Summary } from "../Orders/InitiateShipping";
+import {
+  DetailSection,
+  Summary,
+  type DetailSectionProps,
+} from "../Orders/InitiateShipping";
 import {
   HighlightedInfo,
   PackageOrigin,
@@ -330,13 +334,41 @@ const PlaceOrder = () => {
 
   const defaultColumns = useMemo(shopPackageItemColumns, []);
 
+  const totals = {
+    numberOfItems: requestPackage.items.length,
+    grossWeight: requestPackage.items.reduce(
+      (acc, item) => (acc += item.weight),
+      0,
+    ),
+    itemsCostFromStore: requestPackage.items.reduce(
+      (acc, item) => (acc += item.originalCost),
+      0,
+    ),
+    processingFee: requestPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.processingFee),
+      0,
+    ),
+    urgentPurchaseFee: requestPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.urgentPurchaseFee),
+      0,
+    ),
+    shippingToOriginWarehouseCost: requestPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.shippingToOriginWarehouseCost),
+      0,
+    ),
+    shopForMeCost: requestPackage.items.reduce(
+      (acc, item) => (acc += item.relatedCosts.shopForMeCost),
+      0,
+    ),
+  };
+
   return (
     <div className="flex flex-col gap-[20px]">
       <SectionHeader title="Package details" />
       <ShopPackageTable
         columns={defaultColumns}
         data={requestPackage.items}
-        tableFooter={<ShopPackageTableFooter />}
+        tableFooter={<ShopPackageTableFooter totals={totals} />}
       />
       <SectionHeader title="Payment Methods" />
       <div className="pl-[14px]">
@@ -399,16 +431,11 @@ export const ImportantNotice = () => {
   );
 };
 
-type CostDetailSectionProps = { label: string; value: string };
-
-export const CostDetailSection = ({
-  label: title,
-  value,
-}: CostDetailSectionProps) => {
+export const CostDetailSection = ({ label, value }: DetailSectionProps) => {
   return (
     <div className="flex flex-col gap-[10px]">
       <div className="label-lg flex items-center justify-between gap-[10px] font-medium">
-        <span>{title}:</span>
+        <span>{label}:</span>
         <span>{value}</span>
       </div>
       <hr className="w-full border-gray-200" />
@@ -488,7 +515,7 @@ const CostsSummary = () => {
           value={formatCurrency(totalCostOfItems)}
         />
         <CostDetailSection
-          label="Total Shipping to Origin Warehouse cost"
+          label="Total Shipping to Origin Warehouse Cost"
           value={formatCurrency(totalShippingCost)}
         />
         <CostDetailSection
@@ -642,47 +669,72 @@ export const shopPackageItemColumns = () => {
   ] as Array<ColumnDef<ShopItemType, unknown>>;
 };
 
-export const ShopPackageTableFooter = () => {
+type ShopPackageTableFooterProps = {
+  totals: {
+    numberOfItems: number;
+    grossWeight: number;
+    itemsCostFromStore: number;
+    processingFee: number;
+    urgentPurchaseFee: number;
+    shippingToOriginWarehouseCost: number;
+    shopForMeCost: number;
+  };
+};
+
+export const ShopPackageTableFooter = ({
+  totals,
+}: ShopPackageTableFooterProps) => {
+  const {
+    numberOfItems,
+    grossWeight,
+    itemsCostFromStore,
+    processingFee,
+    urgentPurchaseFee,
+    shippingToOriginWarehouseCost,
+    shopForMeCost,
+  } = totals;
+
   return (
     <>
-      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total number of items:
-        </span>
-        <span className="title-lg text-neutral-900">6</span>
+      <div className="col-span-1 row-span-1">
+        <DetailSection label="Total number of items" value={numberOfItems} />
       </div>
-      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total Gross weight:
-        </span>
-        <span className="title-lg text-neutral-900">30lbs</span>
+      <div className="col-span-1 row-span-1">
+        <DetailSection
+          label="Total Gross weight"
+          value={formatWeight(grossWeight)}
+        />
       </div>
-      <div className="col-span-2 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total Items Cost from Store:
-        </span>
-        <span className="title-lg text-neutral-900">$345.00</span>
+      <div className="col-span-1 row-span-1">
+        <DetailSection
+          label="Total Items Cost from Store"
+          value={formatCurrency(itemsCostFromStore)}
+        />
       </div>
-
-      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">Processing fee:</span>
-        <span className="title-lg text-neutral-900">$345.00</span>
+      <div className="col-span-1 row-span-1">
+        <DetailSection
+          label="Processing fee"
+          value={formatCurrency(processingFee)}
+        />
       </div>
-      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Urgent Purchase fee:
-        </span>
-        <span className="title-lg text-neutral-900">$0.00</span>
+      <div className="col-span-1 row-span-1">
+        <DetailSection
+          label="Urgent Purchase fee"
+          value={formatCurrency(urgentPurchaseFee)}
+        />
       </div>
-      <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
-        <span className="body-md h-[40px] text-gray-700">
-          Total Shipping to Origin Warehouse Cost:
-        </span>
-        <span className="title-lg text-neutral-900">$0.00</span>
+      <div className="col-span-1 row-span-1">
+        <DetailSection
+          label="Total Shipping to Origin Warehouse Cost"
+          labelMaxWidth="max-width-[182px]"
+          value={formatCurrency(shippingToOriginWarehouseCost)}
+        />
       </div>
       <div className="col-span-1 row-span-1 flex flex-col gap-[5px]">
         <span className="title-lg text-gray-700">Total Shop For Me Cost:</span>
-        <span className="title-lg text-neutral-900">$0.00</span>
+        <span className="title-lg md:headline-sm text-neutral-900">
+          {formatCurrency(shopForMeCost)}
+        </span>
       </div>
     </>
   );

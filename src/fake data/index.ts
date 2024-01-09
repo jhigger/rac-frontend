@@ -16,13 +16,15 @@ import {
   type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
 
-const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image";
+const src = "https://placehold.co/500x500/cac4d0/1d192b?text=Image"; // this is to simulate image source
+
+// note: these are fake data and numbers are not exact, only for the purpose of not being empty
 
 export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderLocalDate: new Date("2023/1/23").toLocaleString(),
+    orderLocalDate: new Date("2023/1/23").toLocaleString(), // this is to simulate ISO string from server converted to localString in frontend
     trackingId: "SH08751",
     shippingStatus: "not started",
     originWarehouse: "Nigeria Warehouse (Lagos)",
@@ -62,7 +64,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -82,9 +84,9 @@ export const shopOrders: ShopOrderPackageType[] = [
       zipPostalCode: "98765",
     },
     shippingMethod: "basic",
-    totalShopForMeCost: 107.76,
+    totalShopForMeCost: 107.76, // sample aggregated data from items array
     shopForMeStatus: "Purchase not started",
-    totalShippingCost: 107.76,
+    totalShippingCost: 107.76, // sample aggregated data from items array
     shippingPaymentStatus: "Unpaid",
     packageCosts: {
       shippingCost: 126.66,
@@ -140,7 +142,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -160,7 +162,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -238,7 +240,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -258,7 +260,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -278,7 +280,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -356,7 +358,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -376,7 +378,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -396,7 +398,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,
@@ -416,7 +418,7 @@ export const shopOrders: ShopOrderPackageType[] = [
         image: src,
         description: "Additonvnv ghss jgsjvsn",
         relatedCosts: {
-          urgentPurchaseFee: 0,
+          urgentPurchaseFee: 126.66,
           processingFee: 87000,
           shippingToOriginWarehouseCost: 87000,
           shopForMeCost: 87000,

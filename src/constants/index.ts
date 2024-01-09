@@ -177,7 +177,11 @@ export const SHIPPING_METHOD_OPTIONS: ShippingMethodOptions = {
 };
 
 export const PAYMENT_METHOD_OPTIONS = [
+  // "Credit/Debit Cards - Pay with Dollar/US Cards",
   "Paystack - Pay with Naira Card",
+  // "Pay At Bank in $ - Nigeria",
+  // "Pay At Bank in Naira - Nigeria",
+  // "Pay Via PayPal",
 ] as const;
 
 export type PaymentMethodType = {

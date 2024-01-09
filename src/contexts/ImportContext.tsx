@@ -18,10 +18,7 @@ import {
   type SHIPPING_STATUS,
 } from "~/constants";
 import { importOrders, importRequests } from "~/fake data";
-import {
-  type BillingDetailsType,
-  type ShipmentDetailsType,
-} from "./AutoImportContext";
+import { type BillingDetailsType } from "./AutoImportContext";
 import { type DraftImageType, type PackageCostsType } from "./ShopContext";
 
 export type ImportContextType = {
@@ -73,7 +70,6 @@ export type ImportOrderPackageType = {
   originWarehouse: (typeof ORIGINS)[number];
   destinationWarehouse: (typeof ORIGINS)[number];
   items: ImportItemType[];
-  shipmentDetails: ShipmentDetailsType;
   billingDetails: BillingDetailsType;
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
   packageCosts: PackageCostsType;

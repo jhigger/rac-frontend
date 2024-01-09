@@ -914,18 +914,7 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-    shipmentDetails: {
-      firstName: "Malibu",
-      lastName: "SHedrack",
-      email: "Malibushdrack@gmail.com",
-      countryCode: "+234",
-      phoneNumber: "803 456 7845",
-      address: "No, 1osolo way, ikeja road, behind scaint merry",
-      country: "Turkey",
-      state: "Istanbul",
-      city: "Cyprusic",
-      zipPostalCode: "98765",
-    },
+
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -975,18 +964,7 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-    shipmentDetails: {
-      firstName: "Malibu",
-      lastName: "SHedrack",
-      email: "Malibushdrack@gmail.com",
-      countryCode: "+234",
-      phoneNumber: "803 456 7845",
-      address: "No, 1osolo way, ikeja road, behind scaint merry",
-      country: "Turkey",
-      state: "Istanbul",
-      city: "Cyprusic",
-      zipPostalCode: "98765",
-    },
+
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1036,18 +1014,7 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-    shipmentDetails: {
-      firstName: "Malibu",
-      lastName: "SHedrack",
-      email: "Malibushdrack@gmail.com",
-      countryCode: "+234",
-      phoneNumber: "803 456 7845",
-      address: "No, 1osolo way, ikeja road, behind scaint merry",
-      country: "Turkey",
-      state: "Istanbul",
-      city: "Cyprusic",
-      zipPostalCode: "98765",
-    },
+
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1097,18 +1064,7 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-    shipmentDetails: {
-      firstName: "Malibu",
-      lastName: "SHedrack",
-      email: "Malibushdrack@gmail.com",
-      countryCode: "+234",
-      phoneNumber: "803 456 7845",
-      address: "No, 1osolo way, ikeja road, behind scaint merry",
-      country: "Turkey",
-      state: "Istanbul",
-      city: "Cyprusic",
-      zipPostalCode: "98765",
-    },
+
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1158,18 +1114,7 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-    shipmentDetails: {
-      firstName: "Malibu",
-      lastName: "SHedrack",
-      email: "Malibushdrack@gmail.com",
-      countryCode: "+234",
-      phoneNumber: "803 456 7845",
-      address: "No, 1osolo way, ikeja road, behind scaint merry",
-      country: "Turkey",
-      state: "Istanbul",
-      city: "Cyprusic",
-      zipPostalCode: "98765",
-    },
+
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1219,18 +1164,7 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-    shipmentDetails: {
-      firstName: "Malibu",
-      lastName: "SHedrack",
-      email: "Malibushdrack@gmail.com",
-      countryCode: "+234",
-      phoneNumber: "803 456 7845",
-      address: "No, 1osolo way, ikeja road, behind scaint merry",
-      country: "Turkey",
-      state: "Istanbul",
-      city: "Cyprusic",
-      zipPostalCode: "98765",
-    },
+
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1280,18 +1214,7 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-    shipmentDetails: {
-      firstName: "Malibu",
-      lastName: "SHedrack",
-      email: "Malibushdrack@gmail.com",
-      countryCode: "+234",
-      phoneNumber: "803 456 7845",
-      address: "No, 1osolo way, ikeja road, behind scaint merry",
-      country: "Turkey",
-      state: "Istanbul",
-      city: "Cyprusic",
-      zipPostalCode: "98765",
-    },
+
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",

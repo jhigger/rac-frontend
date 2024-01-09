@@ -15,31 +15,45 @@ const useFetchUser = async (token: string) => {
   };
 
   const response = await axios.request(reqOptions);
-  const data = response.data as Main;
+  const { user } = response.data as Main;
   const userData: UserType = {
-    _id: data._id,
-    firstName: data.firstName,
-    lastName: data.lastName,
-    email: data.email,
-    isAdmin: data.isAdmin,
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    isAdmin: user.isAdmin,
     jwt: token,
-    racId: data.racId,
+    racId: user.racId,
+    billingDetails: {
+      countryCode: user.contactAddress[0]?.countryCode ?? "",
+      phoneNumber: String(user.contactAddress[0]?.phoneNumber ?? ""),
+      address: user.contactAddress[0]?.streetAddress ?? "",
+      country: user.contactAddress[0]?.country ?? "",
+      state: user.contactAddress[0]?.state ?? "",
+      city: user.contactAddress[0]?.city ?? "",
+      zipPostalCode: user.contactAddress[0]?.postalCode ?? "",
+    },
   };
 
   return userData;
 };
-
 export interface Main {
-  isAdmin: boolean;
+  user: User;
+}
+
+export interface User {
   _id: string;
-  racId: string;
   firstName: string;
   lastName: string;
   email: string;
   country: string;
-  countryCode: string;
+  isAdmin: boolean;
   isEmailVerified: boolean;
+  countryCode: string;
   contactAddress: ContactAddress[];
+  racId: string;
+  __v: number;
+  lastLogin: Date;
 }
 
 export interface ContactAddress {

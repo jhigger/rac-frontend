@@ -49,6 +49,15 @@ export type UserType = {
   isAdmin: boolean;
   jwt: string;
   racId: string;
+  billingDetails: {
+    countryCode: string;
+    phoneNumber: string;
+    address: string;
+    country: string;
+    state: string;
+    city: string;
+    zipPostalCode: string;
+  };
 };
 
 export type RegisterType = {

@@ -58,6 +58,7 @@ import {
   PAYMENT_METHODS,
   type SHIPPING_METHODS,
 } from "~/constants";
+import { useAuthContext } from "~/contexts/AuthContext";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
@@ -259,18 +260,14 @@ const PackageConfirmation = () => {
 };
 
 const BillingAddressStep = () => {
-  // todo: get this from user in AuthContext
+  const { user } = useAuthContext();
+  if (!user) return;
+
   const defaultBillingAddress = {
-    firstName: "Rex",
-    lastName: "Offor",
-    email: "rexoffor@gmail.com",
-    countryCode: "+234",
-    phoneNumber: "8080006321",
-    address: "29b Osolo Way Opposite Polaris Bank Ajao Estate",
-    country: "NG",
-    state: "LA",
-    city: "Ikeja",
-    zipPostalCode: "075348",
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    ...user.billingDetails,
   };
 
   const [radio, setRadio] = useState<BillingAddressChoicesType>("default");

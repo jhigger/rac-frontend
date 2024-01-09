@@ -81,6 +81,7 @@ export const shopOrders: ShopOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase not started",
     totalShippingCost: 107.76,
@@ -178,6 +179,7 @@ export const shopOrders: ShopOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase in progress",
     totalShippingCost: 107.76,
@@ -295,6 +297,7 @@ export const shopOrders: ShopOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
     totalShippingCost: 107.76,
@@ -432,6 +435,7 @@ export const shopOrders: ShopOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
     totalShippingCost: 107.76,
@@ -489,6 +493,7 @@ export const shopOrders: ShopOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
     totalShippingCost: 107.76,
@@ -546,6 +551,7 @@ export const shopOrders: ShopOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
     totalShippingCost: 107.76,
@@ -603,6 +609,7 @@ export const shopOrders: ShopOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase not started",
     totalShippingCost: 107.76,
@@ -660,6 +667,7 @@ export const shopOrders: ShopOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     totalShopForMeCost: 107.76,
     shopForMeStatus: "Purchase completed",
     totalShippingCost: 107.76,
@@ -914,7 +922,6 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -927,6 +934,7 @@ export const importOrders: ImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     shippingPaymentStatus: "Unpaid",
     packageCosts: {
       shippingCost: 126.66,
@@ -964,7 +972,6 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -977,6 +984,7 @@ export const importOrders: ImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     shippingPaymentStatus: "Paid",
     packageCosts: {
       shippingCost: 126.66,
@@ -1014,7 +1022,6 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1027,6 +1034,7 @@ export const importOrders: ImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     shippingPaymentStatus: "Paid",
     packageCosts: {
       shippingCost: 126.66,
@@ -1064,7 +1072,6 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1077,6 +1084,7 @@ export const importOrders: ImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     shippingPaymentStatus: "Paid",
     packageCosts: {
       shippingCost: 126.66,
@@ -1114,7 +1122,6 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1127,6 +1134,7 @@ export const importOrders: ImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     shippingPaymentStatus: "Paid",
     packageCosts: {
       shippingCost: 126.66,
@@ -1164,7 +1172,6 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1177,6 +1184,7 @@ export const importOrders: ImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     shippingPaymentStatus: "Unpaid",
     packageCosts: {
       shippingCost: 126.66,
@@ -1214,7 +1222,6 @@ export const importOrders: ImportOrderPackageType[] = [
         description: "Additonvnv ghss jgsjvsn",
       },
     ],
-
     billingDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
@@ -1227,6 +1234,7 @@ export const importOrders: ImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "basic",
     shippingPaymentStatus: "Paid",
     packageCosts: {
       shippingCost: 126.66,
@@ -1529,7 +1537,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         },
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -1553,6 +1561,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Unpaid",
     clearingPaymentStatus: "Unpaid",
     packageCosts: {
@@ -1606,7 +1615,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         },
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -1630,6 +1639,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Paid",
     clearingPaymentStatus: "Unpaid",
     packageCosts: {
@@ -1666,7 +1676,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -1690,6 +1700,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Paid",
     clearingPaymentStatus: "Paid",
     packageCosts: {
@@ -1726,7 +1737,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -1750,6 +1761,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Paid",
     clearingPaymentStatus: "Unpaid",
     packageCosts: {
@@ -1787,7 +1799,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -1811,6 +1823,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Paid",
     clearingPaymentStatus: "Unpaid",
     packageCosts: {
@@ -1848,7 +1861,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -1872,6 +1885,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Paid",
     clearingPaymentStatus: "Unpaid",
     packageCosts: {
@@ -1908,7 +1922,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -1932,6 +1946,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Paid",
     clearingPaymentStatus: "Paid",
     packageCosts: {
@@ -1986,7 +2001,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
         },
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -2010,6 +2025,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Unpaid",
     clearingPaymentStatus: "Unpaid",
     packageCosts: {
@@ -2044,7 +2060,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
         description: "asdasdasdasd",
       },
     ],
-    shipmentDetails: {
+    destinationDetails: {
       firstName: "Malibu",
       lastName: "SHedrack",
       email: "Malibushdrack@gmail.com",
@@ -2068,6 +2084,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
       city: "Cyprusic",
       zipPostalCode: "98765",
     },
+    shippingMethod: "custom",
     shippingPaymentStatus: "Unpaid",
     clearingPaymentStatus: "Unpaid",
     packageCosts: {

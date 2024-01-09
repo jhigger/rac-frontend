@@ -1,3 +1,5 @@
+import { Country, State } from "country-state-city";
+
 export const capitalizeWords = (words: string) => {
   return words
     .split(" ")
@@ -34,4 +36,12 @@ export const formatWeight = (amount: number) => {
 
 export const formatDimension = (amount: number) => {
   return `${amount} inches`;
+};
+
+export const parseCountryCode = (countryCode: string) => {
+  return String(Country.getCountryByCode(countryCode)?.name);
+};
+
+export const parseStateCode = (stateCode: string, countryCode: string) => {
+  return String(State.getStateByCodeAndCountry(stateCode, countryCode)?.name);
 };

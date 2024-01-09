@@ -16,11 +16,13 @@ const SelectCountryPhoneCodeInput = (
             Country code
           </option>
           {Country.getAllCountries().map(({ name, phonecode }) => {
+            const value = phonecode.startsWith("+")
+              ? phonecode
+              : "+" + phonecode;
+
             return (
-              <option key={`country-code-${name}`} value={phonecode}>
-                {`${name} ${
-                  phonecode.startsWith("+") ? phonecode : "+" + phonecode
-                }`}
+              <option key={`country-code-${name}`} value={value}>
+                {`${name} ${value}`}
               </option>
             );
           })}

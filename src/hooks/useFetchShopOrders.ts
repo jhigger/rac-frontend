@@ -80,6 +80,7 @@ const useFetchShopOrders = (
         shopForMeStatus:
           order.shopForMeStatus as ShopOrderPackageType["shopForMeStatus"],
         totalShippingCost: 0, // todo: missing
+        shippingMethod: "basic", // todo: missing
         shippingPaymentStatus: "Unpaid", // todo: missing
         packageCosts: {
           shippingCost: 0, // todo: missing

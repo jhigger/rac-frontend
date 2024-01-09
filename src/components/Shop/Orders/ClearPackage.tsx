@@ -2,6 +2,12 @@
 import { ArrowRight3 } from "iconsax-react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  type SubmitHandler,
+} from "react-hook-form";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -13,17 +19,21 @@ import {
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
 import ShopPackageTable from "~/components/ShopPackageTable";
-import { WAREHOUSE_LOCATIONS, type ORIGINS } from "~/constants";
+import {
+  PAYMENT_METHODS,
+  WAREHOUSE_LOCATIONS,
+  type ORIGINS,
+} from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   AndLastly,
+  PaymentMethod,
   PaymentMethods,
   ShopPackageTableFooter,
   StepIndex,
-  SubSectionTitle,
   shopPackageItemColumns,
   type stepsContentType,
 } from "../Requests/RequestCheckout";
@@ -33,10 +43,18 @@ import {
   DetailSection,
   PackageConfirmation,
   ShipmentCostsSummary,
-  ShippingMethod,
+  ShippingMethodUsed,
   type DetailSectionProps,
 } from "./InitiateShipping";
 import { PickUpInstructions } from "./OrdersPanel";
+
+export type ClearPackageInputs = {
+  paymentMethod: (typeof PAYMENT_METHODS)[number]["title"];
+};
+
+const emptyValue: ClearPackageInputs = {
+  paymentMethod: "Paystack - Pay with Naira Card",
+};
 
 const ClearPackage = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -66,9 +84,27 @@ const ClearPackage = () => {
     },
   ];
   const stepsContent = steps.map((step) => step.content);
-  const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
-    useMultiStepForm(stepsContent);
+  const {
+    step,
+    currentStepIndex,
+    next,
+    isFirstStep,
+    back,
+    isLastStep,
+    isSecondToLastStep,
+  } = useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
+
+  const formMethods = useForm<ClearPackageInputs>({
+    defaultValues: emptyValue,
+  });
+
+  const onSubmit: SubmitHandler<ClearPackageInputs> = async (data) => {
+    if (isSecondToLastStep) {
+      console.log(data);
+    }
+    next();
+  };
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -83,63 +119,72 @@ const ClearPackage = () => {
   }, [step]);
 
   return (
-    <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      {!isLastStep && (
-        <CongratulationImage description="Your package have arrived its destination. Proceed to clear it." />
-      )}
+    <FormProvider {...formMethods}>
+      <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+        {!isLastStep && (
+          <CongratulationImage description="Your package have arrived its destination. Proceed to clear it." />
+        )}
 
-      <StepIndex
-        currentIndex={currentStepIndex}
-        length={steps.length}
-        title={currentTitle}
-      />
+        <StepIndex
+          currentIndex={currentStepIndex}
+          length={steps.length}
+          title={currentTitle}
+        />
 
-      {!isLastStep ? (
-        <div className="w-full md:w-max">
-          <OrderTrackingId
-            orderId={orderPackage.orderId}
-            trackingId={orderPackage.trackingId}
-          />
-        </div>
-      ) : (
-        <>
-          <SectionContentLayout>
+        {!isLastStep ? (
+          <div className="w-full md:w-max">
             <OrderTrackingId
               orderId={orderPackage.orderId}
               trackingId={orderPackage.trackingId}
-              center
             />
-          </SectionContentLayout>
-          <CongratulationImage description='You can now pick up your package from our office in Nigeria (your selected "Destination")' />
-        </>
-      )}
+          </div>
+        ) : (
+          <>
+            <SectionContentLayout>
+              <OrderTrackingId
+                orderId={orderPackage.orderId}
+                trackingId={orderPackage.trackingId}
+                center
+              />
+            </SectionContentLayout>
+            <CongratulationImage description='You can now pick up your package from our office in Nigeria (your selected "Destination")' />
+          </>
+        )}
 
-      {step}
+        {step}
 
-      {currentStepIndex <= 1 && (
-        <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
-          {isFirstStep && (
-            <div className="w-full md:max-w-[210px]">
-              <BackButton onClick={handleBack} />
-            </div>
+        {currentStepIndex <= 1 && (
+          <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
+            {isFirstStep && (
+              <div className="w-full md:max-w-[210px]">
+                <BackButton onClick={handleBack} />
+              </div>
+            )}
+            {!isFirstStep && currentStepIndex <= 1 && (
+              <div className="w-full md:max-w-[210px]">
+                <BackButton onClick={back} />
+              </div>
+            )}
+            <DoneButton
+              text="Proceed"
+              onClick={formMethods.handleSubmit(onSubmit)}
+            />
+          </div>
+        )}
+
+        {currentStepIndex === 3 && (
+          <div className="w-[200px]">
+            <DoneButton text="Done" onClick={handleFinish} />
+          </div>
+        )}
+
+        {portal &&
+          createPortal(
+            <PayNowButton onClick={formMethods.handleSubmit(onSubmit)} />,
+            portal,
           )}
-          {!isFirstStep && currentStepIndex <= 1 && (
-            <div className="w-full md:max-w-[210px]">
-              <BackButton onClick={back} />
-            </div>
-          )}
-          <DoneButton text="Proceed" onClick={next} />
-        </div>
-      )}
-
-      {currentStepIndex === 3 && (
-        <div className="w-[200px]">
-          <DoneButton text="Done" onClick={handleFinish} />
-        </div>
-      )}
-
-      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
-    </div>
+      </div>
+    </FormProvider>
   );
 };
 
@@ -281,6 +326,7 @@ const DestinationAddressDetails = ({
 };
 
 export const ClearPackageStep = () => {
+  const { register } = useFormContext<ClearPackageInputs>();
   const { orderPackages } = useShopContext();
   const { viewIndex } = useTabContext();
 
@@ -329,19 +375,20 @@ export const ClearPackageStep = () => {
         tableFooter={<ShopPackageTableFooter totals={totals} />}
       />
 
-      <SectionHeader title="Shipping Methods" />
-      <div className="pl-[14px]">
-        <SubSectionTitle title="Shipping Method Used" />
-      </div>
-      <ShippingMethod
-        packageCosts={orderPackage.packageCosts}
-        checked
-        disabled
-        expanded
-      />
+      <ShippingMethodUsed value={orderPackage.shippingMethod} />
 
       <SectionHeader title="Payment Methods" />
-      <PaymentMethods />
+      <PaymentMethods>
+        {PAYMENT_METHODS.map((paymentMethod) => {
+          return (
+            <PaymentMethod
+              key={paymentMethod.title}
+              paymentMethod={paymentMethod}
+              {...register("paymentMethod")}
+            />
+          );
+        })}
+      </PaymentMethods>
 
       <SectionHeader title="Shipment costs" />
       <ShipmentCostsSummary

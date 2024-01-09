@@ -1,47 +1,31 @@
 import { City, State } from "country-state-city";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   type FieldValues,
   type Path,
-  type PathValue,
-  type UseFormGetValues,
-  type UseFormSetValue,
   type UseFormWatch,
 } from "react-hook-form";
 
 type UseStatesCitiesType<T extends FieldValues> = {
-  getValues: UseFormGetValues<T>;
-  setValue: UseFormSetValue<T>;
+  path?: keyof T;
   watch: UseFormWatch<T>;
 };
 
-type LocationInputs = {
-  country: string;
-  state: string;
-  city: string;
-};
-
-const useStatesCities = <T extends LocationInputs>({
-  getValues,
-  setValue,
+const useStatesCities = <T extends FieldValues>({
+  path = "",
   watch,
 }: UseStatesCitiesType<T>) => {
-  const states = useMemo(
-    () => State.getStatesOfCountry(getValues("country" as Path<T>)),
-    [watch("country" as Path<T>)],
+  const country = watch(
+    (path ? `${String(path)}.country` : "country") as Path<T>,
   );
-  const cities = useMemo(
-    () =>
-      City.getCitiesOfState(
-        getValues("country" as Path<T>),
-        getValues("state" as Path<T>),
-      ),
-    [watch("country" as Path<T>), watch("state" as Path<T>)],
-  );
+  const state = watch((path ? `${String(path)}.state` : "") as Path<T>);
 
-  useEffect(() => {
-    setValue("state" as Path<T>, "" as PathValue<T, Path<T>>);
-  }, [states]);
+  const states = useMemo(() => State.getStatesOfCountry(country), [country]);
+
+  const cities = useMemo(
+    () => City.getCitiesOfState(country, state),
+    [country, state],
+  );
 
   return { states, cities };
 };

@@ -1,10 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowRight3, ExportCircle, Receipt2, TickCircle } from "iconsax-react";
-import { useEffect, useMemo, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type ReactNode,
+  type Ref,
+} from "react";
 import { createPortal } from "react-dom";
-import { useForm } from "react-hook-form";
-import { formatCurrency, formatWeight, limitChars } from "~/Utils";
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  type SubmitHandler,
+} from "react-hook-form";
+import {
+  formatCurrency,
+  formatWeight,
+  limitChars,
+  parseCountryCode,
+  parseStateCode,
+} from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -18,6 +37,11 @@ import LabelId from "~/components/LabelId";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import ShopPackageTable from "~/components/ShopPackageTable";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
+import {
+  BILLING_ADDRESS_OPTIONS,
+  PAYMENT_METHODS,
+  type PaymentMethodType,
+} from "~/constants";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
@@ -42,11 +66,32 @@ import {
   SectionHeader,
 } from "./RequestOrder";
 
+type RequestCheckoutInputs = {
+  billingDetails: BillingDetailsType;
+  paymentMethod: (typeof PAYMENT_METHODS)[number]["title"];
+};
+
+const emptyValue: RequestCheckoutInputs = {
+  billingDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
+  paymentMethod: "Paystack - Pay with Naira Card",
+};
+
 export type stepsContentType = { title: string; content: JSX.Element };
 
 const RequestCheckout = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
-  const { requestPackages } = useShopContext();
+  const { requestPackages, handleRequests } = useShopContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const { viewIndex } = useTabContext();
@@ -67,15 +112,34 @@ const RequestCheckout = () => {
     { title: "Success", content: <Success /> },
   ];
   const stepsContent = steps.map((step) => step.content);
-  const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
-    useMultiStepForm(stepsContent);
+  const {
+    step,
+    currentStepIndex,
+    next,
+    isFirstStep,
+    back,
+    isLastStep,
+    isSecondToLastStep,
+  } = useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
+
+  const formMethods = useForm<RequestCheckoutInputs>({
+    defaultValues: emptyValue,
+  });
+
+  const onSubmit: SubmitHandler<RequestCheckoutInputs> = async (data) => {
+    if (isSecondToLastStep) {
+      console.log(data);
+    }
+    next();
+  };
 
   const handleBack = () => {
     handleActiveAction(null);
   };
 
   const handleFinish = () => {
+    handleRequests();
     handleTabChange("requests");
   };
 
@@ -84,48 +148,64 @@ const RequestCheckout = () => {
   }, [step]);
 
   return (
-    <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      <RequestFormHeader title="Confirm and Place your Order" />
+    <FormProvider {...formMethods}>
+      <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+        <RequestFormHeader title="Confirm and Place your Order" />
 
-      <StepIndex
-        currentIndex={currentStepIndex}
-        length={steps.length}
-        title={currentTitle}
-      />
+        <StepIndex
+          currentIndex={currentStepIndex}
+          length={steps.length}
+          title={currentTitle}
+        />
 
-      {!isLastStep ? (
-        <LabelId label="Request ID" id={requestPackage.requestId} />
-      ) : (
-        // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
-        <SectionContentLayout>
-          <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
-        </SectionContentLayout>
-      )}
-
-      {step}
-
-      <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
-        {isFirstStep && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={handleBack} />
-          </div>
+        {!isLastStep ? (
+          <LabelId label="Request ID" id={requestPackage.requestId} />
+        ) : (
+          // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
+          <SectionContentLayout>
+            <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
+          </SectionContentLayout>
         )}
-        {!isFirstStep && !isLastStep && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={back} />
-          </div>
-        )}
-        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
-        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
-        {currentStepIndex === 3 && (
-          <div className="w-full">
-            <DoneButton text="Done" onClick={handleFinish} />
-          </div>
-        )}
+
+        {step}
+
+        <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
+          {isFirstStep && (
+            <div className="w-full md:max-w-[210px]">
+              <BackButton onClick={handleBack} />
+            </div>
+          )}
+          {!isFirstStep && !isLastStep && (
+            <div className="w-full md:max-w-[210px]">
+              <BackButton onClick={back} />
+            </div>
+          )}
+          {currentStepIndex === 0 && (
+            <DoneButton
+              text="Proceed"
+              onClick={formMethods.handleSubmit(onSubmit)}
+            />
+          )}
+          {currentStepIndex === 1 && (
+            <DoneButton
+              text="Confirm"
+              onClick={formMethods.handleSubmit(onSubmit)}
+            />
+          )}
+          {currentStepIndex === 3 && (
+            <div className="w-full">
+              <DoneButton text="Done" onClick={handleFinish} />
+            </div>
+          )}
+        </div>
+
+        {portal &&
+          createPortal(
+            <PayNowButton onClick={formMethods.handleSubmit(onSubmit)} />,
+            portal,
+          )}
       </div>
-
-      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
-    </div>
+    </FormProvider>
   );
 };
 
@@ -167,18 +247,156 @@ const PackageConfirmation = () => {
   );
 };
 
+export type BillingAddressChoicesType =
+  (typeof BILLING_ADDRESS_OPTIONS)[number];
+
 const BillingAddress = () => {
+  // todo: get this from user in AuthContext
+  const defaultBillingAddress = {
+    firstName: "Rex",
+    lastName: "Offor",
+    email: "rexoffor@gmail.com",
+    countryCode: "+234",
+    phoneNumber: "8080006321",
+    address: "29b Osolo Way Opposite Polaris Bank Ajao Estate",
+    country: "NG",
+    state: "LA",
+    city: "Ikeja",
+    zipPostalCode: "075348",
+  };
+
+  const [radio, setRadio] = useState<BillingAddressChoicesType>("default");
+  const { register, setValue, watch } = useFormContext<RequestCheckoutInputs>();
+  const { states, cities } = useStatesCities({
+    path: "billingDetails",
+    watch,
+  });
+
+  const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setRadio(e.target.value as BillingAddressChoicesType);
+  };
+
+  useEffect(() => {
+    if (radio === BILLING_ADDRESS_OPTIONS[0]) {
+      setValue("billingDetails", defaultBillingAddress);
+    }
+  }, [radio]);
+
   return (
     <div className="flex flex-col gap-[10px]">
       <SectionHeader title="Provide your billing address" hr />
-      <DefaultBillingAddressRadio />
-      <CustomBillingAddress />
+      <DefaultBillingAddressRadio
+        {...{ radio, handleRadioChange, defaultBillingAddress }}
+      />
+      <CustomBillingAddressRadio {...{ radio, handleRadioChange }}>
+        <div className="col-span-6">
+          <TextInput
+            id={"firstName"}
+            label={"First Name"}
+            {...register("billingDetails.firstName")}
+          />
+        </div>
+
+        <div className="col-span-6">
+          <TextInput
+            id={"lastName"}
+            label={"Last Name"}
+            {...register("billingDetails.lastName")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-5">
+          <TextInput
+            id="email"
+            label="Email"
+            type="email"
+            {...register("billingDetails.email")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-3">
+          <SelectCountryPhoneCodeInput
+            {...register("billingDetails.countryCode")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-4">
+          <TextInput
+            id="phone-number"
+            label="Phone Number"
+            type="tel"
+            {...register("billingDetails.phoneNumber")}
+          />
+        </div>
+
+        <div className="col-span-full">
+          <TextInput
+            id={"street-address"}
+            label={"Street Address"}
+            {...register("billingDetails.address")}
+          />
+        </div>
+
+        <div className="col-span-4">
+          <SelectCountryInput {...register("billingDetails.country")} />
+        </div>
+
+        <div className="col-span-4">
+          <SelectStateInput
+            states={states}
+            {...register("billingDetails.state")}
+          />
+        </div>
+
+        <div className="col-span-4">
+          <SelectCityInput
+            cities={cities}
+            {...register("billingDetails.city")}
+          />
+        </div>
+
+        <div className="col-span-full">
+          <TextInput
+            id={"zipPostalCode"}
+            label={"Zip Postal Code"}
+            {...register("billingDetails.zipPostalCode")}
+          />
+        </div>
+      </CustomBillingAddressRadio>
     </div>
   );
 };
 
-export const DefaultBillingAddressRadio = () => {
-  const { open, toggle } = useAccordion(false);
+type DefaultBillingAddressRadioProps = {
+  radio: BillingAddressChoicesType;
+  handleRadioChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  defaultBillingAddress: BillingDetailsType;
+};
+
+export const DefaultBillingAddressRadio = ({
+  radio,
+  handleRadioChange,
+  defaultBillingAddress,
+}: DefaultBillingAddressRadioProps) => {
+  const checked = radio === BILLING_ADDRESS_OPTIONS[0];
+  const { open, toggle } = useAccordion(checked);
+
+  const {
+    firstName,
+    lastName,
+    email,
+    countryCode,
+    phoneNumber,
+    address,
+    country,
+    state,
+    city,
+    zipPostalCode,
+  } = defaultBillingAddress;
+
+  useEffect(() => {
+    if (checked && !open) toggle();
+  }, [radio]);
 
   return (
     <SectionContentLayout>
@@ -186,14 +404,12 @@ export const DefaultBillingAddressRadio = () => {
         <div className="col-span-full flex items-center gap-[10px] md:gap-[30px]">
           <input
             className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-            name="radio"
+            name="billingAddress"
             type="radio"
-            value="male"
-            aria-label="Custom Billing Address"
-            checked={true}
-            onChange={() => {
-              return;
-            }}
+            value={BILLING_ADDRESS_OPTIONS[0]}
+            aria-label="Default Billing Address"
+            checked={checked}
+            onChange={handleRadioChange}
           />
           <h4 className="title-md md:title-lg text-gray-700">
             Default Billing Address
@@ -206,13 +422,17 @@ export const DefaultBillingAddressRadio = () => {
         {open && (
           <div className="flex w-full flex-col gap-[1px]">
             <span className="title-md font-medium text-neutral-900">
-              Mr Rex Offor
+              {`${firstName} ${lastName}`}
             </span>
-            <span className="body-lg text-neutral-700">+234 8080006321</span>
-            <span className="body-lg text-neutral-700">rexoffor@gmail.com</span>
             <span className="body-lg text-neutral-700">
-              29b Osolo Way Opposite Polaris Bank Ajao Estate, ikeja, Lagos
-              State, USA, 075348
+              {`${countryCode} ${phoneNumber}`}
+            </span>
+            <span className="body-lg text-neutral-700">{email}</span>
+            <span className="body-lg text-neutral-700">
+              {`${address}, ${city}, ${parseStateCode(
+                state,
+                country,
+              )}, ${parseCountryCode(country)}, ${zipPostalCode}`}
             </span>
           </div>
         )}
@@ -221,11 +441,23 @@ export const DefaultBillingAddressRadio = () => {
   );
 };
 
-export const CustomBillingAddress = () => {
-  const { open, toggle } = useAccordion(true);
-  const { register, getValues, setValue, watch } =
-    useForm<BillingDetailsType>();
-  const { states, cities } = useStatesCities({ getValues, setValue, watch });
+type CustomBillingAddressRadioProps = {
+  radio: BillingAddressChoicesType;
+  handleRadioChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  children: ReactNode;
+};
+
+export const CustomBillingAddressRadio = ({
+  radio,
+  handleRadioChange,
+  children,
+}: CustomBillingAddressRadioProps) => {
+  const checked = radio === BILLING_ADDRESS_OPTIONS[1];
+  const { open, toggle } = useAccordion(checked);
+
+  useEffect(() => {
+    if (checked && !open) toggle();
+  }, [radio]);
 
   return (
     <SectionContentLayout>
@@ -233,10 +465,12 @@ export const CustomBillingAddress = () => {
         <div className="col-span-full flex items-center gap-[10px] md:gap-[30px]">
           <input
             className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-            name="radio"
+            name="billingAddress"
             type="radio"
-            value="female"
+            value={BILLING_ADDRESS_OPTIONS[1]}
             aria-label="Custom Billing Address"
+            checked={checked}
+            onChange={handleRadioChange}
           />
           <h4 className="title-md md:title-lg text-gray-700">
             Custom Billing Address
@@ -248,73 +482,7 @@ export const CustomBillingAddress = () => {
 
         {open && (
           <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
-              <div className="col-span-1">
-                <TextInput
-                  id={"firstName"}
-                  label={"First Name"}
-                  {...register("firstName")}
-                />
-              </div>
-
-              <div className="col-span-1">
-                <TextInput
-                  id={"lastName"}
-                  label={"Last Name"}
-                  {...register("lastName")}
-                />
-              </div>
-            </div>
-
-            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-              <div className="col-span-full md:col-span-5">
-                <TextInput
-                  id="email"
-                  label="Email"
-                  type="email"
-                  {...register("email")}
-                />
-              </div>
-              <div className="col-span-full md:col-span-3">
-                <SelectCountryPhoneCodeInput {...register("countryCode")} />
-              </div>
-              <div className="col-span-full md:col-span-4">
-                <TextInput
-                  id="phone-number"
-                  label="Phone Number"
-                  type="tel"
-                  {...register("phoneNumber")}
-                />
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <TextInput
-                id={"street-address"}
-                label={"Street Address"}
-                {...register("address")}
-              />
-            </div>
-
-            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-              <div className="col-span-4">
-                <SelectCountryInput {...register("country")} />
-              </div>
-              <div className="col-span-4">
-                <SelectStateInput states={states} {...register("state")} />
-              </div>
-              <div className="col-span-4">
-                <SelectCityInput cities={cities} {...register("city")} />
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <TextInput
-                id={"zipPostalCode"}
-                label={"Zip Postal Code"}
-                {...register("zipPostalCode")}
-              />
-            </div>
+            {children}
           </div>
         )}
       </div>
@@ -323,6 +491,7 @@ export const CustomBillingAddress = () => {
 };
 
 const PlaceOrder = () => {
+  const { register } = useFormContext<RequestCheckoutInputs>();
   const { requestPackages } = useShopContext();
   const { viewIndex } = useTabContext();
 
@@ -370,11 +539,23 @@ const PlaceOrder = () => {
         data={requestPackage.items}
         tableFooter={<ShopPackageTableFooter totals={totals} />}
       />
+
       <SectionHeader title="Payment Methods" />
       <div className="pl-[14px]">
         <SubSectionTitle title="Select the Payment Method You Wish to Use" />
       </div>
-      <PaymentMethods />
+      <PaymentMethods>
+        {PAYMENT_METHODS.map((paymentMethod) => {
+          return (
+            <PaymentMethod
+              key={paymentMethod.title}
+              paymentMethod={paymentMethod}
+              {...register("paymentMethod")}
+            />
+          );
+        })}
+      </PaymentMethods>
+
       <div className="grid grid-cols-1 gap-[20px] md:grid-cols-12">
         <div className="flex flex-col gap-[15px] md:col-span-4 md:max-w-[300px]">
           <SectionHeader title="Take Note" />
@@ -389,29 +570,16 @@ const PlaceOrder = () => {
   );
 };
 
-export const PaymentMethods = () => {
+type PaymentMethodsProps = { children: ReactNode };
+
+export const PaymentMethods = ({ children }: PaymentMethodsProps) => {
   return (
-    <form>
-      <fieldset
-        id="PaymentMethods"
-        className="flex flex-col gap-[10px] md:pb-[40px]"
-      >
-        {/* <PaymentMethod
-          title="Credit/Debit Cards - Pay with Dollar/US Cards"
-          description="Valid for MasterCard and Visa Cards. Maximum allowed is $1,500"
-          expanded
-        /> */}
-        <PaymentMethod
-          title="Paystack - Pay with Naira Card"
-          description="Pay with Your Naira Card"
-          expanded
-          checked
-        />
-        {/* <PaymentMethod title="Pay At Bank in $ - Nigeria" />
-        <PaymentMethod title="Pay At Bank in Naira - Nigeria" />
-        <PaymentMethod title="Pay Via PayPal" /> */}
-      </fieldset>
-    </form>
+    <fieldset
+      id="paymentMethods"
+      className="flex flex-col gap-[10px] md:pb-[40px]"
+    >
+      {children}
+    </fieldset>
   );
 };
 
@@ -566,54 +734,48 @@ const CostsSummary = () => {
 };
 
 type PaymentMethodProps = {
-  title: string;
-  description?: string;
+  paymentMethod: PaymentMethodType;
   expanded?: boolean;
-  checked?: boolean;
-  onChange?: () => void;
 };
 
-const PaymentMethod = ({
-  title,
-  description,
-  expanded = false,
-  checked,
-  onChange = () => {
-    return;
-  },
-}: PaymentMethodProps) => {
-  const { open, toggle } = useAccordion(expanded);
+export const PaymentMethod = forwardRef(
+  (
+    { paymentMethod, expanded = false }: PaymentMethodProps,
+    ref: Ref<HTMLInputElement>,
+  ) => {
+    const { open, toggle } = useAccordion(expanded);
 
-  return (
-    <SectionContentLayout>
-      <div className="flex w-full flex-col gap-[20px] py-[10px] md:gap-[34px]">
-        <div className="col-span-full flex items-center gap-[10px] md:gap-[14px]">
-          <input
-            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-            name="payment method"
-            type="radio"
-            value={title}
-            aria-label={title}
-            checked={checked}
-            onChange={onChange}
-          />
-          <h4 className="title-md md:title-sm font-medium text-black">
-            {title}
-          </h4>
-          <div className="flex flex-grow justify-end">
-            <AccordionButton {...{ open, toggle }} />
+    const { title, description } = paymentMethod;
+
+    return (
+      <SectionContentLayout>
+        <div className="flex w-full flex-col gap-[20px] py-[10px] md:gap-[34px]">
+          <div className="col-span-full flex items-center gap-[10px] md:gap-[14px]">
+            <input
+              ref={ref}
+              className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
+              type="radio"
+              value={title}
+              aria-label={title}
+            />
+            <h4 className="title-md md:title-sm font-medium text-black">
+              {title}
+            </h4>
+            <div className="flex flex-grow justify-end">
+              <AccordionButton {...{ open, toggle }} />
+            </div>
           </div>
-        </div>
 
-        {open && (
-          <span className="body-md pl-[10px] text-neutral-700">
-            {description}
-          </span>
-        )}
-      </div>
-    </SectionContentLayout>
-  );
-};
+          {open && (
+            <span className="body-md pl-[10px] text-neutral-700">
+              {description}
+            </span>
+          )}
+        </div>
+      </SectionContentLayout>
+    );
+  },
+);
 
 type SubSectionTitleProps = { title: string | JSX.Element };
 

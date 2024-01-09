@@ -6,6 +6,7 @@ import {
   type ORIGINS,
   type PAYMENT_STATUS,
   type REQUEST_STATUS,
+  type SHIPPING_METHODS,
   type SHIPPING_STATUS,
   type SHOP_FOR_ME_STATUS,
   type STORES,
@@ -85,6 +86,7 @@ export type ShopOrderPackageType = {
   destinationWarehouse: (typeof ORIGINS)[number];
   items: ShopItemType[];
   billingDetails: BillingDetailsType;
+  shippingMethod: (typeof SHIPPING_METHODS)[number];
   totalShopForMeCost: number; // aggregated data for table sorting
   shopForMeStatus: (typeof SHOP_FOR_ME_STATUS)[number];
   totalShippingCost: number; // aggregated data for table sorting

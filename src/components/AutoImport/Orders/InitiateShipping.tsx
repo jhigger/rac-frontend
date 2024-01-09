@@ -3,6 +3,12 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { ArrowRight3, ExportCircle } from "iconsax-react";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  type SubmitHandler,
+} from "react-hook-form";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -15,13 +21,14 @@ import PackageTable from "~/components/PackageTable";
 import {
   BillingAddress,
   DetailSection,
+  ShippingMethod,
   Summary,
-  type ShippingMethodProps,
 } from "~/components/Shop/Orders/InitiateShipping";
 import {
   AndLastly,
   CostDetailSection,
   ImportantNotice,
+  PaymentMethod,
   PaymentMethods,
   StepIndex,
   SubSectionTitle,
@@ -36,9 +43,11 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
+import { PAYMENT_METHODS, type SHIPPING_METHODS } from "~/constants";
 import {
   useAutoImportContext,
   type AutoImportItemType,
+  type BillingDetailsType,
 } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -49,6 +58,42 @@ import {
   OriginWarehouseAddress,
   PickupDetails,
 } from "../Requests/RequestOrder";
+
+type InitiateShippingInputs = {
+  destinationDetails: BillingDetailsType;
+  billingDetails: BillingDetailsType;
+  shippingMethod: (typeof SHIPPING_METHODS)[number];
+  paymentMethod: (typeof PAYMENT_METHODS)[number]["title"];
+};
+
+const emptyValue: InitiateShippingInputs = {
+  destinationDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
+  billingDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
+  shippingMethod: "basic",
+  paymentMethod: "Paystack - Pay with Naira Card",
+};
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -71,9 +116,27 @@ const InitiateShipping = () => {
     { title: "Success", content: <Step4 /> },
   ];
   const stepsContent = steps.map((step) => step.content);
-  const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
-    useMultiStepForm(stepsContent);
+  const {
+    step,
+    currentStepIndex,
+    next,
+    isFirstStep,
+    back,
+    isLastStep,
+    isSecondToLastStep,
+  } = useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
+
+  const formMethods = useForm<InitiateShippingInputs>({
+    defaultValues: emptyValue,
+  });
+
+  const onSubmit: SubmitHandler<InitiateShippingInputs> = async (data) => {
+    if (isSecondToLastStep) {
+      console.log(data);
+    }
+    next();
+  };
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -88,62 +151,74 @@ const InitiateShipping = () => {
   }, [step]);
 
   return (
-    <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      {!isLastStep && (
-        <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
-      )}
+    <FormProvider {...formMethods}>
+      <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+        {!isLastStep && (
+          <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
+        )}
 
-      <StepIndex
-        currentIndex={currentStepIndex}
-        length={steps.length}
-        title={currentTitle}
-      />
+        <StepIndex
+          currentIndex={currentStepIndex}
+          length={steps.length}
+          title={currentTitle}
+        />
 
-      {!isLastStep ? (
-        <div className="w-full md:w-max">
-          <LabelId label="Request ID" id={requestPackage.requestId} />
-        </div>
-      ) : (
-        // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
-        <>
-          <SectionContentLayout>
-            <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
-          </SectionContentLayout>
-          <CongratulationImage description="You have just successfully placed an Auto-Import order." />
-        </>
-      )}
+        {!isLastStep ? (
+          <div className="w-full md:w-max">
+            <LabelId label="Request ID" id={requestPackage.requestId} />
+          </div>
+        ) : (
+          // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
+          <>
+            <SectionContentLayout>
+              <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
+            </SectionContentLayout>
+            <CongratulationImage description="You have just successfully placed an Auto-Import order." />
+          </>
+        )}
 
-      {step}
+        {step}
 
-      {currentStepIndex <= 1 && (
-        <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
-          {isFirstStep && (
-            <div className="w-full md:max-w-[210px]">
-              <BackButton onClick={handleBack} />
-            </div>
+        {currentStepIndex <= 1 && (
+          <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
+            {isFirstStep && (
+              <div className="w-full md:max-w-[210px]">
+                <BackButton onClick={handleBack} />
+              </div>
+            )}
+            {!isFirstStep && (
+              <div className="w-full md:max-w-[210px]">
+                <BackButton onClick={back} />
+              </div>
+            )}
+            {currentStepIndex === 0 && (
+              <DoneButton
+                text="Proceed"
+                onClick={formMethods.handleSubmit(onSubmit)}
+              />
+            )}
+            {currentStepIndex === 1 && (
+              <DoneButton
+                text="Confirm"
+                onClick={formMethods.handleSubmit(onSubmit)}
+              />
+            )}
+          </div>
+        )}
+
+        {isLastStep && (
+          <div className="w-[200px]">
+            <DoneButton text="Done" onClick={handleFinish} />
+          </div>
+        )}
+
+        {portal &&
+          createPortal(
+            <PayNowButton onClick={formMethods.handleSubmit(onSubmit)} />,
+            portal,
           )}
-          {!isFirstStep && (
-            <div className="w-full md:max-w-[210px]">
-              <BackButton onClick={back} />
-            </div>
-          )}
-          {currentStepIndex === 0 && (
-            <DoneButton text="Proceed" onClick={next} />
-          )}
-          {currentStepIndex === 1 && (
-            <DoneButton text="Confirm" onClick={next} />
-          )}
-        </div>
-      )}
-
-      {isLastStep && (
-        <div className="w-[200px]">
-          <DoneButton text="Done" onClick={handleFinish} />
-        </div>
-      )}
-
-      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
-    </div>
+      </div>
+    </FormProvider>
   );
 };
 
@@ -231,6 +306,7 @@ const Step2 = () => {
 };
 
 const Step3 = () => {
+  const { register } = useFormContext<InitiateShippingInputs>();
   const { requestPackages } = useAutoImportContext();
 
   const { viewIndex } = useTabContext();
@@ -268,7 +344,7 @@ const Step3 = () => {
         <SubSectionTitle title="Select The Shipping Method That Suites Your Need" />
       </div>
       <ShippingMethod
-        packageCosts={requestPackage.packageCosts}
+        value={requestPackage.shippingMethod}
         checked
         disabled
         expanded
@@ -278,7 +354,17 @@ const Step3 = () => {
       <div className="pl-[14px]">
         <SubSectionTitle title="Select the Payment Method You Wish to Use" />
       </div>
-      <PaymentMethods />
+      <PaymentMethods>
+        {PAYMENT_METHODS.map((paymentMethod) => {
+          return (
+            <PaymentMethod
+              key={paymentMethod.title}
+              paymentMethod={paymentMethod}
+              {...register("paymentMethod")}
+            />
+          );
+        })}
+      </PaymentMethods>
 
       <div className="grid grid-cols-1 gap-[20px] md:grid-cols-12">
         <div className="flex flex-col gap-[15px] md:col-span-4 md:max-w-[300px]">
@@ -397,74 +483,6 @@ const CostsSummary = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-const ShippingMethod = ({
-  packageCosts,
-  expanded = false,
-  checked,
-  disabled,
-}: ShippingMethodProps) => {
-  const { open, toggle } = useAccordion(expanded);
-
-  return (
-    <SectionContentLayout>
-      <div className="flex w-full flex-col gap-[30px] py-[10px]">
-        <div className="col-span-full flex items-center gap-[30px]">
-          <form>
-            <fieldset id="shippingMethods" className="flex items-center">
-              <input
-                disabled={disabled}
-                className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-                name="Shipping Method"
-                type="radio"
-                value="Custom"
-                aria-label="Shipping Method"
-                checked={checked}
-              />
-            </fieldset>
-          </form>
-          <h4 className="title-md md:title-lg text-black">Custom</h4>
-          <div className="flex flex-grow justify-end">
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-        </div>
-
-        {open && (
-          <div className="flex flex-col gap-[10px] pl-[10px]">
-            <div className="label-lg grid w-full grid-cols-2 gap-[20px] font-medium text-neutral-900 md:w-max">
-              <span className="col-span-1">Shipping Cost:</span>
-              <span className="col-span-1 place-self-end">
-                {formatCurrency(packageCosts.shippingCost)}
-              </span>
-            </div>
-            <div className="body-md flex flex-col gap-[5px] text-gray-700">
-              <p>
-                This shipping method takes your package 5 working days to arrive
-                your destination from the 1st Wednesday after your payment, You
-                can call us on +234 700 700 6000 or +1 888 567 8765 or{" "}
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-600 underline"
-                >
-                  send us a dm
-                </a>{" "}
-                to get alternative shipping methods with different benefits.
-              </p>
-              <p className="text-error-900">
-                The cost paid here only covers shipping to the Port in Nigeria.
-                Additional clearing cost has to be paid to get it out of the
-                ports. You can call us on +234 700 700 6000 or +1 888 567 8765
-                to get a clearance estimate
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </SectionContentLayout>
   );
 };
 

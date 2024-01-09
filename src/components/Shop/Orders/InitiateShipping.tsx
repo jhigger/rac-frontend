@@ -1,8 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+  type Ref,
+} from "react";
 import { createPortal } from "react-dom";
-import { useFormContext } from "react-hook-form";
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  type SubmitHandler,
+} from "react-hook-form";
 import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -15,17 +27,16 @@ import {
   SectionContentLayout,
   SectionHeader,
   TooltipButton,
-  type ShopInputs,
 } from "~/components/Shop/Requests/RequestOrder";
 import ShopPackageTable from "~/components/ShopPackageTable";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
-import { DESTINATIONS } from "~/constants";
-import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import {
-  useShopContext,
-  type PackageCostsType,
-  type ShopItemType,
-} from "~/contexts/ShopContext";
+  DESTINATIONS,
+  SHIPPING_METHOD_OPTIONS,
+  type SHIPPING_METHODS,
+} from "~/constants";
+import { type BillingDetailsType } from "~/contexts/AutoImportContext";
+import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
@@ -42,6 +53,16 @@ import {
 } from "../Requests/RequestCheckout";
 import { LabelWithTooltip, PackageOrigin } from "../Requests/RequestDetails";
 import { PurpleDetailSection } from "./ClearPackage";
+
+type InitiateShippingInputs = {
+  destinationWarehouse: (typeof DESTINATIONS)[number];
+  shippingMethod: (typeof SHIPPING_METHODS)[number];
+};
+
+const emptyValue: InitiateShippingInputs = {
+  destinationWarehouse: "Nigeria Warehouse (Lagos)",
+  shippingMethod: "basic",
+};
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -64,9 +85,27 @@ const InitiateShipping = () => {
     { title: "Success", content: <Success /> },
   ];
   const stepsContent = steps.map((step) => step.content);
-  const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
-    useMultiStepForm(stepsContent);
+  const {
+    step,
+    currentStepIndex,
+    next,
+    isFirstStep,
+    back,
+    isLastStep,
+    isSecondToLastStep,
+  } = useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
+
+  const formMethods = useForm<InitiateShippingInputs>({
+    defaultValues: emptyValue,
+  });
+
+  const onSubmit: SubmitHandler<InitiateShippingInputs> = async (data) => {
+    if (isSecondToLastStep) {
+      console.log(data);
+    }
+    next();
+  };
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -81,66 +120,85 @@ const InitiateShipping = () => {
   }, [step]);
 
   return (
-    <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      {!isLastStep && (
-        <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
-      )}
+    <FormProvider {...formMethods}>
+      <div className="flex max-w-[997px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+        {!isLastStep && (
+          <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
+        )}
 
-      <StepIndex
-        currentIndex={currentStepIndex}
-        length={steps.length}
-        title={currentTitle}
-      />
+        <StepIndex
+          currentIndex={currentStepIndex}
+          length={steps.length}
+          title={currentTitle}
+        />
 
-      {!isLastStep ? (
-        <div className="w-full md:w-max">
-          <OrderTrackingId
-            orderId={orderPackage.orderId}
-            trackingId={orderPackage.trackingId}
-          />
-        </div>
-      ) : (
-        <>
-          <SectionContentLayout>
+        {!isLastStep ? (
+          <div className="w-full md:w-max">
             <OrderTrackingId
               orderId={orderPackage.orderId}
               trackingId={orderPackage.trackingId}
-              center
             />
-          </SectionContentLayout>
-          <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
-        </>
-      )}
-
-      {step}
-
-      <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
-        {isFirstStep && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={handleBack} />
           </div>
+        ) : (
+          <>
+            <SectionContentLayout>
+              <OrderTrackingId
+                orderId={orderPackage.orderId}
+                trackingId={orderPackage.trackingId}
+                center
+              />
+            </SectionContentLayout>
+            <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
+          </>
         )}
-        {!isFirstStep && currentStepIndex <= 1 && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={back} />
-          </div>
-        )}
-        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
-        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
-      </div>
 
-      {currentStepIndex === 2 && (
-        <InitiateShippingAgreement back={back} next={next} />
-      )}
+        {step}
 
-      {currentStepIndex === 3 && (
-        <div className="w-[200px]">
-          <DoneButton text="Done" onClick={handleFinish} />
+        <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
+          {isFirstStep && (
+            <div className="w-full md:max-w-[210px]">
+              <BackButton onClick={handleBack} />
+            </div>
+          )}
+          {!isFirstStep && currentStepIndex <= 1 && (
+            <div className="w-full md:max-w-[210px]">
+              <BackButton onClick={back} />
+            </div>
+          )}
+          {currentStepIndex === 0 && (
+            <DoneButton
+              text="Proceed"
+              onClick={formMethods.handleSubmit(onSubmit)}
+            />
+          )}
+          {currentStepIndex === 1 && (
+            <DoneButton
+              text="Confirm"
+              onClick={formMethods.handleSubmit(onSubmit)}
+            />
+          )}
         </div>
-      )}
 
-      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
-    </div>
+        {currentStepIndex === 2 && (
+          <InitiateShippingAgreement
+            back={back}
+            next={formMethods.handleSubmit(onSubmit)}
+          />
+        )}
+
+        {currentStepIndex === 3 && (
+          <div className="w-[200px]">
+            <DoneButton text="Done" onClick={handleFinish} />
+          </div>
+        )}
+
+        {portal &&
+          createPortal(
+            <PayNowButton onClick={formMethods.handleSubmit(onSubmit)} />,
+            portal,
+          )}
+      </div>
+    </FormProvider>
   );
 };
 
@@ -498,7 +556,7 @@ export const BillingAddress = ({ billingDetails }: BillingAddressProps) => {
 };
 
 const SelectDestinationShippingAddress = () => {
-  const { register } = useFormContext<ShopInputs>();
+  const { register } = useFormContext<InitiateShippingInputs>();
 
   return (
     <div className="flex w-full items-center gap-[10px]">
@@ -520,7 +578,7 @@ const SelectDestinationShippingAddress = () => {
             })}
           </>
         }
-        {...register("requestPackage.destinationWarehouse")}
+        {...register("destinationWarehouse")}
       />
       <TooltipButton
         label="This is your shipping address, it is the location your package will be delivered to. You can then request for doorstep delivery upon arrival."
@@ -559,6 +617,7 @@ export const ShippingImportantNotice = () => {
 };
 
 const InitiateShippingStep = () => {
+  const { register } = useFormContext<InitiateShippingInputs>();
   const { orderPackages } = useShopContext();
   const { viewIndex } = useTabContext();
 
@@ -608,16 +667,14 @@ const InitiateShippingStep = () => {
         tableFooter={<ShopPackageTableFooter totals={totals} />}
       />
 
-      <SectionHeader title="Shipping Methods" />
-      <div className="pl-[14px]">
-        <SubSectionTitle title="Shipping Method Used" />
-      </div>
-      <ShippingMethod
-        packageCosts={orderPackage.packageCosts}
-        checked
-        disabled
-        expanded
-      />
+      <SelectShippingMethod>
+        <ShippingMethod
+          {...register("shippingMethod")}
+          value="basic"
+          checked
+          expanded
+        />
+      </SelectShippingMethod>
 
       <SectionHeader title="Shipment costs" />
       <ShipmentCostsSummary
@@ -755,78 +812,126 @@ export const Summary = ({
   );
 };
 
-export type ShippingMethodProps = {
-  packageCosts: PackageCostsType;
-  expanded?: boolean;
-  checked?: boolean;
-  disabled?: boolean;
+type SelectShippingMethodProps = { children: ReactNode };
+
+export const SelectShippingMethod = ({
+  children,
+}: SelectShippingMethodProps) => {
+  return (
+    <div className="flex flex-col gap-[20px]">
+      <SectionHeader title="Shipping Methods" />
+      <div className="pl-[14px]">
+        <SubSectionTitle title="Select Shipping Method" />
+      </div>
+      {children}
+    </div>
+  );
 };
 
-export const ShippingMethod = ({
-  packageCosts,
-  expanded = false,
-  checked = false,
-  disabled = false,
-}: ShippingMethodProps) => {
-  const { open, toggle } = useAccordion(expanded);
+type ShippingMethodProps = {
+  value: (typeof SHIPPING_METHODS)[number];
+  checked?: boolean;
+  disabled?: boolean;
+  expanded?: boolean;
+};
 
-  return (
-    <SectionContentLayout>
-      <div className="flex w-full flex-col gap-[30px] py-[10px]">
-        <div className="col-span-full flex items-center gap-[30px]">
-          <fieldset id="shippingMethods" className="flex items-center">
-            <input
-              disabled={disabled}
-              className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-              name="Shipping Method"
-              type="radio"
-              value="Basic"
-              aria-label="Shipping Method"
-              checked={checked}
-            />
-          </fieldset>
-          <h4 className="title-md md:title-lg text-black">Basic</h4>
-          <div className="flex flex-grow justify-end">
-            <AccordionButton {...{ open, toggle }} />
+export const ShippingMethod = forwardRef(
+  (
+    {
+      value,
+      checked = false,
+      disabled = false,
+      expanded = false,
+    }: ShippingMethodProps,
+    ref: Ref<HTMLInputElement>,
+  ) => {
+    const { open, toggle } = useAccordion(expanded);
+
+    const shippingMethodCosts = SHIPPING_METHOD_OPTIONS[value];
+
+    return (
+      <SectionContentLayout>
+        <div className="flex w-full flex-col gap-[30px] py-[10px]">
+          <div className="col-span-full flex items-center gap-[30px]">
+            <fieldset id="shippingMethod" className="flex items-center">
+              <input
+                className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
+                name="shippingMethod"
+                type="radio"
+                value={value}
+                aria-label="Shipping Method"
+                defaultChecked={checked}
+                disabled={disabled}
+                readOnly={disabled}
+                ref={ref}
+              />
+            </fieldset>
+            <h4 className="title-md md:title-lg text-black">Basic</h4>
+            <div className="flex flex-grow justify-end">
+              <AccordionButton {...{ open, toggle }} />
+            </div>
           </div>
+
+          {open && (
+            <div className="flex flex-col gap-[10px] px-[16px]">
+              <div className="label-lg grid w-full grid-cols-2 gap-[20px] font-medium text-neutral-900 md:w-max">
+                <span className="col-span-1">Shipping Cost:</span>
+                <span className="col-span-1 place-self-end">
+                  {formatCurrency(shippingMethodCosts.shippingCost)}
+                </span>
+                {shippingMethodCosts.clearingPortHandlingCost && (
+                  <>
+                    <span className="col-span-1">Clearing, Port Handling:</span>
+                    <span className="col-span-1 place-self-end">
+                      {formatCurrency(
+                        shippingMethodCosts.clearingPortHandlingCost,
+                      )}
+                    </span>
+                  </>
+                )}
+              </div>
+              <div className="body-md flex flex-col gap-[5px] text-gray-700">
+                <p>
+                  This shipping method takes your package 5 working days to
+                  arrive your destination from the 1st Wednesday after your
+                  payment, You can call us on +234 700 700 6000 or +1 888 567
+                  8765 or{" "}
+                  <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary-600 underline"
+                  >
+                    send us a dm
+                  </a>{" "}
+                  to get alternative shipping methods with different benefits.
+                </p>
+                <p>
+                  The cost paid here covers clearing, documentation and delivery
+                  to the destination.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
+      </SectionContentLayout>
+    );
+  },
+);
 
-        {open && (
-          <div className="flex flex-col gap-[10px] pl-[10px]">
-            <div className="label-lg grid w-full grid-cols-2 gap-[20px] font-medium text-neutral-900 md:w-max">
-              <span className="col-span-1">Shipping Cost:</span>
-              <span className="col-span-1 place-self-end">
-                {formatCurrency(packageCosts.shippingCost)}
-              </span>
-              <span className="col-span-1">Clearing, Port Handling:</span>
-              <span className="col-span-1 place-self-end">
-                {formatCurrency(packageCosts.clearingPortHandlingCost)}
-              </span>
-            </div>
-            <div className="body-md flex flex-col gap-[5px] text-gray-700">
-              <p>
-                This shipping method takes your package 5 working days to arrive
-                your destination from the 1st Wednesday after your payment, You
-                can call us on +234 700 700 6000 or +1 888 567 8765 or{" "}
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-600 underline"
-                >
-                  send us a dm
-                </a>{" "}
-                to get alternative shipping methods with different benefits.
-              </p>
-              <p>
-                The cost paid here covers clearing, documentation and delivery
-                to the destination.
-              </p>
-            </div>
-          </div>
-        )}
+export type ShippingMethodUsedProps = {
+  value: (typeof SHIPPING_METHODS)[number];
+};
+
+export const ShippingMethodUsed = ({ value }: ShippingMethodUsedProps) => {
+  return (
+    <>
+      <SectionHeader title="Shipping Methods" />
+      <div className="pl-[14px]">
+        <SubSectionTitle title="Shipping Method Used" />
       </div>
-    </SectionContentLayout>
+      <ShippingMethod value={value} checked disabled expanded />
+    </>
   );
 };
 

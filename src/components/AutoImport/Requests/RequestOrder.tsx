@@ -34,6 +34,8 @@ import {
 } from "~/components/Shop/Orders/InitiateShipping";
 import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import {
+  type BillingAddressChoicesType,
+  CustomBillingAddressRadio,
   DefaultBillingAddressRadio,
   StepIndex,
   type stepsContentType,
@@ -51,7 +53,7 @@ import {
   TooltipButton,
   type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
-import { CAR_CONDITIONS, ORIGINS } from "~/constants";
+import { BILLING_ADDRESS_OPTIONS, CAR_CONDITIONS, ORIGINS } from "~/constants";
 import {
   useAutoImportContext,
   type AutoImportItemType,
@@ -86,7 +88,7 @@ export const emptyValue: AutoImportRequestPackageType = {
       description: "",
     },
   ],
-  shipmentDetails: {
+  destinationDetails: {
     firstName: "",
     lastName: "",
     email: "",
@@ -110,6 +112,7 @@ export const emptyValue: AutoImportRequestPackageType = {
     city: "",
     zipPostalCode: "",
   },
+  shippingMethod: "custom",
   shippingPaymentStatus: "Unpaid",
   clearingPaymentStatus: "Unpaid",
   packageCosts: {
@@ -576,17 +579,14 @@ type DropOffAddressProps = { index: number };
 
 const DropOffAddress = ({ index }: DropOffAddressProps) => {
   const { open, toggle } = useAccordion(false);
-  const { register } = useFormContext<NonNullable<AutoImportInputs>>();
-  const { getValues, setValue, watch } =
+  const { register, watch } =
     useFormContext<
-      Pick<
-        NonNullable<
-          AutoImportInputs["requestPackage"]["items"][number]["pickupDetails"]
-        >,
-        "country" | "state" | "city"
-      >
+      NonNullable<AutoImportInputs["requestPackage"]["items"][number]>
     >();
-  const { states, cities } = useStatesCities({ getValues, setValue, watch });
+  const { states, cities } = useStatesCities({
+    path: "pickupDetails",
+    watch,
+  });
 
   return (
     <>
@@ -616,9 +616,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={"contactFirstName"}
                   label={"Pick up Contact First Name"}
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.firstName`,
-                  )}
+                  {...register(`pickupDetails.firstName`)}
                 />
               </div>
 
@@ -626,9 +624,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={"contactLastName"}
                   label={"Pick up Contact Last Name"}
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.lastName`,
-                  )}
+                  {...register(`pickupDetails.lastName`)}
                 />
               </div>
 
@@ -637,17 +633,13 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={`pickUpEmail-${index}`}
                   label="Pick up Contact Email Address"
                   type="email"
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.email`,
-                  )}
+                  {...register(`pickupDetails.email`)}
                 />
               </div>
 
               <div className="col-span-full md:col-span-3">
                 <SelectCountryPhoneCodeInput
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.countryCode`,
-                  )}
+                  {...register(`pickupDetails.countryCode`)}
                 />
               </div>
 
@@ -656,9 +648,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={`contactPhoneNumber-${index}`}
                   label="Contact's Phone Number"
                   type="tel"
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.phoneNumber`,
-                  )}
+                  {...register(`pickupDetails.phoneNumber`)}
                 />
               </div>
 
@@ -666,35 +656,25 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={`pickUpAddress-${index}`}
                   label={"Pick up Address"}
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.address`,
-                  )}
+                  {...register(`pickupDetails.address`)}
                 />
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectCountryInput
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.country`,
-                  )}
-                />
+                <SelectCountryInput {...register(`pickupDetails.country`)} />
               </div>
 
               <div className="col-span-full md:col-span-4">
                 <SelectStateInput
                   states={states}
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.state`,
-                  )}
+                  {...register(`pickupDetails.state`)}
                 />
               </div>
 
               <div className="col-span-full md:col-span-4">
                 <SelectCityInput
                   cities={cities}
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.city`,
-                  )}
+                  {...register(`pickupDetails.city`)}
                 />
               </div>
 
@@ -704,9 +684,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   label={"Pick up date"}
                   type="date"
                   min={new Date().toLocaleDateString()}
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.pickUpDate`,
-                  )}
+                  {...register(`pickupDetails.pickUpDate`)}
                 />
               </div>
 
@@ -714,9 +692,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={"locationType"}
                   label={"Pickup Location Type"}
-                  {...register(
-                    `requestPackage.items.${index}.pickupDetails.locationType`,
-                  )}
+                  {...register(`pickupDetails.locationType`)}
                 />
               </div>
             </div>
@@ -728,6 +704,38 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
 };
 
 export const Step2 = () => {
+  // todo: get this from user in AuthContext
+  const defaultBillingAddress = {
+    firstName: "Rex",
+    lastName: "Offor",
+    email: "rexoffor@gmail.com",
+    countryCode: "+234",
+    phoneNumber: "8080006321",
+    address: "29b Osolo Way Opposite Polaris Bank Ajao Estate",
+    country: "NG",
+    state: "LA",
+    city: "Ikeja",
+    zipPostalCode: "075348",
+  };
+
+  const [radio, setRadio] = useState<BillingAddressChoicesType>("default");
+  const { register, setValue, watch } =
+    useFormContext<AutoImportInputs["requestPackage"]>();
+  const { states, cities } = useStatesCities({
+    path: "billingDetails",
+    watch,
+  });
+
+  const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setRadio(e.target.value as BillingAddressChoicesType);
+  };
+
+  useEffect(() => {
+    if (radio === BILLING_ADDRESS_OPTIONS[0]) {
+      setValue("billingDetails", defaultBillingAddress);
+    }
+  }, [radio]);
+
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
@@ -739,223 +747,171 @@ export const Step2 = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Provide your Billing Information" />
-        <DefaultBillingAddressRadio />
-        <CustomBillingAddress />
+        <DefaultBillingAddressRadio
+          {...{ radio, handleRadioChange, defaultBillingAddress }}
+        />
+        <CustomBillingAddressRadio {...{ radio, handleRadioChange }}>
+          <div className="col-span-6">
+            <TextInput
+              id={"firstName"}
+              label={"First Name"}
+              {...register("billingDetails.firstName")}
+            />
+          </div>
+
+          <div className="col-span-6">
+            <TextInput
+              id={"lastName"}
+              label={"Last Name"}
+              {...register("billingDetails.lastName")}
+            />
+          </div>
+
+          <div className="col-span-full md:col-span-5">
+            <TextInput
+              id="email"
+              label="Email"
+              type="email"
+              {...register("billingDetails.email")}
+            />
+          </div>
+
+          <div className="col-span-full md:col-span-3">
+            <SelectCountryPhoneCodeInput
+              {...register("billingDetails.countryCode")}
+            />
+          </div>
+
+          <div className="col-span-full md:col-span-4">
+            <TextInput
+              id="phone-number"
+              label="Phone Number"
+              type="tel"
+              {...register("billingDetails.phoneNumber")}
+            />
+          </div>
+
+          <div className="col-span-full">
+            <TextInput
+              id={"street-address"}
+              label={"Street Address"}
+              {...register("billingDetails.address")}
+            />
+          </div>
+
+          <div className="col-span-4">
+            <SelectCountryInput {...register("billingDetails.country")} />
+          </div>
+
+          <div className="col-span-4">
+            <SelectStateInput
+              states={states}
+              {...register("billingDetails.state")}
+            />
+          </div>
+
+          <div className="col-span-4">
+            <SelectCityInput
+              cities={cities}
+              {...register("billingDetails.city")}
+            />
+          </div>
+
+          <div className="col-span-full">
+            <TextInput
+              id={"zipPostalCode"}
+              label={"Zip Postal Code"}
+              {...register("billingDetails.zipPostalCode")}
+            />
+          </div>
+        </CustomBillingAddressRadio>
       </div>
     </div>
   );
 };
 
-const CustomBillingAddress = () => {
-  const { open, toggle } = useAccordion(true);
-  const { register } = useFormContext<AutoImportInputs>();
-  const { getValues, setValue, watch } =
-    useFormContext<
-      Pick<
-        NonNullable<
-          AutoImportInputs["requestPackage"]["items"][number]["pickupDetails"]
-        >,
-        "country" | "state" | "city"
-      >
-    >();
-  const { states, cities } = useStatesCities({ getValues, setValue, watch });
-
-  return (
-    <SectionContentLayout>
-      <div className="flex w-full flex-col gap-[40px] py-[10px]">
-        <div className="col-span-full flex items-center gap-[10px] md:gap-[30px]">
-          <input
-            className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-            name="radio"
-            type="radio"
-            value="female"
-            aria-label="Custom Billing Address"
-          />
-          <h4 className="title-md md:title-lg text-gray-700">
-            Custom Billing Address
-          </h4>
-          <div className="flex flex-grow justify-end">
-            <AccordionButton {...{ open, toggle }} />
-          </div>
-        </div>
-
-        {open && (
-          <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
-              <div className="col-span-1">
-                <TextInput
-                  id={"firstName"}
-                  label={"First Name"}
-                  {...register("requestPackage.shipmentDetails.firstName")}
-                />
-              </div>
-
-              <div className="col-span-1">
-                <TextInput
-                  id={"lastName"}
-                  label={"Last Name"}
-                  {...register("requestPackage.shipmentDetails.lastName")}
-                />
-              </div>
-            </div>
-
-            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-              <div className="col-span-full md:col-span-5">
-                <TextInput
-                  id="email"
-                  label="Email"
-                  type="email"
-                  {...register("requestPackage.shipmentDetails.email")}
-                />
-              </div>
-              <div className="col-span-full md:col-span-3">
-                <SelectCountryPhoneCodeInput
-                  {...register("requestPackage.shipmentDetails.countryCode")}
-                />
-              </div>
-              <div className="col-span-full md:col-span-4">
-                <TextInput
-                  id="phone-number"
-                  label="Phone Number"
-                  type="tel"
-                  {...register("requestPackage.shipmentDetails.phoneNumber")}
-                />
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <TextInput
-                id={"street-address"}
-                label={"Street Address"}
-                {...register("requestPackage.shipmentDetails.address")}
-              />
-            </div>
-
-            <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-              <div className="col-span-4">
-                <SelectCountryInput
-                  {...register("requestPackage.billingDetails.country")}
-                />
-              </div>
-              <div className="col-span-4">
-                <SelectStateInput
-                  states={states}
-                  {...register("requestPackage.billingDetails.state")}
-                />
-              </div>
-              <div className="col-span-4">
-                <SelectCityInput
-                  cities={cities}
-                  {...register("requestPackage.billingDetails.city")}
-                />
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <TextInput
-                id={"zipPostalCode"}
-                label={"Zip Postal Code"}
-                {...register("requestPackage.billingDetails.zipPostalCode")}
-              />
-            </div>
-          </div>
-        )}
-      </div>
-    </SectionContentLayout>
-  );
-};
-
 const FillInShippingAddress = () => {
-  const { register } = useFormContext<AutoImportInputs>();
-  const { getValues, setValue, watch } =
-    useFormContext<
-      Pick<
-        NonNullable<
-          AutoImportInputs["requestPackage"]["items"][number]["pickupDetails"]
-        >,
-        "country" | "state" | "city"
-      >
-    >();
-  const { states, cities } = useStatesCities({ getValues, setValue, watch });
+  const { register, watch } =
+    useFormContext<AutoImportInputs["requestPackage"]>();
+  const { states, cities } = useStatesCities({
+    path: "destinationDetails",
+    watch,
+  });
 
   return (
     <div className="flex w-full flex-col gap-[40px] py-[10px]">
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
-          <div className="col-span-1">
-            <TextInput
-              id={"firstName"}
-              label={"Receiver's First Name"}
-              {...register("requestPackage.shipmentDetails.firstName")}
-            />
-          </div>
-
-          <div className="col-span-1">
-            <TextInput
-              id={"lastName"}
-              label={"Receiver's Last Name"}
-              {...register("requestPackage.shipmentDetails.lastName")}
-            />
-          </div>
-        </div>
-
-        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-          <div className="col-span-full md:col-span-5">
-            <TextInput
-              id="email"
-              label="Receiver's Email"
-              type="email"
-              {...register("requestPackage.shipmentDetails.email")}
-            />
-          </div>
-          <div className="col-span-full md:col-span-3">
-            <SelectCountryPhoneCodeInput
-              {...register("requestPackage.shipmentDetails.countryCode")}
-            />
-          </div>
-          <div className="col-span-full md:col-span-4">
-            <TextInput
-              id="phone-number"
-              label="Receiver's Phone Number"
-              type="tel"
-              {...register("requestPackage.shipmentDetails.phoneNumber")}
-            />
-          </div>
-        </div>
-
-        <div className="col-span-full">
+        <div className="col-span-6">
           <TextInput
-            id={"street-address"}
-            label={"Receiver's Address"}
-            {...register("requestPackage.shipmentDetails.address")}
+            id={"receiverFirstName"}
+            label={"Receiver's First Name"}
+            {...register("destinationDetails.firstName")}
           />
         </div>
 
-        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-          <div className="col-span-4">
-            <SelectCountryInput
-              {...register("requestPackage.shipmentDetails.country")}
-            />
-          </div>
-          <div className="col-span-4">
-            <SelectStateInput
-              states={states}
-              {...register("requestPackage.shipmentDetails.state")}
-            />
-          </div>
-          <div className="col-span-4">
-            <SelectCityInput
-              cities={cities}
-              {...register("requestPackage.shipmentDetails.city")}
-            />
-          </div>
+        <div className="col-span-6">
+          <TextInput
+            id={"receiverLastName"}
+            label={"Receiver's Last Name"}
+            {...register("destinationDetails.lastName")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-5">
+          <TextInput
+            id="receiverEmail"
+            label="Receiver's Email"
+            type="email"
+            {...register("destinationDetails.email")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-3">
+          <SelectCountryPhoneCodeInput
+            {...register("destinationDetails.countryCode")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-4">
+          <TextInput
+            id="receiverPhoneNumber"
+            label="Receiver's Phone Number"
+            type="tel"
+            {...register("destinationDetails.phoneNumber")}
+          />
         </div>
 
         <div className="col-span-full">
           <TextInput
-            id={"zipPostalCode"}
+            id={"receiverAddress"}
+            label={"Receiver's Address"}
+            {...register("destinationDetails.address")}
+          />
+        </div>
+
+        <div className="col-span-4">
+          <SelectCountryInput {...register("destinationDetails.country")} />
+        </div>
+
+        <div className="col-span-4">
+          <SelectStateInput
+            states={states}
+            {...register("destinationDetails.state")}
+          />
+        </div>
+
+        <div className="col-span-4">
+          <SelectCityInput
+            cities={cities}
+            {...register("destinationDetails.city")}
+          />
+        </div>
+
+        <div className="col-span-full">
+          <TextInput
+            id={"receiverZipPostalCode"}
             label={"Zip Postal Code"}
-            {...register("requestPackage.billingDetails.zipPostalCode")}
+            {...register("destinationDetails.zipPostalCode")}
           />
         </div>
       </div>

@@ -12,6 +12,7 @@ import {
   type ORIGINS,
   type PAYMENT_STATUS,
   type REQUEST_STATUS,
+  type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
 import { autoImportOrders, autoImportRequests } from "~/fake data";
@@ -75,8 +76,6 @@ export type BillingDetailsType = {
   zipPostalCode: string;
 };
 
-export type ShipmentDetailsType = BillingDetailsType;
-
 export type AutoImportDraftPackageType = AutoImportRequestPackageType;
 
 export type AutoImportOrderPackageType = {
@@ -87,8 +86,9 @@ export type AutoImportOrderPackageType = {
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   originWarehouse: (typeof ORIGINS)[number];
   items: AutoImportItemType[];
-  shipmentDetails: ShipmentDetailsType;
+  destinationDetails: BillingDetailsType;
   billingDetails: BillingDetailsType;
+  shippingMethod: (typeof SHIPPING_METHODS)[number];
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
   clearingPaymentStatus: (typeof PAYMENT_STATUS)[number];
   packageCosts: PackageCostsType;
@@ -100,8 +100,9 @@ export type AutoImportRequestPackageType = {
   requestLocalDate: string;
   originWarehouse: (typeof ORIGINS)[number];
   items: AutoImportItemType[];
-  shipmentDetails: ShipmentDetailsType;
+  destinationDetails: BillingDetailsType;
   billingDetails: BillingDetailsType;
+  shippingMethod: (typeof SHIPPING_METHODS)[number];
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
   clearingPaymentStatus: (typeof PAYMENT_STATUS)[number];
   packageCosts: PackageCostsType;

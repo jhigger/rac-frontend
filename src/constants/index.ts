@@ -103,7 +103,7 @@ export const COURIERS = ["Seller", "Someone else"] as const;
 
 export const PAYMENT_STATUS = ["Paid", "Unpaid"] as const;
 
-type WarehouseLocationType = Record<
+export type WarehouseLocationType = Record<
   (typeof ORIGINS)[number],
   {
     address: string;
@@ -152,3 +152,56 @@ export const WAREHOUSE_LOCATIONS: WarehouseLocationType = {
     zipPostalCode: "77407",
   },
 } as const;
+
+export const BILLING_ADDRESS_OPTIONS = ["default", "custom"] as const;
+
+export const SHIPPING_METHODS = ["basic", "custom"] as const;
+
+type ShippingMethodOptions = Record<
+  (typeof SHIPPING_METHODS)[number],
+  {
+    shippingCost: number;
+    clearingPortHandlingCost?: number;
+  }
+>;
+
+export const SHIPPING_METHOD_OPTIONS: ShippingMethodOptions = {
+  basic: {
+    shippingCost: 126.66,
+    clearingPortHandlingCost: 126.66,
+  },
+  custom: {
+    shippingCost: 126.66,
+    clearingPortHandlingCost: 126.66,
+  },
+};
+
+export const PAYMENT_METHOD_OPTIONS = [
+  "Paystack - Pay with Naira Card",
+] as const;
+
+export type PaymentMethodType = {
+  title: (typeof PAYMENT_METHOD_OPTIONS)[number];
+  description?: string;
+};
+
+export const PAYMENT_METHODS: PaymentMethodType[] = [
+  // {
+  //   title: "Credit/Debit Cards - Pay with Dollar/US Cards",
+  //   description:
+  //     "Valid for MasterCard and Visa Cards. Maximum allowed is $1,500",
+  // },
+  {
+    title: "Paystack - Pay with Naira Card",
+    description: "Pay with Your Naira Card",
+  },
+  // {
+  //   title: "Pay At Bank in $ - Nigeria",
+  // },
+  // {
+  //   title: "Pay At Bank in Naira - Nigeria",
+  // },
+  // {
+  //   title: "Pay Via PayPal",
+  // },
+] as const;

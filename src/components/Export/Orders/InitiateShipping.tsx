@@ -1,7 +1,12 @@
 import { ArrowRight3, ExportCircle } from "iconsax-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { createPortal } from "react-dom";
-import { useForm } from "react-hook-form";
+import {
+  FormProvider,
+  useForm,
+  useFormContext,
+  type SubmitHandler,
+} from "react-hook-form";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -22,6 +27,7 @@ import OrderTrackingId from "~/components/OrderTrackingId";
 import PackageTable from "~/components/PackageTable";
 import {
   DetailSection,
+  SelectShippingMethod,
   ShippingMethod,
   Summary,
   type ShipmentCostsSummaryProps,
@@ -29,12 +35,14 @@ import {
 import {
   AndLastly,
   CostDetailSection,
-  CustomBillingAddress,
+  CustomBillingAddressRadio,
   DefaultBillingAddressRadio,
+  PaymentMethod,
   PaymentMethods,
   StepIndex,
   SubSectionTitle,
   TotalCost,
+  type BillingAddressChoicesType,
   type stepsContentType,
 } from "~/components/Shop/Requests/RequestCheckout";
 import {
@@ -45,11 +53,52 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { type ShipmentDetailsType } from "~/contexts/AutoImportContext";
+import {
+  BILLING_ADDRESS_OPTIONS,
+  PAYMENT_METHODS,
+  type SHIPPING_METHODS,
+} from "~/constants";
+import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
+
+type InitiateShippingInputs = {
+  destinationDetails: BillingDetailsType;
+  billingDetails: BillingDetailsType;
+  shippingMethod: (typeof SHIPPING_METHODS)[number];
+  paymentMethod: (typeof PAYMENT_METHODS)[number]["title"];
+};
+
+const emptyValue: InitiateShippingInputs = {
+  destinationDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
+  billingDetails: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    countryCode: "",
+    phoneNumber: "",
+    address: "",
+    country: "",
+    state: "",
+    city: "",
+    zipPostalCode: "",
+  },
+  shippingMethod: "basic",
+  paymentMethod: "Paystack - Pay with Naira Card",
+};
 
 const InitiateShipping = () => {
   const [portal, setPortal] = useState<Element | DocumentFragment | null>(null);
@@ -72,9 +121,27 @@ const InitiateShipping = () => {
     { title: "Success", content: <Success /> },
   ];
   const stepsContent = steps.map((step) => step.content);
-  const { step, currentStepIndex, next, isFirstStep, back, isLastStep } =
-    useMultiStepForm(stepsContent);
+  const {
+    step,
+    currentStepIndex,
+    next,
+    isFirstStep,
+    back,
+    isLastStep,
+    isSecondToLastStep,
+  } = useMultiStepForm(stepsContent);
   const currentTitle = steps[currentStepIndex]?.title ?? "";
+
+  const formMethods = useForm<InitiateShippingInputs>({
+    defaultValues: emptyValue,
+  });
+
+  const onSubmit: SubmitHandler<InitiateShippingInputs> = async (data) => {
+    if (isSecondToLastStep) {
+      console.log(data);
+    }
+    next();
+  };
 
   const handleBack = () => {
     handleActiveAction(null);
@@ -89,56 +156,74 @@ const InitiateShipping = () => {
   }, [step]);
 
   return (
-    <div className="flex max-w-[1032px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-      {!isLastStep && (
-        <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
-      )}
+    <FormProvider {...formMethods}>
+      <div className="flex max-w-[997px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+        {!isLastStep && (
+          <CongratulationImage description="Your Package have arrived its Origin warehouse. Proceed to initiate shipping" />
+        )}
 
-      <StepIndex
-        currentIndex={currentStepIndex}
-        length={steps.length}
-        title={currentTitle}
-      />
+        <StepIndex
+          currentIndex={currentStepIndex}
+          length={steps.length}
+          title={currentTitle}
+        />
 
-      {!isLastStep ? (
-        <div className="w-full md:w-max">
-          <LabelId label="Request ID" id={requestPackage.requestId} />
-        </div>
-      ) : (
-        // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
-        <>
-          <SectionContentLayout>
-            <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
-          </SectionContentLayout>
-          <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
-        </>
-      )}
+        {!isLastStep ? (
+          <div className="w-full md:w-max">
+            <LabelId label="Request ID" id={requestPackage.requestId} />
+          </div>
+        ) : (
+          // todo: fetch orderPackage of the requestPackage.requestId to get orderId and trackingId
+          <>
+            <SectionContentLayout>
+              <OrderTrackingId orderId="OD78667" trackingId="SH78667" center />
+            </SectionContentLayout>
+            <CongratulationImage description="You have just successfully iInitiated shipment of your items" />
+          </>
+        )}
 
-      {step}
+        {step}
 
-      <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
-        {isFirstStep && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={handleBack} />
+        {!isSecondToLastStep && (
+          <div className="flex w-full flex-col items-center justify-center gap-[10px] md:w-max md:flex-row">
+            {isFirstStep && (
+              <div className="w-full md:max-w-[210px]">
+                <BackButton onClick={handleBack} />
+              </div>
+            )}
+            {!isFirstStep && currentStepIndex <= 1 && (
+              <div className="w-full md:max-w-[210px]">
+                <BackButton onClick={back} />
+              </div>
+            )}
+            {currentStepIndex === 0 && (
+              <DoneButton
+                text="Proceed"
+                onClick={formMethods.handleSubmit(onSubmit)}
+              />
+            )}
+            {currentStepIndex === 1 && (
+              <DoneButton
+                text="Confirm"
+                onClick={formMethods.handleSubmit(onSubmit)}
+              />
+            )}
           </div>
         )}
-        {!isFirstStep && currentStepIndex <= 1 && (
-          <div className="w-full md:max-w-[210px]">
-            <BackButton onClick={back} />
+
+        {currentStepIndex === 3 && (
+          <div className="w-[200px]">
+            <DoneButton text="Done" onClick={handleFinish} />
           </div>
         )}
-        {currentStepIndex === 0 && <DoneButton text="Proceed" onClick={next} />}
-        {currentStepIndex === 1 && <DoneButton text="Confirm" onClick={next} />}
+
+        {portal &&
+          createPortal(
+            <PayNowButton onClick={formMethods.handleSubmit(onSubmit)} />,
+            portal,
+          )}
       </div>
-
-      {currentStepIndex === 3 && (
-        <div className="w-[200px]">
-          <DoneButton text="Done" onClick={handleFinish} />
-        </div>
-      )}
-
-      {portal && createPortal(<PayNowButton onClick={next} />, portal)}
-    </div>
+    </FormProvider>
   );
 };
 
@@ -174,6 +259,38 @@ const PackageConfirmation = () => {
 };
 
 const BillingAddressStep = () => {
+  // todo: get this from user in AuthContext
+  const defaultBillingAddress = {
+    firstName: "Rex",
+    lastName: "Offor",
+    email: "rexoffor@gmail.com",
+    countryCode: "+234",
+    phoneNumber: "8080006321",
+    address: "29b Osolo Way Opposite Polaris Bank Ajao Estate",
+    country: "NG",
+    state: "LA",
+    city: "Ikeja",
+    zipPostalCode: "075348",
+  };
+
+  const [radio, setRadio] = useState<BillingAddressChoicesType>("default");
+  const { register, setValue, watch } =
+    useFormContext<InitiateShippingInputs>();
+  const { states, cities } = useStatesCities({
+    path: "billingDetails",
+    watch,
+  });
+
+  const handleRadioChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setRadio(e.target.value as BillingAddressChoicesType);
+  };
+
+  useEffect(() => {
+    if (radio === BILLING_ADDRESS_OPTIONS[0]) {
+      setValue("billingDetails", defaultBillingAddress);
+    }
+  }, [radio]);
+
   return (
     <div className="flex flex-col gap-[30px]">
       <div className="flex flex-col gap-[10px]">
@@ -185,83 +302,171 @@ const BillingAddressStep = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Confirm your Billing Information" />
-        <DefaultBillingAddressRadio />
-        <CustomBillingAddress />
+        <DefaultBillingAddressRadio
+          {...{ radio, handleRadioChange, defaultBillingAddress }}
+        />
+        <CustomBillingAddressRadio {...{ radio, handleRadioChange }}>
+          <div className="col-span-6">
+            <TextInput
+              id={"firstName"}
+              label={"First Name"}
+              {...register("billingDetails.firstName")}
+            />
+          </div>
+
+          <div className="col-span-6">
+            <TextInput
+              id={"lastName"}
+              label={"Last Name"}
+              {...register("billingDetails.lastName")}
+            />
+          </div>
+
+          <div className="col-span-full md:col-span-5">
+            <TextInput
+              id="email"
+              label="Email"
+              type="email"
+              {...register("billingDetails.email")}
+            />
+          </div>
+
+          <div className="col-span-full md:col-span-3">
+            <SelectCountryPhoneCodeInput
+              {...register("billingDetails.countryCode")}
+            />
+          </div>
+
+          <div className="col-span-full md:col-span-4">
+            <TextInput
+              id="phone-number"
+              label="Phone Number"
+              type="tel"
+              {...register("billingDetails.phoneNumber")}
+            />
+          </div>
+
+          <div className="col-span-full">
+            <TextInput
+              id={"street-address"}
+              label={"Street Address"}
+              {...register("billingDetails.address")}
+            />
+          </div>
+
+          <div className="col-span-4">
+            <SelectCountryInput {...register("billingDetails.country")} />
+          </div>
+
+          <div className="col-span-4">
+            <SelectStateInput
+              states={states}
+              {...register("billingDetails.state")}
+            />
+          </div>
+
+          <div className="col-span-4">
+            <SelectCityInput
+              cities={cities}
+              {...register("billingDetails.city")}
+            />
+          </div>
+
+          <div className="col-span-full">
+            <TextInput
+              id={"zipPostalCode"}
+              label={"Zip Postal Code"}
+              {...register("billingDetails.zipPostalCode")}
+            />
+          </div>
+        </CustomBillingAddressRadio>
       </div>
     </div>
   );
 };
 
-export const FillInShippingAddress = () => {
-  const { register, getValues, setValue, watch } =
-    useForm<ShipmentDetailsType>();
-  const { states, cities } = useStatesCities({ getValues, setValue, watch });
+const FillInShippingAddress = () => {
+  const { register, watch } = useFormContext<InitiateShippingInputs>();
+  const { states, cities } = useStatesCities({
+    path: "destinationDetails",
+    watch,
+  });
 
   return (
     <div className="flex w-full flex-col gap-[40px] py-[10px]">
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[30px]">
-          <div className="col-span-1">
-            <TextInput
-              id={"firstName"}
-              label={"Receiver's First Name"}
-              {...register("firstName")}
-            />
-          </div>
-
-          <div className="col-span-1">
-            <TextInput
-              id={"lastName"}
-              label={"Receiver's Last Name"}
-              {...register("lastName")}
-            />
-          </div>
+        <div className="col-span-6">
+          <TextInput
+            id={"receiverFirstName"}
+            label={"Receiver's First Name"}
+            {...register("destinationDetails.firstName")}
+          />
         </div>
 
-        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-          <div className="col-span-full md:col-span-5">
-            <TextInput
-              id="email"
-              label="Receiver's Email"
-              type="email"
-              {...register("email")}
-            />
-          </div>
-          <div className="col-span-full md:col-span-3">
-            <SelectCountryPhoneCodeInput {...register("countryCode")} />
-          </div>
-          <div className="col-span-full md:col-span-4">
-            <TextInput
-              id="phone-number"
-              label="Receiver's Phone Number"
-              type="tel"
-              {...register("phoneNumber")}
-            />
-          </div>
+        <div className="col-span-6">
+          <TextInput
+            id={"receiverLastName"}
+            label={"Receiver's Last Name"}
+            {...register("destinationDetails.lastName")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-5">
+          <TextInput
+            id="receiverEmail"
+            label="Receiver's Email"
+            type="email"
+            {...register("destinationDetails.email")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-3">
+          <SelectCountryPhoneCodeInput
+            {...register("destinationDetails.countryCode")}
+          />
+        </div>
+
+        <div className="col-span-full md:col-span-4">
+          <TextInput
+            id="receiverPhoneNumber"
+            label="Receiver's Phone Number"
+            type="tel"
+            {...register("destinationDetails.phoneNumber")}
+          />
         </div>
 
         <div className="col-span-full">
           <TextInput
-            id={"street-address"}
+            id={"receiverAddress"}
             label={"Receiver's Address"}
-            {...register("address")}
+            {...register("destinationDetails.address")}
           />
         </div>
 
-        <div className="col-span-full grid grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-          <div className="col-span-4">
-            <SelectCountryInput {...register("country")} />
-          </div>
-          <div className="col-span-4">
-            <SelectStateInput states={states} {...register("state")} />
-          </div>
-          <div className="col-span-4">
-            <SelectCityInput cities={cities} {...register("city")} />
-          </div>
+        <div className="col-span-4">
+          <SelectCountryInput {...register("destinationDetails.country")} />
+        </div>
+
+        <div className="col-span-4">
+          <SelectStateInput
+            states={states}
+            {...register("destinationDetails.state")}
+          />
+        </div>
+
+        <div className="col-span-4">
+          <SelectCityInput
+            cities={cities}
+            {...register("destinationDetails.city")}
+          />
         </div>
 
         <div className="col-span-full">
-          <TextInput id={"zipPostalCode"} label={"Zip Postal Code"} />
+          <TextInput
+            id={"receiverZipPostalCode"}
+            label={"Zip Postal Code"}
+            {...register("destinationDetails.zipPostalCode")}
+          />
         </div>
       </div>
     </div>
@@ -269,6 +474,7 @@ export const FillInShippingAddress = () => {
 };
 
 const InitiateShippingStep = () => {
+  const { register } = useFormContext<InitiateShippingInputs>();
   const { requestPackages } = useExportContext();
   const { viewIndex } = useTabContext();
 
@@ -301,22 +507,30 @@ const InitiateShippingStep = () => {
         tableFooter={<ImportPackageTableFooter totals={totals} />}
       />
 
-      <SectionHeader title="Shipping Methods" />
-      <div className="pl-[14px]">
-        <SubSectionTitle title="Select Shipping Method" />
-      </div>
-      <ShippingMethod
-        packageCosts={requestPackage.packageCosts}
-        checked
-        disabled
-        expanded
-      />
+      <SelectShippingMethod>
+        <ShippingMethod
+          {...register("shippingMethod")}
+          value="basic"
+          checked
+          expanded
+        />
+      </SelectShippingMethod>
 
       <SectionHeader title="Shipping Methods" />
       <div className="pl-[14px]">
         <SubSectionTitle title="Select The Payment Method You Wish to Use" />
       </div>
-      <PaymentMethods />
+      <PaymentMethods>
+        {PAYMENT_METHODS.map((paymentMethod) => {
+          return (
+            <PaymentMethod
+              key={paymentMethod.title}
+              paymentMethod={paymentMethod}
+              {...register("paymentMethod")}
+            />
+          );
+        })}
+      </PaymentMethods>
 
       <SectionHeader title="Shipment costs" />
       <ShipmentCostsSummary

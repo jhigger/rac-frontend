@@ -11,9 +11,8 @@ import TextInput from "../Inputs/TextInput";
 
 const AddressForm = () => {
   const { isRegistering } = useAuthContext();
-  const { register, getValues, setValue, watch } =
-    useFormContext<RegisterInputs>();
-  const { cities, states } = useStatesCities({ getValues, setValue, watch });
+  const { register, getValues, watch } = useFormContext<RegisterInputs>();
+  const { cities, states } = useStatesCities({ watch });
 
   return (
     <>

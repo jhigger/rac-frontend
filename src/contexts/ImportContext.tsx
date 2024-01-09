@@ -15,6 +15,7 @@ import {
   type PACKAGE_DELIVERY_STATUS,
   type PAYMENT_STATUS,
   type REQUEST_STATUS,
+  type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
 import { importOrders, importRequests } from "~/fake data";
@@ -71,6 +72,7 @@ export type ImportOrderPackageType = {
   destinationWarehouse: (typeof ORIGINS)[number];
   items: ImportItemType[];
   billingDetails: BillingDetailsType;
+  shippingMethod: (typeof SHIPPING_METHODS)[number];
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
   packageCosts: PackageCostsType;
 };

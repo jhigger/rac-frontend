@@ -19,8 +19,8 @@ import {
   SHOP_FOR_ME_STATUS,
   WAREHOUSE_LOCATIONS,
   type ORIGINS,
+  type WarehouseLocationType,
 } from "~/constants";
-import { type ShipmentDetailsType } from "~/contexts/AutoImportContext";
 import { type OrderPackageType } from "~/contexts/NotificationContext";
 import {
   useShopContext,
@@ -611,7 +611,7 @@ const ShippingStatusContentMap = ({
 
 type ShipmentPathProps = {
   origin: (typeof ORIGINS)[number];
-  destination: ShipmentDetailsType["country"];
+  destination: WarehouseLocationType[(typeof ORIGINS)[number]]["country"];
   shippingStatus: (typeof SHIPPING_STATUS)[number];
 };
 

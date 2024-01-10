@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
+import NoTabsContentLayout from "~/components/Layouts/NoTabsContentLayout";
 import PageLayout from "~/components/Layouts/PageLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import { useAuthContext } from "~/contexts/AuthContext";
@@ -32,9 +33,9 @@ const notifications = () => {
     <TabContextProvider>
       <PageLayout>
         <TopAppBar hasTabs={false} />
-        <div className="relative flex min-h-[calc(100vh-152px)] w-full flex-col overflow-y-auto bg-neutral-50 p-[20px] md:min-h-[calc(100vh-140px)] md:max-w-[calc(100vw-286px)] md:px-[40px] md:py-[30px]">
+        <NoTabsContentLayout>
           {notifications.length > 0 ? <NotificationList /> : <Empty />}
-        </div>
+        </NoTabsContentLayout>
       </PageLayout>
     </TabContextProvider>
   );

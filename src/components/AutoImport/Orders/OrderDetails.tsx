@@ -23,6 +23,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
+import { WAREHOUSE_LOCATIONS } from "~/constants";
 import { useAutoImportContext } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -72,7 +73,9 @@ const OrderDetails = () => {
             label="Origin warehouse"
             value={orderPackage.originWarehouse}
           />
-          <OriginWarehouseAddress />
+          <OriginWarehouseAddress
+            officeLocation={WAREHOUSE_LOCATIONS[orderPackage.originWarehouse]}
+          />
         </PackageOrigin>
         <hr className="block w-full border-dashed border-primary-900" />
         {orderPackage.items.map((item, i) => {
@@ -82,7 +85,9 @@ const OrderDetails = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Shipping Details" />
-        <DestinationAddressDetails />
+        <DestinationAddressDetails
+          destinationDetails={orderPackage.destinationDetails}
+        />
       </div>
 
       <div className="flex flex-col gap-[10px]">

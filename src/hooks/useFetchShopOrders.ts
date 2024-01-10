@@ -71,9 +71,9 @@ const useFetchShopOrders = (
           countryCode: "+234",
           phoneNumber: "803 456 7845",
           address: "No, 1osolo way, ikeja road, behind scaint merry",
-          country: "Turkey",
-          state: "Istanbul",
-          city: "Cyprusic",
+          country: "NG",
+          state: "LA",
+          city: "Ikeja",
           zipPostalCode: "98765",
         },
         totalShopForMeCost: 0, // todo: missing

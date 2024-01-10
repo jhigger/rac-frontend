@@ -83,7 +83,9 @@ const OrderDetails = () => {
 
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="Shipping Details" />
-        <DestinationAddressDetails />
+        <DestinationAddressDetails
+          destinationDetails={orderPackage.destinationDetails}
+        />
       </div>
 
       <div className="flex flex-col gap-[10px]">

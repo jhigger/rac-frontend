@@ -11,6 +11,7 @@ import {
   type AutoImportOrderPackageType,
   type AutoImportRequestPackageType,
 } from "./AutoImportContext";
+import { type ExportOrderPackageType } from "./ExportContext";
 import {
   type ImportOrderPackageType,
   type ImportRequestPackageType,
@@ -36,6 +37,7 @@ export const NotificationContext = createContext<NotificationContextType>(
 export type OrderPackageType =
   | ShopOrderPackageType
   | ImportOrderPackageType
+  | ExportOrderPackageType
   | AutoImportOrderPackageType;
 
 export type RequestPackageType =

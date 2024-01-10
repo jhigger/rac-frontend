@@ -6,6 +6,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -40,6 +41,7 @@ import {
   ITEM_DELIVERY_STATUS,
   ORIGINS,
   PACKAGE_DELIVERY_STATUS,
+  WAREHOUSE_LOCATIONS,
 } from "~/constants";
 import {
   useImportContext,
@@ -599,7 +601,9 @@ export const Step3 = () => {
     <div className="flex flex-col gap-[30px]">
       {deliveryStatusMap[draftPackage.deliveryStatus].imageText}
       {draftPackage.deliveryStatus !== "All delivered" && (
-        <OfficeDeliverAddress />
+        <OfficeDeliverAddress
+          officeLocation={WAREHOUSE_LOCATIONS[draftPackage.originWarehouse]}
+        />
       )}
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="What Next?" />
@@ -611,8 +615,15 @@ export const Step3 = () => {
   );
 };
 
-export const OfficeDeliverAddress = () => {
+type OfficeDeliverAddressProps = {
+  officeLocation: (typeof WAREHOUSE_LOCATIONS)[(typeof ORIGINS)[number]];
+};
+
+export const OfficeDeliverAddress = ({
+  officeLocation,
+}: OfficeDeliverAddressProps) => {
   const { open, toggle } = useAccordion(true);
+  const { address, country, state, city, zipPostalCode } = officeLocation;
 
   return (
     <SectionContentLayout>
@@ -628,31 +639,28 @@ export const OfficeDeliverAddress = () => {
 
         {open && (
           <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
-            <DetailSection
-              label="Address"
-              value="No, 1osolo way, ikeja road, behind scaint merry"
-            />
+            <DetailSection label="Address" value={address} />
             <DetailSection
               label="Country"
-              value="Turkey"
+              value={parseCountryCode(country)}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="State"
-              value="Istanbul"
+              value={parseStateCode(state, country)}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="City"
-              value="Cyprusic"
+              value={city}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="Zip/postal Code"
-              value="98765"
+              value={zipPostalCode}
               colSpanMobile={1}
               colSpanDesktop={2}
             />

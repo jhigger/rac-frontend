@@ -6,11 +6,20 @@ import {
   type ReactNode,
 } from "react";
 import { useLocalStorage } from "usehooks-ts";
-import { exportOrders, exportRequests } from "~/fake data";
 import {
-  type ImportOrderPackageType,
+  type ORDER_STATUS,
+  type ORIGINS,
+  type PAYMENT_STATUS,
+  type SHIPPING_METHODS,
+  type SHIPPING_STATUS,
+} from "~/constants";
+import { exportOrders, exportRequests } from "~/fake data";
+import { type BillingDetailsType } from "./AutoImportContext";
+import {
+  type ImportItemType,
   type ImportRequestPackageType,
 } from "./ImportContext";
+import { type PackageCostsType } from "./ShopContext";
 
 export type ExportContextType = {
   draftPackage: ExportDraftPackageType | null;
@@ -31,7 +40,20 @@ export const useExportContext = () => useContext(ExportContext);
 
 export type ExportDraftPackageType = ExportRequestPackageType;
 
-export type ExportOrderPackageType = ImportOrderPackageType;
+export type ExportOrderPackageType = {
+  orderId: string;
+  orderStatus: (typeof ORDER_STATUS)[number];
+  orderLocalDate: string;
+  trackingId: string;
+  shippingStatus: (typeof SHIPPING_STATUS)[number];
+  originWarehouse: (typeof ORIGINS)[number];
+  destinationDetails: BillingDetailsType;
+  items: ImportItemType[];
+  billingDetails: BillingDetailsType;
+  shippingMethod: (typeof SHIPPING_METHODS)[number];
+  shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
+  packageCosts: PackageCostsType;
+};
 
 export type ExportRequestPackageType = ImportRequestPackageType;
 

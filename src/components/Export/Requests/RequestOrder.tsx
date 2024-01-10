@@ -22,6 +22,7 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
+import { WAREHOUSE_LOCATIONS } from "~/constants";
 import {
   useExportContext,
   type ExportRequestPackageType,
@@ -241,7 +242,9 @@ export const Step3 = () => {
     <div className="flex flex-col gap-[30px]">
       {deliveryStatusMap[draftPackage.deliveryStatus].imageText}
       {draftPackage.deliveryStatus !== "All delivered" && (
-        <OfficeDeliverAddress />
+        <OfficeDeliverAddress
+          officeLocation={WAREHOUSE_LOCATIONS[draftPackage.originWarehouse]}
+        />
       )}
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="What Next?" />

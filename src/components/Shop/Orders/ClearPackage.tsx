@@ -8,6 +8,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -298,13 +299,13 @@ const DestinationAddressDetails = ({
         <PurpleDetailSection label="Street Address" value={address} />
         <PurpleDetailSection
           label="Country"
-          value={country}
+          value={parseCountryCode(country)}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="State"
-          value={state}
+          value={parseStateCode(state, country)}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
@@ -455,8 +456,16 @@ const OfficePickupAddress = ({ officeLocation }: OfficePickupAddressProps) => {
         {open && (
           <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
             <DetailSection label="Pickup Address" value={address} />
-            <DetailSection label="Country" value={country} colSpanDesktop={2} />
-            <DetailSection label="State" value={state} colSpanDesktop={2} />
+            <DetailSection
+              label="Country"
+              value={parseCountryCode(country)}
+              colSpanDesktop={2}
+            />
+            <DetailSection
+              label="State"
+              value={parseStateCode(state, country)}
+              colSpanDesktop={2}
+            />
             <DetailSection label="City" value={city} colSpanDesktop={2} />
             <DetailSection
               label="Zip/postal Code"

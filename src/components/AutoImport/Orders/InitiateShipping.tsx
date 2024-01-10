@@ -43,7 +43,11 @@ import {
   SectionContentLayout,
   SectionHeader,
 } from "~/components/Shop/Requests/RequestOrder";
-import { PAYMENT_METHODS, type SHIPPING_METHODS } from "~/constants";
+import {
+  PAYMENT_METHODS,
+  WAREHOUSE_LOCATIONS,
+  type SHIPPING_METHODS,
+} from "~/constants";
 import {
   useAutoImportContext,
   type AutoImportItemType,
@@ -242,7 +246,9 @@ const Step1 = () => {
           label="Origin warehouse"
           value={requestPackage.originWarehouse}
         />
-        <OriginWarehouseAddress />
+        <OriginWarehouseAddress
+          officeLocation={WAREHOUSE_LOCATIONS[requestPackage.originWarehouse]}
+        />
       </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
       {requestPackage.items.map((item, i) => {
@@ -298,7 +304,9 @@ const Step2 = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <SectionHeader title="Confirm your Shipping Details" />
-      <DestinationAddressDetails />
+      <DestinationAddressDetails
+        destinationDetails={requestPackage.destinationDetails}
+      />
       <SectionHeader title="Confirm your Billing Information" />
       <BillingAddress billingDetails={requestPackage.billingDetails} />
     </div>

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { PrimaryBackButton } from "~/components/Buttons/PrimaryBackButton";
 import { type NOTIFICATION_TYPES } from "~/constants";
 import { type AutoImportOrderPackageType } from "~/contexts/AutoImportContext";
+import { type ExportOrderPackageType } from "~/contexts/ExportContext";
 import { type ImportOrderPackageType } from "~/contexts/ImportContext";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
@@ -134,6 +135,7 @@ export type NotificationListItemProps = {
 type OrderType =
   | ShopOrderPackageType
   | ImportOrderPackageType
+  | ExportOrderPackageType
   | AutoImportOrderPackageType;
 
 type NotificationMessagesType = Record<

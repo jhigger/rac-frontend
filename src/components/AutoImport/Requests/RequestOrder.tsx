@@ -7,7 +7,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { formatCurrency } from "~/Utils";
+import { formatCurrency, parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";
@@ -53,12 +53,18 @@ import {
   TooltipButton,
   type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
-import { BILLING_ADDRESS_OPTIONS, CAR_CONDITIONS, ORIGINS } from "~/constants";
+import {
+  BILLING_ADDRESS_OPTIONS,
+  CAR_CONDITIONS,
+  ORIGINS,
+  WAREHOUSE_LOCATIONS,
+} from "~/constants";
 import { useAuthContext } from "~/contexts/AuthContext";
 import {
   useAutoImportContext,
   type AutoImportItemType,
   type AutoImportRequestPackageType,
+  type BillingDetailsType,
   type PickupDetailsType,
 } from "~/contexts/AutoImportContext";
 import { type DraftImageType } from "~/contexts/ShopContext";
@@ -930,22 +936,44 @@ export const Step3 = () => {
           label="Origin warehouse"
           value={draftPackage.originWarehouse}
         />
-        <OriginWarehouseAddress />
+        <OriginWarehouseAddress
+          officeLocation={WAREHOUSE_LOCATIONS[draftPackage.originWarehouse]}
+        />
       </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
       {draftPackage.items.map((item, i) => {
         return <AutoImportOrderItem key={i} item={item} index={i} />;
       })}
       <SectionHeader title="Confirm your Shipping Details" />
-      <DestinationAddressDetails />
+      <DestinationAddressDetails
+        destinationDetails={draftPackage.destinationDetails}
+      />
       <SectionHeader title="Confirm your Billing Details" />
       <BillingAddress billingDetails={draftPackage.billingDetails} />
     </div>
   );
 };
 
-export const DestinationAddressDetails = () => {
+type DestinationAddressDetailsProps = {
+  destinationDetails: BillingDetailsType;
+};
+
+export const DestinationAddressDetails = ({
+  destinationDetails,
+}: DestinationAddressDetailsProps) => {
   const { open, toggle } = useAccordion(true);
+  const {
+    firstName,
+    lastName,
+    countryCode,
+    phoneNumber,
+    email,
+    country,
+    state,
+    city,
+    zipPostalCode,
+    address,
+  } = destinationDetails;
 
   return (
     <SectionContentLayout>
@@ -963,53 +991,50 @@ export const DestinationAddressDetails = () => {
           <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
             <DetailSection
               label="Receiver's First Name"
-              value="Malibu"
+              value={firstName}
               colSpanDesktop={4}
             />
             <DetailSection
               label="Receiver's Last Name"
-              value="SHedrack"
+              value={lastName}
               colSpanDesktop={4}
             />
             <DetailSection
               label="Contact Number"
-              value="+234 803 456 7845"
+              value={`${countryCode} ${phoneNumber}`}
               colSpanDesktop={4}
             />
             <DetailSection
               label="Receiver's Email"
-              value="Malibushdrack@gmail.com"
+              value={email}
               colSpanDesktop={4}
             />
             <div className="col-span-2"></div>
             <DetailSection
               label="Destination Country"
-              value="Turkey"
+              value={parseCountryCode(country)}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="Destination State"
-              value="Istanbul"
+              value={parseStateCode(state, country)}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="Destination City"
-              value="Cyprusic"
+              value={city}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="Zip/postal Code"
-              value="98765"
+              value={zipPostalCode}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
-            <DetailSection
-              label="Receiver's Address"
-              value="No, 1osolo way, ikeja road, behind scaint merry"
-            />
+            <DetailSection label="Receiver's Address" value={address} />
           </div>
         )}
       </div>
@@ -1026,6 +1051,21 @@ export const PickupDetails = ({
   pickupDetails,
   highlightedInfo = false,
 }: PickupDetailsProps) => {
+  const {
+    firstName,
+    lastName,
+    countryCode,
+    phoneNumber,
+    email,
+    address,
+    country,
+    state,
+    city,
+    zipPostalCode,
+    pickUpDate,
+    locationType,
+  } = pickupDetails;
+
   return (
     <>
       <span className="title-md md:title-lg text-primary-900">
@@ -1037,61 +1077,58 @@ export const PickupDetails = ({
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10 [&>*]:text-primary-900">
         <PurpleDetailSection
           label="Contact's First Name"
-          value={pickupDetails.firstName}
+          value={firstName}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Contact's Last Name"
-          value={pickupDetails.lastName}
+          value={lastName}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Contact Number"
-          value={`${pickupDetails.countryCode} ${pickupDetails.phoneNumber}`}
+          value={`${countryCode} ${phoneNumber}`}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Contact Email"
-          value={pickupDetails.email}
+          value={email}
           colSpanDesktop={4}
         />
-        <PurpleDetailSection
-          label="Street Address"
-          value={pickupDetails.address}
-        />
+        <PurpleDetailSection label="Street Address" value={address} />
         <PurpleDetailSection
           label="Location of the Car (Country)"
-          value={pickupDetails.country}
+          value={parseCountryCode(country)}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="Location of the Car (State)"
-          value={pickupDetails.state}
+          value={parseStateCode(state, country)}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="Location of the Car (City)"
-          value={pickupDetails.city}
+          value={city}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="Zip/postal Code"
-          value={pickupDetails.zipPostalCode}
+          value={zipPostalCode}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
 
         <PurpleDetailSection
           label="Pick up Date"
-          value={pickupDetails.pickUpDate}
+          value={pickUpDate}
           colSpanDesktop={4}
         />
         <PurpleDetailSection
           label="Location Type"
-          value={pickupDetails.locationType}
+          value={locationType}
           colSpanDesktop={4}
         />
       </div>
@@ -1176,9 +1213,10 @@ export const AutoImportOrderItemDetails = ({
       />
       <DetailSection label="Car Description" value={item.description} />
 
-      {item.properties?.map((property) => {
+      {item.properties?.map((property, i) => {
         return (
           <DetailSection
+            key={`property-${i}`}
             label={property.label}
             value={property.value}
             colSpanDesktop={3}
@@ -1189,7 +1227,15 @@ export const AutoImportOrderItemDetails = ({
   );
 };
 
-export const OriginWarehouseAddress = () => {
+type OriginWarehouseAddress = {
+  officeLocation: (typeof WAREHOUSE_LOCATIONS)[(typeof ORIGINS)[number]];
+};
+
+export const OriginWarehouseAddress = ({
+  officeLocation,
+}: OriginWarehouseAddress) => {
+  const { address, country, state, city, zipPostalCode } = officeLocation;
+
   return (
     <>
       <div className="flex items-center">
@@ -1202,33 +1248,32 @@ export const OriginWarehouseAddress = () => {
       <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-10">
         <PurpleDetailSection
           label="First Name"
-          value="Malibu"
+          value="N/A"
           colSpanDesktop={4}
         />
+        <PurpleDetailSection label="Last Name" value="N/A" colSpanDesktop={4} />
+        <PurpleDetailSection label="Street Address" value={address} />
         <PurpleDetailSection
-          label="Last Name"
-          value="SHedrack"
-          colSpanDesktop={4}
-        />
-        <PurpleDetailSection
-          label="Street Address"
-          value="No, 1osolo way, ikeja road, behind scaint merry"
+          label="State"
+          value={parseCountryCode(country)}
+          colSpanMobile={1}
+          colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="State"
-          value="Istanbul"
+          value={parseStateCode(state, country)}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="City"
-          value="Cyprusic"
+          value={city}
           colSpanMobile={1}
           colSpanDesktop={2}
         />
         <PurpleDetailSection
           label="Zip/postal Code"
-          value="98765"
+          value={zipPostalCode}
           colSpanMobile={1}
           colSpanDesktop={2}
         />

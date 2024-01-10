@@ -269,9 +269,10 @@ const ShopRequestItemDetails = ({
       />
       <DetailSection label="Product Description" value={item.description} />
 
-      {item.properties?.map((property) => {
+      {item.properties?.map((property, i) => {
         return (
           <DetailSection
+            key={`property-${i}`}
             label={property.label}
             value={property.value}
             colSpanDesktop={3}

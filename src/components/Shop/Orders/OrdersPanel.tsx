@@ -10,7 +10,12 @@ import {
 import { useEffect, useMemo, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
-import { capitalizeWords, formatCurrency } from "~/Utils";
+import {
+  capitalizeWords,
+  formatCurrency,
+  parseCountryCode,
+  parseStateCode,
+} from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
@@ -659,6 +664,8 @@ type PackageDestinationProps = {
 };
 
 const PackageDestination = ({ shipmentDetails }: PackageDestinationProps) => {
+  const { address, country, state, city, zipPostalCode } = shipmentDetails;
+
   return (
     <>
       <CongratulationImage
@@ -675,28 +682,21 @@ const PackageDestination = ({ shipmentDetails }: PackageDestinationProps) => {
           Our office address to pick up your package
         </span>
         <div className="grid w-full grid-cols-1 gap-[15px] md:grid-cols-10">
-          <DetailSection
-            label="Pick up Address"
-            value={shipmentDetails.address}
-          />
+          <DetailSection label="Pick up Address" value={address} />
           <DetailSection
             label="Country"
-            value={shipmentDetails.country}
+            value={parseCountryCode(country)}
             colSpanDesktop={2}
           />
           <DetailSection
             label="State"
-            value={shipmentDetails.state}
+            value={parseStateCode(state, country)}
             colSpanDesktop={2}
           />
-          <DetailSection
-            label="City"
-            value={shipmentDetails.city}
-            colSpanDesktop={2}
-          />
+          <DetailSection label="City" value={city} colSpanDesktop={2} />
           <DetailSection
             label="Zip/postal Code"
-            value={shipmentDetails.zipPostalCode}
+            value={zipPostalCode}
             colSpanDesktop={2}
           />
         </div>

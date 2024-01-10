@@ -194,7 +194,9 @@ const Step2 = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <DestinationAddressDetails />
+      <DestinationAddressDetails
+        destinationDetails={orderPackage.destinationDetails}
+      />
       <BillingAddress billingDetails={orderPackage.billingDetails} />
     </div>
   );

@@ -15,7 +15,13 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
+import {
+  formatCurrency,
+  formatDimension,
+  formatWeight,
+  parseCountryCode,
+  parseStateCode,
+} from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -443,9 +449,10 @@ const ShopOrderItemDetails = ({ item }: ShopOrderItemDetailsProps) => {
       <DetailSection label="Product/Item Picture" value={item.image} image />
       <DetailSection label="Product Description" value={item.description} />
 
-      {item.properties?.map((property) => {
+      {item.properties?.map((property, i) => {
         return (
           <DetailSection
+            key={`property-${i}`}
             label={property.label}
             value={property.value}
             colSpanDesktop={3}
@@ -525,13 +532,16 @@ export const BillingAddress = ({ billingDetails }: BillingAddressProps) => {
             />
             <DetailSection
               label="Country"
-              value={billingDetails.country}
+              value={parseCountryCode(billingDetails.country)}
               colSpanMobile={1}
               colSpanDesktop={2}
             />
             <DetailSection
               label="State"
-              value={billingDetails.state}
+              value={parseStateCode(
+                billingDetails.state,
+                billingDetails.country,
+              )}
               colSpanMobile={1}
               colSpanDesktop={2}
             />

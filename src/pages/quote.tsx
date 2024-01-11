@@ -12,6 +12,7 @@ const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
     </div>
   ),
 });
+
 const WelcomeChamp = dynamic(() => import("~/components/Quote/WelcomeChamp"));
 
 const quote = () => {
@@ -22,9 +23,7 @@ const quote = () => {
   return (
     <TabContextProvider>
       <PageLayout>
-        <div className="w-full md:w-max">
-          <TopAppBar hasTabs={false} />
-        </div>
+        <TopAppBar hasTabs={false} />
         <NoTabsContentLayout>
           <WelcomeChamp />
         </NoTabsContentLayout>

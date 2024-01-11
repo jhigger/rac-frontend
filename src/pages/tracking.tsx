@@ -6,7 +6,6 @@ import { LoadingSpinner } from "~/components/LoadingScreen";
 import { useAuthContext } from "~/contexts/AuthContext";
 import TrackingContextProvider from "~/contexts/TrackingContext";
 
-const Search = dynamic(() => import("~/components/Tracking/Search"));
 const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
   loading: () => (
     <div className="h-screen">
@@ -14,6 +13,8 @@ const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
     </div>
   ),
 });
+
+const Search = dynamic(() => import("~/components/Tracking/Search"));
 
 const tracking = () => {
   const { user } = useAuthContext();

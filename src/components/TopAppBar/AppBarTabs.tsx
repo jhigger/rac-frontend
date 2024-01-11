@@ -1,12 +1,10 @@
-import { useRouter } from "next/router";
-import { navItems, useNavContext } from "~/contexts/NavigationContext";
-import { tabs, useTabContext } from "~/contexts/TabContext";
+import { useTabContext } from "~/contexts/TabContext";
 import TabContentPanels from "./TabContentPanels";
 
 const AppBarTabs = () => {
-  const router = useRouter();
-  const { activeTab, tabsRef, handleTabChange } = useTabContext();
-  const { activeNav } = useNavContext();
+  const { activeTab, tabsRef, handleTabChange, tabs } = useTabContext();
+
+  if (!tabs) return;
 
   const handleRef = (el: HTMLButtonElement) => {
     if (!el) return;
@@ -15,37 +13,29 @@ const AppBarTabs = () => {
   };
 
   return (
-    <div className="tabs flex flex-col">
-      <div className="relative flex h-[50px] w-full flex-row items-center overflow-x-auto overflow-y-hidden rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white">
-        {navItems.map(({ href }) => {
-          return tabs.map(({ tabs: navTabs, nav: navTitle }) => {
-            if (router.asPath !== href) return null;
-            if (navTitle !== activeNav) return null;
-
-            return navTabs.map(({ id, title: tabTitle }) => {
-              return (
-                <button
-                  ref={handleRef}
-                  key={`${href.slice(1)}-tab-${id}`}
-                  data-type="tabs"
-                  data-target={`#${href.slice(1)}-panel-${id}`}
-                  className={`flex h-[49px] w-1/3 flex-col items-center justify-end gap-1 px-4 py-2 md:w-[120px] ${
-                    activeTab === id && "active text-primary-600"
-                  }`}
-                  onClick={() => handleTabChange(id)}
-                >
-                  <p className="text-sm font-medium tracking-[.00714em]">
-                    {tabTitle}
-                  </p>
-                </button>
-              );
-            });
-          });
+    <div className="tabs relative flex flex-col">
+      <div className="absolute -z-10 h-[50px] w-screen overflow-x-auto overflow-y-hidden rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white md:w-[calc(100vw-266px)]"></div>
+      <div className="relative mx-[30px] grid h-[50px] w-max grid-cols-3 items-center">
+        {tabs.map(({ id, title }) => {
+          return (
+            <button
+              ref={handleRef}
+              key={`tab-${id.replace(" ", "-")}`}
+              data-type="tabs"
+              data-target={`#panel-${id.replace(" ", "-")}`}
+              className={`flex h-[49px] flex-col items-center justify-end gap-1 whitespace-nowrap px-4 py-2 ${
+                activeTab === id && "active text-primary-600"
+              }`}
+              onClick={() => handleTabChange(id)}
+            >
+              <p className="text-sm font-medium tracking-[.00714em]">{title}</p>
+            </button>
+          );
         })}
 
         <div
           role="indicator"
-          className="absolute bottom-0 left-0 ml-[12%] h-0.5 w-[40px] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out sm:ml-[14%] md:ml-[40px]"
+          className="absolute bottom-0 left-0 ml-[calc(33%-24%)] h-0.5 w-[17%] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out"
         ></div>
       </div>
       <div className="relative flex min-h-[calc(100vh-201px)] bg-neutral-50 md:min-h-[calc(100vh-170px)]">

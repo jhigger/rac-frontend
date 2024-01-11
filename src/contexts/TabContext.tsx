@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import {
   createContext,
   useContext,
@@ -10,72 +9,24 @@ import {
 } from "react";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import { type ACTION_CONST, type TAB_IDS } from "~/constants";
-import { useNavContext, type NavTitleType } from "./NavigationContext";
+import { useNavContext } from "./NavigationContext";
 
-const loading = () => (
+export const loading = () => (
   <div className="h-full">
     <LoadingSpinner />
   </div>
 );
-const AutoImportDraftsPanel = dynamic(
-  () => import("~/components/AutoImport/Drafts/DraftsPanel"),
-  { loading },
-);
-const AutoImportOrdersPanel = dynamic(
-  () => import("~/components/AutoImport/Orders/OrdersPanel"),
-  { loading },
-);
-const AutoImportRequestsPanel = dynamic(
-  () => import("~/components/AutoImport/Requests/RequestsPanel"),
-  { loading },
-);
-const ExportDraftsPanel = dynamic(
-  () => import("~/components/Export/Drafts/DraftsPanel"),
-  { loading },
-);
-const ExportOrdersPanel = dynamic(
-  () => import("~/components/Export/Orders/OrdersPanel"),
-  { loading },
-);
-const ExportRequestsPanel = dynamic(
-  () => import("~/components/Export/Requests/RequestsPanel"),
-  { loading },
-);
-const ImportDraftsPanel = dynamic(
-  () => import("~/components/Import/Drafts/DraftsPanel"),
-  { loading },
-);
-const ImportOrdersPanel = dynamic(
-  () => import("~/components/Import/Orders/OrdersPanel"),
-  { loading },
-);
-const ImportRequestsPanel = dynamic(
-  () => import("~/components/Import/Requests/RequestsPanel"),
-  { loading },
-);
-const ShopDraftsPanel = dynamic(
-  () => import("~/components/Shop/Drafts/DraftsPanel"),
-  { loading },
-);
-const ShopOrdersPanel = dynamic(
-  () => import("~/components/Shop/Orders/OrdersPanel"),
-  { loading },
-);
-const ShopRequestsPanel = dynamic(
-  () => import("~/components/Shop/Requests/RequestsPanel"),
-  { loading },
-);
 
 export type TabContextType = {
   activeAction: ActionType | null;
-  activeTab: AppBarTabType["tabs"][number]["id"] | null;
+  activeTab: TabType["id"] | null;
   customText: string | null;
-  tabs: AppBarTabType[];
+  tabs: TabType[] | null;
   tabsRef: MutableRefObject<Array<HTMLButtonElement | null>>;
   viewIndex: number | null;
   handleActiveAction: (action: ActionType | null) => void;
   handleCustomText: (text: string | null) => void;
-  handleTabChange: (tab: TabIdType) => void;
+  handleTabChange: (tabId: TabType["id"]) => void;
   handleViewIndex: (index: number | null) => void;
 };
 
@@ -85,73 +36,30 @@ export const useTabContext = () => useContext(TabContext);
 
 type ActionType = (typeof ACTION_CONST)[number];
 
-type TabIdType = (typeof TAB_IDS)[number];
-
-type TabType = {
-  id: TabIdType;
+export type TabType = {
+  id: (typeof TAB_IDS)[number];
   title: string;
   content: JSX.Element;
 };
 
-type AppBarTabType = { nav: NavTitleType; tabs: TabType[] };
-
-export const tabs: [AppBarTabType, ...AppBarTabType[]] = [
-  {
-    nav: "Shop For Me",
-    tabs: [
-      { id: "orders", title: "Orders", content: <ShopOrdersPanel /> },
-      { id: "requests", title: "Requests", content: <ShopRequestsPanel /> },
-      { id: "drafts", title: "Drafts", content: <ShopDraftsPanel /> },
-    ],
-  },
-  {
-    nav: "Export",
-    tabs: [
-      { id: "orders", title: "Orders", content: <ExportOrdersPanel /> },
-      { id: "requests", title: "Requests", content: <ExportRequestsPanel /> },
-      { id: "drafts", title: "Drafts", content: <ExportDraftsPanel /> },
-    ],
-  },
-  {
-    nav: "Import",
-    tabs: [
-      { id: "orders", title: "Orders", content: <ImportOrdersPanel /> },
-      { id: "requests", title: "Requests", content: <ImportRequestsPanel /> },
-      { id: "drafts", title: "Drafts", content: <ImportDraftsPanel /> },
-    ],
-  },
-  {
-    nav: "Auto Import",
-    tabs: [
-      { id: "orders", title: "Orders", content: <AutoImportOrdersPanel /> },
-      {
-        id: "requests",
-        title: "Requests",
-        content: <AutoImportRequestsPanel />,
-      },
-      { id: "drafts", title: "Drafts", content: <AutoImportDraftsPanel /> },
-    ],
-  },
-];
-
-const getFirstTab = (activeNav: NavTitleType) => {
-  const activeTabs = tabs.find((tab) => tab.nav === activeNav);
-
-  if (activeTabs && activeTabs.tabs.length > 0 && activeTabs.tabs[0]) {
-    return activeTabs.tabs[0].id;
-  }
-
-  return null;
+type TabContextProviderProps<T extends [TabType, ...TabType[]]> = {
+  tabs?: T | null;
+  defaultTabId?: T[number]["id"] | null;
+  children: ReactNode;
 };
 
-const TabContextProvider = ({ children }: { children: ReactNode }) => {
+const TabContextProvider = <T extends [TabType, ...TabType[]]>({
+  tabs = null,
+  defaultTabId = tabs?.[0]?.id ?? null,
+  children,
+}: TabContextProviderProps<T>) => {
   const { activeNav } = useNavContext();
 
   const [activeAction, setActiveAction] = useState<ActionType | null>(null);
 
-  const [activeTab, setActiveTab] = useState<
-    AppBarTabType["tabs"][number]["id"] | null
-  >(getFirstTab(activeNav));
+  const [activeTab, setActiveTab] = useState<TabType["id"] | null>(
+    defaultTabId,
+  );
 
   const [customText, setCustomText] = useState<string | null>(null);
 
@@ -167,15 +75,13 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
     setCustomText(text);
   };
 
-  const handleTabChange = (tabId: TabIdType | null) => {
+  const handleTabChange = (tabId: TabType["id"] | null) => {
+    if (!tabs) return;
+
     let clickedTabIndex = null;
-    tabs.forEach(({ nav, tabs }) => {
-      if (nav === activeNav) {
-        tabs.forEach((tab, i) => {
-          if (tab.id === tabId) {
-            clickedTabIndex = i;
-          }
-        });
+    tabs.forEach((tab, i) => {
+      if (tab.id === tabId) {
+        clickedTabIndex = i;
       }
     });
 
@@ -197,8 +103,8 @@ const TabContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    handleTabChange(getFirstTab(activeNav));
-  }, [activeNav]);
+    handleTabChange(defaultTabId);
+  }, [activeNav, defaultTabId]);
 
   const value: TabContextType = {
     activeAction,

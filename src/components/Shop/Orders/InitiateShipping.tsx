@@ -368,6 +368,7 @@ export type DetailSectionProps = {
   image?: boolean;
   tooltip?: ReactNode;
   labelMaxWidth?: string;
+  labelHeight?: string;
 };
 
 export const DetailSection = ({
@@ -378,6 +379,7 @@ export const DetailSection = ({
   image,
   tooltip,
   labelMaxWidth = "max-w-[100px]",
+  labelHeight: height = "h-[40px]",
 }: DetailSectionProps) => {
   return (
     <div
@@ -386,7 +388,7 @@ export const DetailSection = ({
       {tooltip ? (
         <LabelWithTooltip label={label} tooltip={tooltip} />
       ) : (
-        <span className={`body-md h-[40px] ${labelMaxWidth}`}>{label}:</span>
+        <span className={`body-md ${height} ${labelMaxWidth}`}>{label}:</span>
       )}
       {image ? (
         <img

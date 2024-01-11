@@ -37,7 +37,17 @@ export const ACTION_CONST = [
   "track",
 ] as const;
 
-export const TAB_IDS = ["orders", "requests", "drafts"] as const;
+export const TAB_IDS = [
+  "orders",
+  "requests",
+  "drafts",
+  "profile information",
+  "communication preferences",
+  "security",
+  "account information",
+  "additional information",
+  "activities",
+] as const;
 
 export const ORIGINS = [
   "Nigeria Warehouse (Lagos)",

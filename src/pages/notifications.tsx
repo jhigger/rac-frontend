@@ -11,9 +11,6 @@ import { useNotificationContext } from "~/contexts/NotificationContext";
 import TabContextProvider from "~/contexts/TabContext";
 import { PrimaryBackButton } from "../components/Buttons/PrimaryBackButton";
 
-const NotificationList = dynamic(
-  () => import("~/components/Notifications/NotificationList"),
-);
 const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
   loading: () => (
     <div className="h-screen">
@@ -21,6 +18,10 @@ const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
     </div>
   ),
 });
+
+const NotificationList = dynamic(
+  () => import("~/components/Notifications/NotificationList"),
+);
 
 const notifications = () => {
   const { user } = useAuthContext();

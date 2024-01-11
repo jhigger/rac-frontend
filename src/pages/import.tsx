@@ -3,7 +3,7 @@ import PageLayout from "~/components/Layouts/PageLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import { useAuthContext } from "~/contexts/AuthContext";
 import ImportContextProvider from "~/contexts/ImportContext";
-import TabContextProvider from "~/contexts/TabContext";
+import TabContextProvider, { loading } from "~/contexts/TabContext";
 
 const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
   loading: () => (
@@ -13,13 +13,32 @@ const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
   ),
 });
 
+const ImportDraftsPanel = dynamic(
+  () => import("~/components/Import/Drafts/DraftsPanel"),
+  { loading },
+);
+const ImportOrdersPanel = dynamic(
+  () => import("~/components/Import/Orders/OrdersPanel"),
+  { loading },
+);
+const ImportRequestsPanel = dynamic(
+  () => import("~/components/Import/Requests/RequestsPanel"),
+  { loading },
+);
+
 const importPage = () => {
   const { user } = useAuthContext();
 
   if (!user) return null;
 
   return (
-    <TabContextProvider>
+    <TabContextProvider
+      tabs={[
+        { id: "orders", title: "Orders", content: <ImportOrdersPanel /> },
+        { id: "requests", title: "Requests", content: <ImportRequestsPanel /> },
+        { id: "drafts", title: "Drafts", content: <ImportDraftsPanel /> },
+      ]}
+    >
       <PageLayout>
         <ImportContextProvider>
           <TopAppBar />

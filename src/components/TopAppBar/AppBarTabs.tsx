@@ -1,5 +1,7 @@
 import { useTabContext } from "~/contexts/TabContext";
 import TabContentPanels from "./TabContentPanels";
+import { useEffect } from "react";
+import tailmater from "~/js/tailmater";
 
 const AppBarTabs = () => {
   const { activeTab, tabsRef, handleTabChange, tabs } = useTabContext();
@@ -11,6 +13,10 @@ const AppBarTabs = () => {
     if (tabsRef.current.length >= 3) tabsRef.current.shift();
     tabsRef.current.push(el);
   };
+
+  useEffect(() => {
+    tailmater();
+  }, []);
 
   return (
     <div className="tabs relative flex flex-col">
@@ -35,7 +41,7 @@ const AppBarTabs = () => {
 
         <div
           role="indicator"
-          className="absolute bottom-0 left-0 ml-[calc(33%-24%)] h-0.5 w-[17%] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out"
+          className="absolute bottom-0 left-0 ml-[calc(33.3%-25%)] h-0.5 w-[17%] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out"
         ></div>
       </div>
       <div className="relative flex min-h-[calc(100vh-201px)] bg-neutral-50 md:min-h-[calc(100vh-170px)]">

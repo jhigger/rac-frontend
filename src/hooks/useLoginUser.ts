@@ -16,7 +16,7 @@ const useLoginUser = async (inputs: LoginInputs) => {
   };
 
   const response = await axios.request(reqOptions);
-  return response.data as UserType;
+  return response.data as UserType; // todo: missing fields + add response types
 };
 
 export default useLoginUser;

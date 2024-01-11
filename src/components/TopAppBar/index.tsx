@@ -347,7 +347,7 @@ const LogoutButton = ({ onClick }: LogoutButtonProps) => {
       aria-label="Logout"
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
     >
-      <span className="body-lg text-white">Logout</span>
+      <span className="label-lg text-white">Logout</span>
     </button>
   );
 };

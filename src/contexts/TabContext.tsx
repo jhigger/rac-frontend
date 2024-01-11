@@ -78,17 +78,11 @@ const TabContextProvider = <T extends [TabType, ...TabType[]]>({
   const handleTabChange = (tabId: TabType["id"] | null) => {
     if (!tabs) return;
 
-    let clickedTabIndex = null;
-    tabs.forEach((tab, i) => {
-      if (tab.id === tabId) {
-        clickedTabIndex = i;
-      }
-    });
-
-    if (clickedTabIndex !== null) {
-      if (!tabsRef.current[clickedTabIndex]) return;
+    const clickedTabIndex = tabs.findIndex((tab) => tab.id === tabId);
+    if (clickedTabIndex !== -1 && tabsRef.current[clickedTabIndex]) {
       tabsRef.current[clickedTabIndex]?.click();
     }
+
     setActiveTab(tabId);
     reset();
   };

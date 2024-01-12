@@ -20,7 +20,7 @@ const AppBarTabs = () => {
 
   return (
     <div className="tabs relative flex flex-col">
-      <div className="absolute -z-10 h-[50px] w-screen overflow-x-auto overflow-y-hidden rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white md:w-[calc(100vw-266px)]"></div>
+      <div className="absolute -z-10 h-[50px] w-full overflow-x-auto overflow-y-hidden rounded-b-[20px] border-b-[1px] border-t-[0.5px] border-b-gray-200 border-t-gray-500 bg-white"></div>
       <div className="relative mx-[30px] grid h-[50px] w-max grid-cols-3 items-center">
         {tabs.map(({ id, title }) => {
           return (
@@ -29,7 +29,7 @@ const AppBarTabs = () => {
               key={`tab-${id.replace(" ", "-")}`}
               data-type="tabs"
               data-target={`#panel-${id.replace(" ", "-")}`}
-              className={`flex h-[49px] flex-col items-center justify-end gap-1 whitespace-nowrap px-4 py-2 ${
+              className={`flex h-[49px] flex-col items-center justify-center gap-1 whitespace-nowrap px-4 py-2 ${
                 activeTab === id && "active text-primary-600"
               }`}
               onClick={() => handleTabChange(id)}

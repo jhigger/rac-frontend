@@ -12,12 +12,15 @@ import LabelId from "../LabelId";
 import TabContentLayout from "../Layouts/TabContentLayout";
 import { DetailSection } from "../Shop/Orders/InitiateShipping";
 import { SectionContentLayout } from "../Shop/Requests/RequestOrder";
+import AccountInformation from "./SubTab/UserInfo/AccountInformation";
+import Activities from "./SubTab/UserInfo/Activities";
+import AdditionalInformation from "./SubTab/UserInfo/AdditionalInformation";
 
-type ProfileInformationProps = {
+export type SettingsTabContentProps = {
   handleHideTabs: () => void;
 };
 
-const ProfileInformation = ({ handleHideTabs }: ProfileInformationProps) => {
+const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
   const { user } = useAuthContext();
 
   if (!user) return null;
@@ -26,19 +29,19 @@ const ProfileInformation = ({ handleHideTabs }: ProfileInformationProps) => {
     {
       id: "account information",
       title: "Account information",
-      content: <>Account information</>,
+      content: <AccountInformation />,
     },
     {
       id: "additional information",
       title: "Additional information",
-      content: <>Additional information</>,
+      content: <AdditionalInformation />,
     },
-    { id: "activities", title: "Activities", content: <>Activities</> },
+    { id: "activities", title: "Activities", content: <Activities /> },
   ];
 
   return (
     <TabContentLayout>
-      <div className="flex max-w-[1094px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+      <div className="flex max-h-[794px] max-w-[1094px] flex-col gap-[20px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <SectionContentLayout>
           <div className="-mx-[35px] flex w-full flex-grow flex-col gap-[20px]">
             <div className="-mt-[21px] w-full flex-grow">
@@ -129,10 +132,6 @@ const SubTabs = () => {
     tabsRef.current.push(el);
   };
 
-  useEffect(() => {
-    tailmater();
-  }, []);
-
   return (
     <SectionContentLayout>
       <div className="flex w-full flex-grow flex-col gap-[20px]">
@@ -146,7 +145,7 @@ const SubTabs = () => {
                   key={`sub-tab-${id.replace(" ", "-")}`}
                   data-type="tabs"
                   data-target={`#sub-panel-${id.replace(" ", "-")}`}
-                  className={`flex h-[49px] flex-col items-center justify-end gap-1 whitespace-nowrap px-4 py-2 ${
+                  className={`flex h-[49px] flex-col items-center justify-center gap-1 whitespace-nowrap px-4 py-2 ${
                     activeTab === id && "active text-primary-600"
                   }`}
                   onClick={() => handleTabChange(id)}
@@ -175,8 +174,12 @@ const SubTabContentPanels = () => {
 
   if (!tabs) return;
 
+  useEffect(() => {
+    tailmater();
+  }, []);
+
   return (
-    <div className="flex w-full flex-col items-center justify-center p-[20px]">
+    <div className="-mb-[20px] flex w-full flex-col items-center justify-center p-[15px]">
       {tabs.map(({ id, content }) => {
         return (
           <div

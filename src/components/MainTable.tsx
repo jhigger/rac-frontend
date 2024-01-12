@@ -315,7 +315,7 @@ const TableRow = <T extends object>({
   );
 };
 
-type SelectNumberProps = {
+export type SelectNumberProps = {
   value?: string | number;
   onChange?: ChangeEventHandler<HTMLSelectElement>;
 };

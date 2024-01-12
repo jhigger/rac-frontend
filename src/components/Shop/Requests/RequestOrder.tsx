@@ -866,7 +866,7 @@ export const SectionContentLayout = ({
   children,
 }: SectionContentLayoutProps) => {
   return (
-    <div className="flex w-full items-center gap-[20px] rounded-[20px] border-[1px] border-gray-200 px-[24px] py-[20px] md:px-[34px]">
+    <div className="flex h-full w-full items-center gap-[20px] rounded-[20px] border-[1px] border-gray-200 px-[24px] py-[20px] md:px-[34px]">
       {children}
     </div>
   );

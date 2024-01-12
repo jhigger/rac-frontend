@@ -4,7 +4,9 @@ import { useState } from "react";
 import NoTabsContentLayout from "~/components/Layouts/NoTabsContentLayout";
 import PageLayout from "~/components/Layouts/PageLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
+import CommunicationPreferences from "~/components/Settings/CommunicationPreferences";
 import ProfileInformation from "~/components/Settings/ProfileInformation";
+import Security from "~/components/Settings/Security";
 import SettingsContent from "~/components/Settings/SettingsContent";
 import { useAuthContext } from "~/contexts/AuthContext";
 import TabContextProvider, { type TabType } from "~/contexts/TabContext";
@@ -44,9 +46,13 @@ const settings = () => {
     {
       id: "communication preferences",
       title: "Communication preferences",
-      content: <>Communication preferences</>,
+      content: <CommunicationPreferences handleHideTabs={handleHideTabs} />,
     },
-    { id: "security", title: "Security", content: <>Security</> },
+    {
+      id: "security",
+      title: "Security",
+      content: <Security handleHideTabs={handleHideTabs} />,
+    },
   ];
 
   return (

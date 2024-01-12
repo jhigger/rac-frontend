@@ -100,10 +100,6 @@ const TabContextProvider = <T extends [TabType, ...TabType[]]>({
     handleTabChange(defaultTabId);
   }, [activeNav, defaultTabId]);
 
-  useEffect(() => {
-    console.log(defaultTabId);
-  }, [defaultTabId]);
-
   const value: TabContextType = {
     activeAction,
     activeTab,

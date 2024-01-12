@@ -6,7 +6,6 @@ import TabContextProvider, {
   useTabContext,
   type TabType,
 } from "~/contexts/TabContext";
-import tailmater from "~/js/tailmater";
 import { BackButton } from "../Buttons/BackButton";
 import LabelId from "../LabelId";
 import TabContentLayout from "../Layouts/TabContentLayout";
@@ -38,6 +37,8 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
     },
     { id: "activities", title: "Activities", content: <Activities /> },
   ];
+
+  const { activeTab } = useTabContext();
 
   return (
     <TabContentLayout>
@@ -110,7 +111,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
         </SectionContentLayout>
 
         <TabContextProvider tabs={tabs} defaultTabId={"account information"}>
-          <SubTabs />
+          <SubTabs parentTabId={activeTab} defaultTabId="account information" />
         </TabContextProvider>
 
         <div className="w-full md:max-w-[169px]">
@@ -121,7 +122,12 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
   );
 };
 
-const SubTabs = () => {
+type SubTabsProps = {
+  parentTabId: TabType["id"] | null;
+  defaultTabId: TabType["id"];
+};
+
+const SubTabs = ({ parentTabId, defaultTabId }: SubTabsProps) => {
   const { activeTab, tabsRef, handleTabChange, tabs } = useTabContext();
 
   if (!tabs) return;
@@ -131,6 +137,10 @@ const SubTabs = () => {
     if (tabsRef.current.length >= 3) tabsRef.current.shift();
     tabsRef.current.push(el);
   };
+
+  useEffect(() => {
+    handleTabChange(defaultTabId);
+  }, [parentTabId]);
 
   return (
     <SectionContentLayout>
@@ -173,10 +183,6 @@ const SubTabContentPanels = () => {
   const { activeTab, tabs } = useTabContext();
 
   if (!tabs) return;
-
-  useEffect(() => {
-    tailmater();
-  }, []);
 
   return (
     <div className="-mb-[20px] flex w-full flex-col items-center justify-center p-[15px]">

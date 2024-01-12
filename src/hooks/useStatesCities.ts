@@ -18,7 +18,7 @@ const useStatesCities = <T extends FieldValues>({
   const country = watch(
     (path ? `${String(path)}.country` : "country") as Path<T>,
   );
-  const state = watch((path ? `${String(path)}.state` : "") as Path<T>);
+  const state = watch((path ? `${String(path)}.state` : "state") as Path<T>);
 
   const states = useMemo(() => State.getStatesOfCountry(country), [country]);
 

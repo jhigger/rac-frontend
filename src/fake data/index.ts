@@ -1945,7 +1945,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
         model: "asd",
         productionYear: "2023",
         value: 107.76,
-        condition: "Drivable",
+        condition: "Drivable", // this can be boolean
         color: "blue",
         mileage: 0,
         vin: "asdaasd123123",

@@ -38,11 +38,11 @@ const Activities = () => {
 
   return (
     <div className="grid grid-cols-1 gap-[15px] md:grid-cols-12">
-      <div className="col-span-8 h-[262px]">
+      <div className="col-span-full h-[262px] md:col-span-8">
         <ActivitiesTable columns={defaultColumns} data={activities} />
       </div>
 
-      <div className="col-span-4 h-[262px]">
+      <div className="col-span-full h-[262px] md:col-span-4">
         <Pinned />
       </div>
     </div>

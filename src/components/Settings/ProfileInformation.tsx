@@ -85,7 +85,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
 
   return (
     <TabContentLayout>
-      <div className="flex max-h-[794px] max-w-[1094px] flex-col gap-[20px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+      <div className="flex max-w-[1094px] flex-col gap-[20px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <SectionContentLayout>
           <div className="-mx-[35px] flex w-full flex-grow flex-col gap-[20px]">
             <div className="-mt-[21px] w-full flex-grow">
@@ -96,14 +96,14 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
               </SectionContentLayout>
             </div>
 
-            <div className="mx-[35px] grid grid-cols-1 items-center gap-[20px] md:grid-cols-12">
+            <div className="mx-[35px] grid w-full grid-cols-1 items-center gap-[20px] md:grid-cols-12">
               <img
                 src="https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto"
                 alt="user image"
                 className="col-span-2 h-[138px] w-[138px] rounded-full border-[12px] border-surface-100"
               />
 
-              <div className="col-span-4 flex flex-col gap-[10px]">
+              <div className="col-span-full flex flex-col gap-[10px] md:col-span-4">
                 <DetailSection
                   label="First Name"
                   labelHeight="h-[20px]"
@@ -116,7 +116,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                 />
               </div>
 
-              <div className="col-span-6 flex flex-col">
+              <div className="col-span-full flex flex-col md:col-span-6">
                 <div className="flex items-center gap-[10px]">
                   <Call color="#292d32" className="m-[12px]" />
                   <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
@@ -303,30 +303,32 @@ const SubTabs = ({ parentTabId, defaultTabId }: SubTabsProps) => {
       <div className="flex w-full flex-grow flex-col gap-[20px]">
         <div className="tabs relative -mx-[34px] -mt-[20px] flex flex-col">
           <div className="absolute h-[50px] w-full overflow-x-auto overflow-y-hidden rounded-b-[20px] border-b border-b-gray-200 "></div>
-          <div className="relative grid h-[50px] w-max grid-cols-3 items-center">
-            {tabs.map(({ id, title }) => {
-              return (
-                <button
-                  ref={handleRef}
-                  key={`sub-tab-${id.replace(" ", "-")}`}
-                  data-type="tabs"
-                  data-target={`#sub-panel-${id.replace(" ", "-")}`}
-                  className={`flex h-[49px] flex-col items-center justify-center gap-1 whitespace-nowrap px-4 py-2 ${
-                    activeTab === id && "active text-primary-600"
-                  }`}
-                  onClick={() => handleTabChange(id)}
-                >
-                  <p className="text-sm font-medium tracking-[.00714em]">
-                    {title}
-                  </p>
-                </button>
-              );
-            })}
+          <div className="overflow-x-auto overflow-y-hidden rounded-b-[20px] px-[30px]">
+            <div className="relative grid h-[50px] w-full min-w-max grid-cols-3 items-center md:w-max">
+              {tabs.map(({ id, title }) => {
+                return (
+                  <button
+                    ref={handleRef}
+                    key={`sub-tab-${id.replace(" ", "-")}`}
+                    data-type="tabs"
+                    data-target={`#sub-panel-${id.replace(" ", "-")}`}
+                    className={`flex h-[49px] flex-col items-center justify-center gap-1 whitespace-nowrap px-4 py-2 ${
+                      activeTab === id && "active text-primary-600"
+                    }`}
+                    onClick={() => handleTabChange(id)}
+                  >
+                    <p className="text-sm font-medium tracking-[.00714em]">
+                      {title}
+                    </p>
+                  </button>
+                );
+              })}
 
-            <div
-              role="indicator"
-              className="absolute bottom-0 left-0 ml-[calc(33.3%-25%)] h-0.5 w-[17%] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out"
-            ></div>
+              <div
+                role="indicator"
+                className="absolute bottom-0 left-0 ml-[calc(33.3%-25%)] h-0.5 w-[17%] rounded-t-full bg-primary-600 transition-all duration-200 ease-in-out"
+              ></div>
+            </div>
           </div>
           <SubTabContentPanels />
         </div>

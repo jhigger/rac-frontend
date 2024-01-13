@@ -70,7 +70,7 @@ const ActivitiesTable = <T extends object>({
       {table.getRowModel().rows.length > 0 ? (
         <>
           <div className="h-full overflow-auto">
-            <table className="relative w-full">
+            <table className="relative w-max min-w-full">
               <thead className="title-sm sticky top-0 z-10 bg-white px-[30px] py-[20px] !font-medium text-secondary-900">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>

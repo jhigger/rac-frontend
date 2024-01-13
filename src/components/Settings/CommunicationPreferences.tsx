@@ -61,7 +61,7 @@ const CommunicationPreferences = ({
 
   return (
     <TabContentLayout>
-      <div className="flex max-h-[794px] max-w-[1094px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+      <div className="flex max-w-[1094px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <div className="flex flex-col gap-[20px]">
           {preferences.map((item, i) => {
             return (

@@ -8,18 +8,21 @@ import {
   type PreferenceType,
 } from "./CommunicationPreferences";
 import { type SettingsTabContentProps } from "./ProfileInformation";
+import useMultiStepForm from "~/hooks/useMultistepForm";
 
 type EnabledType = "app" | "email" | null;
 type SecurityOptions = PreferenceType & { modalContent: ReactNode };
 
 const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
-  const [enabled, setEnabled] = useState<EnabledType>(null);
+  const [enabled, setEnabled] = useState<EnabledType>(null); // todo: get this data from server
   const buttonsRef = useRef<Array<HTMLButtonElement | null>>([]);
 
   const toggleEnabled = (enabledOption: EnabledType) => {
     if (enabled === null) setEnabled(enabledOption);
     else setEnabled(null);
   };
+
+  const {} = useMultiStepForm([]);
 
   const preferences: SecurityOptions[] = [
     {
@@ -60,13 +63,26 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
 
   return (
     <TabContentLayout>
-      <div className="flex max-h-[794px] max-w-[1094px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
+      <div className="flex max-w-[1094px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <RequestFormHeader title="Setup Two-Factor Authentication (2FA)" />
 
         <div className="flex flex-col gap-[20px]">
           <span className="body-lg text-gray-700">
-            Enhance the security of your account with Two-Factor Authentication.
-            Choose your preferred method below;
+            {enabled === "app" ? (
+              <>
+                Your preferred method below is{" "}
+                <span className="text-primary-900">Authentication via App</span>
+              </>
+            ) : enabled === "email" ? (
+              <>
+                Your preferred method below is{" "}
+                <span className="text-primary-900">
+                  Authentication via Email
+                </span>
+              </>
+            ) : (
+              "Enhance the security of your account with Two-Factor Authentication. Choose your preferred method below;"
+            )}
           </span>
 
           {preferences.map((item, i) => {

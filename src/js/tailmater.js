@@ -97,7 +97,9 @@ export default function () {
 
         if (!tabClickEvent.currentTarget.parentNode) return;
 
-        const tabParent = tabClickEvent.currentTarget.parentNode.parentNode;
+        // add more parentNode if needed
+        const tabParent =
+          tabClickEvent.currentTarget.parentNode.parentNode.parentNode;
         const set_tabs = tabParent.querySelectorAll('[data-type="tabs"]');
         const tabIndicator = tabParent.querySelectorAll('[role="indicator"]');
         const w_set = clickTarget.offsetWidth;

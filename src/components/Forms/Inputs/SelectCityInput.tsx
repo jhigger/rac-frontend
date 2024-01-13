@@ -4,6 +4,7 @@ import SelectInput from "./SelectInput";
 
 type SelectCityProps = {
   cities: ICity[];
+  bg?: string;
 };
 
 const SelectCityInput = (

@@ -4,6 +4,7 @@ import SelectInput from "./SelectInput";
 
 type SelectStateProps = {
   states: IState[];
+  bg?: string;
 };
 
 const SelectStateInput = (

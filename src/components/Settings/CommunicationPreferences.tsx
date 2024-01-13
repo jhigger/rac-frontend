@@ -84,8 +84,12 @@ const CommunicationPreferences = ({
   );
 };
 
-type PreferenceItemProps = PreferenceType & {
+type PreferenceItemProps = {
   id: string;
+  title: string;
+  description: string | JSX.Element;
+  disabled?: boolean;
+  onClick: ({ isToggled }: { isToggled: boolean }) => void;
 };
 
 export const PreferenceItem = ({
@@ -95,11 +99,11 @@ export const PreferenceItem = ({
   disabled = false,
   onClick,
 }: PreferenceItemProps) => {
-  const [, toggle] = useToggle();
+  const [isToggled, toggle] = useToggle();
 
   const handleClick = () => {
     toggle();
-    onClick();
+    onClick({ isToggled });
   };
 
   return (

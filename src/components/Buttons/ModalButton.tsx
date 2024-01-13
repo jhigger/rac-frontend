@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { forwardRef, useEffect, type ReactNode, type Ref } from "react";
 import { createPortal } from "react-dom";
 import tailmater from "~/js/tailmater";
 
@@ -11,14 +11,17 @@ type ModalButtonProps = {
   children: ReactNode;
 };
 
-const ModalButton = ({
-  modalId,
-  label,
-  buttonClassName = "btn relative flex h-[40px] w-full items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400",
-  buttonContent,
-  footerContent,
-  children,
-}: ModalButtonProps) => {
+const ModalButton = (
+  {
+    modalId,
+    label,
+    buttonClassName = "btn relative flex h-[40px] w-full items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400",
+    buttonContent,
+    footerContent,
+    children,
+  }: ModalButtonProps,
+  ref: Ref<HTMLButtonElement>,
+) => {
   const dataTarget = `#${modalId}`;
 
   useEffect(() => {
@@ -32,6 +35,7 @@ const ModalButton = ({
         data-type="dialogs"
         data-target={dataTarget}
         className={buttonClassName}
+        ref={ref}
       >
         {buttonContent ? buttonContent : label}
       </button>
@@ -55,4 +59,4 @@ const ModalButton = ({
   );
 };
 
-export default ModalButton;
+export default forwardRef(ModalButton);

@@ -1,4 +1,5 @@
 import { Lock, Refresh2, VolumeLow } from "iconsax-react";
+import Link from "next/link";
 import { useEffect } from "react";
 import {
   FormProvider,
@@ -91,28 +92,39 @@ const AccountInformation = () => {
                   }
                   footerContent={({ dataClose }) => {
                     return (
-                      <div className="flex gap-[10px]">
-                        <div className="w-full md:max-w-[100px]">
-                          <BackModalButton
-                            dataClose={dataClose}
-                            onClick={() => goTo(0)}
-                          />
-                        </div>
-
-                        {!isLastStep ? (
-                          <div className="w-full md:max-w-[172px]">
-                            <ProceedButton
-                              label="Proceed"
-                              onClick={formMethods.handleSubmit(onSubmit)}
-                            />
-                          </div>
-                        ) : (
-                          <div className="w-full md:max-w-[215px]">
-                            <ConfirmNewPasswordButton
+                      <div className="flex w-min flex-col gap-[10px]">
+                        <div className="flex gap-[10px]">
+                          <div className="w-full md:max-w-[100px]">
+                            <BackModalButton
                               dataClose={dataClose}
-                              onClick={formMethods.handleSubmit(onSubmit)}
+                              onClick={() => goTo(0)}
                             />
                           </div>
+
+                          {!isLastStep ? (
+                            <div className="w-full md:max-w-[172px]">
+                              <ProceedButton
+                                label="Proceed"
+                                onClick={formMethods.handleSubmit(onSubmit)}
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-full md:max-w-[215px]">
+                              <ConfirmNewPasswordButton
+                                dataClose={dataClose}
+                                onClick={formMethods.handleSubmit(onSubmit)}
+                              />
+                            </div>
+                          )}
+                        </div>
+                        {isLastStep && (
+                          <span className="body-md">
+                            Upon clicking &quot;Confirm New Password&quot;, I
+                            confirm I have read and agreed to{" "}
+                            <Link href="#" className="text-primary-600">
+                              all terms and policies
+                            </Link>
+                          </span>
                         )}
                       </div>
                     );
@@ -136,6 +148,7 @@ const AccountInformation = () => {
 };
 
 export const Pinned = () => {
+  // todo: replace values
   return (
     <div className="h-full">
       <SectionContentLayout>

@@ -12,6 +12,7 @@ import useStatesCities from "~/hooks/useStatesCities";
 import { BackButton } from "../Buttons/BackButton";
 import { BackModalButton } from "../Buttons/BackModalButton";
 import ModalButton from "../Buttons/ModalButton";
+import { ProceedButton } from "../Buttons/ProceedButton";
 import SelectCityInput from "../Forms/Inputs/SelectCityInput";
 import SelectCountryInput from "../Forms/Inputs/SelectCountryInput";
 import SelectCountryPhoneCodeInput from "../Forms/Inputs/SelectCountryPhoneCodeInput";
@@ -27,7 +28,6 @@ import {
 import AccountInformation from "./SubTab/UserInfo/AccountInformation";
 import Activities from "./SubTab/UserInfo/Activities";
 import AdditionalInformation from "./SubTab/UserInfo/AdditionalInformation";
-import { ProceedButton } from "../Buttons/ProceedButton";
 
 export type SettingsTabContentProps = {
   handleHideTabs: () => void;
@@ -86,187 +86,185 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
   return (
     <TabContentLayout>
       <div className="flex max-h-[794px] max-w-[1094px] flex-col gap-[20px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <SectionContentLayout>
-            <div className="-mx-[35px] flex w-full flex-grow flex-col gap-[20px]">
-              <div className="-mt-[21px] w-full flex-grow">
-                <SectionContentLayout>
-                  <div className="-m-[10px] w-full flex-grow">
-                    <LabelId label="User ID" id={user.racId} center />
-                  </div>
-                </SectionContentLayout>
+        <SectionContentLayout>
+          <div className="-mx-[35px] flex w-full flex-grow flex-col gap-[20px]">
+            <div className="-mt-[21px] w-full flex-grow">
+              <SectionContentLayout>
+                <div className="-m-[10px] w-full flex-grow">
+                  <LabelId label="User ID" id={user.racId} center />
+                </div>
+              </SectionContentLayout>
+            </div>
+
+            <div className="mx-[35px] grid grid-cols-1 items-center gap-[20px] md:grid-cols-12">
+              <img
+                src="https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto"
+                alt="user image"
+                className="col-span-2 h-[138px] w-[138px] rounded-full border-[12px] border-surface-100"
+              />
+
+              <div className="col-span-4 flex flex-col gap-[10px]">
+                <DetailSection
+                  label="First Name"
+                  labelHeight="h-[20px]"
+                  value={user.firstName}
+                />
+                <DetailSection
+                  label="Last Name"
+                  labelHeight="h-[20px]"
+                  value={user.lastName}
+                />
               </div>
 
-              <div className="mx-[35px] grid grid-cols-1 items-center gap-[20px] md:grid-cols-12">
-                <img
-                  src="https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto"
-                  alt="user image"
-                  className="col-span-2 h-[138px] w-[138px] rounded-full border-[12px] border-surface-100"
-                />
-
-                <div className="col-span-4 flex flex-col gap-[10px]">
-                  <DetailSection
-                    label="First Name"
-                    labelHeight="h-[20px]"
-                    value={user.firstName}
-                  />
-                  <DetailSection
-                    label="Last Name"
-                    labelHeight="h-[20px]"
-                    value={user.lastName}
-                  />
+              <div className="col-span-6 flex flex-col">
+                <div className="flex items-center gap-[10px]">
+                  <Call color="#292d32" className="m-[12px]" />
+                  <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
+                    {`${user.billingDetails.countryCode} ${user.billingDetails.phoneNumber}`}
+                  </span>
                 </div>
-
-                <div className="col-span-6 flex flex-col">
-                  <div className="flex items-center gap-[10px]">
-                    <Call color="#292d32" className="m-[12px]" />
-                    <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
-                      {`${user.billingDetails.countryCode} ${user.billingDetails.phoneNumber}`}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-[10px]">
-                    <Google color="#292d32" className="m-[12px]" />
-                    <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
-                      {user.email}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-[10px]">
-                    <Location color="#292d32" className="m-[12px]" />
-                    <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
-                      {location}
-                    </span>
-                  </div>
+                <div className="flex items-center gap-[10px]">
+                  <Google color="#292d32" className="m-[12px]" />
+                  <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
+                    {user.email}
+                  </span>
                 </div>
+                <div className="flex items-center gap-[10px]">
+                  <Location color="#292d32" className="m-[12px]" />
+                  <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
+                    {location}
+                  </span>
+                </div>
+              </div>
 
-                <div className="col-span-full w-full md:max-w-[302px]">
-                  <ModalButton
-                    modalId="editPersonalInfo"
-                    label="Edit Personal Information"
-                    buttonClassName="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-                    buttonContent={
-                      <>
-                        <Edit
-                          size={18}
-                          variant="Bold"
-                          className="flex-shrink-0"
-                        />
-                        <span className="label-lg text-white">
-                          Edit personal information
-                        </span>
-                      </>
-                    }
-                    footerContent={({ dataClose }) => {
-                      return (
-                        <div className="flex gap-[10px]">
-                          <div className="w-full md:max-w-[100px]">
-                            <BackModalButton dataClose={dataClose} />
-                          </div>
-                          <div className="w-full md:max-w-[172px]">
-                            <ProceedButton
-                              label="Update"
-                              dataClose={dataClose}
-                              onClick={() => undefined}
-                            />
-                          </div>
+              <div className="col-span-full w-full md:max-w-[302px]">
+                <ModalButton
+                  modalId="editPersonalInfo"
+                  label="Edit Personal Information"
+                  buttonClassName="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+                  buttonContent={
+                    <>
+                      <Edit
+                        size={18}
+                        variant="Bold"
+                        className="flex-shrink-0"
+                      />
+                      <span className="label-lg text-white">
+                        Edit personal information
+                      </span>
+                    </>
+                  }
+                  footerContent={({ dataClose }) => {
+                    return (
+                      <div className="flex gap-[10px]">
+                        <div className="w-full md:max-w-[100px]">
+                          <BackModalButton dataClose={dataClose} />
                         </div>
-                      );
-                    }}
-                  >
-                    <RequestFormHeader title="Edit Personal Information" />
-
-                    <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-                      <div className="col-span-6">
-                        <TextInput
-                          id={"firstName"}
-                          label={"First Name"}
-                          bg="bg-surface-300"
-                          {...register("firstName")}
-                        />
+                        <div className="w-full md:max-w-[172px]">
+                          <ProceedButton
+                            label="Update"
+                            dataClose={dataClose}
+                            onClick={handleSubmit(onSubmit)}
+                          />
+                        </div>
                       </div>
+                    );
+                  }}
+                >
+                  <RequestFormHeader title="Edit Personal Information" />
 
-                      <div className="col-span-6">
-                        <TextInput
-                          id={"lastName"}
-                          label={"Last Name"}
-                          bg="bg-surface-300"
-                          {...register("lastName")}
-                        />
-                      </div>
-
-                      <div className="col-span-full opacity-40 md:col-span-5">
-                        <TextInput
-                          id="email"
-                          label="Email"
-                          type="email"
-                          bg="bg-surface-300"
-                          disabled
-                        />
-                      </div>
-
-                      <div className="col-span-full opacity-40 md:col-span-3">
-                        <SelectCountryPhoneCodeInput
-                          bg={"bg-surface-300"}
-                          disabled
-                        />
-                      </div>
-
-                      <div className="col-span-full opacity-40 md:col-span-4">
-                        <TextInput
-                          id="phone-number"
-                          label="Phone Number"
-                          type="tel"
-                          bg="bg-surface-300"
-                          disabled
-                        />
-                      </div>
-
-                      <div className="col-span-4">
-                        <SelectCountryInput
-                          bg={"bg-surface-300"}
-                          {...register("country")}
-                        />
-                      </div>
-
-                      <div className="col-span-4">
-                        <SelectStateInput
-                          states={states}
-                          bg={"bg-surface-300"}
-                          {...register("state")}
-                        />
-                      </div>
-
-                      <div className="col-span-4">
-                        <SelectCityInput
-                          cities={cities}
-                          bg={"bg-surface-300"}
-                          {...register("city")}
-                        />
-                      </div>
-
-                      <div className="col-span-full">
-                        <TextInput
-                          id={"street-address"}
-                          label={"Street Address"}
-                          bg="bg-surface-300"
-                          {...register("address")}
-                        />
-                      </div>
-
-                      <div className="col-span-full">
-                        <TextInput
-                          id={"zipPostalCode"}
-                          label={"Zip Postal Code"}
-                          bg="bg-surface-300"
-                          {...register("zipPostalCode")}
-                        />
-                      </div>
+                  <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
+                    <div className="col-span-6">
+                      <TextInput
+                        id={"firstName"}
+                        label={"First Name"}
+                        bg="bg-surface-300"
+                        {...register("firstName")}
+                      />
                     </div>
-                  </ModalButton>
-                </div>
+
+                    <div className="col-span-6">
+                      <TextInput
+                        id={"lastName"}
+                        label={"Last Name"}
+                        bg="bg-surface-300"
+                        {...register("lastName")}
+                      />
+                    </div>
+
+                    <div className="col-span-full opacity-40 md:col-span-5">
+                      <TextInput
+                        id="email"
+                        label="Email"
+                        type="email"
+                        bg="bg-surface-300"
+                        disabled
+                      />
+                    </div>
+
+                    <div className="col-span-full opacity-40 md:col-span-3">
+                      <SelectCountryPhoneCodeInput
+                        bg={"bg-surface-300"}
+                        disabled
+                      />
+                    </div>
+
+                    <div className="col-span-full opacity-40 md:col-span-4">
+                      <TextInput
+                        id="phone-number"
+                        label="Phone Number"
+                        type="tel"
+                        bg="bg-surface-300"
+                        disabled
+                      />
+                    </div>
+
+                    <div className="col-span-4">
+                      <SelectCountryInput
+                        bg={"bg-surface-300"}
+                        {...register("country")}
+                      />
+                    </div>
+
+                    <div className="col-span-4">
+                      <SelectStateInput
+                        states={states}
+                        bg={"bg-surface-300"}
+                        {...register("state")}
+                      />
+                    </div>
+
+                    <div className="col-span-4">
+                      <SelectCityInput
+                        cities={cities}
+                        bg={"bg-surface-300"}
+                        {...register("city")}
+                      />
+                    </div>
+
+                    <div className="col-span-full">
+                      <TextInput
+                        id={"street-address"}
+                        label={"Street Address"}
+                        bg="bg-surface-300"
+                        {...register("address")}
+                      />
+                    </div>
+
+                    <div className="col-span-full">
+                      <TextInput
+                        id={"zipPostalCode"}
+                        label={"Zip Postal Code"}
+                        bg="bg-surface-300"
+                        {...register("zipPostalCode")}
+                      />
+                    </div>
+                  </div>
+                </ModalButton>
               </div>
             </div>
-          </SectionContentLayout>
-        </form>
+          </div>
+        </SectionContentLayout>
 
         <TabContextProvider tabs={tabs} defaultTabId={"account information"}>
           <SubTabs parentTabId={activeTab} defaultTabId="account information" />

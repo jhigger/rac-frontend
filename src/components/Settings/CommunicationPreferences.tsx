@@ -9,6 +9,8 @@ import { type SettingsTabContentProps } from "./ProfileInformation";
 export type PreferenceType = {
   title: string;
   description: string | JSX.Element;
+  disabled?: boolean;
+  onClick: () => void;
 };
 
 const CommunicationPreferences = ({
@@ -30,6 +32,7 @@ const CommunicationPreferences = ({
           your contact number updated for timely notification
         </>
       ),
+      onClick: () => undefined,
     },
     {
       title: "Notifications via WhatsApp",
@@ -40,6 +43,7 @@ const CommunicationPreferences = ({
           convenient and instant communication experience.
         </>
       ),
+      onClick: () => undefined,
     },
     {
       title:
@@ -51,6 +55,7 @@ const CommunicationPreferences = ({
           <span className="text-gray-700">{user.email}</span>
         </>
       ),
+      onClick: () => undefined,
     },
   ];
 
@@ -65,6 +70,7 @@ const CommunicationPreferences = ({
                 id={`communication-preferences-${i}`}
                 title={item.title}
                 description={item.description}
+                onClick={item.onClick}
               />
             );
           })}
@@ -83,15 +89,26 @@ type PreferenceItemProps = PreferenceType & {
 };
 
 export const PreferenceItem = ({
+  id,
   title,
   description,
-  id,
+  disabled = false,
+  onClick,
 }: PreferenceItemProps) => {
   const [, toggle] = useToggle();
 
+  const handleClick = () => {
+    toggle();
+    onClick();
+  };
+
   return (
     <SectionContentLayout>
-      <div className="flex w-full flex-col gap-[20px]">
+      <div
+        className={`flex w-full flex-col gap-[20px] ${
+          disabled ? "opacity-40" : ""
+        }`}
+      >
         <div className="flex justify-between">
           <SubSectionTitle title={title} />
           <div className="toggle-switch relative inline-flex w-[52px]">
@@ -99,7 +116,8 @@ export const PreferenceItem = ({
               id={id}
               className="toggle-checkbox hidden"
               type="checkbox"
-              onClick={toggle}
+              disabled={disabled}
+              onClick={handleClick}
             />
             <label
               htmlFor={id}

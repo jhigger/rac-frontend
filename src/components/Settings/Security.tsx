@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { BackButton } from "../Buttons/BackButton";
 import TabContentLayout from "../Layouts/TabContentLayout";
 import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
@@ -7,17 +8,36 @@ import {
 } from "./CommunicationPreferences";
 import { type SettingsTabContentProps } from "./ProfileInformation";
 
+type EnabledType = "app" | "email" | null;
+
 const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
+  const [enabled, setEnabled] = useState<EnabledType>(null);
+
+  const toggleEnabled = (enabledOption: EnabledType) => {
+    if (enabled === null) setEnabled(enabledOption);
+    else setEnabled(null);
+  };
+
   const preferences: PreferenceType[] = [
     {
       title: "Authentication via App",
       description:
         "Opt for an extra layer of security by using a Time-based One-Time Password (TOTP) authenticator app like Google Authenticator App. Scan the QR code or enter the provided key in your authenticator app to generate codes for login verification",
+      onClick: () => {
+        toggleEnabled("app");
+        // todo:
+      },
+      disabled: !(enabled === "app"),
     },
     {
       title: "Authentication via Email",
       description:
         "Receive a verification code via Email for added security. A code will be sent to your registered email address during the login process",
+      onClick: () => {
+        toggleEnabled("email");
+        // todo:
+      },
+      disabled: !(enabled === "email"),
     },
   ];
 
@@ -39,6 +59,8 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
                 id={`security-${i}`}
                 title={item.title}
                 description={item.description}
+                onClick={item.onClick}
+                disabled={item.disabled && enabled !== null}
               />
             );
           })}

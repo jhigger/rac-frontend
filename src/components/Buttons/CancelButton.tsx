@@ -1,4 +1,4 @@
-import { type CloseModalButtonProps } from "~/components/Buttons/CloseModalButton";
+import { type CloseModalButtonProps } from "./CloseModalButton";
 
 export const CancelButton = ({ dataClose, onClick }: CloseModalButtonProps) => {
   return (

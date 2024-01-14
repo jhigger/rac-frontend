@@ -7,7 +7,8 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { BackModalButton } from "~/components/Buttons/BackModalButton";
+import { BackButton } from "~/components/Buttons/BackButton";
+import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import { ConfirmNewPasswordButton } from "~/components/Buttons/ConfirmNewPasswordButton";
 import ModalButton from "~/components/Buttons/ModalButton";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
@@ -33,7 +34,7 @@ const AccountInformation = () => {
 
   if (!user) return;
 
-  const { step, next, isLastStep, goTo } = useMultiStepForm([
+  const { step, next, isLastStep, goTo, back } = useMultiStepForm([
     <Step1 />,
     <Step2 />,
   ]);
@@ -46,9 +47,15 @@ const AccountInformation = () => {
     if (isLastStep) {
       console.log(data);
       // todo: add loading state to change password button
+      goTo(0);
+    } else {
+      next();
     }
-    next();
   };
+
+  useEffect(() => {
+    tailmater();
+  }, [step]);
 
   return (
     <div className="grid h-full grid-cols-1 gap-[15px] md:grid-cols-2">
@@ -94,12 +101,13 @@ const AccountInformation = () => {
                     return (
                       <div className="flex w-min flex-col gap-[10px]">
                         <div className="flex gap-[10px]">
-                          <div className="w-full md:max-w-[100px]">
-                            <BackModalButton
-                              dataClose={dataClose}
-                              onClick={() => goTo(0)}
-                            />
-                          </div>
+                          {!isLastStep ? (
+                            <div className="w-full md:max-w-[100px]">
+                              <CloseModalButton dataClose={dataClose} />
+                            </div>
+                          ) : (
+                            <BackButton onClick={back} />
+                          )}
 
                           {!isLastStep ? (
                             <div className="w-full md:max-w-[172px]">

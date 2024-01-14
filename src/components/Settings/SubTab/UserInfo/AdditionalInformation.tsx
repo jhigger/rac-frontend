@@ -1,10 +1,9 @@
-import { Edit } from "iconsax-react";
+import { ArrowCircleRight2, Edit } from "iconsax-react";
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { parseCountryCode, parseStateCode } from "~/Utils";
-import { BackModalButton } from "~/components/Buttons/BackModalButton";
+import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import ModalButton from "~/components/Buttons/ModalButton";
-import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import SelectCityInput from "~/components/Forms/Inputs/SelectCityInput";
 import SelectCountryInput from "~/components/Forms/Inputs/SelectCountryInput";
@@ -152,13 +151,21 @@ const AdditionalInformation = () => {
           return (
             <div className="flex gap-[10px]">
               <div className="w-full md:max-w-[100px]">
-                <BackModalButton dataClose={dataClose} />
+                <CloseModalButton dataClose={dataClose} />
               </div>
               <div className="w-full md:max-w-[172px]">
-                <ProceedButton
+                <CloseModalButton
+                  icon={
+                    <ArrowCircleRight2
+                      size={18}
+                      variant="Bold"
+                      className="flex-shrink-0"
+                    />
+                  }
                   label="Update"
                   dataClose={dataClose}
                   onClick={handleSubmit(onSubmit)}
+                  primary
                 />
               </div>
             </div>

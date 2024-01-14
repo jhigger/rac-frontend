@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Call, Edit, Google, Location } from "iconsax-react";
+import { ArrowCircleRight2, Call, Edit, Google, Location } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useAuthContext } from "~/contexts/AuthContext";
@@ -10,9 +10,8 @@ import TabContextProvider, {
 } from "~/contexts/TabContext";
 import useStatesCities from "~/hooks/useStatesCities";
 import { BackButton } from "../Buttons/BackButton";
-import { BackModalButton } from "../Buttons/BackModalButton";
+import { CloseModalButton } from "../Buttons/CloseModalButton";
 import ModalButton from "../Buttons/ModalButton";
-import { ProceedButton } from "../Buttons/ProceedButton";
 import SelectCityInput from "../Forms/Inputs/SelectCityInput";
 import SelectCountryInput from "../Forms/Inputs/SelectCountryInput";
 import SelectCountryPhoneCodeInput from "../Forms/Inputs/SelectCountryPhoneCodeInput";
@@ -158,13 +157,21 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                     return (
                       <div className="flex gap-[10px]">
                         <div className="w-full md:max-w-[100px]">
-                          <BackModalButton dataClose={dataClose} />
+                          <CloseModalButton dataClose={dataClose} />
                         </div>
                         <div className="w-full md:max-w-[172px]">
-                          <ProceedButton
+                          <CloseModalButton
+                            icon={
+                              <ArrowCircleRight2
+                                size={18}
+                                variant="Bold"
+                                className="flex-shrink-0"
+                              />
+                            }
                             label="Update"
                             dataClose={dataClose}
                             onClick={handleSubmit(onSubmit)}
+                            primary
                           />
                         </div>
                       </div>

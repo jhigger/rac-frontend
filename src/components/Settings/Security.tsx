@@ -1,6 +1,6 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState } from "react";
 import { BackButton } from "../Buttons/BackButton";
-import ModalButton from "../Buttons/ModalButton";
+import ModalButton, { type ModalButtonProps } from "../Buttons/ModalButton";
 import TabContentLayout from "../Layouts/TabContentLayout";
 import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
 import {
@@ -8,10 +8,14 @@ import {
   type PreferenceType,
 } from "./CommunicationPreferences";
 import { type SettingsTabContentProps } from "./ProfileInformation";
-import useMultiStepForm from "~/hooks/useMultistepForm";
+import { useAppOption } from "./useAppOption";
+import useEmailOption from "./useEmailOption";
 
 type EnabledType = "app" | "email" | null;
-type SecurityOptions = PreferenceType & { modalContent: ReactNode };
+type SecurityOptions = PreferenceType & {
+  modalContent: () => JSX.Element;
+  footerContent: ModalButtonProps["footerContent"];
+};
 
 const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
   const [enabled, setEnabled] = useState<EnabledType>(null); // todo: get this data from server
@@ -22,7 +26,11 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
     else setEnabled(null);
   };
 
-  const {} = useMultiStepForm([]);
+  const appOption: Pick<SecurityOptions, "modalContent" | "footerContent"> =
+    useAppOption();
+
+  const emailOption: Pick<SecurityOptions, "modalContent" | "footerContent"> =
+    useEmailOption();
 
   const preferences: SecurityOptions[] = [
     {
@@ -33,11 +41,8 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
         toggleEnabled("app");
       },
       disabled: !(enabled === "app"),
-      modalContent: (
-        <>
-          <RequestFormHeader title="Authentication via App Setup" />
-        </>
-      ),
+      modalContent: appOption.modalContent,
+      footerContent: appOption.footerContent,
     },
     {
       title: "Authentication via Email",
@@ -47,11 +52,8 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
         toggleEnabled("email");
       },
       disabled: !(enabled === "email"),
-      modalContent: (
-        <>
-          <RequestFormHeader title="Authentication via App Email" />
-        </>
-      ),
+      modalContent: emailOption.modalContent,
+      footerContent: emailOption.footerContent,
     },
   ];
 
@@ -96,18 +98,18 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
                   description={item.description}
                   onClick={({ isToggled }) => {
                     item.onClick();
-                    if (!isToggled) buttonsRef.current?.[i]?.click();
+                    if (!isToggled) buttonsRef.current?.[i]?.click(); // programmatically click on hidden button to show modal on enable switch
                   }}
                   disabled={disabled}
                 />
                 <ModalButton
                   modalId={`security-modal-${i}`}
-                  label="Authentication via App Setup"
+                  label="modal button"
                   buttonClassName="hidden"
-                  footerContent={() => <></>}
+                  footerContent={item.footerContent}
                   ref={handleRef}
                 >
-                  {item.modalContent}
+                  {item.modalContent()}
                 </ModalButton>
               </div>
             );

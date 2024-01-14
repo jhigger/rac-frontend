@@ -2,7 +2,7 @@ import { forwardRef, useEffect, type ReactNode, type Ref } from "react";
 import { createPortal } from "react-dom";
 import tailmater from "~/js/tailmater";
 
-type ModalButtonProps = {
+export type ModalButtonProps = {
   modalId: string;
   label: string;
   buttonClassName?: string;
@@ -50,7 +50,7 @@ const ModalButton = (
           ></div>
           <div className="z-50 flex h-max w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
             {children}
-            {footerContent({ dataClose: dataTarget })}
+            {footerContent?.({ dataClose: dataTarget })}
           </div>
         </div>,
         document.body,

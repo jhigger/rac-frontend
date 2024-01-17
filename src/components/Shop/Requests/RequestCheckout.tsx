@@ -953,7 +953,7 @@ export const AndLastly = () => {
         <div className="w-max">
           <button
             aria-label="View Receipt"
-            className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 bg-white px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
+            className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
           >
             <Receipt2 size={18} className="text-primary-900" />
             <span className="body-lg whitespace-nowrap text-primary-600">

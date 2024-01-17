@@ -4,9 +4,11 @@ import {
   Activity,
   ArrowCircleRight2,
   ArrowDown2,
+  ArrowLeft,
   ArrowRight2,
   ArrowUp2,
   Celo,
+  CloseCircle,
   Eye,
   HambergerMenu,
   NotificationBing,
@@ -28,14 +30,17 @@ import tailmater from "~/js/tailmater";
 import { CloseModalButton } from "../Buttons/CloseModalButton";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
+import { PrimaryBackButton } from "../Buttons/PrimaryBackButton";
 import AccordionButton from "../Forms/AccordionButton";
 import {
   notificationMessages,
   type NotificationListItemProps,
 } from "../Notifications/NotificationList";
+import { PaymentConfirmedContent } from "../Shop/Modals/PaymentConfirmed";
 import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
 import AppBarTabs from "./AppBarTabs";
 import BreadCrumbs from "./BreadCrumbs";
+import { useTabContext } from "~/contexts/TabContext";
 
 dayjs.extend(relativeTime);
 
@@ -131,42 +136,85 @@ type NotificationModalProps = { id: string };
 const NotificationModal = ({ id }: NotificationModalProps) => {
   const dataClose = `#${id}`;
 
-  const { notifications, clearAll } = useNotificationContext();
+  const {
+    notifications,
+    selectedNotification,
+    clearAll,
+    handleSelectedNotification,
+  } = useNotificationContext();
+  const { customText, handleCustomText } = useTabContext();
+
+  useEffect(() => {
+    if (selectedNotification) {
+      handleCustomText(
+        notificationMessages[selectedNotification.type].getCustomText(
+          selectedNotification.order,
+        ),
+      );
+    } else {
+      handleCustomText(null);
+    }
+  }, [selectedNotification]);
 
   return (
     <div
       id={id}
-      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center  [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-screen [&.show]:opacity-100"
     >
       <div
         data-close={dataClose}
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
-      <div className="z-50 flex h-max w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+      <div className="z-50 flex h-max max-h-[calc(100vh-40px)] w-max flex-col gap-[30px] overflow-y-auto rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Notifications" />
-        <div className="flex flex-col gap-[30px]">
-          {notifications.length > 0 ? (
-            <div className="flex flex-col gap-[10px]">
-              {notifications.map((notification, i) => {
-                return (
-                  <NotificationItem
-                    key={i}
-                    dataClose={dataClose}
-                    index={i}
-                    notification={notification}
-                  />
-                );
-              })}
+
+        {selectedNotification ? (
+          <>
+            <div className="flex items-center gap-[15px] rounded-[20px] bg-surface-200 p-[20px] text-secondary-600">
+              <span className="title-sm">Notifications</span>
+              <ArrowLeft size={10} variant="Outline" />
+              <span className="title-sm">{customText}</span>
             </div>
-          ) : (
-            <div className="flex items-center justify-center">Empty</div>
-          )}
-          <div className="flex flex-col items-center justify-center gap-[10px] md:flex-row [&>*]:w-max">
-            <ClearAllButton onClick={clearAll} />
-            <ViewAllButton dataClose={dataClose} />
-            <CloseModalButton dataClose={dataClose} />
+            <div className="flex flex-col gap-[30px]">
+              <div className="flex w-[997px] flex-col gap-[30px] rounded-[20px] bg-surface-100 p-[20px]">
+                <PaymentConfirmedContent order={selectedNotification.order} />
+              </div>
+              <div className="w-full self-center md:max-w-[300px]">
+                <PrimaryBackButton
+                  onClick={() => handleSelectedNotification(null)}
+                />
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col gap-[30px]">
+            {notifications.length > 0 ? (
+              <div className="flex flex-col gap-[10px]">
+                {notifications.map((notification, i) => {
+                  return (
+                    <NotificationItem
+                      key={i}
+                      index={i}
+                      notification={notification}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center">Empty</div>
+            )}
+            <div className="flex flex-col items-center justify-center gap-[10px] md:flex-row [&>*]:w-max">
+              <ClearAllButton onClick={clearAll} />
+              <ViewAllButton dataClose={dataClose} />
+              <CloseModalButton
+                icon={<CloseCircle size={18} variant="Bold" />}
+                label="Close"
+                dataClose={dataClose}
+                primary
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -175,10 +223,13 @@ const NotificationModal = ({ id }: NotificationModalProps) => {
 type ViewAllButtonProps = { dataClose: string };
 
 const ViewAllButton = ({ dataClose }: ViewAllButtonProps) => {
+  const { handleSelectedNotification } = useNotificationContext();
+
   return (
     <Link href="/notifications" data-close={dataClose}>
       <div
-        aria-label="Proceed"
+        aria-label="View All"
+        onClick={() => handleSelectedNotification(null)}
         className="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] border border-gray-500 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
       >
         <ArrowCircleRight2
@@ -207,9 +258,9 @@ const ClearAllButton = ({ onClick }: ClearAllButtonProps) => {
   );
 };
 
-type NotificationItemProps = NotificationListItemProps & { dataClose: string };
+type NotificationItemProps = NotificationListItemProps;
 
-const NotificationItem = ({ dataClose, index }: NotificationItemProps) => {
+const NotificationItem = ({ index }: NotificationItemProps) => {
   const { open, toggle } = useAccordion(false);
   const { notifications, handleDelete } = useNotificationContext();
   const notification = notifications[index];
@@ -231,18 +282,12 @@ const NotificationItem = ({ dataClose, index }: NotificationItemProps) => {
           </div>
         </span>
         <div className="hidden md:block">
-          <PreviewNotificationButton
-            dataClose={dataClose}
-            notification={notification}
-          />
+          <PreviewNotificationButton notification={notification} />
         </div>
         {/* for mobile */}
         {open && (
           <div className="flex flex-col gap-[10px] border-t-[0.5px] border-dashed border-t-gray-500 pt-[10px] md:hidden">
-            <PreviewNotificationButton
-              dataClose={dataClose}
-              notification={notification}
-            />
+            <PreviewNotificationButton notification={notification} />
             <DeleteItemButton onClick={() => handleDelete(index)} />
           </div>
         )}
@@ -255,12 +300,10 @@ const NotificationItem = ({ dataClose, index }: NotificationItemProps) => {
 };
 
 type PreviewNotificationButtonProps = {
-  dataClose?: string;
   notification: NotificationItemType;
 };
 
 export const PreviewNotificationButton = ({
-  dataClose,
   notification,
 }: PreviewNotificationButtonProps) => {
   const { handleSelectedNotification } = useNotificationContext();
@@ -270,26 +313,24 @@ export const PreviewNotificationButton = ({
   };
 
   return (
-    <Link href="/notifications">
-      <div
+    <>
+      <button
         onClick={handleClick}
-        data-close={dataClose}
         aria-label="Preview Notification"
         className="btn relative hidden flex-row items-center justify-center rounded-[6.25rem] md:flex"
       >
         <Eye />
-      </div>
-
-      <div
+      </button>
+      {/* mobile version */}
+      <button
         onClick={handleClick}
-        data-close={dataClose}
         aria-label="Preview Notification"
         className="btn relative flex flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:hidden md:px-6"
       >
         <Eye size={18} variant="Bold" />
         <span>Preview</span>
-      </div>
-    </Link>
+      </button>
+    </>
   );
 };
 

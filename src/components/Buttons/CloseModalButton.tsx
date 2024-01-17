@@ -1,4 +1,6 @@
 import { ArrowCircleLeft2 } from "iconsax-react";
+import { useEffect } from "react";
+import tailmater from "~/js/tailmater";
 
 export type CloseModalButtonProps = {
   icon?: JSX.Element;
@@ -17,6 +19,10 @@ export const CloseModalButton = ({
   primary,
   onClick,
 }: CloseModalButtonProps) => {
+  useEffect(() => {
+    tailmater();
+  }, []);
+
   if (primary) {
     return (
       <button

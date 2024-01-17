@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import { ExportCircle } from "iconsax-react";
 import { useEffect } from "react";
 import { PrimaryBackButton } from "~/components/Buttons/PrimaryBackButton";
 import { type NOTIFICATION_TYPES } from "~/constants";
@@ -16,16 +15,9 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
-import CongratulationImage from "../CongratulationImage";
 import AccordionButton from "../Forms/AccordionButton";
-import OrderTrackingId from "../OrderTrackingId";
-import { StepDescription } from "../Shop/Orders/OrdersPanel";
-import { AndLastly } from "../Shop/Requests/RequestCheckout";
-import {
-  SectionContentLayout,
-  SectionHeader,
-} from "../Shop/Requests/RequestOrder";
-import SuccessImportantNotice from "../SuccessImportantNotice";
+import { PaymentConfirmedContent } from "../Shop/Modals/PaymentConfirmed";
+import { SectionHeader } from "../Shop/Requests/RequestOrder";
 import { PreviewNotificationButton } from "../TopAppBar";
 
 const NotificationList = () => {
@@ -41,6 +33,8 @@ const NotificationList = () => {
           selectedNotification.order,
         ),
       );
+    } else {
+      handleCustomText(null);
     }
   }, [selectedNotification, activeNav]);
 
@@ -53,46 +47,7 @@ const NotificationList = () => {
     // todo: make notification preview/modal folder and data structure
     return (
       <div className="flex max-w-[1094px] flex-col gap-[20px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
-        <SectionContentLayout>
-          <OrderTrackingId
-            orderId={selectedNotification.order.orderId}
-            trackingId={selectedNotification.order.trackingId}
-          />
-        </SectionContentLayout>
-
-        <CongratulationImage description="We have confirmed your payment. You have just successfully placed a shop for me order by paying for only your shop for me cost." />
-
-        <SuccessImportantNotice />
-
-        <div className="flex flex-col gap-[10px]">
-          <SectionHeader title="Track your package" />
-          <SectionContentLayout>
-            <div className="flex flex-col gap-[10px]">
-              <h3 className="title-lg font-bold text-neutral-900">
-                Here are more information on how to track
-              </h3>
-              <ul className="flex flex-col gap-[14px]">
-                <StepDescription
-                  stepNumber={1}
-                  description={
-                    <span className="title-lg text-neutral-900">
-                      You can start tracking your package in the next 24 hrs
-                      using the Tracking ID above or{" "}
-                      <a href="#" target="_blank" rel="noopener noreferrer">
-                        <span className="inline-flex items-center gap-[5px] font-bold text-primary-600">
-                          this link
-                          <ExportCircle color="#292D32" size={18} />
-                        </span>
-                      </a>
-                    </span>
-                  }
-                />
-              </ul>
-            </div>
-          </SectionContentLayout>
-        </div>
-
-        <AndLastly />
+        <PaymentConfirmedContent order={selectedNotification.order} />
 
         <div className="w-full md:w-[200px]">
           <PrimaryBackButton onClick={handleBack} />

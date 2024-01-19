@@ -62,7 +62,7 @@ const TwoFactorAuthentication = () => {
 
 type VerifyButtonProps = { disabled: boolean; onClick: () => void };
 
-const VerifyButton = ({ disabled, onClick }: VerifyButtonProps) => {
+export const VerifyButton = ({ disabled, onClick }: VerifyButtonProps) => {
   return (
     <button
       onClick={onClick}

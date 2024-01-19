@@ -1,6 +1,5 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import ConfirmResetPasswordForm from "~/components/Forms/PasswordReset/ConfirmResetPasswordForm";
 import RequestPasswordResetForm from "~/components/Forms/PasswordReset/RequestPasswordResetForm";
 import LoadingScreen from "~/components/LoadingScreen";
@@ -42,7 +41,6 @@ const passwordReset = () => {
           <RequestPasswordResetForm />
         )}
       </div>
-      <NeedHelpFAB />
     </main>
   );
 };

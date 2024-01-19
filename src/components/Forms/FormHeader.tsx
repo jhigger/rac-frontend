@@ -1,4 +1,7 @@
-type FormHeaderProps = { title: string; subTitle?: string | JSX.Element };
+type FormHeaderProps = {
+  title: string | JSX.Element;
+  subTitle?: string | JSX.Element;
+};
 
 const FormHeader = ({ title, subTitle }: FormHeaderProps) => {
   return (

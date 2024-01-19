@@ -3,7 +3,6 @@ import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
 import { BackButton } from "~/components/Buttons/BackButton";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
@@ -132,7 +131,6 @@ const register = () => {
           </Link>
         </div>
       </div>
-      <NeedHelpFAB />
     </main>
   );
 };

@@ -1,4 +1,4 @@
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
+import Link from "next/link";
 import TwoFactorAuthentication from "~/components/Forms/Login/TwoFactorAuthentication";
 import Logo from "~/components/Logo";
 import { useAuthContext } from "~/contexts/AuthContext";
@@ -17,19 +17,18 @@ const authentication = () => {
 
         <Footer />
       </div>
-      <NeedHelpFAB />
     </main>
   );
 };
 
 const Footer = () => {
   return (
-    <a
-      href="#"
+    <Link
+      href="/recover"
       className="label-lg relative px-[12px] py-[10px] text-primary-200 hover:underline"
     >
       Enter Backup Code
-    </a>
+    </Link>
   );
 };
 

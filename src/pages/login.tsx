@@ -1,5 +1,4 @@
 import Link from "next/link";
-import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import LoginForm from "~/components/Forms/Login/LoginForm";
 import Logo from "~/components/Logo";
 import { useAuthContext } from "~/contexts/AuthContext";
@@ -18,7 +17,6 @@ const login = () => {
 
         <Footer />
       </div>
-      <NeedHelpFAB />
     </main>
   );
 };

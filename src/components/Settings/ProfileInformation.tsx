@@ -2,6 +2,7 @@
 import { ArrowCircleRight2, Call, Edit, Google, Location } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { parseCountryCode, parseStateCode } from "~/Utils";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import TabContextProvider, {
@@ -80,7 +81,10 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
   };
 
   const { address, city, state, country, zipPostalCode } = user.billingDetails;
-  const location = `${address}, ${city}, ${state}, ${country}, ${zipPostalCode}`;
+  const location = `${address}, ${city}, ${parseStateCode(
+    state,
+    country,
+  )}, ${parseCountryCode(country)}, ${zipPostalCode}`;
 
   return (
     <TabContentLayout>

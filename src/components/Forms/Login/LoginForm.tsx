@@ -12,15 +12,8 @@ export type LoginInputs = {
 };
 
 const LoginForm = () => {
-  const {
-    authType,
-    loginError,
-    isAuthenticating,
-    isFetchingUser,
-    user,
-    handleLogin,
-    setAuthType,
-  } = useAuthContext();
+  const { loginError, isAuthenticating, isFetchingUser, user, handleLogin } =
+    useAuthContext();
   const formMethods = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = (data) => {
@@ -35,46 +28,8 @@ const LoginForm = () => {
         onSubmit={formMethods.handleSubmit(onSubmit)}
         className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
       >
-        <FormHeader
-          title="Login"
-          subTitle={
-            <div className="flex flex-col items-center justify-center gap-[10px]">
-              Two Factor Authentication (for testing):
-              <div className="flex items-center justify-center gap-[10px]">
-                <input
-                  type="radio"
-                  name="authType"
-                  id="1"
-                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-                  onChange={() => setAuthType(null)}
-                  checked={authType === null}
-                  disabled={isAuthenticating || isFetchingUser}
-                />
-                None
-                <input
-                  type="radio"
-                  name="authType"
-                  id="2"
-                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-                  onChange={() => setAuthType("email")}
-                  checked={authType === "email"}
-                  disabled={isAuthenticating || isFetchingUser}
-                />
-                Email
-                <input
-                  type="radio"
-                  name="authType"
-                  id="3"
-                  className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600 ltr:mr-3 rtl:ml-3"
-                  onChange={() => setAuthType("TOTP")}
-                  checked={authType === "TOTP"}
-                  disabled={isAuthenticating || isFetchingUser}
-                />
-                TOTP
-              </div>
-            </div>
-          }
-        />
+        <FormHeader title="Login" />
+
         <div className="flex w-full flex-col gap-[30px]">
           <TextInput
             id="email"
@@ -90,12 +45,11 @@ const LoginForm = () => {
             {...formMethods.register("password")}
           />
         </div>
-        {loginError?.response && (
-          <span className="text-error-500">
-            {loginError.response.status === 401 &&
-              "Email or Password is incorrect"}
-          </span>
+
+        {loginError && (
+          <span className="text-error-500">{loginError.message}</span>
         )}
+
         <LoginButton
           disabled={isAuthenticating || isFetchingUser}
           onClick={formMethods.handleSubmit(onSubmit)}

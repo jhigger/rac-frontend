@@ -516,7 +516,7 @@ export const ShippingStatusModalLayout = ({
         {!excluded.includes(shippingStatus) && (
           <ShipmentPath
             origin={orderPackage.originWarehouse}
-            destination={shipmentDetails.country}
+            destination={parseCountryCode(shipmentDetails.country)}
             shippingStatus={shippingStatus}
           />
         )}

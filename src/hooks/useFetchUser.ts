@@ -17,11 +17,9 @@ const useFetchUser = async (token: string) => {
   const response = await axios.request(reqOptions);
   const { user } = response.data as Main;
   const userData: UserType = {
-    _id: user._id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    isAdmin: user.isAdmin,
     jwt: token,
     racId: user.racId,
     billingDetails: {
@@ -33,10 +31,17 @@ const useFetchUser = async (token: string) => {
       city: user.contactAddress[0]?.city ?? "",
       zipPostalCode: user.contactAddress[0]?.postalCode ?? "",
     },
+    isEmailVerified: user.isEmailVerified,
+    smsNotification: user.smsNotification,
+    whatsAppNotification: user.whatsAppNotification,
+    emailNotification: user.emailNotification,
+    appAuthentication: user.appAuthentication,
+    emailAuthentication: user.emailAuthentication,
   };
 
   return userData;
 };
+
 export interface Main {
   user: User;
 }
@@ -46,12 +51,17 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  country: string;
   isAdmin: boolean;
   isEmailVerified: boolean;
-  countryCode: string;
   contactAddress: ContactAddress[];
+  smsNotification: boolean;
+  whatsAppNotification: boolean;
+  emailNotification: boolean;
+  appAuthentication: boolean;
+  emailAuthentication: boolean;
   racId: string;
+  createdAt: Date;
+  updatedAt: Date;
   __v: number;
   lastLogin: Date;
 }
@@ -62,7 +72,7 @@ export interface ContactAddress {
   city: string;
   streetAddress: string;
   countryCode: string;
-  phoneNumber: number;
+  phoneNumber: string;
   postalCode: string;
   _id: string;
 }

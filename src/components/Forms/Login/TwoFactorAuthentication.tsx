@@ -9,7 +9,13 @@ type Inputs = {
 };
 
 const TwoFactorAuthentication = () => {
-  const { authType, handleCodeVerification } = useAuthContext();
+  const {
+    authCodeError,
+    authType,
+    verifyingAuthCode,
+    handleCodeVerification,
+    refetch,
+  } = useAuthContext();
   const formMethods = useForm<Inputs>();
   const isTOTP = authType === "TOTP";
   const isEmail = authType === "email";
@@ -35,23 +41,32 @@ const TwoFactorAuthentication = () => {
                 : ""
           }
         />
+
         <div className="flex w-full flex-col gap-[30px]">
           <SixDigitInput
+            disabled={verifyingAuthCode}
             {...formMethods.register("sixDigitCode")}
-            // disabled={isAuthenticating || isFetchingUser}
           />
         </div>
+
         <div className="w-full md:w-[200px]">
           <VerifyButton
-            disabled={false}
+            disabled={verifyingAuthCode}
             onClick={formMethods.handleSubmit(onSubmit)}
           />
         </div>
+
+        {authCodeError && (
+          <span className="text-error-500">OTP invalid or expired...</span>
+        )}
+
         {isEmail && (
           <div className="flex flex-col items-center justify-center gap-[20px]">
             <div className="body-md text-center text-black">
               Didn't see the code?{" "}
-              <button className="label-lg text-primary-600">Resend Code</button>
+              <button className="label-lg text-primary-600" onClick={refetch}>
+                Resend Code
+              </button>
             </div>
           </div>
         )}

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type QueryObserverResult } from "@tanstack/react-query";
 import { type AxiosError } from "axios";
 import { useRouter } from "next/router";
 import {
@@ -14,8 +14,10 @@ import LoadingScreen from "~/components/LoadingScreen";
 import useFetchUser from "~/hooks/useFetchUser";
 import useLoginUser from "~/hooks/useLoginUser";
 import useRegisterUser from "~/hooks/useRegisterUser";
+import useSubmitAuthCode from "~/hooks/useSubmitAuthCode";
 
 export type AuthContextType = {
+  authCodeError: Error | null;
   authType: TwoFactorAuthenticationType;
   user: UserType | null;
   isAuthenticating: boolean;
@@ -25,6 +27,8 @@ export type AuthContextType = {
   loginError: AxiosError | null;
   registerError: string | null;
   restrictedPaths: string[];
+  verifyingAuthCode: boolean;
+  handleBackupCode: (backupCode: string) => void;
   handleCodeVerification: (sixDigitCode: string) => void;
   handleConfirmPasswordReset: (password: string) => void;
   handleLogin: (data: LoginInputs) => void;
@@ -32,7 +36,7 @@ export type AuthContextType = {
   handleRegister: (data: RegisterType) => Promise<void>;
   handleSendResetEmail: (email: string) => boolean;
   handleVerifyPasswordResetCode: (code: string) => boolean;
-  setAuthType: (authType: TwoFactorAuthenticationType) => void;
+  refetch: () => Promise<QueryObserverResult>;
 };
 
 export const AuthContext = createContext<AuthContextType>(
@@ -42,11 +46,9 @@ export const AuthContext = createContext<AuthContextType>(
 export const useAuthContext = () => useContext(AuthContext);
 
 export type UserType = {
-  _id: string;
   firstName: string;
   lastName: string;
   email: string;
-  isAdmin: boolean;
   jwt: string;
   racId: string;
   billingDetails: {
@@ -58,6 +60,12 @@ export type UserType = {
     city: string;
     zipPostalCode: string;
   };
+  isEmailVerified: boolean;
+  smsNotification: boolean;
+  whatsAppNotification: boolean;
+  emailNotification: boolean;
+  appAuthentication: boolean;
+  emailAuthentication: boolean;
 };
 
 export type RegisterType = {
@@ -76,13 +84,14 @@ export type RegisterType = {
   }[];
 };
 
-export type TwoFactorAuthenticationType = "email" | "TOTP" | null;
+export type TwoFactorAuthenticationType = "email" | "TOTP";
 
 export const restrictedPaths = [
   "/login",
   "/authentication",
   "/register",
   "/password-reset",
+  "/recover",
 ];
 
 const AuthContextProvider = ({ children }: { children: ReactNode }) => {
@@ -92,8 +101,15 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [loginInputs, setLoginInputs] = useState<LoginInputs | null>(null);
   const [isRegistering, setIsRegistering] = useState(false);
   const [registerError, setRegisterError] = useState<string | null>(null);
-  const [authType, setAuthType] = useState<TwoFactorAuthenticationType>(null); // todo: get this data in user object from backend
+  const [authType, setAuthType] =
+    useState<TwoFactorAuthenticationType>("email"); // todo: get this data in user object from backend
   const [isAuthCodeVerified, setIsAuthCodeVerified] = useState(false); // todo: convert to useQuery and data from server instead
+  const {
+    mutateAsync: submitAuthCode,
+    error: authCodeError,
+    isPending: verifyingAuthCode,
+  } = useSubmitAuthCode();
+  const [sixDigitCode, setSixDigitCode] = useState("");
 
   const {
     data: user,
@@ -106,27 +122,54 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     queryKey: ["user"],
     queryFn: async () => {
       if (loginInputs) {
-        console.log("logging in...");
-        return await useLoginUser(loginInputs).then(async (userData) => {
-          if (authType === null || isAuthCodeVerified) {
-            setLoginInputs(null);
-            setIsRegistering(false);
-            setIsAuthCodeVerified(false);
-            console.log("user logged in");
-            handleJWTCookie(userData.jwt);
-            return userData;
-          }
+        if (sixDigitCode) {
+          setIsAuthCodeVerified(false);
 
-          redirectTo("/authentication");
-          return null;
-        });
+          console.log("verifying otp...");
+          return await submitAuthCode({
+            email: loginInputs.email,
+            sixDigitCode,
+          })
+            .then((user) => {
+              setIsAuthCodeVerified(true);
+              // reset states
+              setSixDigitCode("");
+              setLoginInputs(null);
+              setIsRegistering(false);
+              // set user
+              handleJWTCookie(user.jwt);
+              console.log("user logged in");
+
+              return user;
+            })
+            .catch((err) => {
+              console.log(err);
+              return null;
+            });
+        }
+
+        console.log("logging in...");
+        return await useLoginUser(loginInputs)
+          .then(async () => {
+            redirectTo("/authentication");
+            return null;
+          })
+          .catch((err) => {
+            console.log(err);
+            return null;
+          });
       } else if (cookies.jwt) {
         console.log("token found, fetching user info...");
         const token = cookies.jwt as string;
-        return await useFetchUser(token).then(async (userData) => {
-          console.log("user found");
-          return userData;
-        });
+        return await useFetchUser(token)
+          .then(async (userData) => {
+            console.log("user found");
+            return userData;
+          })
+          .catch((err) => {
+            console.log(err);
+            return null;
+          });
       }
 
       return null;
@@ -134,9 +177,12 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     initialData: null,
   });
 
+  const handleBackupCode = (backupCode: string) => {
+    console.log("recovering account using backup code: ", backupCode);
+  };
+
   const handleCodeVerification = (sixDigitCode: string) => {
-    console.log("verifying: ", sixDigitCode);
-    setIsAuthCodeVerified(true);
+    setSixDigitCode(sixDigitCode);
   };
 
   const handleConfirmPasswordReset = (password: string) => {
@@ -181,7 +227,9 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     if (!pathWithoutQuery[0]) return;
     // when going to restrictedPaths
     // redirect to /shop or callback route if token exist else redirect to /login
-    if (user && !isRefetching) {
+    if (!loginInputs && pathWithoutQuery[0] === "/authentication") {
+      redirectTo("/login");
+    } else if (user && !isRefetching) {
       if (restrictedPaths.includes(pathWithoutQuery[0])) {
         console.log("Redirecting to /shop...");
         redirectTo("/shop");
@@ -228,7 +276,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (loginInputs) void refetch(); // fetch user after clicking login
-  }, [loginInputs, isAuthCodeVerified]);
+  }, [loginInputs, sixDigitCode]);
 
   useEffect(() => {
     if (!cookies.jwt) void refetch(); // set user to null if there is no cookie
@@ -239,6 +287,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   }, [user]);
 
   const value: AuthContextType = {
+    authCodeError,
     authType,
     user,
     isAuthenticating,
@@ -248,6 +297,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     loginError,
     registerError,
     restrictedPaths,
+    verifyingAuthCode,
+    handleBackupCode,
     handleCodeVerification,
     handleConfirmPasswordReset,
     handleLogin,
@@ -255,7 +306,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     handleRegister,
     handleSendResetEmail,
     handleVerifyPasswordResetCode,
-    setAuthType,
+    refetch,
   };
 
   if (isRefetching && loginInputs === null) return <LoadingScreen />;

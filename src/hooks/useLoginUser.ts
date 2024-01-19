@@ -1,6 +1,5 @@
 import axios from "axios";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
-import { type UserType } from "~/contexts/AuthContext";
 
 const useLoginUser = async (inputs: LoginInputs) => {
   const headersList = {
@@ -16,7 +15,11 @@ const useLoginUser = async (inputs: LoginInputs) => {
   };
 
   const response = await axios.request(reqOptions);
-  return response.data as UserType; // todo: missing fields + add response types
+  return response.data as Main;
 };
+
+export interface Main {
+  message: string;
+}
 
 export default useLoginUser;

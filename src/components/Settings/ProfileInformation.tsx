@@ -121,19 +121,22 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
 
               <div className="col-span-full flex flex-col md:col-span-6">
                 <div className="flex flex-col items-center gap-[10px] md:flex-row">
-                  <Call color="#292d32" className="m-[12px]" />
+                  <Call color="#292d32" className="m-[12px] flex-shrink-0" />
                   <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
                     {`${user.billingDetails.countryCode} ${user.billingDetails.phoneNumber}`}
                   </span>
                 </div>
                 <div className="flex flex-col items-center gap-[10px] md:flex-row">
-                  <Google color="#292d32" className="m-[12px]" />
+                  <Google color="#292d32" className="m-[12px] flex-shrink-0" />
                   <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
                     {user.email}
                   </span>
                 </div>
                 <div className="flex flex-col items-center gap-[10px] md:flex-row">
-                  <Location color="#292d32" className="m-[12px]" />
+                  <Location
+                    color="#292d32"
+                    className="m-[12px] flex-shrink-0"
+                  />
                   <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
                     {location}
                   </span>

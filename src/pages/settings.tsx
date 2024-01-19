@@ -1,15 +1,13 @@
-/* eslint-disable @next/next/no-img-element */
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import NoTabsContentLayout from "~/components/Layouts/NoTabsContentLayout";
 import PageLayout from "~/components/Layouts/PageLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
-import CommunicationPreferences from "~/components/Settings/CommunicationPreferences";
-import ProfileInformation from "~/components/Settings/ProfileInformation";
-import Security from "~/components/Settings/Security";
-import SettingsContent from "~/components/Settings/SettingsContent";
 import { useAuthContext } from "~/contexts/AuthContext";
-import TabContextProvider, { type TabType } from "~/contexts/TabContext";
+import TabContextProvider, {
+  loading,
+  type TabType,
+} from "~/contexts/TabContext";
 
 const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
   loading: () => (
@@ -18,6 +16,27 @@ const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
     </div>
   ),
 });
+
+const ProfileInformation = dynamic(
+  () => import("~/components/Settings/ProfileInformation"),
+  { loading },
+);
+
+const CommunicationPreferences = dynamic(
+  () => import("~/components/Settings/CommunicationPreferences"),
+  { loading },
+);
+
+const Security = dynamic(() => import("~/components/Settings/Security"), {
+  loading,
+});
+
+const SettingsContent = dynamic(
+  () => import("~/components/Settings/SettingsContent"),
+  {
+    loading,
+  },
+);
 
 const settings = () => {
   const { user } = useAuthContext();

@@ -58,11 +58,11 @@ const AccountInformation = () => {
   }, [step]);
 
   return (
-    <div className="grid h-full grid-cols-1 gap-[15px] md:grid-cols-2">
+    <div className="grid h-full grid-cols-1 gap-[10px] md:grid-cols-2 md:gap-[15px]">
       <div className="col-span-1">
         <FormProvider {...formMethods}>
           <SectionContentLayout>
-            <div className="flex h-full flex-col justify-between gap-[10px]">
+            <div className="flex h-full w-full flex-col justify-between gap-[10px]">
               <div className="flex flex-col gap-[10px]">
                 <div className="flex items-center gap-[10px] text-primary-900">
                   <Lock variant="Bold" />
@@ -80,7 +80,7 @@ const AccountInformation = () => {
                 </div>
               </div>
 
-              <div className="w-full max-w-[181px]">
+              <div className="w-full md:max-w-[181px]">
                 <ModalButton
                   modalId="changePassword"
                   label="Change Password"
@@ -99,8 +99,8 @@ const AccountInformation = () => {
                   }
                   footerContent={({ dataClose }) => {
                     return (
-                      <div className="flex w-min flex-col gap-[10px]">
-                        <div className="flex gap-[10px]">
+                      <div className="flex w-full flex-col gap-[10px] md:w-min">
+                        <div className="flex w-full flex-col gap-[10px] md:flex-row">
                           {!isLastStep ? (
                             <div className="w-full md:max-w-[100px]">
                               <CloseModalButton dataClose={dataClose} />
@@ -160,7 +160,7 @@ export const Pinned = () => {
   return (
     <div className="h-full">
       <SectionContentLayout>
-        <div className="flex h-full flex-col gap-[10px]">
+        <div className="flex h-full w-full flex-col gap-[10px]">
           <div className="flex items-center gap-[10px] text-error-600">
             <VolumeLow variant="Bold" className="rotate-90" />
             <span className="title-lg">Pinned</span>

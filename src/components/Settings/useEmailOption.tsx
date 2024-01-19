@@ -6,6 +6,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useAuthContext } from "~/contexts/AuthContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import tailmater from "~/js/tailmater";
 import { CloseModalButton } from "../Buttons/CloseModalButton";
@@ -21,7 +22,6 @@ import {
   RequestFormHeader,
   SectionContentLayout,
 } from "../Shop/Requests/RequestOrder";
-import { useAuthContext } from "~/contexts/AuthContext";
 
 const emailEmptyValues = {
   emailCode: "",
@@ -141,14 +141,14 @@ const EmailStep2 = () => {
       </span>
       <div className="rounded-[20px] bg-surface-100">
         <SectionContentLayout>
-          <div className="-mx-[14px] flex flex-col gap-[30px]">
+          <div className="flex flex-col gap-[30px] md:-mx-[14px]">
             <span className="title-md md:title-lg text-gray-700">
               Insert the provided code into your mobile authentication app.
               Retrieve the code shown by the mobile app and proceed with the
               setup. This app will be required for every login to your RAC
               Logistics dashboard.
             </span>
-            <div className="flex items-center gap-[20px]">
+            <div className="flex flex-col items-center gap-[20px] md:flex-row">
               <div className="w-full rounded-[20px] bg-surface-300">
                 <SectionContentLayout>
                   <div className="flex w-full flex-col items-center justify-center gap-[10px]">

@@ -191,20 +191,20 @@ const AppStep3 = () => {
       <div className="rounded-[20px] bg-surface-100">
         <SectionContentLayout>
           {!showCode ? (
-            <div className="-mx-[14px] flex flex-col gap-[10px]">
+            <div className="flex flex-col gap-[10px] md:-mx-[14px]">
               <span className="title-md md:title-lg text-gray-700">
                 Scan the QR code using your preferred authentication app and
                 enter the provided code below. This app will be required for
                 every login to your RAC Logistics dashboard.
               </span>
-              <div className="flex items-center gap-[20px]">
+              <div className="flex flex-col items-center gap-[20px] md:flex-row">
                 <img
                   src="https://placehold.co/250x250/cac4d0/1d192b?text=QR%20Code"
                   alt="qr code"
                   className="p-[10px]"
                 />
 
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex w-full flex-col items-center gap-[10px] px-[10px] md:w-max md:items-start">
                   <div className="flex gap-[5px] text-gray-500">
                     <MinusCirlce
                       size={18}
@@ -230,23 +230,23 @@ const AppStep3 = () => {
               </div>
             </div>
           ) : (
-            <div className="-mx-[14px] -my-[10px] flex flex-col gap-[30px]">
+            <div className="-my-[10px] flex flex-col gap-[30px] md:-mx-[14px]">
               <span className="title-md md:title-lg text-gray-700">
                 Insert the provided code into your mobile authentication app.
                 Retrieve the code shown by the mobile app and proceed with the
                 setup. This app will be required for every login to your RAC
                 Logistics dashboard.
               </span>
-              <div className="flex items-center gap-[20px]">
-                <div className="h-max rounded-[20px] bg-surface-300">
+              <div className="flex flex-col items-center gap-[20px] md:flex-row">
+                <div className="h-max w-full rounded-[20px] bg-surface-300 text-center md:w-max">
                   <SectionContentLayout>
-                    <span className="title-md md:title-lg text-gray-700">
+                    <span className="title-md md:title-lg w-full text-gray-700">
                       DF3R HGTY FGTR GHUU
                     </span>
                   </SectionContentLayout>
                 </div>
 
-                <div className="flex flex-col gap-[10px]">
+                <div className="flex w-full flex-col items-center gap-[10px] px-[10px] md:w-max md:items-start">
                   <div className="flex gap-[5px] text-gray-500">
                     <MinusCirlce
                       size={18}
@@ -296,14 +296,14 @@ const AppStep4 = () => {
       </span>
       <div className="rounded-[20px] bg-surface-100">
         <SectionContentLayout>
-          <div className="-mx-[14px] flex flex-col gap-[30px]">
+          <div className="flex flex-col gap-[30px] md:-mx-[14px]">
             <span className="title-md md:title-lg text-gray-700">
               Insert the provided code into your mobile authentication app.
               Retrieve the code shown by the mobile app and proceed with the
               setup. This app will be required for every login to your RAC
               Logistics dashboard.
             </span>
-            <div className="flex items-center gap-[20px]">
+            <div className="flex flex-col items-center gap-[20px] md:flex-row">
               <div className="w-full rounded-[20px] bg-surface-300">
                 <SectionContentLayout>
                   <div className="flex w-full flex-col items-center justify-center gap-[10px]">

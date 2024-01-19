@@ -115,7 +115,7 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
             );
           })}
 
-          <span className="body-lg list-item list-inside text-gray-500">
+          <span className="body-lg ml-6 list-item text-gray-500">
             We recommend using an authenticator app for increased security
           </span>
         </div>

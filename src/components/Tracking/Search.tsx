@@ -178,7 +178,7 @@ const ArrivedDestination = () => {
               {open && (
                 <div className="hidden w-max items-center gap-[20px] rounded-[20px] border border-gray-200 p-[15px] md:flex">
                   <input
-                    className="relative h-[18px] w-[18px] accent-primary-600 before:absolute before:h-10 before:w-10 before:-translate-x-[.7rem] before:-translate-y-[.7rem] before:rounded-full before:bg-primary-500 before:opacity-[12%]"
+                    className="relative h-[18px] w-[18px] flex-shrink-0 accent-primary-600 "
                     type="radio"
                     checked={true}
                     readOnly
@@ -196,7 +196,7 @@ const ArrivedDestination = () => {
             {open && (
               <div className="flex w-full items-center gap-[20px] rounded-[20px] border border-gray-200 p-[15px] md:hidden md:w-max">
                 <input
-                  className="relative h-[18px] w-[18px] accent-primary-600 before:absolute before:h-10 before:w-10 before:-translate-x-[.7rem] before:-translate-y-[.7rem] before:rounded-full before:bg-primary-500 before:opacity-[12%]"
+                  className="relative h-[18px] w-[18px] flex-shrink-0 accent-primary-600"
                   type="radio"
                   checked={true}
                   readOnly
@@ -339,7 +339,7 @@ const InTransit = () => {
               {open && (
                 <div className="hidden items-center gap-[20px] rounded-[20px] border border-gray-200 p-[15px] md:flex">
                   <input
-                    className="relative h-[18px] w-[18px] accent-primary-600 before:absolute before:h-10 before:w-10 before:-translate-x-[.7rem] before:-translate-y-[.7rem] before:rounded-full before:bg-primary-500 before:opacity-[12%]"
+                    className="relative h-[18px] w-[18px] flex-shrink-0 accent-primary-600"
                     type="radio"
                     checked={true}
                     readOnly
@@ -358,7 +358,7 @@ const InTransit = () => {
             {open && (
               <div className="flex w-full items-center gap-[20px] rounded-[20px] border border-gray-200 p-[15px] md:hidden md:w-max">
                 <input
-                  className="relative h-[18px] w-[18px] accent-primary-600 before:absolute before:h-10 before:w-10 before:-translate-x-[.7rem] before:-translate-y-[.7rem] before:rounded-full before:bg-primary-500 before:opacity-[12%]"
+                  className="relative h-[18px] w-[18px] flex-shrink-0 accent-primary-600"
                   type="radio"
                   checked={true}
                   readOnly
@@ -425,7 +425,7 @@ const Starting = () => {
               {open && (
                 <div className="hidden items-center gap-[20px] rounded-[20px] border border-gray-200 p-[15px] md:flex">
                   <input
-                    className="relative h-[18px] w-[18px] accent-primary-600 before:absolute before:h-10 before:w-10 before:-translate-x-[.7rem] before:-translate-y-[.7rem] before:rounded-full before:bg-primary-500 before:opacity-[12%]"
+                    className="relative h-[18px] w-[18px] flex-shrink-0 accent-primary-600"
                     type="radio"
                     checked={true}
                     readOnly
@@ -444,7 +444,7 @@ const Starting = () => {
             {open && (
               <div className="flex w-full items-center gap-[20px] rounded-[20px] border border-gray-200 p-[15px] md:hidden md:w-max">
                 <input
-                  className="relative h-[18px] w-[18px] accent-primary-600 before:absolute before:h-10 before:w-10 before:-translate-x-[.7rem] before:-translate-y-[.7rem] before:rounded-full before:bg-primary-500 before:opacity-[12%]"
+                  className="relative h-[18px] w-[18px] flex-shrink-0 accent-primary-600"
                   type="radio"
                   checked={true}
                   readOnly

@@ -982,7 +982,7 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
                   className="flex items-center gap-[10px]"
                 >
                   <span className="title-lg h-full rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white">
-                    <TickCircle size="24" variant="Bold" />
+                    <TickCircle variant="Bold" />
                   </span>
                   <span className="headline-md">{title}</span>
                 </div>
@@ -993,9 +993,9 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
               return (
                 <div
                   key={`checkout-step-${i}`}
-                  className="flex items-center gap-[10px] rounded-[20px] bg-gray-200 px-[10px] py-[12px]"
+                  className="flex items-center gap-[10px] rounded-[20px] bg-gray-200 px-[10px] py-[12px] text-white"
                 >
-                  <TickCircle size="24" color="white" variant="Bold" />
+                  <TickCircle variant="Bold" />
                 </div>
               );
             }
@@ -1039,13 +1039,9 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
                 return (
                   <div
                     key={`checkout-step-${i}`}
-                    className="flex items-center gap-[10px]"
+                    className="flex flex-shrink-0 items-center gap-[10px] rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white"
                   >
-                    <TickCircle
-                      size="24"
-                      variant="Bold"
-                      className="title-lg h-full rounded-[20px] bg-primary-900 px-[10px] py-[12px] text-white"
-                    />
+                    <TickCircle variant="Bold" />
                   </div>
                 );
               }
@@ -1054,9 +1050,9 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
                 return (
                   <div
                     key={`checkout-step-${i}`}
-                    className="flex items-center gap-[10px] rounded-[20px] bg-gray-200 px-[10px] py-[12px]"
+                    className="flex flex-shrink-0 items-center gap-[10px] rounded-[20px] bg-gray-200 px-[10px] py-[12px] text-white"
                   >
-                    <TickCircle size="24" color="white" variant="Bold" />
+                    <TickCircle variant="Bold" />
                   </div>
                 );
               }
@@ -1088,7 +1084,7 @@ export const StepIndex = ({ currentIndex, length, title }: StepIndexProps) => {
               }
             })}
         </div>
-        <span className="title-lg md:title-lg">{title}</span>
+        <span className="title-lg">{title}</span>
       </div>
     </>
   );

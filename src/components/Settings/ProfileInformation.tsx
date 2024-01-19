@@ -86,7 +86,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
     <TabContentLayout>
       <div className="flex max-w-[1094px] flex-col gap-[20px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
         <SectionContentLayout>
-          <div className="-mx-[35px] flex w-full flex-grow flex-col gap-[20px]">
+          <div className="-mx-[25px] flex w-full flex-grow flex-col gap-[20px] md:-mx-[35px]">
             <div className="-mt-[21px] w-full flex-grow">
               <SectionContentLayout>
                 <div className="-m-[10px] w-full flex-grow">
@@ -95,14 +95,14 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
               </SectionContentLayout>
             </div>
 
-            <div className="mx-[35px] grid w-full grid-cols-1 items-center gap-[20px] md:grid-cols-12">
+            <div className="grid w-full grid-cols-1 place-items-center items-center gap-[20px] px-[20px] md:grid-cols-12 md:place-items-start">
               <img
                 src="https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto"
                 alt="user image"
-                className="col-span-2 h-[138px] w-[138px] rounded-full border-[12px] border-surface-100"
+                className="col-span-full h-[138px] w-[138px] rounded-full border-[12px] border-surface-100 md:col-span-2"
               />
 
-              <div className="col-span-full flex flex-col gap-[10px] md:col-span-4">
+              <div className="col-span-full flex flex-col gap-[10px] text-center md:col-span-4 md:text-start">
                 <DetailSection
                   label="First Name"
                   labelHeight="h-[20px]"
@@ -116,19 +116,19 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
               </div>
 
               <div className="col-span-full flex flex-col md:col-span-6">
-                <div className="flex items-center gap-[10px]">
+                <div className="flex flex-col items-center gap-[10px] md:flex-row">
                   <Call color="#292d32" className="m-[12px]" />
                   <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
                     {`${user.billingDetails.countryCode} ${user.billingDetails.phoneNumber}`}
                   </span>
                 </div>
-                <div className="flex items-center gap-[10px]">
+                <div className="flex flex-col items-center gap-[10px] md:flex-row">
                   <Google color="#292d32" className="m-[12px]" />
                   <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
                     {user.email}
                   </span>
                 </div>
-                <div className="flex items-center gap-[10px]">
+                <div className="flex flex-col items-center gap-[10px] md:flex-row">
                   <Location color="#292d32" className="m-[12px]" />
                   <span className="title-md md:title-lg break-words !font-medium text-neutral-900 md:!font-normal">
                     {location}
@@ -181,7 +181,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                   <RequestFormHeader title="Edit Personal Information" />
 
                   <div className="grid w-full grid-cols-1 gap-[20px] md:grid-cols-12 md:gap-[30px]">
-                    <div className="col-span-6">
+                    <div className="col-span-full md:col-span-6">
                       <TextInput
                         id={"firstName"}
                         label={"First Name"}
@@ -190,7 +190,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                       />
                     </div>
 
-                    <div className="col-span-6">
+                    <div className="col-span-full md:col-span-6">
                       <TextInput
                         id={"lastName"}
                         label={"Last Name"}
@@ -226,14 +226,14 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                       />
                     </div>
 
-                    <div className="col-span-4">
+                    <div className="col-span-full md:col-span-4">
                       <SelectCountryInput
                         bg={"bg-surface-300"}
                         {...register("country")}
                       />
                     </div>
 
-                    <div className="col-span-4">
+                    <div className="col-span-full md:col-span-4">
                       <SelectStateInput
                         states={states}
                         bg={"bg-surface-300"}
@@ -241,7 +241,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                       />
                     </div>
 
-                    <div className="col-span-4">
+                    <div className="col-span-full md:col-span-4">
                       <SelectCityInput
                         cities={cities}
                         bg={"bg-surface-300"}
@@ -308,7 +308,7 @@ const SubTabs = ({ parentTabId, defaultTabId }: SubTabsProps) => {
   return (
     <SectionContentLayout>
       <div className="flex w-full flex-grow flex-col gap-[20px]">
-        <div className="tabs relative -mx-[34px] -mt-[20px] flex flex-col">
+        <div className="tabs relative -mx-[25px] -mt-[20px] flex flex-col md:-mx-[34px]">
           <div className="absolute h-[50px] w-full overflow-x-auto overflow-y-hidden rounded-b-[20px] border-b border-b-gray-200 "></div>
           <div className="overflow-x-auto overflow-y-hidden rounded-b-[20px] px-[30px]">
             <div className="relative grid h-[50px] w-full min-w-max grid-cols-3 items-center md:w-max">
@@ -350,7 +350,7 @@ const SubTabContentPanels = () => {
   if (!tabs) return;
 
   return (
-    <div className="-mb-[20px] flex w-full flex-col items-center justify-center p-[15px]">
+    <div className="-mb-[20px] flex w-full flex-col items-center justify-center p-[10px] md:p-[15px]">
       {tabs.map(({ id, content }) => {
         return (
           <div

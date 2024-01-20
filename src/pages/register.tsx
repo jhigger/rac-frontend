@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
-import validator from "validator";
+import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
 import { capitalizeWords } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -63,7 +63,7 @@ const schema = z.object({
     .string()
     .min(1, { message: "Phone number is required" })
     .trim()
-    .refine(validator.isMobilePhone, "Must be a valid phone number"),
+    .refine(isMobilePhone, "Must be a valid phone number"),
   zipPostalCode: z.string(),
 });
 

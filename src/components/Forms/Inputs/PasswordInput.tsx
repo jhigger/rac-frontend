@@ -14,6 +14,7 @@ type PasswordInputProps = {
   confirmPassword?: boolean;
   newPassword?: boolean;
   value?: string;
+  compare?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
 };
@@ -25,6 +26,8 @@ const PasswordInput = (
     bg = "bg-neutral-10",
     confirmPassword = false,
     newPassword = false,
+    value = "",
+    compare = "",
     ...props
   }: PasswordInputProps,
   ref: Ref<HTMLInputElement>,
@@ -68,35 +71,65 @@ const PasswordInput = (
           )}
         </button>
       </div>
+
       {newPassword && (
         <div className="grid grid-cols-1 gap-[10px] px-[10px] md:grid-cols-2">
-          <SupportingText text="At least one lowercase letter" />
-          <SupportingText text="Minimum of 8 characters" />
-          <SupportingText text="At least one uppercase character" />
-          <SupportingText text="Must contain a number or special character" />
+          <SupportingText
+            text="At least one lowercase letter"
+            state={value === "" ? null : /(?=.*[a-z])/.test(value)}
+          />
+          <SupportingText
+            text="Minimum of 8 characters"
+            state={value === "" ? null : value.length >= 8}
+          />
+          <SupportingText
+            text="At least one uppercase character"
+            state={value === "" ? null : /(?=.*[A-Z])/.test(value)}
+          />
+          <SupportingText
+            text="Must contain a number or special character"
+            state={value === "" ? null : /(?=.*\d)|(?=.*\W)/.test(value)}
+          />
         </div>
       )}
 
       {confirmPassword && (
         <div className="px-[10px]">
-          <SupportingText text="Passwords match each other" />
+          <SupportingText
+            text="Passwords match each other"
+            state={value === "" ? null : value === compare}
+          />
         </div>
       )}
     </div>
   );
 };
 
-type SupportingTextProps = { text: string };
+type SupportingTextProps = { text: string; state: boolean | null };
 
-const SupportingText = ({ text }: SupportingTextProps) => {
+const SupportingText = ({ text, state }: SupportingTextProps) => {
+  const iconColor =
+    state === null
+      ? "text-gray-500"
+      : state
+        ? "text-primary-600"
+        : "text-error-600";
+
+  const textColor =
+    state === null
+      ? "text-gray-700"
+      : state
+        ? "text-primary-900"
+        : "text-error-900";
+
   return (
     <div className="flex items-center gap-[10px]">
       <TickCircle
         size={18}
         variant="Bold"
-        className="flex-shrink-0 text-gray-500"
+        className={`flex-shrink-0 ${iconColor}`}
       />
-      <span className="body-sm text-gray-700">{text} </span>
+      <span className={`body-sm ${textColor}`}>{text} </span>
     </div>
   );
 };

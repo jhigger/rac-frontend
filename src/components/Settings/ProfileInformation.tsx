@@ -101,7 +101,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
 
             <div className="grid w-full grid-cols-1 place-items-center items-center gap-[20px] px-[20px] md:grid-cols-12 md:place-items-start">
               <img
-                src="https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto"
+                src={`https://placehold.co/400x400/cac4d0/1d192b?text=${user.firstName[0]}&font=roboto`}
                 alt="user image"
                 className="col-span-full h-[138px] w-[138px] rounded-full border-[12px] border-surface-100 md:col-span-2"
               />

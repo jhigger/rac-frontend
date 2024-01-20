@@ -1,50 +1,73 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
+import validator from "validator";
+import { z } from "zod";
+import { capitalizeWords } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import Logo from "~/components/Logo";
 import { useAuthContext } from "~/contexts/AuthContext";
+import { loading } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 
 const AccountForm = dynamic(
   () => import("~/components/Forms/Register/AccountForm"),
+  { loading },
 );
+
 const AddressForm = dynamic(
   () => import("~/components/Forms/Register/AddressForm"),
+  { loading },
 );
 
-export type RegisterInputs = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  country: string;
-  state: string;
-  city: string;
-  streetAddress: string;
-  countryCode: string;
-  phoneNumber: string;
-  zipPostalCode: string;
-};
+const schema = z.object({
+  firstName: z
+    .string()
+    .min(3, { message: "First name must be at least 3 characters" })
+    .trim(),
+  lastName: z
+    .string()
+    .min(3, { message: "Last name must be at least 3 characters" })
+    .trim(),
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email("Invalid email address")
+    .trim(),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" })
+    .refine(
+      (value) => /(?=.*[a-z])/.test(value),
+      "At least one lowercase letter",
+    )
+    .refine(
+      (value) => /(?=.*[A-Z])/.test(value),
+      "At least one uppercase character",
+    )
+    .refine(
+      (value) => /(?=.*\d)|(?=.*\W)/.test(value),
+      "Must contain a number or special character",
+    ),
+  confirmPassword: z.string(),
+  country: z.string(),
+  state: z.string(),
+  city: z.string(),
+  address: z.string().trim(),
+  countryCode: z.string(),
+  phoneNumber: z
+    .string()
+    .min(1, { message: "Phone number is required" })
+    .trim()
+    .refine(validator.isMobilePhone, "Must be a valid phone number"),
+  zipPostalCode: z.string(),
+});
 
-const INITIAL_DATA: RegisterInputs = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  country: "",
-  state: "",
-  city: "",
-  streetAddress: "",
-  countryCode: "",
-  phoneNumber: "",
-  zipPostalCode: "",
-};
+export type RegisterInputs = z.infer<typeof schema>;
 
 const register = () => {
   const { user, isRegistering, registerError, handleRegister } =
@@ -53,7 +76,8 @@ const register = () => {
   if (user) return null;
 
   const formMethods = useForm<RegisterInputs>({
-    defaultValues: INITIAL_DATA,
+    mode: "all",
+    resolver: zodResolver(schema),
   });
   const { step, next, isFirstStep, back, isLastStep } = useMultiStepForm([
     <AccountForm />,
@@ -63,8 +87,8 @@ const register = () => {
     if (!isLastStep) return next();
 
     const registerData = {
-      firstName: data.firstName,
-      lastName: data.lastName,
+      firstName: capitalizeWords(data.firstName),
+      lastName: capitalizeWords(data.lastName),
       email: data.email,
       password: data.password,
       country: data.country,
@@ -74,7 +98,7 @@ const register = () => {
           country: data.country,
           state: data.state,
           city: data.city,
-          streetAddress: data.streetAddress,
+          streetAddress: data.address,
           countryCode: data.countryCode,
           phoneNumber: data.phoneNumber,
           postalCode: data.zipPostalCode,
@@ -108,11 +132,47 @@ const register = () => {
                 </div>
               )}
               {!isLastStep ? (
-                <ProceedButton onClick={next} />
+                <ProceedButton
+                  onClick={next}
+                  disabled={
+                    !(
+                      formMethods.formState.touchedFields.firstName &&
+                      formMethods.formState.touchedFields.lastName &&
+                      formMethods.formState.touchedFields.email &&
+                      formMethods.formState.touchedFields.password &&
+                      formMethods.formState.touchedFields.confirmPassword &&
+                      !formMethods.formState.errors.firstName &&
+                      !formMethods.formState.errors.lastName &&
+                      !formMethods.formState.errors.email &&
+                      !formMethods.formState.errors.password &&
+                      formMethods.watch("password") ===
+                        formMethods.watch("confirmPassword")
+                    )
+                  }
+                />
               ) : (
                 <CreateAccountButton
                   onClick={formMethods.handleSubmit(onSubmit)}
-                  disabled={isRegistering}
+                  disabled={
+                    isRegistering ||
+                    !(
+                      formMethods.formState.touchedFields.country &&
+                      formMethods.formState.touchedFields.state &&
+                      formMethods.formState.touchedFields.city &&
+                      formMethods.formState.touchedFields.address &&
+                      formMethods.formState.touchedFields.zipPostalCode &&
+                      formMethods.formState.touchedFields.countryCode &&
+                      formMethods.formState.touchedFields.phoneNumber &&
+                      !formMethods.formState.errors.country &&
+                      !formMethods.formState.errors.state &&
+                      !formMethods.formState.errors.city &&
+                      !formMethods.formState.errors.address &&
+                      !formMethods.formState.errors.zipPostalCode &&
+                      !formMethods.formState.errors.countryCode &&
+                      !formMethods.formState.errors.phoneNumber
+                    )
+                  }
+                  loading={isRegistering}
                 />
               )}
             </div>
@@ -138,20 +198,21 @@ const register = () => {
 type CreateAccountButtonProps = {
   onClick: () => void;
   disabled?: boolean;
+  loading?: boolean;
 };
 
 const CreateAccountButton = ({
   onClick,
-  disabled,
+  disabled = false,
+  loading = false,
 }: CreateAccountButtonProps) => {
   return (
     <button
       disabled={disabled}
-      type="submit"
       onClick={onClick}
       className="btn relative flex h-[40px] flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-6 py-2.5 text-sm font-medium tracking-[.00714em] text-white hover:shadow-md"
     >
-      {disabled ? <LoadingSpinner /> : "Create My Account"}
+      {loading ? <LoadingSpinner /> : "Create My Account"}
     </button>
   );
 };

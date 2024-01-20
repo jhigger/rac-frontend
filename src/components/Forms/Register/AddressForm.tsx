@@ -11,7 +11,12 @@ import TextInput from "../Inputs/TextInput";
 
 const AddressForm = () => {
   const { isRegistering } = useAuthContext();
-  const { register, getValues, watch } = useFormContext<RegisterInputs>();
+  const {
+    formState: { errors },
+    register,
+    getValues,
+    watch,
+  } = useFormContext<RegisterInputs>();
   const { cities, states } = useStatesCities({ watch });
 
   return (
@@ -47,7 +52,7 @@ const AddressForm = () => {
           id={"streetAddress"}
           label={"Street Address"}
           disabled={isRegistering}
-          {...register("streetAddress")}
+          {...register("address")}
         />
         <div className="grid grid-rows-2 gap-[30px] md:grid-cols-12 md:grid-rows-1 md:gap-[10px]">
           <div className="md col-span-full md:col-span-5">
@@ -60,6 +65,7 @@ const AddressForm = () => {
               type="tel"
               disabled={isRegistering}
               {...register("phoneNumber")}
+              errorMessage={errors.phoneNumber?.message}
             />
           </div>
         </div>

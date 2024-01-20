@@ -23,7 +23,6 @@ export type AuthContextType = {
   isAuthenticating: boolean;
   isFetchingUser: boolean;
   isRegistering: boolean;
-  isAuthCodeVerified: boolean;
   loginError: AxiosError | null;
   registerError: string | null;
   restrictedPaths: string[];
@@ -103,7 +102,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [registerError, setRegisterError] = useState<string | null>(null);
   const [authType, setAuthType] =
     useState<TwoFactorAuthenticationType>("email"); // todo: get this data in user object from backend
-  const [isAuthCodeVerified, setIsAuthCodeVerified] = useState(false); // todo: convert to useQuery and data from server instead
   const {
     mutateAsync: submitAuthCode,
     error: authCodeError,
@@ -123,15 +121,12 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     queryFn: async () => {
       if (loginInputs) {
         if (sixDigitCode) {
-          setIsAuthCodeVerified(false);
-
           console.log("verifying otp...");
           return await submitAuthCode({
             email: loginInputs.email,
             sixDigitCode,
           })
             .then((user) => {
-              setIsAuthCodeVerified(true);
               // reset states
               setSixDigitCode("");
               setLoginInputs(null);
@@ -149,27 +144,17 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         }
 
         console.log("logging in...");
-        return await useLoginUser(loginInputs)
-          .then(async () => {
-            redirectTo("/authentication");
-            return null;
-          })
-          .catch((err) => {
-            console.log(err);
-            return null;
-          });
+        return await useLoginUser(loginInputs).then(async () => {
+          redirectTo("/authentication");
+          return null;
+        });
       } else if (cookies.jwt) {
         console.log("token found, fetching user info...");
         const token = cookies.jwt as string;
-        return await useFetchUser(token)
-          .then(async (userData) => {
-            console.log("user found");
-            return userData;
-          })
-          .catch((err) => {
-            console.log(err);
-            return null;
-          });
+        return await useFetchUser(token).then(async (userData) => {
+          console.log("user found");
+          return userData;
+        });
       }
 
       return null;
@@ -293,7 +278,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     isAuthenticating,
     isFetchingUser,
     isRegistering,
-    isAuthCodeVerified,
     loginError,
     registerError,
     restrictedPaths,

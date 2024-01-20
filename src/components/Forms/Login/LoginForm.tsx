@@ -47,7 +47,7 @@ const LoginForm = () => {
         </div>
 
         {loginError && (
-          <span className="text-error-500">{loginError.message}</span>
+          <span className="text-error-500">Email or password is incorrect</span>
         )}
 
         <LoginButton

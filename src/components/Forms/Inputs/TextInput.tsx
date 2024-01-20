@@ -12,6 +12,7 @@ type TextInputProps = {
   bg?: string;
   defaultValue?: string;
   disabled?: boolean;
+  errorMessage?: string;
   max?: string | number;
   maxLength?: number;
   min?: string | number;
@@ -24,7 +25,14 @@ type TextInputProps = {
 };
 
 const TextInput = (
-  { id, label, bg = "bg-neutral-10", type = "text", ...props }: TextInputProps,
+  {
+    id,
+    label,
+    bg = "bg-neutral-10",
+    errorMessage = "",
+    type = "text",
+    ...props
+  }: TextInputProps,
   ref: Ref<HTMLInputElement>,
 ) => {
   return (
@@ -39,16 +47,18 @@ const TextInput = (
         placeholder=" "
         {...props}
       />
-
       <label
         htmlFor={id}
         className={`absolute left-4 top-4 z-10 origin-[0] -translate-y-7 scale-75 transform px-1 tracking-[.03125em] text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-invalid:text-error-600 peer-focus:left-4 peer-focus:-translate-y-7 peer-focus:scale-75 peer-focus:px-1 peer-focus:text-primary-600 ${`peer-focus:${bg}`} ${bg}`}
       >
         {label}
       </label>
-      <div className="hidden px-4 pt-1 text-xs tracking-[0.4px]">
-        Supporting text
-      </div>
+
+      {errorMessage && (
+        <div className="px-4 pt-1 text-xs tracking-[0.4px] text-error-600">
+          {errorMessage}
+        </div>
+      )}
     </div>
   );
 };

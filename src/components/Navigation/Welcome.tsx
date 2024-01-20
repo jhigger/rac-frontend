@@ -4,11 +4,13 @@ import { useAuthContext } from "~/contexts/AuthContext";
 const Welcome = () => {
   const { user } = useAuthContext();
 
+  if (!user) return;
+
   return (
     <div className="mb-[28px] max-w-[253px] rounded-r-[20px] bg-neutral-100 bg-opacity-[8%]">
       <div className="flex items-center gap-[10px] px-[10px] py-[18px]">
         <img
-          src={"https://placehold.co/400x400/cac4d0/1d192b?text=R&font=roboto"}
+          src={`https://placehold.co/400x400/cac4d0/1d192b?text=${user.firstName[0]}&font=roboto`}
           alt="user image"
           className="h-[40px] w-[40px] rounded-full bg-gray-500"
         />

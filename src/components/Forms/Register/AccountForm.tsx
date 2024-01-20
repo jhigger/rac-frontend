@@ -7,7 +7,7 @@ import TextInput from "../Inputs/TextInput";
 
 const AccountForm = () => {
   const { isRegistering } = useAuthContext();
-  const { register } = useFormContext<RegisterInputs>();
+  const { register, watch } = useFormContext<RegisterInputs>();
 
   return (
     <>
@@ -38,6 +38,7 @@ const AccountForm = () => {
           disabled={isRegistering}
           newPassword
           {...register("password")}
+          value={watch("password")}
         />
         <PasswordInput
           id="confirmPassword"
@@ -45,6 +46,8 @@ const AccountForm = () => {
           disabled={isRegistering}
           confirmPassword
           {...register("confirmPassword")}
+          value={watch("confirmPassword")}
+          compare={watch("password")}
         />
       </div>
     </>

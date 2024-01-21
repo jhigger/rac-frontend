@@ -24,7 +24,9 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed", // i think this is always "processed" for orders only
-    orderLocalDate: new Date("2023/1/23").toLocaleString(), // this is to simulate ISO string from server converted to localString in frontend
+    orderLocalDate: new Date("2023/1/23").toLocaleString("en-US", {
+      hour12: false,
+    }), // this is to simulate ISO string from server converted to localString in frontend
     trackingId: "SH08751",
     shippingStatus: "not started", // not boolean
     originWarehouse: "Nigeria Warehouse (Lagos)",
@@ -107,7 +109,9 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "processed",
-    orderLocalDate: new Date("2023/2/23").toLocaleString(),
+    orderLocalDate: new Date("2023/2/23").toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -205,7 +209,9 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "processed",
-    orderLocalDate: new Date("2023/3/23").toLocaleString(),
+    orderLocalDate: new Date("2023/3/23").toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08753",
     shippingStatus: "ready for shipping",
     originWarehouse: "China Warehouse (Guangzhou city)",
@@ -323,7 +329,9 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderLocalDate: new Date("2023/4/23").toLocaleString(),
+    orderLocalDate: new Date("2023/4/23").toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     originWarehouse: "Dubai Warehouse",
@@ -461,7 +469,9 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "processed",
-    orderLocalDate: new Date("2023/5/23").toLocaleString(),
+    orderLocalDate: new Date("2023/5/23").toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08755",
     shippingStatus: "processing",
     originWarehouse: "UK Warehouse (London)",
@@ -519,7 +529,9 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "processed",
-    orderLocalDate: new Date("2023/6/23").toLocaleString(),
+    orderLocalDate: new Date("2023/6/23").toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -577,7 +589,9 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "processed",
-    orderLocalDate: new Date("2023/7/23").toLocaleString(),
+    orderLocalDate: new Date("2023/7/23").toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -635,7 +649,9 @@ export const shopOrders: ShopOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "processed",
-    orderLocalDate: new Date("2023/8/23").toLocaleString(),
+    orderLocalDate: new Date("2023/8/23").toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -696,7 +712,9 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "R08751",
     requestStatus: "Not Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -733,7 +751,9 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "R08752",
     requestStatus: "Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -766,7 +786,9 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "R08753",
     requestStatus: "Not Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -799,7 +821,9 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "R08754",
     requestStatus: "Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -832,7 +856,9 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "R08755",
     requestStatus: "Not Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -865,7 +891,9 @@ export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "R08756",
     requestStatus: "Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -901,7 +929,9 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08751",
     shippingStatus: "not started",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -951,7 +981,9 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1001,7 +1033,9 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1051,7 +1085,9 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08755",
     shippingStatus: "processing",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1101,7 +1137,9 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1151,7 +1189,9 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1201,7 +1241,9 @@ export const importOrders: ImportOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1254,7 +1296,9 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "R08751",
     requestStatus: "Not Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "China Warehouse (Guangzhou city)",
     deliveryStatus: "All delivered",
     items: [
@@ -1288,7 +1332,9 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "R08752",
     requestStatus: "Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "Dubai Warehouse",
     deliveryStatus: "None delivered",
     items: [
@@ -1322,7 +1368,9 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "R08753",
     requestStatus: "Not Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "Nigeria Warehouse (Lagos)",
     deliveryStatus: "Some delivered",
     items: [
@@ -1371,7 +1419,9 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "R08754",
     requestStatus: "Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "UK Warehouse (London)",
     deliveryStatus: "All delivered",
     items: [
@@ -1405,7 +1455,9 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "R08755",
     requestStatus: "Not Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     deliveryStatus: "None delivered",
     items: [
@@ -1439,7 +1491,9 @@ export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "R08756",
     requestStatus: "Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     deliveryStatus: "Some delivered",
     items: [
@@ -1491,7 +1545,9 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08751",
     shippingStatus: "not started",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1552,7 +1608,9 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08752",
     shippingStatus: "arrived destination",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1613,7 +1671,9 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08754",
     shippingStatus: "in transit",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1674,7 +1734,9 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08755",
     shippingStatus: "processing",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1735,7 +1797,9 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08756",
     shippingStatus: "cleared",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1796,7 +1860,9 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08757",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08757",
     shippingStatus: "cancelled",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1857,7 +1923,9 @@ export const exportOrders: ExportOrderPackageType[] = [
   {
     orderId: "OD08758",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08758",
     shippingStatus: "delivered",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -1923,7 +1991,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08756",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08756",
     shippingStatus: "not started",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -2001,7 +2071,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08755",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08755",
     shippingStatus: "arrived destination",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -2079,7 +2151,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08754",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08754",
     shippingStatus: "cleared",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -2140,7 +2214,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08753",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08753",
     shippingStatus: "processing",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -2202,7 +2278,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08752",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08752",
     shippingStatus: "in transit",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -2264,7 +2342,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08751",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08751",
     shippingStatus: "arrived destination",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -2325,7 +2405,9 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
   {
     orderId: "OD08750",
     orderStatus: "processed",
-    orderLocalDate: new Date().toLocaleString(),
+    orderLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     trackingId: "SH08750",
     shippingStatus: "delivered",
     originWarehouse: "US Warehouse (Richmond Texas)",
@@ -2389,7 +2471,9 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
   {
     requestId: "R08756",
     requestStatus: "Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -2465,7 +2549,9 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
   {
     requestId: "R08755",
     requestStatus: "Not Responded",
-    requestLocalDate: new Date().toLocaleString(),
+    requestLocalDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     originWarehouse: "US Warehouse (Richmond Texas)",
     items: [
       {
@@ -2525,17 +2611,23 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
 
 export const notificationItems: NotificationItemType[] = [
   {
-    localDate: new Date().toLocaleString(),
+    localDate: new Date().toLocaleString("en-US", {
+      hour12: false,
+    }),
     type: "payment confirmation",
     order: shopOrders[2]!,
   },
   {
-    localDate: new Date("2022/12/12").toLocaleString(),
+    localDate: new Date("2022/12/12").toLocaleString("en-US", {
+      hour12: false,
+    }),
     type: "shipment arrival",
     order: shopOrders[2]!,
   },
   {
-    localDate: new Date("2023/2/23").toLocaleString(),
+    localDate: new Date("2023/2/23").toLocaleString("en-US", {
+      hour12: false,
+    }),
     type: "payment rejection",
     order: shopOrders[0]!,
   },

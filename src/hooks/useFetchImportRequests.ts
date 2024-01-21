@@ -33,7 +33,12 @@ const useFetchImportRequests = (
           requestId: request.requestId,
           requestStatus:
             request.requestStatus as ImportRequestPackageType["requestStatus"],
-          requestLocalDate: new Date(request.createdAt).toLocaleString(),
+          requestLocalDate: new Date(request.createdAt).toLocaleString(
+            "en-US",
+            {
+              hour12: false,
+            },
+          ),
           originWarehouse:
             request.origin as ImportRequestPackageType["originWarehouse"],
           deliveryStatus:

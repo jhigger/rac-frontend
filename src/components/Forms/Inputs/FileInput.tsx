@@ -13,6 +13,7 @@ type FileInputProps = {
   label: string;
   fileName: string;
   accept?: string;
+  errorMessage?: string;
   type?: HTMLInputTypeAttribute;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
@@ -20,7 +21,14 @@ type FileInputProps = {
 };
 
 const FileInput = (
-  { accept = "image/*", id, label, fileName, ...props }: FileInputProps,
+  {
+    accept = "image/*",
+    id,
+    label,
+    fileName,
+    errorMessage = "",
+    ...props
+  }: FileInputProps,
   ref: Ref<HTMLInputElement>,
 ) => {
   return (
@@ -53,9 +61,12 @@ const FileInput = (
           <div className="hidden sm:block">{shortenFileName(fileName, 10)}</div>
         </div>
       </div>
-      <div className="hidden px-4 pt-1 text-xs tracking-[0.4px]">
-        Supporting text
-      </div>
+
+      {errorMessage && (
+        <div className="px-4 pt-1 text-xs tracking-[0.4px] text-error-600">
+          {errorMessage}
+        </div>
+      )}
     </div>
   );
 };

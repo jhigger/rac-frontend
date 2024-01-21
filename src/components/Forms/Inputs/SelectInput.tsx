@@ -10,6 +10,7 @@ type SelectInputProps = {
   options: JSX.Element;
   bg?: string;
   disabled?: boolean;
+  errorMessage?: string;
   id?: string;
   value?: string;
   onBlur?: FocusEventHandler<HTMLSelectElement>;
@@ -17,11 +18,18 @@ type SelectInputProps = {
 };
 
 const SelectInput = (
-  { id, label, options, bg = "bg-neutral-10", ...props }: SelectInputProps,
+  {
+    id,
+    label,
+    errorMessage = "",
+    options,
+    bg = "bg-neutral-10",
+    ...props
+  }: SelectInputProps,
   ref: Ref<HTMLSelectElement>,
 ) => {
   return (
-    <div className="relative z-0 w-full">
+    <div className="relative z-0 flex w-full flex-col">
       <select
         ref={ref}
         name={id}
@@ -37,6 +45,12 @@ const SelectInput = (
       >
         {label}
       </label>
+
+      {errorMessage && (
+        <div className="px-4 pt-1 text-xs tracking-[0.4px] text-error-600">
+          {errorMessage}
+        </div>
+      )}
     </div>
   );
 };

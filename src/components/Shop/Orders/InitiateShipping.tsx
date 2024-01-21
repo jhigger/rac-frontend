@@ -448,7 +448,11 @@ const ShopOrderItemDetails = ({ item }: ShopOrderItemDetailsProps) => {
         value={formatDimension(item.width)}
         colSpanDesktop={2}
       />
-      <DetailSection label="Product/Item Picture" value={item.image} image />
+      <DetailSection
+        label="Product/Item Picture"
+        value={item.image as string}
+        image
+      />
       <DetailSection label="Product Description" value={item.description} />
 
       {item.properties?.map((property, i) => {

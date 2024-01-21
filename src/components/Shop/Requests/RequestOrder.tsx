@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Add,
   ArrowCircleLeft2,
@@ -25,6 +26,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
+import { z } from "zod";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
@@ -33,16 +35,20 @@ import { DoneButton } from "~/components/Buttons/DoneButton";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { SaveAsDraftButton } from "~/components/Buttons/SaveAsDraftButton";
 import LabelId from "~/components/LabelId";
-import { ORIGINS, STORES } from "~/constants";
-import { useNavContext } from "~/contexts/NavigationContext";
 import {
-  useShopContext,
-  type DraftImageType,
-  type ShopRequestPackageType,
-} from "~/contexts/ShopContext";
+  ACCEPTED_IMAGE_TYPES,
+  MAX_FILE_SIZE,
+  ORIGINS,
+  STORES,
+} from "~/constants";
+import { useAuthContext } from "~/contexts/AuthContext";
+import { useNavContext } from "~/contexts/NavigationContext";
+import { type OrderPackageType } from "~/contexts/NotificationContext";
+import { useShopContext, type DraftImageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import useSubmitShopRequest from "~/hooks/useSubmitShopRequest";
 import tailmater from "~/js/tailmater";
 import { CancelButton } from "../../Buttons/CancelButton";
 import NeedHelpFAB from "../../Buttons/NeedHelpFAB";
@@ -57,54 +63,120 @@ import { DetailSection } from "../Orders/InitiateShipping";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 
-export const emptyValue: ShopRequestPackageType = {
-  requestId: "",
-  requestStatus: "Not Responded",
-  requestLocalDate: new Date().toLocaleString(),
-  originWarehouse: "China Warehouse (Guangzhou city)",
-  destinationWarehouse: "Nigeria Warehouse (Lagos)",
-  items: [
-    {
-      store: "Aliexpress",
-      urgent: false,
-      url: "item url",
-      name: "Designer Bags",
-      originalCost: 1,
-      quantity: 1,
-      weight: 0,
-      height: 0,
-      length: 0,
-      width: 0,
-      image: "",
-      description: "",
-      relatedCosts: {
-        urgentPurchaseFee: 0,
-        processingFee: 0,
-        shippingToOriginWarehouseCost: 0,
-        shopForMeCost: 0,
+const schema = z
+  .object({
+    requestPackage: z
+      .object({
+        originWarehouse: z
+          .string()
+          .min(1, { message: "Origin is required" })
+          .default(""),
+        items: z
+          .array(
+            z.object({
+              store: z
+                .string()
+                .min(1, { message: "Store is required" })
+                .default(""),
+              urgent: z.coerce.number().default(0),
+              url: z
+                .string()
+                .min(1, { message: "URL is required" })
+                .default(""),
+              name: z
+                .string()
+                .min(1, { message: "Name is required" })
+                .default(""),
+              originalCost: z.number(),
+              quantity: z.number(),
+              image: z
+                .custom<FileList>()
+                .nullable()
+                .default(null)
+                .refine(
+                  (files) => files instanceof FileList && files.length > 0,
+                  "Image is required.",
+                )
+                .refine(
+                  (files) =>
+                    files instanceof FileList &&
+                    files[0] !== undefined &&
+                    files[0].size <= MAX_FILE_SIZE,
+                  `Max file size is ${new Intl.NumberFormat("en", {
+                    style: "unit",
+                    unit: "megabyte",
+                  }).format(MAX_FILE_SIZE / 1024 / 1024)}.`,
+                )
+                .refine(
+                  (files) =>
+                    files instanceof FileList &&
+                    files[0] !== undefined &&
+                    ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+                  "only .jpg, .jpeg, .png and .webp files are accepted.",
+                ),
+              description: z
+                .string()
+                .min(1, { message: "Description is required" })
+                .default(""),
+              relatedCosts: z.object({
+                shippingToOriginWarehouseCost: z.number().default(1),
+              }),
+              draftImage: z
+                .object({
+                  name: z.string().default("No file chosen"),
+                  base64: z
+                    .string()
+                    .default(
+                      "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+                    ),
+                })
+                .optional(),
+              // properties: z.array(
+              //   z.object({
+              //     label: z.string().min(1, "Required"),
+              //     value: z.string().min(1, "Required"),
+              //   }),
+              // ),
+            }),
+          )
+          .default([]),
+      })
+      .default({}),
+  })
+  .default({});
+
+export type ShopInputs = z.infer<typeof schema>;
+
+const emptyValue: ShopInputs = {
+  requestPackage: {
+    originWarehouse: "",
+    items: [
+      {
+        store: "",
+        urgent: 0,
+        url: "",
+        name: "",
+        originalCost: 1,
+        quantity: 1,
+        relatedCosts: {
+          shippingToOriginWarehouseCost: 1,
+        },
+        image: null,
+        description: "",
+        draftImage: {
+          name: "No file chosen",
+          base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+        },
       },
-      draftImage: {
-        name: "No file chosen",
-        base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-      },
-    },
-  ],
-  packageCosts: {
-    valueAddedTax: 0,
-    paymentMethodSurcharge: 0,
-    discount: 0,
+    ],
   },
 };
 
-export type ShopInputs = {
-  requestPackage: ShopRequestPackageType;
-};
-
 const RequestOrderForm = () => {
-  // const { user } = useAuthContext();
-  // const token = user?.jwt ?? "";
+  const { user } = useAuthContext();
+  const token = user?.jwt ?? "";
 
-  // const { error, isSuccess, status, mutateAsync } = useSubmitShopRequest(token);
+  const { isPending, error, mutateAsync } = useSubmitShopRequest(token);
 
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
@@ -113,27 +185,24 @@ const RequestOrderForm = () => {
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const formMethods = useForm<ShopInputs>({
-    defaultValues: {
-      requestPackage: emptyValue,
-    },
+    mode: "onChange",
+    resolver: zodResolver(schema),
+    defaultValues: emptyValue,
   });
+
+  const [requestId, setRequestId] = useState("");
 
   const onSubmit: SubmitHandler<ShopInputs> = async (data) => {
     if (isSecondToLastStep) {
-      // select input can only return string/number
-      // urgent returns 0 or 1 that needs to be parsed to boolean
-      data.requestPackage.items.every((item, index) => {
-        const value = item.urgent;
-        formMethods.setValue(
-          `requestPackage.items.${index}.urgent`,
-          Boolean(value),
-        );
-      });
-      // console.log("submitting user package...");
-      // await mutateAsync(formMethods.getValues().requestPackage);
-      // console.log(status);
-      // console.log(error);
-      // if (isSuccess) next();
+      console.log("submitting user package...");
+      try {
+        const res = await mutateAsync(data.requestPackage);
+        console.log(res);
+        setRequestId(res.data.requestId);
+      } catch (err) {
+        console.log(err);
+        return;
+      }
     }
     next();
   };
@@ -159,35 +228,49 @@ const RequestOrderForm = () => {
         <RequestFormHeader title="Requesting For New Shop For Me Service" />
 
         {isLastStep && (
-          // todo: submit response should have requestId
           <SectionContentLayout>
-            <LabelId label="Request ID" id="R78667" center={true} />
+            <LabelId label="Request ID" id={requestId} center />
           </SectionContentLayout>
         )}
 
         {step}
 
-        {isFirstStep && (
-          <>
-            <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-              <BackButton onClick={handleBack} />
-              <SaveAsDraftButton onClick={handleSaveAsDraft} />
-              <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
-            </div>
-            {/* for mobile screen */}
-            <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
-              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+        {error && (
+          <span className="text-error-500">Action required in some fields</span>
+        )}
+
+        {isFirstStep &&
+          (!isPending ? (
+            <>
+              <div className="hidden gap-[10px] md:flex [&>*]:w-max">
                 <BackButton onClick={handleBack} />
-              </div>
-              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                <SaveAsDraftButton onClick={handleSaveAsDraft} />
                 <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
-              <div className="col-span-full">
-                <SaveAsDraftButton onClick={handleSaveAsDraft} />
+              {/* for mobile screen */}
+              <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
+                <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                  <BackButton onClick={handleBack} />
+                </div>
+                <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                  <ProceedButton
+                    onClick={formMethods.handleSubmit(onSubmit)}
+                    disabled={!formMethods.formState.isValid}
+                  />
+                </div>
+                <div className="col-span-full">
+                  <SaveAsDraftButton onClick={handleSaveAsDraft} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="w-full">
+              <div className="linear-loader relative flex h-1 w-full overflow-hidden bg-gray-100">
+                <div className="bar absolute inset-0 w-full bg-primary-600"></div>
+                <div className="bar absolute inset-0 w-full bg-primary-600"></div>
               </div>
             </div>
-          </>
-        )}
+          ))}
 
         {isLastStep && (
           <div className="w-full md:w-[200px]">
@@ -213,7 +296,7 @@ export const RequestOrderStep1 = ({
   });
 
   const handleAddMore = () => {
-    append(emptyValue.items);
+    append(emptyValue.requestPackage.items);
   };
 
   const handleRemove = (index: number) => {
@@ -438,7 +521,12 @@ const ItemDetailsSection = ({
   isDraft,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
-  const { register, getValues, setValue } = useFormContext<ShopInputs>();
+  const {
+    formState: { errors },
+    register,
+    getValues,
+    setValue,
+  } = useFormContext<ShopInputs>();
   const { open, toggle } = useAccordion(expanded);
 
   const emptyImage = {
@@ -464,7 +552,7 @@ const ItemDetailsSection = ({
       const base64String = base64Data?.toString() ?? emptyImage.base64;
       setImage({ name, base64: base64String });
     };
-    reader.readAsDataURL(files[0] as Blob);
+    reader.readAsDataURL(files[0]);
   };
 
   useEffect(() => {
@@ -597,6 +685,9 @@ const ItemDetailsSection = ({
                     {...register(`requestPackage.items.${index}.image`, {
                       onChange: handleImageChange,
                     })}
+                    errorMessage={
+                      errors.requestPackage?.items?.[index]?.image?.message
+                    }
                   />
                 </div>
 
@@ -608,7 +699,7 @@ const ItemDetailsSection = ({
                   />
                 </div>
 
-                <div className="col-span-full flex flex-col gap-[30px]">
+                {/* <div className="col-span-full flex flex-col gap-[30px]">
                   <SectionHeader
                     title="Describe the item you wish to purchase with further custom properties"
                     hr
@@ -616,7 +707,7 @@ const ItemDetailsSection = ({
                   <div className="flex flex-col flex-wrap items-center gap-[30px] px-[10px] md:flex-row md:pl-[34px]">
                     <AddPropertiesSection index={index} />
                   </div>
-                </div>
+                </div> */}
               </div>
             )}
 
@@ -642,7 +733,7 @@ type AddPropertiesSectionProps = { index: number };
 export const AddPropertiesSection = ({
   index = 0,
 }: AddPropertiesSectionProps) => {
-  const { setValue } = useFormContext<ShopInputs>();
+  const { setValue } = useFormContext<OrderPackageType>();
   const [properties, setProperties] = useState<PropertyType[]>([]);
 
   const handleProperties = (newProperties: PropertyType[]) => {
@@ -650,7 +741,7 @@ export const AddPropertiesSection = ({
   };
 
   useEffect(() => {
-    setValue(`requestPackage.items.${index}.properties`, properties);
+    // setValue(`requestPackage.items.${index}.properties`, properties);
   }, [properties]);
 
   return (
@@ -658,8 +749,8 @@ export const AddPropertiesSection = ({
       {properties && <PropertyFields properties={properties} />}
       <AddCustomPropertyButton
         id={`${index + 1}`}
-        properties={properties}
         handleProperties={handleProperties}
+        disabled={properties.length >= 1}
       />
     </>
   );
@@ -688,12 +779,13 @@ const PropertyFields = ({ properties }: PropertyFieldsProps) => {
 
 type AddCustomPropertyButtonProps = {
   id: string;
-  properties: PropertyType[];
+  disabled?: boolean;
   handleProperties: (p: PropertyType[]) => void;
 };
 
 const AddCustomPropertyButton = ({
   id,
+  disabled,
   handleProperties,
 }: AddCustomPropertyButtonProps) => {
   const { activeNav } = useNavContext();
@@ -707,7 +799,11 @@ const AddCustomPropertyButton = ({
 
   return (
     <div className="w-full md:w-max">
-      <AddButton title="Add properties" dataTarget={dataTarget} />
+      <AddButton
+        title="Add properties"
+        dataTarget={dataTarget}
+        disabled={disabled}
+      />
       <AddPropertiesModal
         modalId={modalId}
         handleProperties={handleProperties}
@@ -811,7 +907,7 @@ const AddPropertiesModal = ({
             );
           })}
 
-          <AddMoreProperties onClick={handleAddMore} />
+          {fields.length === 0 && <AddMoreProperties onClick={handleAddMore} />}
         </div>
 
         <div className="flex flex-row items-end justify-end">
@@ -828,9 +924,9 @@ const AddPropertiesModal = ({
   );
 };
 
-type AddMoreProperties = { onClick: () => void };
+type AddMorePropertiesProps = { onClick: () => void };
 
-const AddMoreProperties = ({ onClick }: AddMoreProperties) => {
+const AddMoreProperties = ({ onClick }: AddMorePropertiesProps) => {
   return (
     <button
       type="button"
@@ -1066,16 +1162,23 @@ export const ChangeCurrencyButton = () => {
 type AddButtonProps = {
   title: string;
   dataTarget?: string;
+  disabled?: boolean;
   onClick?: () => void;
 };
 
-export const AddButton = ({ title, dataTarget, onClick }: AddButtonProps) => {
+export const AddButton = ({
+  title,
+  dataTarget,
+  disabled = false,
+  onClick,
+}: AddButtonProps) => {
   return (
     <button
       onClick={onClick}
       data-type="dialogs"
       data-target={dataTarget}
       aria-label={title}
+      disabled={disabled}
       className="btn relative flex h-14 w-full flex-row items-center justify-center gap-x-2 rounded-[20px] bg-gray-700 px-8 py-2.5 text-sm font-medium tracking-[.00714em] text-white"
     >
       <Add variant="Outline" className="text-gray-200" />

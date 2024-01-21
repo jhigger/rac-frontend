@@ -792,7 +792,7 @@ export const shopPackageItemColumns = () => {
       cell: ({ row }) => (
         <div className="flex items-center gap-[10px]">
           <div className="w-[62px] items-center overflow-hidden rounded-[10px]">
-            <img src={row.original.image} alt="item image" />
+            <img src={row.original.image as string} alt="item image" />
           </div>
           <div className="w-[160px] text-secondary-900">
             {limitChars(row.original.name, 80)}

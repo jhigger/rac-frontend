@@ -1,30 +1,66 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { type ShopOrderPackageType } from "~/contexts/ShopContext";
+import { type ShopInputs } from "~/components/Shop/Requests/RequestOrder";
 
 const useSubmitShopRequest = (token: string) => {
-  const handleSubmit = async (orderPackage: ShopOrderPackageType) => {
-    const data = {
-      origin: orderPackage.originWarehouse,
-      requestPackages: orderPackage.items.map((item) => {
-        const packageItem = {
-          store: item.store,
-          itemUrl: item.url,
-          itemName: item.name,
-          urgent: item.urgent,
-          itemImage: item.image,
-          itemPrice: item.originalCost, // todo: price? === cost?
-          cost: item.originalCost,
-          qty: item.quantity,
-          shippingCost: item.relatedCosts.shippingToOriginWarehouseCost,
-          description: item.description,
-        };
+  const handleSubmit = async (requestPackage: ShopInputs["requestPackage"]) => {
+    const formData = new FormData();
+    formData.append("origin", requestPackage.originWarehouse);
+    requestPackage.items.forEach((item, i) => {
+      formData.append(`requestItems[${i}][store]`, item.store);
+      formData.append(
+        `requestItems[${i}][urgentPurchase]`,
+        String(Boolean(item.urgent)),
+      );
+      formData.append(`requestItems[${i}][itemUrl]`, item.url);
+      formData.append(`requestItems[${i}][itemName]`, item.name);
 
-        return packageItem;
-      }),
-    };
+      // todo: first solution
+      // formData.append(`requestItems[${i}][itemImage]`, item.image[0] as Blob);
+      formData.append(`requestItems[itemImage]`, item.image?.[0] as Blob);
 
-    console.log(data);
+      formData.append(
+        `requestItems[${i}][originalCost]`,
+        String(item.originalCost),
+      ); // todo: price? === cost?
+      formData.append(`requestItems[${i}][qty]`, String(item.quantity));
+      formData.append(
+        `requestItems[${i}][shippingCost]`,
+        String(item.relatedCosts.shippingToOriginWarehouseCost),
+      );
+      formData.append(
+        `requestItems[${i}][additionalDescription]`,
+        item.description,
+      );
+
+      // todo: first solution
+      // item.properties?.forEach((property, j) => {
+      //   console.log(j);
+      //   formData.append(
+      //     `requestItems[${i}][additionalProperties][${j}][label]`,
+      //     property.label,
+      //   );
+      //   formData.append(
+      //     `requestItems[${i}][additionalProperties][${j}][description]`,
+      //     property.value,
+      //   );
+      // });
+      // todo: second solution
+      // if (Array.isArray(item.properties) && item.properties.length > 0) {
+      //   formData.append(
+      //     `additionalProperties[${i}][label]`,
+      //     String(item.properties[0]?.label),
+      //   );
+      //   formData.append(
+      //     `additionalProperties[${i}][description]`,
+      //     String(item.properties[0]?.value),
+      //   );
+      // }
+      // todo: remove
+      formData.append(`requestItems[${i}][itemColor]`, "blue");
+    });
+
+    console.table([...formData]);
 
     const headersList = {
       Accept: "*/*",
@@ -36,12 +72,11 @@ const useSubmitShopRequest = (token: string) => {
       url: "https://rac-backend.onrender.com/api/sfmRequests/create",
       method: "POST",
       headers: headersList,
-      data: new FormData().append("data", JSON.stringify(data)),
+      data: formData,
     };
 
     const response = await axios.request(reqOptions);
-    console.log(response);
-    return response;
+    return response.data as Root;
   };
 
   return useMutation({
@@ -49,22 +84,48 @@ const useSubmitShopRequest = (token: string) => {
   });
 };
 
-export interface Main {
+export interface Root {
+  success: boolean;
+  data: Data;
+}
+
+export interface Data {
+  user: string;
   origin: string;
-  requestPackages: RequestItem[];
+  requestItems: RequestItem[];
+  shippingAndBillingInfo: ShippingAndBillingInfo;
+  requestStatus: string;
+  processingFeeStatus: string;
+  orderStatus: string;
+  ShippingStatus: string;
+  shopForMeStatus: string;
+  shopForMeFeeStatus: string;
+  requestId: string;
+  orderId: string;
+  trackingId: string;
+  _id: string;
+  shipmentUpdates: [];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 export interface RequestItem {
   store: string;
+  urgentPurchase: boolean;
   itemUrl: string;
   itemName: string;
-  urgent: boolean;
   itemImage: string;
-  itemPrice: number;
-  cost: number;
+  originalCost: number;
   qty: number;
   shippingCost: number;
-  description: string;
+  additionalDescription: string;
+  itemColor: string;
+  _id: string;
+}
+
+export interface ShippingAndBillingInfo {
+  billingInformation: [];
 }
 
 export default useSubmitShopRequest;

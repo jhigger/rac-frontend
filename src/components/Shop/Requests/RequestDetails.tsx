@@ -263,7 +263,7 @@ const ShopRequestItemDetails = ({
       />
       <DetailSection
         label="Product/Item Picture"
-        value={item.image}
+        value={item.image as string}
         image
         tooltip={status === "Responded" ? "" : null}
       />

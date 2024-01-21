@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
+import { type ShopInputs } from "~/components/Shop/Requests/RequestOrder";
 import {
   type ORDER_STATUS,
   type ORIGINS,
@@ -43,7 +44,7 @@ export type ShopItemType = {
   height: number;
   length: number;
   width: number;
-  image: string;
+  image: string | FileList;
   description: string;
   properties?: {
     label: string;
@@ -74,7 +75,7 @@ export type PackageCostsType = {
   discount: number;
 };
 
-export type ShopDraftPackageType = ShopRequestPackageType;
+export type ShopDraftPackageType = ShopInputs;
 
 export type ShopOrderPackageType = {
   orderId: string;
@@ -108,7 +109,7 @@ export type ShopRequestPackageType = {
 };
 
 type ShopLocalDraftType = {
-  requestPackage: ShopDraftPackageType | null | undefined;
+  requestPackage: ShopInputs["requestPackage"] | null | undefined;
 } | null;
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
@@ -121,9 +122,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
 
   const [localDraft, setLocalDraft] = useLocalStorage<ShopLocalDraftType>(
     "Shop",
-    {
-      requestPackage: draftPackage,
-    },
+    draftPackage,
   );
 
   const { data: orderPackages, refetch: refetchOrderPackages } =
@@ -132,7 +131,7 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const { data: requestPackages, refetch: refetchRequestPackages } =
     useFetchShopRequests(token);
 
-  const handleDraft = (draftPackage: ShopDraftPackageType | null) => {
+  const handleDraft = (draftPackage: ShopInputs | null) => {
     setDraftPackage(draftPackage);
   };
 

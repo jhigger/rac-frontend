@@ -219,3 +219,11 @@ export const PAYMENT_METHODS: PaymentMethodType[] = [
   //   title: "Pay Via PayPal",
   // },
 ] as const;
+
+export const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5mb;
+export const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];

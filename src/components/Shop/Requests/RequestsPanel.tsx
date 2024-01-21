@@ -121,7 +121,9 @@ const RequestsTable = () => {
         id: "images",
         header: "Package(s) Image",
         cell: ({ row }) => (
-          <ImageColumn images={row.original.items.map((item) => item.image)} />
+          <ImageColumn
+            images={row.original.items.map((item) => item.image as string)}
+          />
         ),
       }),
       columnHelper.accessor("requestId", {

@@ -1257,7 +1257,6 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "China Warehouse (Guangzhou city)",
     deliveryStatus: "All delivered",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1292,7 +1291,6 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "Dubai Warehouse",
     deliveryStatus: "None delivered",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1327,7 +1325,6 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "Nigeria Warehouse (Lagos)",
     deliveryStatus: "Some delivered",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1377,7 +1374,6 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "UK Warehouse (London)",
     deliveryStatus: "All delivered",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1412,7 +1408,6 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
     deliveryStatus: "None delivered",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",
@@ -1447,7 +1442,6 @@ export const importRequests: ImportRequestPackageType[] = [
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
     deliveryStatus: "Some delivered",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         name: "Designer Bags",

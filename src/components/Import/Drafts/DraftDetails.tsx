@@ -38,8 +38,8 @@ const DraftDetails = () => {
 
   const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
     if (isSecondToLastStep) {
-      console.log(data.requestPackage);
-      handleDraft(data.requestPackage);
+      console.log(data);
+      handleDraft(data);
     }
     next();
   };
@@ -52,7 +52,7 @@ const DraftDetails = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
-    handleDraft(formMethods.getValues().requestPackage);
+    handleDraft(formMethods.getValues());
     handleLocalDraft(formMethods.getValues());
   };
 

@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { type AutoImportInputs } from "~/components/AutoImport/Requests/RequestOrder";
 import {
   type CONDITIONS,
   type ORDER_STATUS,
@@ -76,7 +77,7 @@ export type BillingDetailsType = {
   zipPostalCode: string;
 };
 
-export type AutoImportDraftPackageType = AutoImportRequestPackageType;
+export type AutoImportDraftPackageType = AutoImportInputs;
 
 export type AutoImportOrderPackageType = {
   orderId: string;
@@ -108,9 +109,7 @@ export type AutoImportRequestPackageType = {
   packageCosts: PackageCostsType;
 };
 
-type AutoImportLocalDraftType = {
-  requestPackage: AutoImportDraftPackageType | null | undefined;
-} | null;
+type AutoImportLocalDraftType = AutoImportDraftPackageType | null;
 
 export type PropertyType = { label: string; value: string | undefined };
 
@@ -120,9 +119,7 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
 
   const [localDraft, setLocalDraft] = useLocalStorage<AutoImportLocalDraftType>(
     "AutoImport",
-    {
-      requestPackage: draftPackage,
-    },
+    draftPackage,
   );
 
   const [orderPackages, setOrderPackages] = useState<

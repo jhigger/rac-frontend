@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Calculator, Whatsapp } from "iconsax-react";
 import { useEffect, useState, type ChangeEvent } from "react";
 import {
@@ -7,6 +8,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { z } from "zod";
 import { formatCurrency, parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
@@ -46,7 +48,6 @@ import {
 } from "~/components/Shop/Requests/RequestDetails";
 import {
   AddButton,
-  AddPropertiesSection,
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,
@@ -54,8 +55,10 @@ import {
   type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
 import {
+  ACCEPTED_IMAGE_TYPES,
   BILLING_ADDRESS_OPTIONS,
   CAR_CONDITIONS,
+  MAX_FILE_SIZE,
   ORIGINS,
   WAREHOUSE_LOCATIONS,
 } from "~/constants";
@@ -63,7 +66,6 @@ import { useAuthContext } from "~/contexts/AuthContext";
 import {
   useAutoImportContext,
   type AutoImportItemType,
-  type AutoImportRequestPackageType,
   type BillingDetailsType,
   type PickupDetailsType,
 } from "~/contexts/AutoImportContext";
@@ -72,70 +74,215 @@ import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
-import { type AutoImportOrderItemProps } from "../Orders/InitiateShipping";
 
-export const emptyValue: AutoImportRequestPackageType = {
-  requestId: "",
-  requestStatus: "Not Responded",
-  requestLocalDate: new Date().toLocaleString(),
-  originWarehouse: "US Warehouse (Richmond Texas)",
-  items: [
-    {
-      brand: "",
-      model: "",
-      productionYear: "",
-      value: 0,
-      condition: "Drivable",
-      color: "",
-      mileage: 0,
-      vin: "",
-      url: "",
-      image: "",
-      carTitleCopy: "",
-      description: "",
-    },
-  ],
-  destinationDetails: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    countryCode: "",
-    phoneNumber: "",
-    address: "",
-    country: "",
-    state: "",
-    city: "",
-    zipPostalCode: "",
-  },
-  billingDetails: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    countryCode: "",
-    phoneNumber: "",
-    address: "",
-    country: "",
-    state: "",
-    city: "",
-    zipPostalCode: "",
-  },
-  shippingMethod: "custom",
-  shippingPaymentStatus: "Unpaid",
-  clearingPaymentStatus: "Unpaid",
-  packageCosts: {
-    shippingCost: 0,
-    clearingPortHandlingCost: 0,
-    otherCharges: 0,
-    storageCharge: 0,
-    insurance: 0,
-    valueAddedTax: 0,
-    paymentMethodSurcharge: 0,
-    discount: 0,
-  },
-};
+const schema = z
+  .object({
+    requestPackage: z
+      .object({
+        originWarehouse: z.string().min(1, "Required").default(""),
+        items: z
+          .array(
+            z.object({
+              brand: z.string().min(1, { message: "Required" }).default(""),
+              model: z.string().min(1, { message: "Required" }).default(""),
+              productionYear: z
+                .string()
+                .min(1, { message: "Required" })
+                .default(""),
+              value: z.number().default(1),
+              condition: z.string().min(1, "Required").default(""),
+              color: z.string().min(1, { message: "Required" }).default(""),
+              mileage: z.number().default(1),
+              vin: z.string().min(1, { message: "Required" }).default(""),
+              url: z.string().min(1, { message: "Required" }).default(""),
+              image: z
+                .custom<FileList>()
+                .nullable()
+                .default(null)
+                .refine(
+                  (files) => files instanceof FileList && files.length > 0,
+                  "Image is required.",
+                )
+                .refine(
+                  (files) =>
+                    files instanceof FileList &&
+                    files[0] !== undefined &&
+                    files[0].size <= MAX_FILE_SIZE,
+                  `Max file size is ${new Intl.NumberFormat("en", {
+                    style: "unit",
+                    unit: "megabyte",
+                  }).format(MAX_FILE_SIZE / 1024 / 1024)}.`,
+                )
+                .refine(
+                  (files) =>
+                    files instanceof FileList &&
+                    files[0] !== undefined &&
+                    ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+                  "only .jpg, .jpeg, .png and .webp files are accepted.",
+                ),
+              carTitleCopy: z
+                .custom<FileList>()
+                .nullable()
+                .default(null)
+                .refine(
+                  (files) => files instanceof FileList && files.length > 0,
+                  "Car title copy is required.",
+                )
+                .refine(
+                  (files) =>
+                    files instanceof FileList &&
+                    files[0] !== undefined &&
+                    files[0].size <= MAX_FILE_SIZE,
+                  `Max file size is ${new Intl.NumberFormat("en", {
+                    style: "unit",
+                    unit: "megabyte",
+                  }).format(MAX_FILE_SIZE / 1024 / 1024)}.`,
+                )
+                .refine(
+                  (files) =>
+                    files instanceof FileList &&
+                    files[0] !== undefined &&
+                    ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+                  "only .jpg, .jpeg, .png and .webp files are accepted.",
+                ),
+              description: z
+                .string()
+                .min(1, { message: "Required" })
+                .default(""),
+              draftCarImage: z
+                .object({
+                  name: z.string().default("No file chosen"),
+                  base64: z
+                    .string()
+                    .default(
+                      "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+                    ),
+                })
+                .optional(),
+              draftCarTitleImage: z
+                .object({
+                  name: z.string().default("No file chosen"),
+                  base64: z
+                    .string()
+                    .default(
+                      "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+                    ),
+                })
+                .optional(),
+              // properties: z.array(
+              //   z.object({
+              //     label: z.string().min(1, "Required"),
+              //     value: z.string().min(1, "Required"),
+              //   }),
+              // ),
+              pickupDetails: z
+                .object({
+                  firstName: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  lastName: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  email: z.string().min(1, { message: "Required" }).default(""),
+                  countryCode: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  phoneNumber: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  address: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  country: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  state: z.string().min(1, { message: "Required" }).default(""),
+                  city: z.string().min(1, { message: "Required" }).default(""),
+                  zipPostalCode: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  pickUpDate: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  locationType: z
+                    .string()
+                    .min(1, { message: "Required" })
+                    .default(""),
+                  pickupCost: z.number().default(1),
+                })
+                .optional(),
+            }),
+          )
+          .default([]),
+        destinationDetails: z
+          .object({
+            firstName: z.string().min(1, { message: "Required" }).default(""),
+            lastName: z.string().min(1, { message: "Required" }).default(""),
+            email: z.string().min(1, { message: "Required" }).default(""),
+            countryCode: z.string().min(1, { message: "Required" }).default(""),
+            phoneNumber: z.string().min(1, { message: "Required" }).default(""),
+            address: z.string().min(1, { message: "Required" }).default(""),
+            country: z.string().min(1, { message: "Required" }).default(""),
+            state: z.string().min(1, { message: "Required" }).default(""),
+            city: z.string().min(1, { message: "Required" }).default(""),
+            zipPostalCode: z
+              .string()
+              .min(1, { message: "Required" })
+              .default(""),
+          })
+          .optional(),
+        billingDetails: z
+          .object({
+            firstName: z.string().min(1, { message: "Required" }).default(""),
+            lastName: z.string().min(1, { message: "Required" }).default(""),
+            email: z.string().min(1, { message: "Required" }).default(""),
+            countryCode: z.string().min(1, { message: "Required" }).default(""),
+            phoneNumber: z.string().min(1, { message: "Required" }).default(""),
+            address: z.string().min(1, { message: "Required" }).default(""),
+            country: z.string().min(1, { message: "Required" }).default(""),
+            state: z.string().min(1, { message: "Required" }).default(""),
+            city: z.string().min(1, { message: "Required" }).default(""),
+            zipPostalCode: z
+              .string()
+              .min(1, { message: "Required" })
+              .default(""),
+          })
+          .optional(),
+      })
+      .default({}),
+  })
+  .default({});
 
-export type AutoImportInputs = {
-  requestPackage: AutoImportRequestPackageType;
+export type AutoImportInputs = z.infer<typeof schema>;
+
+export const emptyValue: AutoImportInputs = {
+  requestPackage: {
+    originWarehouse: "",
+    items: [
+      {
+        brand: "",
+        model: "",
+        productionYear: "",
+        value: 0,
+        condition: "",
+        color: "",
+        mileage: 0,
+        vin: "",
+        url: "",
+        image: null,
+        carTitleCopy: null,
+        description: "",
+      },
+    ],
+  },
 };
 
 const RequestOrder = () => {
@@ -165,16 +312,16 @@ const RequestOrder = () => {
   const currentTitle = steps[currentStepIndex]?.title ?? "";
 
   const formMethods = useForm<AutoImportInputs>({
-    defaultValues: {
-      requestPackage: emptyValue,
-    },
+    mode: "onChange",
+    resolver: zodResolver(schema),
+    defaultValues: emptyValue,
   });
 
   const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
     if (isSecondToLastStep) {
       console.log(data.requestPackage);
     } else if (currentStepIndex === 1) {
-      handleDraft(data.requestPackage);
+      handleDraft(data);
     }
     next();
   };
@@ -260,7 +407,7 @@ export const Step1 = ({ isDraft = false }: Step1Props) => {
   });
 
   const handleAddMore = () => {
-    append(emptyValue.items);
+    append(emptyValue.requestPackage.items);
   };
 
   const handleRemove = (index: number) => {
@@ -552,7 +699,7 @@ const ItemDetailsSection = ({
                   />
                 </div>
 
-                <div className="col-span-full flex flex-col gap-[30px]">
+                {/* <div className="col-span-full flex flex-col gap-[30px]">
                   <SectionHeader
                     title="Describe this car further with the following properties (optional)"
                     hr
@@ -560,7 +707,7 @@ const ItemDetailsSection = ({
                   <div className="flex flex-col flex-wrap items-center gap-[30px] px-[10px] md:flex-row md:pl-[34px]">
                     <AddPropertiesSection index={index} />
                   </div>
-                </div>
+                </div> */}
 
                 <div className="col-span-full flex flex-col gap-[30px]">
                   <SectionHeader title="Additional details" hr />
@@ -923,9 +1070,7 @@ const FillInShippingAddress = () => {
 };
 
 export const Step3 = () => {
-  const { draftPackage } = useAutoImportContext();
-
-  if (!draftPackage) return;
+  const { getValues } = useFormContext<AutoImportInputs>();
 
   return (
     <div className="flex flex-col gap-[10px]">
@@ -934,22 +1079,29 @@ export const Step3 = () => {
         <HighlightedInfo text="From the details you provided, your car(s) will be delivered and shipped from here to our your selected 'destination' in Nigeria" />
         <DetailSection
           label="Origin warehouse"
-          value={draftPackage.originWarehouse}
+          value={getValues("requestPackage").originWarehouse}
         />
         <OriginWarehouseAddress
-          officeLocation={WAREHOUSE_LOCATIONS[draftPackage.originWarehouse]}
+          officeLocation={
+            WAREHOUSE_LOCATIONS[
+              getValues("requestPackage")
+                .originWarehouse as (typeof ORIGINS)[number]
+            ]
+          }
         />
       </PackageOrigin>
       <hr className="block w-full border-dashed border-primary-900" />
-      {draftPackage.items.map((item, i) => {
+      {getValues("requestPackage").items.map((item, i) => {
         return <AutoImportOrderItem key={i} item={item} index={i} />;
       })}
       <SectionHeader title="Confirm your Shipping Details" />
       <DestinationAddressDetails
-        destinationDetails={draftPackage.destinationDetails}
+        destinationDetails={getValues("requestPackage").destinationDetails!}
       />
       <SectionHeader title="Confirm your Billing Details" />
-      <BillingAddress billingDetails={draftPackage.billingDetails} />
+      <BillingAddress
+        billingDetails={getValues("requestPackage").billingDetails!}
+      />
     </div>
   );
 };
@@ -1136,10 +1288,12 @@ export const PickupDetails = ({
   );
 };
 
-export const AutoImportOrderItem = ({
-  index,
-  item,
-}: AutoImportOrderItemProps) => {
+export type AutoImportOrderItemProps = {
+  index: number;
+  item: AutoImportInputs["requestPackage"]["items"][number];
+};
+
+const AutoImportOrderItem = ({ index, item }: AutoImportOrderItemProps) => {
   const { open, toggle } = useAccordion(true);
 
   return (
@@ -1163,7 +1317,11 @@ export const AutoImportOrderItem = ({
   );
 };
 
-type AutoImportOrderItemDetailsProps = { item: AutoImportItemType };
+type AutoImportOrderItemDetailsProps = {
+  item:
+    | AutoImportInputs["requestPackage"]["items"][number]
+    | AutoImportItemType;
+};
 
 export const AutoImportOrderItemDetails = ({
   item,
@@ -1201,19 +1359,27 @@ export const AutoImportOrderItemDetails = ({
       />
       <DetailSection
         label="Car Picture"
-        value={item.image}
+        value={
+          typeof item.image === "string"
+            ? item.image
+            : item.draftCarImage!.base64
+        }
         image
         colSpanDesktop={5}
       />
       <DetailSection
         label="Copy of the Car Title"
-        value={item.carTitleCopy}
+        value={
+          typeof item.image === "string"
+            ? item.image
+            : item.draftCarTitleImage!.base64
+        }
         image
         colSpanDesktop={5}
       />
       <DetailSection label="Car Description" value={item.description} />
 
-      {item.properties?.map((property, i) => {
+      {/* {item.properties?.map((property, i) => {
         return (
           <DetailSection
             key={`property-${i}`}
@@ -1222,7 +1388,7 @@ export const AutoImportOrderItemDetails = ({
             colSpanDesktop={3}
           />
         );
-      })}
+      })} */}
     </div>
   );
 };

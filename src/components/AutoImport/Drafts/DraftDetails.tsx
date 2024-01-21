@@ -62,7 +62,7 @@ const DraftDetails = () => {
     if (isSecondToLastStep) {
       console.log(data.requestPackage);
     } else if (currentStepIndex === 1) {
-      handleDraft(data.requestPackage);
+      handleDraft(data);
     }
     next();
   };
@@ -79,7 +79,7 @@ const DraftDetails = () => {
 
   const handleSaveAsDraft = () => {
     handleTabChange("drafts");
-    handleDraft(formMethods.getValues().requestPackage);
+    handleDraft(formMethods.getValues());
     handleLocalDraft(formMethods.getValues());
   };
 

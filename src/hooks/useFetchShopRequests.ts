@@ -5,7 +5,6 @@ import {
   type ShopRequestPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
-import { shopRequests } from "~/fake data";
 
 const useFetchShopRequests = (
   token: string,
@@ -26,7 +25,7 @@ const useFetchShopRequests = (
     };
 
     const response = await axios.request(reqOptions);
-    const { sfmRequests } = response.data as Main;
+    const { sfmRequests } = response.data as Root;
     const shopRequests: ShopRequestPackageType[] = sfmRequests.map(
       (request) => {
         const requestPackage: ShopRequestPackageType = {
@@ -36,27 +35,28 @@ const useFetchShopRequests = (
           requestLocalDate: new Date(request.createdAt).toLocaleString(),
           originWarehouse:
             request.origin as ShopRequestPackageType["originWarehouse"],
-          destinationWarehouse: "Nigeria Warehouse (Lagos)", // todo: missing
-          items: request.requestPackages.map((item) => {
+          items: request.requestItems.map((item) => {
             const requestItem: ShopItemType = {
               store: item.store as ShopItemType["store"],
-              urgent: item.urgent,
-              url: item.itemUrl,
+              urgent: item.urgent, // todo: undefined instead of boolean
+              url: "", // todo: missing
               name: item.itemName,
-              originalCost: item.cost,
+              originalCost: item.itemPrice, // todo: undefined instead of number
               quantity: item.qty,
-              weight: 67, // todo: missing
-              height: 5, // todo: missing
-              length: 5, // todo: missing
-              width: 5, // todo: missing
-              image: item.itemImage,
-              description: item.description,
+              weight: 0, // todo: missing
+              height: 0, // todo: missing
+              length: 0, // todo: missing
+              width: 0, // todo: missing
+              image:
+                item.itemImage ??
+                "https://placehold.co/500x500/cac4d0/1d192b?text=No%20Image",
+              description: item.description, // todo: undefined instead of string
               // todo: missing
               relatedCosts: {
                 urgentPurchaseFee: 0, // todo: missing
-                processingFee: 87000, // todo: missing
-                shippingToOriginWarehouseCost: item.shippingCost,
-                shopForMeCost: 87000, // todo: missing
+                processingFee: 0, // todo: missing
+                shippingToOriginWarehouseCost: 0, // todo: missing
+                shopForMeCost: 0, // todo: missing
               },
             };
 
@@ -80,9 +80,9 @@ const useFetchShopRequests = (
     queryKey: ["shopRequests"],
     queryFn: async () => {
       console.log("fetching user request packages");
-      // const res = await handleFetch();
-      // const packages = res;
-      const packages = shopRequests;
+      const res = await handleFetch();
+      const packages = res;
+      // const packages = shopRequests;
       if (packages.length > 0) {
         console.log("user request packages: ", packages);
         return packages;
@@ -98,46 +98,106 @@ const useFetchShopRequests = (
   return query;
 };
 
-export interface Main {
+export interface Root {
   success: boolean;
   totalrequests: number;
   sfmRequests: SfmRequest[];
 }
 
 export interface SfmRequest {
+  shippingAndBillingInfo: ShippingAndBillingInfo;
+  _id: string;
+  user: string;
+  origin: string;
+  requestItems: RequestItem[];
+  shippingAddress?: [];
   requestStatus: string;
+  processingFeeStatus: string;
   orderStatus: string;
   ShippingStatus: string;
   shopForMeStatus: string;
-  _id: string;
-  user: string;
-  sfmType?: string;
-  origin: string;
-  requestPackages: RequestItem[];
-  contactAddress?: unknown[];
-  sfmRequestApproved?: boolean;
-  sfmPaymentPaid: boolean;
-  processingFeePaid: boolean;
   requestId: string;
-  orderId: string;
-  trackingId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  shipmentUpdates: [];
+  createdAt: string;
+  updatedAt: string;
   __v: number;
-  shippingAddress: unknown[];
+  requestApprovedAt?: string;
+  discount?: number;
+  paymentMethodSurcharge?: number;
+  totalItemCostFromStore?: number;
+  totalProcessingFee?: number;
+  totalShippingCost?: number;
+  totalUrgentPurchaseCost?: number;
+  vat?: number;
+  shopForMeCost?: number;
+  shopForMeCostPaidAt?: string;
+  transactionDetails?: TransactionDetails;
+  clearingPortHandling?: number;
+  insurance?: number;
+  otherCharges?: number;
+  shippingCost?: number;
+  shippingDiscount?: number;
+  shippingPaymentMethodSurcharge?: number;
+  shippingVat?: number;
+  storageCharges?: number;
+  totalShippingCostPaidAt?: string;
+  shopForMeFeeStatus: string;
+  orderId?: string;
+  trackingId?: string;
+}
+
+export interface ShippingAndBillingInfo {
+  billingInformation: BillingInformation[];
+  shipmentAddress?: ShipmentAddress;
+}
+
+export interface BillingInformation {
+  firstName: string;
+  lastName: string;
+  email: string;
+  country: string;
+  countryCode: string;
+  phoneNumber: string;
+  streetAddress: string;
+  state: string;
+  city: string;
+  zipCode: string;
+  _id: string;
+}
+
+export interface ShipmentAddress {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  streetAddress: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  _id: string;
 }
 
 export interface RequestItem {
   store: string;
-  itemUrl: string;
   itemName: string;
   urgent: boolean;
-  itemImage: string;
+  itemImage?: string;
   itemPrice: number;
-  cost: number;
   qty: number;
-  shippingCost: number;
   description: string;
+  itemColor: string;
+  _id: string;
+  additionalProperties: [];
+}
+
+export interface TransactionDetails {
+  bankType: string;
+  transactionDate: string;
+  transactionTime: string;
+  phoneNumber: string;
+  paymentReceipt: string;
+  additionalNote: string;
   _id: string;
 }
 

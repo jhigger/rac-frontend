@@ -698,7 +698,6 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -736,7 +735,6 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -770,7 +768,6 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -804,7 +801,6 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -838,7 +834,6 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Not Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",
@@ -872,7 +867,6 @@ export const shopRequests: ShopRequestPackageType[] = [
     requestStatus: "Responded",
     requestLocalDate: new Date().toLocaleString(),
     originWarehouse: "US Warehouse (Richmond Texas)",
-    destinationWarehouse: "Nigeria Warehouse (Lagos)",
     items: [
       {
         store: "Amazon",

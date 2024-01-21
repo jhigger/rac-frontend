@@ -43,7 +43,6 @@ import {
 } from "~/constants";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { useNavContext } from "~/contexts/NavigationContext";
-import { type OrderPackageType } from "~/contexts/NotificationContext";
 import { useShopContext, type DraftImageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
@@ -733,7 +732,7 @@ type AddPropertiesSectionProps = { index: number };
 export const AddPropertiesSection = ({
   index = 0,
 }: AddPropertiesSectionProps) => {
-  const { setValue } = useFormContext<OrderPackageType>();
+  // const { setValue } = useFormContext<OrderPackageType>();
   const [properties, setProperties] = useState<PropertyType[]>([]);
 
   const handleProperties = (newProperties: PropertyType[]) => {

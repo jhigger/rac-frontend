@@ -25,10 +25,19 @@ import { ImageColumn, ModalSectionContentLayout } from "../Orders/OrdersPanel";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 
 const ShopRequestsPanel = () => {
-  const { requestPackages } = useShopContext();
+  const { requestPackages, fetchingRequestPackages } = useShopContext();
   const { activeAction } = useTabContext();
+
+  if (fetchingRequestPackages) {
+    return (
+      <TabContentLayout>
+        <LoadingSpinner />
+      </TabContentLayout>
+    );
+  }
 
   if (activeAction === "request new order") {
     return (

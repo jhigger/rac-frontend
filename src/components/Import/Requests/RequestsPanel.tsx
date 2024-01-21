@@ -33,14 +33,6 @@ const ImportRequestsPanel = () => {
   const { requestPackages, fetchingRequestPackages } = useImportContext();
   const { activeAction } = useTabContext();
 
-  if (fetchingRequestPackages) {
-    return (
-      <TabContentLayout>
-        <LoadingSpinner />
-      </TabContentLayout>
-    );
-  }
-
   if (activeAction === "request new order") {
     return (
       <TabContentLayout>
@@ -53,6 +45,14 @@ const ImportRequestsPanel = () => {
     return (
       <TabContentLayout>
         <RequestDetails />
+      </TabContentLayout>
+    );
+  }
+
+  if (fetchingRequestPackages) {
+    return (
+      <TabContentLayout>
+        <LoadingSpinner />
       </TabContentLayout>
     );
   }

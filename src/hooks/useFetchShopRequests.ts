@@ -25,6 +25,7 @@ const useFetchShopRequests = (
     };
 
     const response = await axios.request(reqOptions);
+    console.log(response);
     const { sfmRequests } = response.data as Root;
     const shopRequests: ShopRequestPackageType[] = sfmRequests.map(
       (request) => {
@@ -38,7 +39,7 @@ const useFetchShopRequests = (
           items: request.requestItems.map((item) => {
             const requestItem: ShopItemType = {
               store: item.store as ShopItemType["store"],
-              urgent: item.urgent, // todo: undefined instead of boolean
+              urgent: item.urgent,
               url: "", // todo: missing
               name: item.itemName,
               originalCost: item.itemPrice, // todo: undefined instead of number

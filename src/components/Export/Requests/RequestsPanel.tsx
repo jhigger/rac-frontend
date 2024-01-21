@@ -6,6 +6,7 @@ import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import { RequestStatus } from "~/components/Import/Requests/RequestsPanel";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
 import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
@@ -18,7 +19,7 @@ import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
 
 const ExportRequestsPanel = () => {
-  const { requestPackages } = useExportContext();
+  const { requestPackages, fetchingRequestPackages } = useExportContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
@@ -33,6 +34,14 @@ const ExportRequestsPanel = () => {
     return (
       <TabContentLayout>
         <RequestDetails />
+      </TabContentLayout>
+    );
+  }
+
+  if (fetchingRequestPackages) {
+    return (
+      <TabContentLayout>
+        <LoadingSpinner />
       </TabContentLayout>
     );
   }

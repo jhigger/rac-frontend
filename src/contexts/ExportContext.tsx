@@ -5,7 +5,9 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
+import { type ExportInputs } from "~/components/Export/Requests/RequestOrder";
 import {
   type ORDER_STATUS,
   type ORIGINS,
@@ -13,7 +15,8 @@ import {
   type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { exportOrders, exportRequests } from "~/fake data";
+import { exportOrders } from "~/fake data";
+import useFetchExportRequests from "~/hooks/useFetchExportRequests";
 import { type BillingDetailsType } from "./AutoImportContext";
 import {
   type ImportItemType,
@@ -23,6 +26,7 @@ import { type PackageCostsType } from "./ShopContext";
 
 export type ExportContextType = {
   draftPackage: ExportDraftPackageType | null;
+  fetchingRequestPackages: boolean;
   localDraft: ExportLocalDraftType;
   orderPackages: ExportOrderPackageType[];
   requestPackages: ExportRequestPackageType[];
@@ -38,7 +42,9 @@ export const ExportContext = createContext<ExportContextType>(
 
 export const useExportContext = () => useContext(ExportContext);
 
-export type ExportDraftPackageType = ExportRequestPackageType;
+export type ExportItemType = ImportItemType;
+
+export type ExportDraftPackageType = ExportInputs;
 
 export type ExportOrderPackageType = {
   orderId: string;
@@ -48,7 +54,7 @@ export type ExportOrderPackageType = {
   shippingStatus: (typeof SHIPPING_STATUS)[number];
   originWarehouse: (typeof ORIGINS)[number];
   destinationDetails: BillingDetailsType;
-  items: ImportItemType[];
+  items: ExportItemType[];
   billingDetails: BillingDetailsType;
   shippingMethod: (typeof SHIPPING_METHODS)[number];
   shippingPaymentStatus: (typeof PAYMENT_STATUS)[number];
@@ -59,27 +65,29 @@ export type ExportRequestPackageType = ImportRequestPackageType;
 
 export type PropertyType = { label: string; value: string | undefined };
 
-type ExportLocalDraftType = {
-  requestPackage: ExportDraftPackageType | null | undefined;
-} | null;
+type ExportLocalDraftType = ExportDraftPackageType | null;
 
 const ExportContextProvider = ({ children }: { children: ReactNode }) => {
+  const [cookies] = useCookies(["jwt"]);
+  const token = cookies.jwt as string;
+
   const [draftPackage, setDraftPackage] =
     useState<ExportDraftPackageType | null>(null);
 
   const [localDraft, setLocalDraft] = useLocalStorage<ExportLocalDraftType>(
     "Export",
-    {
-      requestPackage: draftPackage,
-    },
+    draftPackage,
   );
 
   const [orderPackages, setOrderPackages] = useState<ExportOrderPackageType[]>(
     [],
   );
-  const [requestPackages, setRequestPackages] = useState<
-    ExportRequestPackageType[]
-  >([]);
+
+  const {
+    data: requestPackages,
+    refetch: refetchRequestPackages,
+    isFetching: fetchingRequestPackages,
+  } = useFetchExportRequests(token);
 
   const handleDraft = (draftPackage: ExportDraftPackageType | null) => {
     setDraftPackage(draftPackage);
@@ -94,17 +102,17 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestPackages(exportRequests);
+    void refetchRequestPackages();
   };
 
   // testing purposes
   useEffect(() => {
-    handleRequests();
     handleOrders();
   }, []);
 
   const value: ExportContextType = {
     draftPackage,
+    fetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,

@@ -1,14 +1,14 @@
 import { useQuery, type DefinedUseQueryResult } from "@tanstack/react-query";
 import axios, { type AxiosError } from "axios";
 import {
-  type ImportItemType,
-  type ImportRequestPackageType,
-} from "~/contexts/ImportContext";
+  type ExportItemType,
+  type ExportRequestPackageType,
+} from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
 
-const useFetchImportRequests = (
+const useFetchExportRequests = (
   token: string,
-): DefinedUseQueryResult<ImportRequestPackageType[], AxiosError> => {
+): DefinedUseQueryResult<ExportRequestPackageType[], AxiosError> => {
   const { activeTab } = useTabContext();
 
   const handleFetch = async () => {
@@ -19,33 +19,33 @@ const useFetchImportRequests = (
     };
 
     const reqOptions = {
-      url: "https://rac-backend.onrender.com/api/import/mine",
+      url: "https://rac-backend.onrender.com/api/export/mine",
       method: "GET",
       headers: headersList,
     };
 
     const response = await axios.request(reqOptions);
     console.log(response);
-    const { importRequests: importRequestsResponse } = response.data as Root;
-    const importRequests: ImportRequestPackageType[] =
-      importRequestsResponse.map((request) => {
-        const requestPackage: ImportRequestPackageType = {
+    const { exportRequests: exportRequestsResponse } = response.data as Root;
+    const exportRequests: ExportRequestPackageType[] =
+      exportRequestsResponse.map((request) => {
+        const requestPackage: ExportRequestPackageType = {
           requestId: request.requestId,
           requestStatus:
-            request.requestStatus as ImportRequestPackageType["requestStatus"],
+            request.requestStatus as ExportRequestPackageType["requestStatus"],
           requestLocalDate: new Date(request.createdAt).toLocaleString(),
           originWarehouse:
-            request.origin as ImportRequestPackageType["originWarehouse"],
+            request.origin as ExportRequestPackageType["originWarehouse"],
           deliveryStatus:
-            request.packageDeliveryStatus as ImportRequestPackageType["deliveryStatus"],
+            "None delivered" as ExportRequestPackageType["deliveryStatus"], // todo: missing
           items: request.requestItems.map((item) => {
-            const requestItem: ImportItemType = {
+            const requestItem: ExportItemType = {
               name: item.itemName,
-              idType: item.idType as ImportItemType["idType"],
+              idType: item.idType as ExportItemType["idType"],
               idNumber: item.idNumber,
               deliveryStatus:
-                item.itemDeliveryStatus as ImportItemType["deliveryStatus"],
-              deliveredBy: item.deliveredBy as ImportItemType["deliveredBy"],
+                item.itemDeliveryStatus as ExportItemType["deliveryStatus"],
+              deliveredBy: item.deliveredBy as ExportItemType["deliveredBy"],
               originalCost: item.itemOriginalCost,
               quantity: 0, // todo: missing
               weight: 0, // todo: missing
@@ -76,11 +76,11 @@ const useFetchImportRequests = (
         return requestPackage;
       });
 
-    return importRequests;
+    return exportRequests;
   };
 
-  const query = useQuery<ImportRequestPackageType[], AxiosError>({
-    queryKey: ["importRequests"],
+  const query = useQuery<ExportRequestPackageType[], AxiosError>({
+    queryKey: ["exportRequests"],
     queryFn: async () => {
       console.log("fetching user request packages");
       const res = await handleFetch();
@@ -103,22 +103,20 @@ const useFetchImportRequests = (
 export interface Root {
   success: boolean;
   totalrequests: number;
-  importRequests: ImportRequest[];
+  exportRequests: ExportRequest[];
 }
 
-export interface ImportRequest {
+export interface ExportRequest {
   shippingAndBillingInfo: ShippingAndBillingInfo;
   _id: string;
   user: string;
   origin: string;
-  packageDeliveryStatus: string;
   requestItems: RequestItem[];
   requestStatus: string;
   processingFeeStatus: string;
   orderStatus: string;
-  shippingStatus: string;
+  ShippingStatus: string;
   shopForMeStatus: string;
-  totalShippingCostFeeStatus: string;
   requestId: string;
   orderId: string;
   trackingId: string;
@@ -126,32 +124,10 @@ export interface ImportRequest {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  destination?: string;
-  transactionDetails?: TransactionDetails;
-  requestApprovedAt?: string;
 }
 
 export interface ShippingAndBillingInfo {
-  billingInformation: BillingInformation[];
-  shipmentAddress?: ShipmentAddress;
-}
-
-export interface BillingInformation {
-  firstName: string;
-  lastName: string;
-  email: string;
-  country: string;
-  countryCode: string;
-  phoneNumber: string;
-  streetAddress: string;
-  state: string;
-  city: string;
-  zipCode: string;
-  _id: string;
-}
-
-export interface ShipmentAddress {
-  _id: string;
+  billingInformation: [];
 }
 
 export interface RequestItem {
@@ -161,19 +137,9 @@ export interface RequestItem {
   itemDeliveryStatus: string;
   deliveredBy: string;
   itemOriginalCost: number;
-  itemImage?: string;
+  itemImage: string;
   itemDescription: string;
   _id: string;
 }
 
-export interface TransactionDetails {
-  bankType: string;
-  transactionDate: string;
-  transactionTime: string;
-  phoneNumber: string;
-  paymentReceipt: string;
-  additionalNote: string;
-  _id: string;
-}
-
-export default useFetchImportRequests;
+export default useFetchExportRequests;

@@ -31,14 +31,6 @@ const ShopRequestsPanel = () => {
   const { requestPackages, fetchingRequestPackages } = useShopContext();
   const { activeAction } = useTabContext();
 
-  if (fetchingRequestPackages) {
-    return (
-      <TabContentLayout>
-        <LoadingSpinner />
-      </TabContentLayout>
-    );
-  }
-
   if (activeAction === "request new order") {
     return (
       <TabContentLayout>
@@ -59,6 +51,14 @@ const ShopRequestsPanel = () => {
     return (
       <TabContentLayout>
         <RequestCheckout />
+      </TabContentLayout>
+    );
+  }
+
+  if (fetchingRequestPackages) {
+    return (
+      <TabContentLayout>
+        <LoadingSpinner />
       </TabContentLayout>
     );
   }

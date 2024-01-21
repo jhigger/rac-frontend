@@ -1,33 +1,30 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { type ShopInputs } from "~/components/Shop/Requests/RequestOrder";
+import { type ImportInputs } from "~/components/Import/Requests/RequestOrder";
 
-const useSubmitShopRequest = (token: string) => {
-  const handleSubmit = async (requestPackage: ShopInputs["requestPackage"]) => {
+const useSubmitImportRequest = (token: string) => {
+  const handleSubmit = async (
+    requestPackage: ImportInputs["requestPackage"],
+  ) => {
     const formData = new FormData();
     formData.append("origin", requestPackage.originWarehouse);
+    formData.append("packageDeliveryStatus", requestPackage.deliveryStatus);
     requestPackage.items.forEach((item, i) => {
-      formData.append(`requestItems[${i}][store]`, item.store);
-      formData.append(
-        `requestItems[${i}][urgentPurchase]`,
-        String(Boolean(item.urgent)),
-      );
-      formData.append(`requestItems[${i}][itemUrl]`, item.url);
       formData.append(`requestItems[${i}][itemName]`, item.name);
-      formData.append(`requestItems[itemImage]`, item.image?.[0] as Blob);
+      formData.append(`requestItems[${i}][idType]`, item.idType);
+      formData.append(`requestItems[${i}][idNumber]`, item.idNumber);
       formData.append(
-        `requestItems[${i}][originalCost]`,
+        `requestItems[${i}][itemDeliveryStatus]`,
+        item.deliveryStatus,
+      );
+      formData.append(`requestItems[${i}][deliveredBy]`, item.deliveredBy);
+      formData.append(
+        `requestItems[${i}][itemOriginalCost]`,
         String(item.originalCost),
       );
       formData.append(`requestItems[${i}][qty]`, String(item.quantity));
-      formData.append(
-        `requestItems[${i}][shippingCost]`,
-        String(item.relatedCosts.shippingToOriginWarehouseCost),
-      );
-      formData.append(
-        `requestItems[${i}][additionalDescription]`,
-        item.description,
-      );
+      formData.append(`requestItems[itemImage]`, item.image?.[0] as Blob);
+      formData.append(`requestItems[${i}][itemDescription]`, item.description);
 
       // todo: first solution
       // item.properties?.forEach((property, j) => {
@@ -65,7 +62,7 @@ const useSubmitShopRequest = (token: string) => {
     };
 
     const reqOptions = {
-      url: "https://rac-backend.onrender.com/api/sfmRequests/create",
+      url: "https://rac-backend.onrender.com/api/import/create",
       method: "POST",
       headers: headersList,
       data: formData,
@@ -88,14 +85,15 @@ export interface Root {
 export interface Data {
   user: string;
   origin: string;
+  packageDeliveryStatus: string;
   requestItems: RequestItem[];
   shippingAndBillingInfo: ShippingAndBillingInfo;
   requestStatus: string;
   processingFeeStatus: string;
   orderStatus: string;
-  ShippingStatus: string;
+  shippingStatus: string;
   shopForMeStatus: string;
-  shopForMeFeeStatus: string;
+  totalShippingCostFeeStatus: string;
   requestId: string;
   orderId: string;
   trackingId: string;
@@ -107,16 +105,13 @@ export interface Data {
 }
 
 export interface RequestItem {
-  store: string;
-  urgentPurchase: boolean;
-  itemUrl: string;
   itemName: string;
-  itemImage: string;
-  originalCost: number;
-  qty: number;
-  shippingCost: number;
-  additionalDescription: string;
-  itemColor: string;
+  idType: string;
+  idNumber: string;
+  itemDeliveryStatus: string;
+  deliveredBy: string;
+  itemOriginalCost: number;
+  itemDescription: string;
   _id: string;
 }
 
@@ -124,4 +119,4 @@ export interface ShippingAndBillingInfo {
   billingInformation: [];
 }
 
-export default useSubmitShopRequest;
+export default useSubmitImportRequest;

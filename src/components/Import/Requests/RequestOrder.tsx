@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
 import {
   FormProvider,
@@ -6,6 +7,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { z } from "zod";
 import { parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
@@ -28,7 +30,6 @@ import { StepDescription } from "~/components/Shop/Orders/OrdersPanel";
 import { HighlightedInfo } from "~/components/Shop/Requests/RequestDetails";
 import {
   AddButton,
-  AddPropertiesSection,
   RequestFormHeader,
   SectionContentLayout,
   SectionHeader,
@@ -36,79 +37,156 @@ import {
   type ItemDetailsSectionProps,
 } from "~/components/Shop/Requests/RequestOrder";
 import {
+  ACCEPTED_IMAGE_TYPES,
   COURIERS,
   ID_TYPE,
   ITEM_DELIVERY_STATUS,
+  MAX_FILE_SIZE,
   ORIGINS,
   PACKAGE_DELIVERY_STATUS,
   WAREHOUSE_LOCATIONS,
 } from "~/constants";
-import {
-  useImportContext,
-  type ImportRequestPackageType,
-} from "~/contexts/ImportContext";
+import { useAuthContext } from "~/contexts/AuthContext";
+import { useImportContext } from "~/contexts/ImportContext";
 import { type DraftImageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import useSubmitImportRequest from "~/hooks/useSubmitImportRequest";
 
-export const emptyValue: ImportRequestPackageType = {
-  requestId: "",
-  requestStatus: "Not Responded",
-  requestLocalDate: new Date().toLocaleString(),
-  originWarehouse: "China Warehouse (Guangzhou city)",
-  destinationWarehouse: "Nigeria Warehouse (Lagos)",
-  deliveryStatus: "All delivered",
-  items: [
-    {
-      image: "",
-      name: "",
-      idType: "Tracking ID",
-      idNumber: "",
-      deliveryStatus: "Not yet delivered",
-      deliveredBy: "Seller",
-      originalCost: 1,
-      quantity: 1,
-      weight: 0,
-      height: 0,
-      length: 0,
-      width: 0,
-      description: "",
-    },
-  ],
-  packageCosts: {
-    shippingCost: 0,
-    clearingPortHandlingCost: 0,
-    otherCharges: 0,
-    storageCharge: 0,
-    insurance: 0,
-    valueAddedTax: 0,
-    paymentMethodSurcharge: 0,
-    discount: 0,
+const schema = z
+  .object({
+    requestPackage: z
+      .object({
+        originWarehouse: z.string().min(1, "Required").default(""),
+        deliveryStatus: z.string().min(1, "Required").default(""),
+        items: z
+          .array(
+            z.object({
+              name: z.string().min(1, { message: "Required" }).default(""),
+              idType: z.string().min(1, { message: "Required" }).default(""),
+              idNumber: z.string().min(1, { message: "Required" }).default(""),
+              deliveryStatus: z.string().min(1, "Required").default(""),
+              deliveredBy: z
+                .string()
+                .min(1, { message: "Required" })
+                .default(""),
+              originalCost: z.number().default(1),
+              quantity: z.number().default(1),
+              image: z
+                .custom<FileList>()
+                .nullable()
+                .default(null)
+                .refine(
+                  (files) => files instanceof FileList && files.length > 0,
+                  "Image is required.",
+                )
+                .refine(
+                  (files) =>
+                    files instanceof FileList &&
+                    files[0] !== undefined &&
+                    files[0].size <= MAX_FILE_SIZE,
+                  `Max file size is ${new Intl.NumberFormat("en", {
+                    style: "unit",
+                    unit: "megabyte",
+                  }).format(MAX_FILE_SIZE / 1024 / 1024)}.`,
+                )
+                .refine(
+                  (files) =>
+                    files instanceof FileList &&
+                    files[0] !== undefined &&
+                    ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+                  "only .jpg, .jpeg, .png and .webp files are accepted.",
+                ),
+              description: z
+                .string()
+                .min(1, { message: "Required" })
+                .default(""),
+              draftImage: z
+                .object({
+                  name: z.string().default("No file chosen"),
+                  base64: z
+                    .string()
+                    .default(
+                      "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+                    ),
+                })
+                .optional(),
+              // properties: z.array(
+              //   z.object({
+              //     label: z.string().min(1, "Required"),
+              //     value: z.string().min(1, "Required"),
+              //   }),
+              // ),
+            }),
+          )
+          .default([]),
+      })
+      .default({}),
+  })
+  .default({});
+
+export type ImportInputs = z.infer<typeof schema>;
+
+export const emptyValue: ImportInputs = {
+  requestPackage: {
+    originWarehouse: "",
+    deliveryStatus: "",
+    items: [
+      {
+        name: "",
+        idType: "",
+        idNumber: "",
+        deliveryStatus: "",
+        deliveredBy: "",
+        originalCost: 1,
+        quantity: 1,
+        image: null,
+        description: "",
+      },
+    ],
   },
 };
 
-export type ImportInputs = {
-  requestPackage: ImportRequestPackageType;
-};
-
 const RequestOrder = () => {
-  const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
+  const { user } = useAuthContext();
+  const token = user?.jwt ?? "";
+
+  const { isPending, error, mutateAsync } = useSubmitImportRequest(token);
+
+  const { step, next, isFirstStep, isLastStep, isSecondToLastStep, goTo } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
-  const { handleRequests, handleLocalDraft, handleDraft } = useImportContext();
+  const { handleRequests, handleLocalDraft } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ImportInputs>({
-    defaultValues: {
-      requestPackage: emptyValue,
-    },
+    mode: "onChange",
+    resolver: zodResolver(schema),
+    defaultValues: emptyValue,
   });
+
+  const [requestId, setRequestId] = useState("");
 
   const onSubmit: SubmitHandler<ImportInputs> = async (data) => {
     if (isSecondToLastStep) {
-      console.log(data.requestPackage);
-      handleDraft(data.requestPackage);
+      console.log(data);
+      if (
+        (data.requestPackage
+          .deliveryStatus as (typeof PACKAGE_DELIVERY_STATUS)[number]) ===
+        "Some delivered"
+      ) {
+        handleLocalDraft(formMethods.getValues());
+      } else {
+        try {
+          const res = await mutateAsync(data.requestPackage);
+          console.log(res);
+          setRequestId(res.data.requestId);
+        } catch (err) {
+          console.log(err);
+          return;
+        }
+      }
     }
     next();
   };
@@ -116,7 +194,6 @@ const RequestOrder = () => {
   const handleFinish = () => {
     handleRequests();
     handleTabChange("requests");
-    handleDraft(null);
   };
 
   const handleBack = () => {
@@ -128,6 +205,18 @@ const RequestOrder = () => {
     handleLocalDraft(formMethods.getValues());
   };
 
+  const handleFirstStep = () => {
+    if (
+      (formMethods.getValues().requestPackage
+        .deliveryStatus as (typeof PACKAGE_DELIVERY_STATUS)[number]) ===
+      "None delivered"
+    ) {
+      goTo(2);
+    } else {
+      next();
+    }
+  };
+
   return (
     <FormProvider {...formMethods}>
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -136,44 +225,65 @@ const RequestOrder = () => {
         {!isLastStep ? (
           <HighlightedInfo text="Provide as much Information as possible needed for our staffs to identify your package if it has been delivered. The more Information you provide, the easier we identify your package." />
         ) : (
-          // todo: submit response should have requestId
           <SectionContentLayout>
-            <LabelId label="Request ID" id="R78667" center={true} />
+            <LabelId label="Request ID" id={requestId} center={true} />
           </SectionContentLayout>
         )}
 
         {step}
 
+        {error && (
+          <span className="text-error-500">Action required in some fields</span>
+        )}
+
         {isFirstStep && (
           <>
             <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
               <BackButton onClick={handleBack} />
-              <ProceedButton onClick={next} />
+              <ProceedButton
+                onClick={handleFirstStep}
+                disabled={
+                  formMethods.watch("requestPackage.originWarehouse") === "" ||
+                  formMethods.watch("requestPackage.deliveryStatus") === ""
+                }
+              />
             </div>
           </>
         )}
 
-        {!isFirstStep && !isLastStep && (
-          <>
-            <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-              <BackButton onClick={handleBack} />
-              <SaveAsDraftButton onClick={handleSaveAsDraft} />
-              <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
-            </div>
-            {/* for mobile screen */}
-            <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
-              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+        {!isFirstStep &&
+          !isLastStep &&
+          (!isPending ? (
+            <>
+              <div className="hidden gap-[10px] md:flex [&>*]:w-max">
                 <BackButton onClick={handleBack} />
-              </div>
-              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                <SaveAsDraftButton onClick={handleSaveAsDraft} />
                 <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
               </div>
-              <div className="col-span-full">
-                <SaveAsDraftButton onClick={handleSaveAsDraft} />
+              {/* for mobile screen */}
+              <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
+                <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                  <BackButton onClick={handleBack} />
+                </div>
+                <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                  <ProceedButton
+                    onClick={formMethods.handleSubmit(onSubmit)}
+                    disabled={!formMethods.formState.isValid}
+                  />
+                </div>
+                <div className="col-span-full">
+                  <SaveAsDraftButton onClick={handleSaveAsDraft} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="w-full">
+              <div className="linear-loader relative flex h-1 w-full overflow-hidden bg-gray-100">
+                <div className="bar absolute inset-0 w-full bg-primary-600"></div>
+                <div className="bar absolute inset-0 w-full bg-primary-600"></div>
               </div>
             </div>
-          </>
-        )}
+          ))}
 
         {isLastStep && (
           <div className="w-full md:w-[200px]">
@@ -212,7 +322,7 @@ export const Step2 = ({ isDraft = false }: Step2Props) => {
   });
 
   const handleAddMore = () => {
-    append(emptyValue.items);
+    append(emptyValue.requestPackage.items);
   };
 
   const handleRemove = (index: number) => {
@@ -250,7 +360,12 @@ const ItemDetailsSection = ({
   expanded = false,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
-  const { register, getValues, setValue } = useFormContext<ImportInputs>();
+  const {
+    formState: { errors },
+    register,
+    getValues,
+    setValue,
+  } = useFormContext<ImportInputs>();
   const { open, toggle } = useAccordion(expanded);
 
   const emptyImage = {
@@ -353,7 +468,7 @@ const ItemDetailsSection = ({
                     options={
                       <>
                         <option value="" disabled hidden>
-                          No
+                          Select delivery status
                         </option>
 
                         {ITEM_DELIVERY_STATUS.map((itemDeliveryStatus) => {
@@ -397,6 +512,7 @@ const ItemDetailsSection = ({
                         })}
                       </>
                     }
+                    {...register(`requestPackage.items.${index}.deliveredBy`)}
                   />
                   <TooltipButton
                     label="Let us know who delivered this item to the Package Origin you selected above"
@@ -408,7 +524,9 @@ const ItemDetailsSection = ({
                   <CurrencyInput
                     id={`itemOriginalCost-${index}`}
                     label={"Item Original Cost"}
-                    {...register(`requestPackage.items.${index}.originalCost`)}
+                    {...register(`requestPackage.items.${index}.originalCost`, {
+                      valueAsNumber: true,
+                    })}
                   />
                 </div>
 
@@ -445,6 +563,9 @@ const ItemDetailsSection = ({
                     {...register(`requestPackage.items.${index}.image`, {
                       onChange: handleImageChange,
                     })}
+                    errorMessage={
+                      errors.requestPackage?.items?.[index]?.image?.message
+                    }
                   />
                 </div>
 
@@ -456,7 +577,7 @@ const ItemDetailsSection = ({
                   />
                 </div>
 
-                <div className="col-span-full flex flex-col gap-[30px]">
+                {/* <div className="col-span-full flex flex-col gap-[30px]">
                   <SectionHeader
                     title="Describe the item you wish to purchase with further custom properties"
                     hr
@@ -464,7 +585,7 @@ const ItemDetailsSection = ({
                   <div className="flex flex-col flex-wrap items-center gap-[30px] px-[10px] md:flex-row md:pl-[34px]">
                     <AddPropertiesSection index={index} />
                   </div>
-                </div>
+                </div> */}
               </div>
             )}
 
@@ -487,9 +608,7 @@ export type DeliveryStatusMapType = Record<
 >;
 
 export const Step3 = () => {
-  const { draftPackage } = useImportContext();
-
-  if (!draftPackage) return;
+  const { getValues } = useFormContext<ImportInputs>();
 
   const deliveryStatusMap: DeliveryStatusMapType = {
     "None delivered": {
@@ -599,16 +718,31 @@ export const Step3 = () => {
 
   return (
     <div className="flex flex-col gap-[30px]">
-      {deliveryStatusMap[draftPackage.deliveryStatus].imageText}
-      {draftPackage.deliveryStatus !== "All delivered" && (
+      {
+        deliveryStatusMap[
+          getValues().requestPackage
+            .deliveryStatus as (typeof PACKAGE_DELIVERY_STATUS)[number]
+        ].imageText
+      }
+      {getValues().requestPackage.deliveryStatus !== "All delivered" && (
         <OfficeDeliverAddress
-          officeLocation={WAREHOUSE_LOCATIONS[draftPackage.originWarehouse]}
+          officeLocation={
+            WAREHOUSE_LOCATIONS[
+              getValues().requestPackage
+                .originWarehouse as (typeof ORIGINS)[number]
+            ]
+          }
         />
       )}
       <div className="flex flex-col gap-[10px]">
         <SectionHeader title="What Next?" />
         <SectionContentLayout>
-          {deliveryStatusMap[draftPackage.deliveryStatus].whatNext}
+          {
+            deliveryStatusMap[
+              getValues().requestPackage
+                .deliveryStatus as (typeof PACKAGE_DELIVERY_STATUS)[number]
+            ].whatNext
+          }
         </SectionContentLayout>
       </div>
     </div>

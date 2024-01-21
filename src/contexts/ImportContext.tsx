@@ -5,7 +5,9 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
+import { type ImportInputs } from "~/components/Import/Requests/RequestOrder";
 import {
   type COURIERS,
   type ID_TYPE,
@@ -18,12 +20,14 @@ import {
   type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { importOrders, importRequests } from "~/fake data";
+import { importOrders } from "~/fake data";
+import useFetchImportRequests from "~/hooks/useFetchImportRequests";
 import { type BillingDetailsType } from "./AutoImportContext";
 import { type DraftImageType, type PackageCostsType } from "./ShopContext";
 
 export type ImportContextType = {
   draftPackage: ImportDraftPackageType | null;
+  fetchingRequestPackages: boolean;
   localDraft: ImportLocalDraftType;
   orderPackages: ImportOrderPackageType[];
   requestPackages: ImportRequestPackageType[];
@@ -60,7 +64,7 @@ export type ImportItemType = {
   draftImage?: DraftImageType;
 };
 
-export type ImportDraftPackageType = ImportRequestPackageType;
+export type ImportDraftPackageType = ImportInputs;
 
 export type ImportOrderPackageType = {
   orderId: string;
@@ -82,7 +86,6 @@ export type ImportRequestPackageType = {
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestLocalDate: string;
   originWarehouse: (typeof ORIGINS)[number];
-  destinationWarehouse: (typeof ORIGINS)[number];
   deliveryStatus: (typeof PACKAGE_DELIVERY_STATUS)[number];
   items: ImportItemType[];
   packageCosts: PackageCostsType;
@@ -90,27 +93,29 @@ export type ImportRequestPackageType = {
 
 export type PropertyType = { label: string; value: string | undefined };
 
-type ImportLocalDraftType = {
-  requestPackage: ImportDraftPackageType | null | undefined;
-} | null;
+type ImportLocalDraftType = ImportDraftPackageType | null;
 
 const ImportContextProvider = ({ children }: { children: ReactNode }) => {
+  const [cookies] = useCookies(["jwt"]);
+  const token = cookies.jwt as string;
+
   const [draftPackage, setDraftPackages] =
     useState<ImportDraftPackageType | null>(null);
 
   const [localDraft, setLocalDraft] = useLocalStorage<ImportLocalDraftType>(
     "Import",
-    {
-      requestPackage: draftPackage,
-    },
+    draftPackage,
   );
 
   const [orderPackages, setOrderPackages] = useState<ImportOrderPackageType[]>(
     [],
   );
-  const [requestPackages, setRequestPackages] = useState<
-    ImportRequestPackageType[]
-  >([]);
+
+  const {
+    data: requestPackages,
+    refetch: refetchRequestPackages,
+    isFetching: fetchingRequestPackages,
+  } = useFetchImportRequests(token);
 
   const handleDraft = (draftPackage: ImportDraftPackageType | null) => {
     setDraftPackages(draftPackage);
@@ -125,17 +130,17 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleRequests = () => {
-    setRequestPackages(importRequests);
+    void refetchRequestPackages();
   };
 
   // testing purposes
   useEffect(() => {
-    handleRequests();
     handleOrders();
   }, []);
 
   const value: ImportContextType = {
     draftPackage,
+    fetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,

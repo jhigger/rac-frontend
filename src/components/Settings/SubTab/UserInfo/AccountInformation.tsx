@@ -70,7 +70,7 @@ const AccountInformation = () => {
 
   const token = user.jwt;
 
-  const { isPending, error, mutateAsync } = useSubmitNewPassword(token); // todo: add snackbar as error
+  const { isPending, error, mutateAsync } = useSubmitNewPassword(token); // todo: add snackbar for success and error
 
   const { step, next, isLastStep, goTo, back } = useMultiStepForm([
     <Step1 />,

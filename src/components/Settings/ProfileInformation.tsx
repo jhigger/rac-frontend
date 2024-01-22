@@ -1,15 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowCircleRight2, Call, Edit, Google, Location } from "iconsax-react";
 import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { z } from "zod";
 import { parseCountryCode, parseStateCode } from "~/Utils";
 import { useAuthContext } from "~/contexts/AuthContext";
-import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import TabContextProvider, {
   useTabContext,
   type TabType,
 } from "~/contexts/TabContext";
 import useStatesCities from "~/hooks/useStatesCities";
+import useSubmitNewProfile from "~/hooks/useSubmitNewProfile";
 import { BackButton } from "../Buttons/BackButton";
 import { CloseModalButton } from "../Buttons/CloseModalButton";
 import ModalButton from "../Buttons/ModalButton";
@@ -20,6 +22,7 @@ import SelectStateInput from "../Forms/Inputs/SelectStateInput";
 import TextInput from "../Forms/Inputs/TextInput";
 import LabelId from "../LabelId";
 import TabContentLayout from "../Layouts/TabContentLayout";
+import { LoadingSpinner } from "../LoadingScreen";
 import { DetailSection } from "../Shop/Orders/InitiateShipping";
 import {
   RequestFormHeader,
@@ -29,17 +32,27 @@ import AccountInformation from "./SubTab/UserInfo/AccountInformation";
 import Activities from "./SubTab/UserInfo/Activities";
 import AdditionalInformation from "./SubTab/UserInfo/AdditionalInformation";
 
-export type SettingsTabContentProps = {
-  handleHideTabs: () => void;
-};
+const schema = z.object({
+  firstName: z
+    .string()
+    .min(3, { message: "First name must be at least 3 characters" })
+    .trim(),
+  lastName: z
+    .string()
+    .min(3, { message: "Last name must be at least 3 characters" })
+    .trim(),
+  country: z.string().min(1, { message: "Required" }),
+  state: z.string().min(1, { message: "Required" }),
+  city: z.string().min(1, { message: "Required" }),
+  address: z.string().min(1, { message: "Required" }).trim(),
+  zipPostalCode: z.string().min(1, { message: "Required" }).trim(),
+});
 
-const emptyValue: Omit<
-  BillingDetailsType,
-  keyof Pick<BillingDetailsType, "countryCode" | "phoneNumber">
-> = {
+export type ProfileInformationInputs = z.infer<typeof schema>;
+
+const emptyValue: ProfileInformationInputs = {
   firstName: "",
   lastName: "",
-  email: "",
   address: "",
   country: "",
   state: "",
@@ -47,12 +60,18 @@ const emptyValue: Omit<
   zipPostalCode: "",
 };
 
-type ProfileInformationInputs = typeof emptyValue;
+export type SettingsTabContentProps = {
+  handleHideTabs: () => void;
+};
 
 const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
-  const { user } = useAuthContext();
+  const { user, refetch } = useAuthContext();
 
   if (!user) return null;
+
+  const token = user.jwt;
+
+  const { isPending, error, mutateAsync } = useSubmitNewProfile(token); // todo: add snackbar for success and error
 
   const tabs: [TabType, ...TabType[]] = [
     {
@@ -70,13 +89,30 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
 
   const { activeTab } = useTabContext();
 
-  const { register, watch, handleSubmit } = useForm<ProfileInformationInputs>({
+  const {
+    formState: { isValid },
+    register,
+    watch,
+    handleSubmit,
+    reset,
+  } = useForm<ProfileInformationInputs>({
+    mode: "all",
+    resolver: zodResolver(schema),
     defaultValues: emptyValue,
   });
   const { cities, states } = useStatesCities({ watch });
 
   const onSubmit: SubmitHandler<ProfileInformationInputs> = async (data) => {
     console.log(data);
+    try {
+      const res = await mutateAsync(data);
+      console.log(res);
+      await refetch();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      reset();
+    }
     // todo: add loading state to edit personal info button
   };
 
@@ -147,17 +183,24 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                 <ModalButton
                   modalId="editPersonalInfo"
                   label="Edit Personal Information"
+                  disabled={isPending}
                   buttonClassName="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
                   buttonContent={
                     <>
-                      <Edit
-                        size={18}
-                        variant="Bold"
-                        className="flex-shrink-0"
-                      />
-                      <span className="label-lg text-white">
-                        Edit personal information
-                      </span>
+                      {isPending ? (
+                        <LoadingSpinner />
+                      ) : (
+                        <>
+                          <Edit
+                            size={18}
+                            variant="Bold"
+                            className="flex-shrink-0"
+                          />
+                          <span className="label-lg text-white">
+                            Edit personal information
+                          </span>
+                        </>
+                      )}
                     </>
                   }
                   footerContent={({ dataClose }) => {
@@ -178,6 +221,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                             label="Update"
                             dataClose={dataClose}
                             onClick={handleSubmit(onSubmit)}
+                            disabled={!isValid}
                             primary
                           />
                         </div>

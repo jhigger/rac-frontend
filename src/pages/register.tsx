@@ -59,17 +59,17 @@ const schema = z.object({
       "Must contain a number or special character",
     ),
   confirmPassword: z.string(),
-  country: z.string(),
-  state: z.string(),
-  city: z.string(),
-  address: z.string().trim(),
+  country: z.string().min(1, { message: "Required" }),
+  state: z.string().min(1, { message: "Required" }),
+  city: z.string().min(1, { message: "Required" }),
+  address: z.string().min(1, { message: "Required" }).trim(),
   countryCode: z.string(),
   phoneNumber: z
     .string()
     .min(1, { message: "Phone number is required" })
     .trim()
     .refine(isMobilePhone, "Must be a valid phone number"),
-  zipPostalCode: z.string(),
+  zipPostalCode: z.string().min(1, { message: "Required" }).trim(),
 });
 
 export type RegisterInputs = z.infer<typeof schema>;

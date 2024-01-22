@@ -72,6 +72,7 @@ import {
 import { type DraftImageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
+import useImageHandler from "~/hooks/useImageHandler";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 
@@ -491,41 +492,11 @@ const ItemDetailsSection = ({
   const initialCarImage = isDraft ? draftImage : emptyImage;
   const initialCarTitleImage = isDraft ? draftImage : emptyImage;
 
-  const [carImage, setCarImage] = useState<DraftImageType>(initialCarImage);
-  const [carTitleImage, setCarTitleImage] =
-    useState<DraftImageType>(initialCarTitleImage);
+  const { image: carImage, handleImageChange: handleCarImageChange } =
+    useImageHandler(initialCarImage);
 
-  const handleCarImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!(files instanceof FileList)) return;
-    if (!(files[0] instanceof Blob)) return;
-
-    const name = files[0].name;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64Data = reader.result;
-      const base64String = base64Data?.toString() ?? emptyImage.base64;
-      setCarImage({ name, base64: base64String });
-    };
-    reader.readAsDataURL(files[0] as Blob);
-  };
-
-  const handleCarTitleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!(files instanceof FileList)) return;
-    if (!(files[0] instanceof Blob)) return;
-
-    const name = files[0].name;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64Data = reader.result;
-      const base64String = base64Data?.toString() ?? emptyImage.base64;
-      setCarTitleImage({ name, base64: base64String });
-    };
-    reader.readAsDataURL(files[0] as Blob);
-  };
+  const { image: carTitleImage, handleImageChange: handleCarTitleImageChange } =
+    useImageHandler(initialCarTitleImage);
 
   useEffect(() => {
     setValue(`requestPackage.items.${index}.draftCarImage`, carImage);

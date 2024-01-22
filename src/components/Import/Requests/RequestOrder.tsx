@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState, type ChangeEvent, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   FormProvider,
   useFieldArray,
@@ -51,10 +51,11 @@ import { useImportContext } from "~/contexts/ImportContext";
 import { type DraftImageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
+import useImageHandler from "~/hooks/useImageHandler";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useSubmitImportRequest from "~/hooks/useSubmitImportRequest";
 
-const schema = z
+export const schema = z
   .object({
     requestPackage: z
       .object({
@@ -376,27 +377,13 @@ const ItemDetailsSection = ({
     getValues(`requestPackage.items.${index}.draftImage`) ?? emptyImage;
   const initialImage = isDraft ? draftImage : emptyImage;
 
-  const [image, setImage] = useState<DraftImageType>(initialImage);
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!(files instanceof FileList)) return;
-    if (!(files[0] instanceof Blob)) return;
-
-    const name = files[0].name;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64Data = reader.result;
-      const base64String = base64Data?.toString() ?? emptyImage.base64;
-      setImage({ name, base64: base64String });
-    };
-    reader.readAsDataURL(files[0] as Blob);
-  };
+  const { image, handleImageChange } = useImageHandler(initialImage);
 
   useEffect(() => {
     setValue(`requestPackage.items.${index}.draftImage`, image);
   }, [image]);
+
+  console.log(errors);
 
   return (
     <>

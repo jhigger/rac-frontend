@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import {
   FormProvider,
@@ -17,6 +18,7 @@ import {
   Step1,
   Step2,
   emptyValue,
+  schema,
   type DeliveryStatusMapType,
   type ImportInputs,
   type InstructionsMapType,
@@ -55,6 +57,8 @@ const RequestOrder = () => {
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ExportInputs>({
+    mode: "onChange",
+    resolver: zodResolver(schema),
     defaultValues: emptyValue,
   });
 
@@ -120,7 +124,13 @@ const RequestOrder = () => {
         {isFirstStep && (
           <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
             <BackButton onClick={handleBack} />
-            <ProceedButton onClick={next} />
+            <ProceedButton
+              onClick={next}
+              disabled={
+                formMethods.watch("requestPackage.originWarehouse") === "" ||
+                formMethods.watch("requestPackage.deliveryStatus") === ""
+              }
+            />
           </div>
         )}
 

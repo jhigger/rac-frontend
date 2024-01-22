@@ -72,51 +72,47 @@ const AdditionalInformation = () => {
               <span className="body-md text-gray-700">
                 Business/Company Name:
               </span>
-              <span className="title-md text-gray-900">Malibu</span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
 
             <div className="col-span-full flex flex-col gap-[5px] md:col-span-2">
               <span className="body-md text-gray-700">Country:</span>
-              <span className="title-md text-gray-900">Turkey</span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
 
             <div className="col-span-full flex flex-col gap-[5px] md:col-span-2">
               <span className="body-md text-gray-700">State:</span>
-              <span className="title-md text-gray-900">Istanbul</span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
 
             <div className="col-span-full flex flex-col gap-[5px] md:col-span-2">
               <span className="body-md text-gray-700">City:</span>
-              <span className="title-md text-gray-900">Cyprusic</span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
 
             <div className="col-span-full flex flex-col gap-[5px] md:col-span-2">
               <span className="body-md text-gray-700">City:</span>
-              <span className="title-md text-gray-900">Cyprusic</span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
 
             <div className="col-span-full flex flex-col gap-[5px] md:col-span-4">
               <span className="body-md text-gray-700">Phone Number:</span>
-              <span className="title-md text-gray-900">+234 803 456 7845</span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
 
             <div className="col-span-full flex flex-col gap-[5px] md:col-span-4">
               <span className="body-md text-gray-700">Email:</span>
-              <span className="title-md text-gray-900">
-                Malibushdrack@gmail.com
-              </span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
 
             <div className="col-span-full flex flex-col gap-[5px] md:col-span-4">
               <span className="body-md text-gray-700">Zip/postal Code:</span>
-              <span className="title-md text-gray-900">98765</span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
 
             <div className="col-span-full flex flex-col gap-[5px]">
               <span className="body-md text-gray-700">Address:</span>
-              <span className="title-md text-gray-900">
-                No, 1osolo way, ikeja road, behind scaint merry
-              </span>
+              <span className="title-md text-gray-900">N/A</span>
             </div>
           </div>
         </div>

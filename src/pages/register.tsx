@@ -1,7 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import {
+  FormProvider,
+  useForm,
+  type FieldName,
+  type SubmitHandler,
+} from "react-hook-form";
 import Balancer from "react-wrap-balancer";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
@@ -109,6 +114,22 @@ const register = () => {
     await handleRegister(registerData);
   };
 
+  const isFieldTouched = (fieldName: FieldName<RegisterInputs>) =>
+    formMethods.formState.touchedFields[fieldName];
+  const hasFieldError = (fieldName: FieldName<RegisterInputs>) =>
+    !formMethods.formState.errors[fieldName];
+
+  const isFormValid =
+    isFieldTouched("firstName") &&
+    isFieldTouched("lastName") &&
+    isFieldTouched("email") &&
+    isFieldTouched("password") &&
+    isFieldTouched("confirmPassword") &&
+    hasFieldError("firstName") &&
+    hasFieldError("lastName") &&
+    hasFieldError("email") &&
+    hasFieldError("password");
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-brand">
       <div className="container flex flex-col items-center justify-center px-[20px] py-16 md:px-14">
@@ -136,15 +157,7 @@ const register = () => {
                   onClick={next}
                   disabled={
                     !(
-                      formMethods.formState.touchedFields.firstName &&
-                      formMethods.formState.touchedFields.lastName &&
-                      formMethods.formState.touchedFields.email &&
-                      formMethods.formState.touchedFields.password &&
-                      formMethods.formState.touchedFields.confirmPassword &&
-                      !formMethods.formState.errors.firstName &&
-                      !formMethods.formState.errors.lastName &&
-                      !formMethods.formState.errors.email &&
-                      !formMethods.formState.errors.password &&
+                      isFormValid &&
                       formMethods.watch("password") ===
                         formMethods.watch("confirmPassword")
                     )

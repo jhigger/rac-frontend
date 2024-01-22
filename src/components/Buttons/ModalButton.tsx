@@ -7,6 +7,7 @@ export type ModalButtonProps = {
   label: string;
   buttonClassName?: string;
   buttonContent?: JSX.Element;
+  disabled?: boolean;
   footerContent: ({ dataClose }: { dataClose: string }) => React.ReactNode;
   children: ReactNode;
 };
@@ -17,6 +18,7 @@ const ModalButton = (
     label,
     buttonClassName = "btn relative flex h-[40px] w-full items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400",
     buttonContent,
+    disabled = false,
     footerContent,
     children,
   }: ModalButtonProps,
@@ -34,6 +36,7 @@ const ModalButton = (
         aria-label={label}
         data-type="dialogs"
         data-target={dataTarget}
+        disabled={disabled}
         className={buttonClassName}
         ref={ref}
       >

@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, Refresh2, VolumeLow } from "iconsax-react";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -7,32 +8,69 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { z } from "zod";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import { ConfirmNewPasswordButton } from "~/components/Buttons/ConfirmNewPasswordButton";
 import ModalButton from "~/components/Buttons/ModalButton";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import PasswordInput from "~/components/Forms/Inputs/PasswordInput";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import {
   RequestFormHeader,
   SectionContentLayout,
 } from "~/components/Shop/Requests/RequestOrder";
 import { useAuthContext } from "~/contexts/AuthContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import useSubmitNewPassword from "~/hooks/useSubmitNewPassword";
 import tailmater from "~/js/tailmater";
 
-const emptyValue = {
+const schema = z
+  .object({
+    existingPassword: z.string(),
+    newPassword: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .refine(
+        (value) => /(?=.*[a-z])/.test(value),
+        "At least one lowercase letter",
+      )
+      .refine(
+        (value) => /(?=.*[A-Z])/.test(value),
+        "At least one uppercase character",
+      )
+      .refine(
+        (value) => /(?=.*\d)|(?=.*\W)/.test(value),
+        "Must contain a number or special character",
+      ),
+    confirmPassword: z.string(),
+  })
+  .superRefine(({ confirmPassword, newPassword }, ctx) => {
+    if (confirmPassword !== newPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "The passwords did not match",
+        path: ["confirmPassword"],
+      });
+    }
+  });
+
+type AccountInformationInputs = z.infer<typeof schema>;
+
+const emptyValue: AccountInformationInputs = {
   existingPassword: "",
   newPassword: "",
   confirmPassword: "",
 };
 
-type AccountInformationInputs = typeof emptyValue;
-
 const AccountInformation = () => {
   const { user } = useAuthContext();
 
   if (!user) return;
+
+  const token = user.jwt;
+
+  const { isPending, error, mutateAsync } = useSubmitNewPassword(token); // todo: add snackbar as error
 
   const { step, next, isLastStep, goTo, back } = useMultiStepForm([
     <Step1 />,
@@ -40,14 +78,25 @@ const AccountInformation = () => {
   ]);
 
   const formMethods = useForm<AccountInformationInputs>({
+    mode: "onChange",
+    resolver: zodResolver(schema),
     defaultValues: emptyValue,
   });
 
   const onSubmit: SubmitHandler<AccountInformationInputs> = async (data) => {
     if (isLastStep) {
-      console.log(data);
-      // todo: add loading state to change password button
-      goTo(0);
+      try {
+        const res = await mutateAsync({
+          oldPassword: data.existingPassword,
+          newPassword: data.newPassword,
+        });
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        goTo(0);
+        formMethods.reset();
+      }
     } else {
       next();
     }
@@ -84,17 +133,24 @@ const AccountInformation = () => {
                 <ModalButton
                   modalId="changePassword"
                   label="Change Password"
+                  disabled={isPending}
                   buttonClassName="btn relative flex h-[40px] w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-error-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
                   buttonContent={
                     <>
-                      <Refresh2
-                        size={18}
-                        variant="Bold"
-                        className="flex-shrink-0"
-                      />
-                      <span className="label-lg whitespace-nowrap text-white">
-                        Change Password
-                      </span>
+                      {isPending ? (
+                        <LoadingSpinner />
+                      ) : (
+                        <>
+                          <Refresh2
+                            size={18}
+                            variant="Bold"
+                            className="flex-shrink-0"
+                          />
+                          <span className="label-lg whitespace-nowrap text-white">
+                            Change Password
+                          </span>
+                        </>
+                      )}
                     </>
                   }
                   footerContent={({ dataClose }) => {
@@ -111,16 +167,14 @@ const AccountInformation = () => {
 
                           {!isLastStep ? (
                             <div className="w-full md:max-w-[172px]">
-                              <ProceedButton
-                                label="Proceed"
-                                onClick={formMethods.handleSubmit(onSubmit)}
-                              />
+                              <ProceedButton label="Proceed" onClick={next} />
                             </div>
                           ) : (
                             <div className="w-full md:max-w-[215px]">
                               <ConfirmNewPasswordButton
                                 dataClose={dataClose}
                                 onClick={formMethods.handleSubmit(onSubmit)}
+                                disabled={!formMethods.formState.isValid}
                               />
                             </div>
                           )}
@@ -207,7 +261,7 @@ const Step1 = () => {
 };
 
 const Step2 = () => {
-  const { register } = useFormContext<AccountInformationInputs>();
+  const { register, watch } = useFormContext<AccountInformationInputs>();
 
   useEffect(() => {
     tailmater();
@@ -225,6 +279,7 @@ const Step2 = () => {
         bg="bg-surface-300"
         newPassword
         {...register("newPassword")}
+        value={watch("newPassword")}
       />
 
       <PasswordInput
@@ -233,6 +288,8 @@ const Step2 = () => {
         bg="bg-surface-300"
         confirmPassword
         {...register("confirmPassword")}
+        value={watch("confirmPassword")}
+        compare={watch("newPassword")}
       />
     </>
   );

@@ -8,7 +8,7 @@ import DraftDetails from "./DraftDetails";
 const ExportDraftsPanel = () => {
   const { localDraft } = useExportContext();
 
-  if (localDraft?.requestPackage) {
+  if (localDraft) {
     return (
       <TabContentLayout>
         <DraftDetails />

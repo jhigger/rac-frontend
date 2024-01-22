@@ -17,7 +17,8 @@ import {
   type SHIPPING_STATUS,
 } from "~/constants";
 import { autoImportOrders, autoImportRequests } from "~/fake data";
-import { type DraftImageType, type PackageCostsType } from "./ShopContext";
+import { type DraftImageType } from "~/hooks/useImageHandler";
+import { type PackageCostsType } from "./ShopContext";
 
 export type AutoImportContextType = {
   draftPackage: AutoImportDraftPackageType | null;

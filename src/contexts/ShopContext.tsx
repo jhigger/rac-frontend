@@ -14,6 +14,7 @@ import {
 } from "~/constants";
 import useFetchShopOrders from "~/hooks/useFetchShopOrders";
 import useFetchShopRequests from "~/hooks/useFetchShopRequests";
+import { type DraftImageType } from "~/hooks/useImageHandler";
 import { type BillingDetailsType } from "./AutoImportContext";
 
 export type ShopContextType = {
@@ -60,11 +61,6 @@ export type ShopItemType = {
   draftImage?: DraftImageType;
 };
 
-export type DraftImageType = {
-  name: string;
-  base64: string;
-};
-
 export type PackageCostsType = {
   shippingCost: number;
   clearingPortHandlingCost: number;
@@ -108,9 +104,7 @@ export type ShopRequestPackageType = {
   >;
 };
 
-type ShopLocalDraftType = {
-  requestPackage: ShopInputs["requestPackage"] | null | undefined;
-} | null;
+type ShopLocalDraftType = ShopInputs | null;
 
 const ShopContextProvider = ({ children }: { children: ReactNode }) => {
   const [cookies] = useCookies(["jwt"]);

@@ -46,9 +46,10 @@ export type ExportInputs = ImportInputs;
 
 const RequestOrder = () => {
   const { user } = useAuthContext();
-  const token = user?.jwt ?? "";
 
-  const { isPending, error, mutateAsync } = useSubmitExportRequest(token);
+  if (!user) return;
+
+  const { isPending, error, mutateAsync } = useSubmitExportRequest(user.jwt); // todo: add snackbar for success and error
 
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
@@ -116,10 +117,6 @@ const RequestOrder = () => {
         )}
 
         {step}
-
-        {error && (
-          <span className="text-error-500">Action required in some fields</span>
-        )}
 
         {isFirstStep && (
           <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">

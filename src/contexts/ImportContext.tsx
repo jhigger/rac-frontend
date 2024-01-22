@@ -22,8 +22,9 @@ import {
 } from "~/constants";
 import { importOrders } from "~/fake data";
 import useFetchImportRequests from "~/hooks/useFetchImportRequests";
+import { type DraftImageType } from "~/hooks/useImageHandler";
 import { type BillingDetailsType } from "./AutoImportContext";
-import { type DraftImageType, type PackageCostsType } from "./ShopContext";
+import { type PackageCostsType } from "./ShopContext";
 
 export type ImportContextType = {
   draftPackage: ImportDraftPackageType | null;

@@ -23,10 +23,13 @@ import {
 
 const DraftDetails = () => {
   const { localDraft, handleLocalDraft, handleDraft } = useAutoImportContext();
+
+  if (!localDraft) return;
+
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
-    { title: "Package Details", content: <Step1 isDraft /> },
+    { title: "Package Details", content: <Step1 /> },
     {
       title: "Shipping & Billing Address",
       content: <Step2 />,
@@ -47,16 +50,12 @@ const DraftDetails = () => {
   const currentTitle = steps[currentStepIndex]?.title ?? "";
 
   const formMethods = useForm<AutoImportInputs>({
-    defaultValues: {
-      requestPackage: localDraft?.requestPackage ?? {},
-    },
+    defaultValues: localDraft,
   });
 
   useEffect(() => {
-    formMethods.reset({
-      requestPackage: localDraft?.requestPackage ?? {},
-    });
-  }, [localDraft?.requestPackage]);
+    formMethods.reset(localDraft);
+  }, [localDraft]);
 
   const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
     if (isSecondToLastStep) {

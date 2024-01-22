@@ -1,5 +1,9 @@
 import { useState, type ChangeEvent } from "react";
-import { type DraftImageType } from "~/contexts/ShopContext";
+
+export type DraftImageType = {
+  name: string;
+  base64: string;
+};
 
 const useImageHandler = (initialImage: DraftImageType) => {
   const [image, setImage] = useState<DraftImageType>(initialImage);

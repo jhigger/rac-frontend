@@ -18,6 +18,7 @@ import {
   useForm,
   useFormContext,
   type SubmitHandler,
+  FieldError,
 } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
 import { z } from "zod";
@@ -37,7 +38,7 @@ import {
 } from "~/constants";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { useNavContext } from "~/contexts/NavigationContext";
-import { useShopContext, type DraftImageType } from "~/contexts/ShopContext";
+import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useImageHandler from "~/hooks/useImageHandler";
@@ -57,7 +58,7 @@ import { DetailSection } from "../Orders/InitiateShipping";
 import { TotalCost } from "./RequestCheckout";
 import { type ModalCloseType } from "./RequestsPanel";
 
-const schema = z
+export const schema = z
   .object({
     requestPackage: z
       .object({
@@ -115,16 +116,6 @@ const schema = z
               relatedCosts: z.object({
                 shippingToOriginWarehouseCost: z.number().default(1),
               }),
-              draftImage: z
-                .object({
-                  name: z.string().default("No file chosen"),
-                  base64: z
-                    .string()
-                    .default(
-                      "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-                    ),
-                })
-                .optional(),
               // properties: z.array(
               //   z.object({
               //     label: z.string().min(1, "Required"),
@@ -157,10 +148,6 @@ const emptyValue: ShopInputs = {
         },
         image: null,
         description: "",
-        draftImage: {
-          name: "No file chosen",
-          base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-        },
       },
     ],
   },
@@ -168,9 +155,10 @@ const emptyValue: ShopInputs = {
 
 const RequestOrderForm = () => {
   const { user } = useAuthContext();
-  const token = user?.jwt ?? "";
 
-  const { isPending, error, mutateAsync } = useSubmitShopRequest(token);
+  if (!user) return;
+
+  const { isPending, error, mutateAsync } = useSubmitShopRequest(user.jwt); // todo: add snackbar for success and error
 
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
@@ -229,10 +217,6 @@ const RequestOrderForm = () => {
 
         {step}
 
-        {error && (
-          <span className="text-error-500">Action required in some fields</span>
-        )}
-
         {isFirstStep &&
           (!isPending ? (
             <>
@@ -278,11 +262,7 @@ const RequestOrderForm = () => {
   );
 };
 
-type RequestOrderStep1Props = { isDraft?: boolean };
-
-export const RequestOrderStep1 = ({
-  isDraft = false,
-}: RequestOrderStep1Props) => {
+export const RequestOrderStep1 = () => {
   const { control } = useFormContext<ShopInputs>();
   const { fields, append, remove } = useFieldArray<ShopInputs>({
     control,
@@ -309,7 +289,6 @@ export const RequestOrderStep1 = ({
               key={field.id}
               index={i}
               handleRemoveItem={() => handleRemove(i)}
-              isDraft={isDraft}
               expanded
             />
           );
@@ -504,7 +483,6 @@ export const TooltipButton = ({ label, position }: TooltipButtonProps) => {
 
 export type ItemDetailsSectionProps = {
   index: number;
-  isDraft: boolean;
   expanded?: boolean;
   handleRemoveItem: () => void;
 };
@@ -512,7 +490,6 @@ export type ItemDetailsSectionProps = {
 const ItemDetailsSection = ({
   index,
   expanded = false,
-  isDraft,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
   const {
@@ -525,17 +502,14 @@ const ItemDetailsSection = ({
 
   const emptyImage = {
     name: "No file chosen",
-    base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+    base64: "https://placehold.co/500x500/cac4d0/1d192b?text=No%20Image",
   };
-  const draftImage: DraftImageType =
-    getValues(`requestPackage.items.${index}.draftImage`) ?? emptyImage;
-  const initialImage = isDraft ? draftImage : emptyImage;
 
-  const { image, handleImageChange } = useImageHandler(initialImage);
+  const { image, handleImageChange } = useImageHandler(emptyImage);
 
-  useEffect(() => {
-    setValue(`requestPackage.items.${index}.draftImage`, image);
-  }, [image]);
+  const imageError = errors.requestPackage?.items?.[index]?.image as
+    | (FieldError & { message: string })
+    | undefined;
 
   return (
     <>
@@ -665,9 +639,7 @@ const ItemDetailsSection = ({
                     {...register(`requestPackage.items.${index}.image`, {
                       onChange: handleImageChange,
                     })}
-                    errorMessage={
-                      errors.requestPackage?.items?.[index]?.image?.message
-                    }
+                    errorMessage={imageError?.message}
                   />
                 </div>
 

@@ -8,7 +8,7 @@ import DraftDetails from "./DraftDetails";
 const ShopDraftsPanel = () => {
   const { localDraft } = useShopContext();
 
-  if (localDraft?.requestPackage) {
+  if (localDraft) {
     return (
       <TabContentLayout>
         <DraftDetails />

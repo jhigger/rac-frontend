@@ -69,7 +69,6 @@ import {
   type BillingDetailsType,
   type PickupDetailsType,
 } from "~/contexts/AutoImportContext";
-import { type DraftImageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useImageHandler from "~/hooks/useImageHandler";
@@ -398,9 +397,7 @@ const RequestOrder = () => {
   );
 };
 
-type Step1Props = { isDraft?: boolean };
-
-export const Step1 = ({ isDraft = false }: Step1Props) => {
+export const Step1 = () => {
   const { control } = useFormContext<AutoImportInputs>();
   const { fields, append, remove } = useFieldArray<AutoImportInputs>({
     control,
@@ -425,7 +422,6 @@ export const Step1 = ({ isDraft = false }: Step1Props) => {
               key={field.id}
               index={i}
               handleRemoveItem={() => handleRemove(i)}
-              isDraft={isDraft}
               expanded
             />
           );
@@ -476,27 +472,22 @@ const SelectWarehouseOriginSection = () => {
 
 const ItemDetailsSection = ({
   index,
-  isDraft,
   expanded = false,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
-  const { register, getValues, setValue } = useFormContext<AutoImportInputs>();
+  const { register, setValue } = useFormContext<AutoImportInputs>();
   const { open, toggle } = useAccordion(expanded);
 
   const emptyImage = {
     name: "No file chosen",
-    base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+    base64: "https://placehold.co/500x500/cac4d0/1d192b?text=No%20Image",
   };
-  const draftImage: DraftImageType =
-    getValues(`requestPackage.items.${index}.draftCarImage`) ?? emptyImage;
-  const initialCarImage = isDraft ? draftImage : emptyImage;
-  const initialCarTitleImage = isDraft ? draftImage : emptyImage;
 
   const { image: carImage, handleImageChange: handleCarImageChange } =
-    useImageHandler(initialCarImage);
+    useImageHandler(emptyImage);
 
   const { image: carTitleImage, handleImageChange: handleCarTitleImageChange } =
-    useImageHandler(initialCarTitleImage);
+    useImageHandler(emptyImage);
 
   useEffect(() => {
     setValue(`requestPackage.items.${index}.draftCarImage`, carImage);

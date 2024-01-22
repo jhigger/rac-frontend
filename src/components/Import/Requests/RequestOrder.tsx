@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
+  FieldError,
   FormProvider,
   useFieldArray,
   useForm,
@@ -48,7 +49,6 @@ import {
 } from "~/constants";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { useImportContext } from "~/contexts/ImportContext";
-import { type DraftImageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import useImageHandler from "~/hooks/useImageHandler";
@@ -103,16 +103,6 @@ export const schema = z
                 .string()
                 .min(1, { message: "Required" })
                 .default(""),
-              draftImage: z
-                .object({
-                  name: z.string().default("No file chosen"),
-                  base64: z
-                    .string()
-                    .default(
-                      "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-                    ),
-                })
-                .optional(),
               // properties: z.array(
               //   z.object({
               //     label: z.string().min(1, "Required"),
@@ -151,9 +141,10 @@ export const emptyValue: ImportInputs = {
 
 const RequestOrder = () => {
   const { user } = useAuthContext();
-  const token = user?.jwt ?? "";
 
-  const { isPending, error, mutateAsync } = useSubmitImportRequest(token);
+  if (!user) return;
+
+  const { isPending, error, mutateAsync } = useSubmitImportRequest(user.jwt); // todo: add snackbar for success and error
 
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep, goTo } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
@@ -233,10 +224,6 @@ const RequestOrder = () => {
 
         {step}
 
-        {error && (
-          <span className="text-error-500">Action required in some fields</span>
-        )}
-
         {isFirstStep && (
           <>
             <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
@@ -313,9 +300,7 @@ export const Step1 = () => {
   );
 };
 
-type Step2Props = { isDraft?: boolean };
-
-export const Step2 = ({ isDraft = false }: Step2Props) => {
+export const Step2 = () => {
   const { control } = useFormContext<ImportInputs>();
   const { fields, append, remove } = useFieldArray<ImportInputs>({
     control,
@@ -342,7 +327,6 @@ export const Step2 = ({ isDraft = false }: Step2Props) => {
               key={field.id}
               index={i}
               handleRemoveItem={() => handleRemove(i)}
-              isDraft={isDraft}
               expanded
             />
           );
@@ -357,7 +341,6 @@ export const Step2 = ({ isDraft = false }: Step2Props) => {
 
 const ItemDetailsSection = ({
   index,
-  isDraft,
   expanded = false,
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
@@ -373,17 +356,12 @@ const ItemDetailsSection = ({
     name: "No file chosen",
     base64: "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
   };
-  const draftImage: DraftImageType =
-    getValues(`requestPackage.items.${index}.draftImage`) ?? emptyImage;
-  const initialImage = isDraft ? draftImage : emptyImage;
 
-  const { image, handleImageChange } = useImageHandler(initialImage);
+  const { image, handleImageChange } = useImageHandler(emptyImage);
 
-  useEffect(() => {
-    setValue(`requestPackage.items.${index}.draftImage`, image);
-  }, [image]);
-
-  console.log(errors);
+  const imageError = errors.requestPackage?.items?.[index]?.image as
+    | (FieldError & { message: string })
+    | undefined;
 
   return (
     <>
@@ -550,9 +528,7 @@ const ItemDetailsSection = ({
                     {...register(`requestPackage.items.${index}.image`, {
                       onChange: handleImageChange,
                     })}
-                    errorMessage={
-                      errors.requestPackage?.items?.[index]?.image?.message
-                    }
+                    errorMessage={imageError?.message}
                   />
                 </div>
 

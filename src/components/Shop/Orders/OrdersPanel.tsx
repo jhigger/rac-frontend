@@ -490,7 +490,7 @@ const ShippingStatus = ({ orderPackage, onClick }: ShippingStatusProps) => {
   );
 };
 
-export const excluded = ["not started", "cancelled", "cleared", "delivered"];
+const excluded = ["not started", "cancelled", "cleared", "delivered"];
 const EXCLUDED_CONST = [...excluded] as const;
 
 export type SomeStatusType = Exclude<

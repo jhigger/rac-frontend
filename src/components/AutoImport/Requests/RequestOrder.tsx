@@ -694,15 +694,20 @@ const ItemDetailsSection = ({
 type DropOffAddressProps = { index: number };
 
 const DropOffAddress = ({ index }: DropOffAddressProps) => {
-  const { open, toggle } = useAccordion(false);
-  const { register, watch } =
+  const { register, watch, getValues, setValue } =
     useFormContext<
       NonNullable<AutoImportInputs["requestPackage"]["items"][number]>
     >();
+  const { open, toggle } = useAccordion(Boolean(getValues("pickupDetails")));
   const { states, cities } = useStatesCities({
     path: "pickupDetails",
     watch,
   });
+
+  useEffect(() => {
+    if (!open) setValue("pickupDetails", undefined);
+    console.log(getValues());
+  }, [open]);
 
   return (
     <>
@@ -715,6 +720,7 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
               className="toggle-checkbox hidden"
               type="checkbox"
               onClick={toggle}
+              defaultChecked={open}
             />
             <label
               htmlFor={`dropOffSwitch-${index}`}

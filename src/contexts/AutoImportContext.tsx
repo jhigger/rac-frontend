@@ -16,7 +16,6 @@ import {
   type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { autoImportOrders, autoImportRequests } from "~/fake data";
 import { type DraftImageType } from "~/hooks/useImageHandler";
 import { type PackageCostsType } from "./ShopContext";
 
@@ -139,11 +138,11 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleOrders = () => {
-    setOrderPackages(autoImportOrders);
+    setOrderPackages([]); // todo: get real data
   };
 
   const handleRequests = () => {
-    setRequestPackages(autoImportRequests);
+    setRequestPackages([]); // todo: get real data
   };
 
   // testing purposes

@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { shopOrders } from "~/fake data";
 import { type OrderPackageType } from "./NotificationContext";
 
 export type TrackingContextType = {
@@ -21,8 +20,8 @@ const TrackingContextProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const handleOrder = (trackingId: string | null) => {
-    const order =
-      shopOrders.find((order) => order.trackingId === trackingId) ?? null;
+    const order = null; // todo: get real data
+    // shopOrders.find((order) => order.trackingId === trackingId) ?? null;
     setOrderPackage(order);
   };
 

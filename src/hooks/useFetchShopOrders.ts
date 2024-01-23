@@ -5,7 +5,6 @@ import {
   type ShopOrderPackageType,
 } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
-import { shopOrders } from "~/fake data";
 
 const useFetchShopOrders = (
   token: string,
@@ -106,7 +105,7 @@ const useFetchShopOrders = (
       console.log("fetching user order packages");
       // const res = await handleFetch();
       // const packages = res;
-      const packages = shopOrders;
+      const packages = [] as ShopOrderPackageType[]; // todo: get real data
       if (packages.length > 0) {
         console.log("user order packages: ", packages);
         return packages;

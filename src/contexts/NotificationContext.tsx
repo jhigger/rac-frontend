@@ -6,7 +6,6 @@ import {
   type ReactNode,
 } from "react";
 import { type NOTIFICATION_TYPES } from "~/constants";
-import { notificationItems } from "~/fake data";
 import {
   type AutoImportOrderPackageType,
   type AutoImportRequestPackageType,
@@ -74,7 +73,7 @@ const NotificationContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleNotifications = () => {
-    setNotifications(sortNotificationByDate(notificationItems));
+    setNotifications(sortNotificationByDate([])); // todo: get real data
   };
 
   const handleSelectedNotification = (

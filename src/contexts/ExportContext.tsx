@@ -15,7 +15,6 @@ import {
   type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { exportOrders } from "~/fake data";
 import useFetchExportRequests from "~/hooks/useFetchExportRequests";
 import { type BillingDetailsType } from "./AutoImportContext";
 import {
@@ -98,7 +97,7 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleOrders = () => {
-    setOrderPackages(exportOrders);
+    setOrderPackages([]); // todo: get real data
   };
 
   const handleRequests = () => {

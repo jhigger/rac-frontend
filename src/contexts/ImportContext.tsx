@@ -20,7 +20,6 @@ import {
   type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
-import { importOrders } from "~/fake data";
 import useFetchImportRequests from "~/hooks/useFetchImportRequests";
 import { type DraftImageType } from "~/hooks/useImageHandler";
 import { type BillingDetailsType } from "./AutoImportContext";
@@ -127,7 +126,7 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleOrders = () => {
-    setOrderPackages(importOrders);
+    setOrderPackages([]); // todo: get real data
   };
 
   const handleRequests = () => {

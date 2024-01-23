@@ -51,7 +51,7 @@ const RequestOrder = () => {
 
   const { isPending, error, mutateAsync } = useSubmitExportRequest(user.jwt); // todo: add snackbar for success and error
 
-  const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
+  const { step, next, isFirstStep, isLastStep, isSecondToLastStep, goTo } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
   const { handleRequests, handleLocalDraft, handleDraft } = useExportContext();
@@ -103,6 +103,18 @@ const RequestOrder = () => {
     handleLocalDraft(formMethods.getValues());
   };
 
+  const handleFirstStep = () => {
+    if (
+      (formMethods.getValues().requestPackage
+        .deliveryStatus as (typeof PACKAGE_DELIVERY_STATUS)[number]) ===
+      "None delivered"
+    ) {
+      goTo(2);
+    } else {
+      next();
+    }
+  };
+
   return (
     <FormProvider {...formMethods}>
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -111,9 +123,13 @@ const RequestOrder = () => {
         {!isLastStep ? (
           <HighlightedInfo text="Provide as much Information as possible needed for our staffs to identify your package if it has been delivered. The more Information you provide, the easier we identify your package." />
         ) : (
-          <SectionContentLayout>
-            <LabelId label="Request ID" id={requestId} center={true} />
-          </SectionContentLayout>
+          (formMethods.getValues().requestPackage
+            .deliveryStatus as (typeof PACKAGE_DELIVERY_STATUS)[number]) !==
+            "None delivered" && (
+            <SectionContentLayout>
+              <LabelId label="Request ID" id={requestId} center={true} />
+            </SectionContentLayout>
+          )
         )}
 
         {step}
@@ -122,7 +138,7 @@ const RequestOrder = () => {
           <div className="flex w-full flex-col gap-[10px] md:flex-row md:[&>*]:w-max">
             <BackButton onClick={handleBack} />
             <ProceedButton
-              onClick={next}
+              onClick={handleFirstStep}
               disabled={
                 formMethods.watch("requestPackage.originWarehouse") === "" ||
                 formMethods.watch("requestPackage.deliveryStatus") === ""

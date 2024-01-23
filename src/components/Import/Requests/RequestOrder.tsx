@@ -217,9 +217,13 @@ const RequestOrder = () => {
         {!isLastStep ? (
           <HighlightedInfo text="Provide as much Information as possible needed for our staffs to identify your package if it has been delivered. The more Information you provide, the easier we identify your package." />
         ) : (
-          <SectionContentLayout>
-            <LabelId label="Request ID" id={requestId} center={true} />
-          </SectionContentLayout>
+          (formMethods.getValues().requestPackage
+            .deliveryStatus as (typeof PACKAGE_DELIVERY_STATUS)[number]) !==
+            "None delivered" && (
+            <SectionContentLayout>
+              <LabelId label="Request ID" id={requestId} center={true} />
+            </SectionContentLayout>
+          )
         )}
 
         {step}

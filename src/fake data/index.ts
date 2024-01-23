@@ -1300,7 +1300,6 @@ export const importRequests: ImportRequestPackageType[] = [
       hour12: false,
     }),
     originWarehouse: "China Warehouse (Guangzhou city)",
-    deliveryStatus: "All delivered",
     items: [
       {
         name: "Designer Bags",
@@ -1336,7 +1335,6 @@ export const importRequests: ImportRequestPackageType[] = [
       hour12: false,
     }),
     originWarehouse: "Dubai Warehouse",
-    deliveryStatus: "None delivered",
     items: [
       {
         name: "Designer Bags",
@@ -1372,7 +1370,6 @@ export const importRequests: ImportRequestPackageType[] = [
       hour12: false,
     }),
     originWarehouse: "Nigeria Warehouse (Lagos)",
-    deliveryStatus: "Some delivered",
     items: [
       {
         name: "Designer Bags",
@@ -1423,7 +1420,6 @@ export const importRequests: ImportRequestPackageType[] = [
       hour12: false,
     }),
     originWarehouse: "UK Warehouse (London)",
-    deliveryStatus: "All delivered",
     items: [
       {
         name: "Designer Bags",
@@ -1459,7 +1455,6 @@ export const importRequests: ImportRequestPackageType[] = [
       hour12: false,
     }),
     originWarehouse: "US Warehouse (Richmond Texas)",
-    deliveryStatus: "None delivered",
     items: [
       {
         name: "Designer Bags",
@@ -1495,7 +1490,6 @@ export const importRequests: ImportRequestPackageType[] = [
       hour12: false,
     }),
     originWarehouse: "US Warehouse (Richmond Texas)",
-    deliveryStatus: "Some delivered",
     items: [
       {
         name: "Designer Bags",

@@ -30,7 +30,7 @@ import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
 
 const ImportRequestsPanel = () => {
-  const { requestPackages, fetchingRequestPackages } = useImportContext();
+  const { requestPackages, isFetchingRequestPackages } = useImportContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
@@ -49,7 +49,7 @@ const ImportRequestsPanel = () => {
     );
   }
 
-  if (fetchingRequestPackages) {
+  if (isFetchingRequestPackages) {
     return (
       <TabContentLayout>
         <LoadingSpinner />

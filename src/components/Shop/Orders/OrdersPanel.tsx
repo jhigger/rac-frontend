@@ -18,6 +18,7 @@ import {
 } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   SHIPPING_STATUS,
@@ -48,7 +49,7 @@ import InitiateShipping, { DetailSection } from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const ShopOrdersPanel = () => {
-  const { orderPackages } = useShopContext();
+  const { orderPackages, isFetchingOrderPackages } = useShopContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "clear package") {
@@ -71,6 +72,14 @@ const ShopOrdersPanel = () => {
     return (
       <TabContentLayout>
         <OrderDetails />
+      </TabContentLayout>
+    );
+  }
+
+  if (isFetchingOrderPackages) {
+    return (
+      <TabContentLayout>
+        <LoadingSpinner />
       </TabContentLayout>
     );
   }
@@ -210,7 +219,7 @@ const OrdersTable = () => {
         header: "Shipping Cost",
         cell: ({ row }) => (
           <span className="title-md flex gap-[5px] font-medium">
-            <More size="20" variant="Bold" className="text-error-600" />$
+            <More size="20" variant="Bold" className="text-error-600" />
             {formatCurrency(row.original.totalShippingCost)}
           </span>
         ),

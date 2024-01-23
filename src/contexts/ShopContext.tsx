@@ -19,7 +19,8 @@ import { type BillingDetailsType } from "./AutoImportContext";
 
 export type ShopContextType = {
   draftPackage: ShopDraftPackageType | null;
-  fetchingRequestPackages: boolean;
+  isFetchingOrderPackages: boolean;
+  isFetchingRequestPackages: boolean;
   localDraft: ShopLocalDraftType;
   orderPackages: ShopOrderPackageType[];
   requestPackages: ShopRequestPackageType[];
@@ -119,13 +120,16 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
     draftPackage,
   );
 
-  const { data: orderPackages, refetch: refetchOrderPackages } =
-    useFetchShopOrders(token);
+  const {
+    data: orderPackages,
+    refetch: refetchOrderPackages,
+    isFetching: isFetchingOrderPackages,
+  } = useFetchShopOrders(token);
 
   const {
     data: requestPackages,
     refetch: refetchRequestPackages,
-    isFetching: fetchingRequestPackages,
+    isFetching: isFetchingRequestPackages,
   } = useFetchShopRequests(token);
 
   const handleDraft = (draftPackage: ShopInputs | null) => {
@@ -146,7 +150,8 @@ const ShopContextProvider = ({ children }: { children: ReactNode }) => {
 
   const value: ShopContextType = {
     draftPackage,
-    fetchingRequestPackages,
+    isFetchingOrderPackages,
+    isFetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,

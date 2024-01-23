@@ -28,7 +28,10 @@ import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 
 const ShopRequestsPanel = () => {
-  const { requestPackages, fetchingRequestPackages } = useShopContext();
+  const {
+    requestPackages,
+    isFetchingRequestPackages,
+  } = useShopContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
@@ -55,7 +58,7 @@ const ShopRequestsPanel = () => {
     );
   }
 
-  if (fetchingRequestPackages) {
+  if (isFetchingRequestPackages) {
     return (
       <TabContentLayout>
         <LoadingSpinner />

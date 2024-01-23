@@ -7,7 +7,7 @@ import {
 } from "react-hook-form";
 
 type UseStatesCitiesType<T extends FieldValues> = {
-  path?: keyof T;
+  path?: keyof T | string;
   watch: UseFormWatch<T>;
 };
 

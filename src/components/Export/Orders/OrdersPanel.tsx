@@ -12,6 +12,7 @@ import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
@@ -32,7 +33,7 @@ import InitiateShipping from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const ExportOrdersPanel = () => {
-  const { orderPackages } = useExportContext();
+  const { orderPackages, isFetchingOrderPackages } = useExportContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "initiate shipping") {
@@ -47,6 +48,14 @@ const ExportOrdersPanel = () => {
     return (
       <TabContentLayout>
         <OrderDetails />
+      </TabContentLayout>
+    );
+  }
+
+  if (isFetchingOrderPackages) {
+    return (
+      <TabContentLayout>
+        <LoadingSpinner />
       </TabContentLayout>
     );
   }

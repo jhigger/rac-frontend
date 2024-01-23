@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
 import { type ExportInputs } from "~/components/Export/Requests/RequestOrder";
@@ -15,6 +9,7 @@ import {
   type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
+import useFetchExportOrders from "~/hooks/useFetchExportOrders";
 import useFetchExportRequests from "~/hooks/useFetchExportRequests";
 import { type BillingDetailsType } from "./AutoImportContext";
 import {
@@ -25,7 +20,8 @@ import { type PackageCostsType } from "./ShopContext";
 
 export type ExportContextType = {
   draftPackage: ExportDraftPackageType | null;
-  fetchingRequestPackages: boolean;
+  isFetchingOrderPackages: boolean;
+  isFetchingRequestPackages: boolean;
   localDraft: ExportLocalDraftType;
   orderPackages: ExportOrderPackageType[];
   requestPackages: ExportRequestPackageType[];
@@ -78,14 +74,16 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
     draftPackage,
   );
 
-  const [orderPackages, setOrderPackages] = useState<ExportOrderPackageType[]>(
-    [],
-  );
+  const {
+    data: orderPackages,
+    refetch: refetchOrderPackages,
+    isFetching: isFetchingOrderPackages,
+  } = useFetchExportOrders(token);
 
   const {
     data: requestPackages,
     refetch: refetchRequestPackages,
-    isFetching: fetchingRequestPackages,
+    isFetching: isFetchingRequestPackages,
   } = useFetchExportRequests(token);
 
   const handleDraft = (draftPackage: ExportDraftPackageType | null) => {
@@ -97,21 +95,17 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleOrders = () => {
-    setOrderPackages([]); // todo: get real data
+    void refetchOrderPackages();
   };
 
   const handleRequests = () => {
     void refetchRequestPackages();
   };
 
-  // testing purposes
-  useEffect(() => {
-    handleOrders();
-  }, []);
-
   const value: ExportContextType = {
     draftPackage,
-    fetchingRequestPackages,
+    isFetchingOrderPackages,
+    isFetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,

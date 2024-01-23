@@ -1,10 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
+import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
 import { type AutoImportInputs } from "~/components/AutoImport/Requests/RequestOrder";
 import {
@@ -16,11 +11,15 @@ import {
   type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
+import useFetchAutoImportOrders from "~/hooks/useFetchAutoImportOrders";
+import useFetchAutoAutoImportRequests from "~/hooks/useFetchAutoImportRequests";
 import { type DraftImageType } from "~/hooks/useImageHandler";
 import { type PackageCostsType } from "./ShopContext";
 
 export type AutoImportContextType = {
   draftPackage: AutoImportDraftPackageType | null;
+  isFetchingOrderPackages: boolean;
+  isFetchingRequestPackages: boolean;
   localDraft: AutoImportLocalDraftType;
   orderPackages: AutoImportOrderPackageType[];
   requestPackages: AutoImportRequestPackageType[];
@@ -114,6 +113,9 @@ type AutoImportLocalDraftType = AutoImportDraftPackageType | null;
 export type PropertyType = { label: string; value: string | undefined };
 
 const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
+  const [cookies] = useCookies(["jwt"]);
+  const token = cookies.jwt as string;
+
   const [draftPackage, setDraftPackage] =
     useState<AutoImportDraftPackageType | null>(null);
 
@@ -122,12 +124,17 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
     draftPackage,
   );
 
-  const [orderPackages, setOrderPackages] = useState<
-    AutoImportOrderPackageType[]
-  >([]);
-  const [requestPackages, setRequestPackages] = useState<
-    AutoImportRequestPackageType[]
-  >([]);
+  const {
+    data: orderPackages,
+    refetch: refetchOrderPackages,
+    isFetching: isFetchingOrderPackages,
+  } = useFetchAutoImportOrders(token);
+
+  const {
+    data: requestPackages,
+    refetch: refetchRequestPackages,
+    isFetching: isFetchingRequestPackages,
+  } = useFetchAutoAutoImportRequests(token);
 
   const handleDraft = (draftPackage: AutoImportDraftPackageType | null) => {
     setDraftPackage(draftPackage);
@@ -138,21 +145,17 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleOrders = () => {
-    setOrderPackages([]); // todo: get real data
+    void refetchOrderPackages();
   };
 
   const handleRequests = () => {
-    setRequestPackages([]); // todo: get real data
+    void refetchRequestPackages();
   };
-
-  // testing purposes
-  useEffect(() => {
-    handleRequests();
-    handleOrders();
-  }, []);
 
   const value: AutoImportContextType = {
     draftPackage,
+    isFetchingOrderPackages,
+    isFetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,

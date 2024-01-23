@@ -9,6 +9,7 @@ import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
@@ -30,7 +31,7 @@ import InitiateShipping from "./InitiateShipping";
 import OrderDetails from "./OrderDetails";
 
 const AutoImportOrdersPanel = () => {
-  const { orderPackages } = useAutoImportContext();
+  const { orderPackages, isFetchingOrderPackages } = useAutoImportContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "clear package") {
@@ -53,6 +54,14 @@ const AutoImportOrdersPanel = () => {
     return (
       <TabContentLayout>
         <OrderDetails />
+      </TabContentLayout>
+    );
+  }
+
+  if (isFetchingOrderPackages) {
+    return (
+      <TabContentLayout>
+        <LoadingSpinner />
       </TabContentLayout>
     );
   }

@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
 import { type ImportInputs } from "~/components/Import/Requests/RequestOrder";
@@ -20,6 +14,7 @@ import {
   type SHIPPING_METHODS,
   type SHIPPING_STATUS,
 } from "~/constants";
+import useFetchImportOrders from "~/hooks/useFetchImportOrders";
 import useFetchImportRequests from "~/hooks/useFetchImportRequests";
 import { type DraftImageType } from "~/hooks/useImageHandler";
 import { type BillingDetailsType } from "./AutoImportContext";
@@ -27,7 +22,8 @@ import { type PackageCostsType } from "./ShopContext";
 
 export type ImportContextType = {
   draftPackage: ImportDraftPackageType | null;
-  fetchingRequestPackages: boolean;
+  isFetchingOrderPackages: boolean;
+  isFetchingRequestPackages: boolean;
   localDraft: ImportLocalDraftType;
   orderPackages: ImportOrderPackageType[];
   requestPackages: ImportRequestPackageType[];
@@ -107,14 +103,16 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
     draftPackage,
   );
 
-  const [orderPackages, setOrderPackages] = useState<ImportOrderPackageType[]>(
-    [],
-  );
+  const {
+    data: orderPackages,
+    refetch: refetchOrderPackages,
+    isFetching: isFetchingOrderPackages,
+  } = useFetchImportOrders(token);
 
   const {
     data: requestPackages,
     refetch: refetchRequestPackages,
-    isFetching: fetchingRequestPackages,
+    isFetching: isFetchingRequestPackages,
   } = useFetchImportRequests(token);
 
   const handleDraft = (draftPackage: ImportDraftPackageType | null) => {
@@ -126,21 +124,17 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleOrders = () => {
-    setOrderPackages([]); // todo: get real data
+    void refetchOrderPackages();
   };
 
   const handleRequests = () => {
     void refetchRequestPackages();
   };
 
-  // testing purposes
-  useEffect(() => {
-    handleOrders();
-  }, []);
-
   const value: ImportContextType = {
     draftPackage,
-    fetchingRequestPackages,
+    isFetchingOrderPackages,
+    isFetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,

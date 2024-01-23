@@ -1,4 +1,4 @@
-import { FieldError, useFormContext } from "react-hook-form";
+import { useFormContext, type FieldError } from "react-hook-form";
 import { useAuthContext } from "~/contexts/AuthContext";
 import useStatesCities from "~/hooks/useStatesCities";
 import { type RegisterInputs } from "~/pages/register";

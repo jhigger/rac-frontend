@@ -2,12 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Calculator, Whatsapp } from "iconsax-react";
 import { useEffect, useState, type ChangeEvent } from "react";
 import {
+  FieldError,
   FormProvider,
   useFieldArray,
   useForm,
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
 import { formatCurrency, parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -74,192 +76,174 @@ import useAccordion from "~/hooks/useAccordion";
 import useImageHandler from "~/hooks/useImageHandler";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
+import useSubmitAutoImportRequest from "~/hooks/useSubmitAutoImportRequest";
 
-const schema = z
-  .object({
-    requestPackage: z
-      .object({
-        originWarehouse: z.string().min(1, "Required").default(""),
-        items: z
-          .array(
-            z.object({
-              brand: z.string().min(1, { message: "Required" }).default(""),
-              model: z.string().min(1, { message: "Required" }).default(""),
-              productionYear: z
+export const schema = z.object({
+  requestPackage: z.object({
+    originWarehouse: z.string().min(1, "Required").default(""),
+    items: z
+      .array(
+        z.object({
+          brand: z.string().min(1, { message: "Required" }).default(""),
+          model: z.string().min(1, { message: "Required" }).default(""),
+          productionYear: z
+            .string()
+            .min(1, { message: "Required" })
+            .default(""),
+          value: z.number().min(1, { message: "Required" }).default(1),
+          condition: z.string().min(1, "Required").default(""),
+          color: z.string().min(1, { message: "Required" }).default(""),
+          mileage: z.number().min(1, { message: "Required" }).default(1),
+          vin: z.number().min(1, { message: "Required" }).default(0),
+          url: z.string().min(1, { message: "Required" }).default(""),
+          image: z
+            .custom<FileList>()
+            .nullable()
+            .default(null)
+            .refine(
+              (files) => files instanceof FileList && files.length > 0,
+              "Image is required.",
+            )
+            .refine(
+              (files) =>
+                files instanceof FileList &&
+                files[0] !== undefined &&
+                files[0].size <= MAX_FILE_SIZE,
+              `Max file size is ${new Intl.NumberFormat("en", {
+                style: "unit",
+                unit: "megabyte",
+              }).format(MAX_FILE_SIZE / 1024 / 1024)}.`,
+            )
+            .refine(
+              (files) =>
+                files instanceof FileList &&
+                files[0] !== undefined &&
+                ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+              "only .jpg, .jpeg, .png and .webp files are accepted.",
+            ),
+          carTitleCopy: z
+            .custom<FileList>()
+            .nullable()
+            .default(null)
+            .refine(
+              (files) => files instanceof FileList && files.length > 0,
+              "Car title copy is required.",
+            )
+            .refine(
+              (files) =>
+                files instanceof FileList &&
+                files[0] !== undefined &&
+                files[0].size <= MAX_FILE_SIZE,
+              `Max file size is ${new Intl.NumberFormat("en", {
+                style: "unit",
+                unit: "megabyte",
+              }).format(MAX_FILE_SIZE / 1024 / 1024)}.`,
+            )
+            .refine(
+              (files) =>
+                files instanceof FileList &&
+                files[0] !== undefined &&
+                ACCEPTED_IMAGE_TYPES.includes(files[0].type),
+              "only .jpg, .jpeg, .png and .webp files are accepted.",
+            ),
+          description: z.string().min(1, { message: "Required" }).default(""),
+          draftCarImage: z
+            .object({
+              name: z.string().default("No file chosen"),
+              base64: z
+                .string()
+                .default(
+                  "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+                ),
+            })
+            .optional(),
+          draftCarTitleImage: z
+            .object({
+              name: z.string().default("No file chosen"),
+              base64: z
+                .string()
+                .default(
+                  "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
+                ),
+            })
+            .optional(),
+          // properties: z.array(
+          //   z.object({
+          //     label: z.string().min(1, "Required"),
+          //     value: z.string().min(1, "Required"),
+          //   }),
+          // ),
+          pickupDetails: z
+            .object({
+              firstName: z.string().min(1, { message: "Required" }).default(""),
+              lastName: z.string().min(1, { message: "Required" }).default(""),
+              email: z.string().min(1, { message: "Required" }).default(""),
+              countryCode: z
                 .string()
                 .min(1, { message: "Required" })
                 .default(""),
-              value: z.number().default(1),
-              condition: z.string().min(1, "Required").default(""),
-              color: z.string().min(1, { message: "Required" }).default(""),
-              mileage: z.number().default(1),
-              vin: z.string().min(1, { message: "Required" }).default(""),
-              url: z.string().min(1, { message: "Required" }).default(""),
-              image: z
-                .custom<FileList>()
-                .nullable()
-                .default(null)
-                .refine(
-                  (files) => files instanceof FileList && files.length > 0,
-                  "Image is required.",
-                )
-                .refine(
-                  (files) =>
-                    files instanceof FileList &&
-                    files[0] !== undefined &&
-                    files[0].size <= MAX_FILE_SIZE,
-                  `Max file size is ${new Intl.NumberFormat("en", {
-                    style: "unit",
-                    unit: "megabyte",
-                  }).format(MAX_FILE_SIZE / 1024 / 1024)}.`,
-                )
-                .refine(
-                  (files) =>
-                    files instanceof FileList &&
-                    files[0] !== undefined &&
-                    ACCEPTED_IMAGE_TYPES.includes(files[0].type),
-                  "only .jpg, .jpeg, .png and .webp files are accepted.",
-                ),
-              carTitleCopy: z
-                .custom<FileList>()
-                .nullable()
-                .default(null)
-                .refine(
-                  (files) => files instanceof FileList && files.length > 0,
-                  "Car title copy is required.",
-                )
-                .refine(
-                  (files) =>
-                    files instanceof FileList &&
-                    files[0] !== undefined &&
-                    files[0].size <= MAX_FILE_SIZE,
-                  `Max file size is ${new Intl.NumberFormat("en", {
-                    style: "unit",
-                    unit: "megabyte",
-                  }).format(MAX_FILE_SIZE / 1024 / 1024)}.`,
-                )
-                .refine(
-                  (files) =>
-                    files instanceof FileList &&
-                    files[0] !== undefined &&
-                    ACCEPTED_IMAGE_TYPES.includes(files[0].type),
-                  "only .jpg, .jpeg, .png and .webp files are accepted.",
-                ),
-              description: z
+              phoneNumber: z
                 .string()
                 .min(1, { message: "Required" })
                 .default(""),
-              draftCarImage: z
-                .object({
-                  name: z.string().default("No file chosen"),
-                  base64: z
-                    .string()
-                    .default(
-                      "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-                    ),
-                })
-                .optional(),
-              draftCarTitleImage: z
-                .object({
-                  name: z.string().default("No file chosen"),
-                  base64: z
-                    .string()
-                    .default(
-                      "https://placehold.co/500x500/cac4d0/1d192b?text=Image",
-                    ),
-                })
-                .optional(),
-              // properties: z.array(
-              //   z.object({
-              //     label: z.string().min(1, "Required"),
-              //     value: z.string().min(1, "Required"),
-              //   }),
-              // ),
-              pickupDetails: z
-                .object({
-                  firstName: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  lastName: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  email: z.string().min(1, { message: "Required" }).default(""),
-                  countryCode: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  phoneNumber: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  address: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  country: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  state: z.string().min(1, { message: "Required" }).default(""),
-                  city: z.string().min(1, { message: "Required" }).default(""),
-                  zipPostalCode: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  pickUpDate: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  locationType: z
-                    .string()
-                    .min(1, { message: "Required" })
-                    .default(""),
-                  pickupCost: z.number().default(1),
-                })
-                .optional(),
-            }),
-          )
-          .default([]),
-        destinationDetails: z
-          .object({
-            firstName: z.string().min(1, { message: "Required" }).default(""),
-            lastName: z.string().min(1, { message: "Required" }).default(""),
-            email: z.string().min(1, { message: "Required" }).default(""),
-            countryCode: z.string().min(1, { message: "Required" }).default(""),
-            phoneNumber: z.string().min(1, { message: "Required" }).default(""),
-            address: z.string().min(1, { message: "Required" }).default(""),
-            country: z.string().min(1, { message: "Required" }).default(""),
-            state: z.string().min(1, { message: "Required" }).default(""),
-            city: z.string().min(1, { message: "Required" }).default(""),
-            zipPostalCode: z
-              .string()
-              .min(1, { message: "Required" })
-              .default(""),
-          })
-          .optional(),
-        billingDetails: z
-          .object({
-            firstName: z.string().min(1, { message: "Required" }).default(""),
-            lastName: z.string().min(1, { message: "Required" }).default(""),
-            email: z.string().min(1, { message: "Required" }).default(""),
-            countryCode: z.string().min(1, { message: "Required" }).default(""),
-            phoneNumber: z.string().min(1, { message: "Required" }).default(""),
-            address: z.string().min(1, { message: "Required" }).default(""),
-            country: z.string().min(1, { message: "Required" }).default(""),
-            state: z.string().min(1, { message: "Required" }).default(""),
-            city: z.string().min(1, { message: "Required" }).default(""),
-            zipPostalCode: z
-              .string()
-              .min(1, { message: "Required" })
-              .default(""),
-          })
-          .optional(),
-      })
-      .default({}),
-  })
-  .default({});
+              address: z.string().min(1, { message: "Required" }).default(""),
+              country: z.string().min(1, { message: "Required" }).default(""),
+              state: z.string().min(1, { message: "Required" }).default(""),
+              city: z.string().min(1, { message: "Required" }).default(""),
+              zipPostalCode: z
+                .string()
+                .min(1, { message: "Required" })
+                .default(""),
+              pickUpDate: z
+                .string()
+                .min(1, { message: "Required" })
+                .default(""),
+              locationType: z
+                .string()
+                .min(1, { message: "Required" })
+                .default(""),
+              pickupCost: z.number().min(1, { message: "Required" }).default(1),
+            })
+            .optional(),
+        }),
+      )
+      .default([]),
+    destinationDetails: z.object({
+      firstName: z.string().min(1, { message: "Required" }).default(""),
+      lastName: z.string().min(1, { message: "Required" }).default(""),
+      email: z.string().min(1, { message: "Required" }).default(""),
+      countryCode: z.string().min(1, { message: "Required" }).default(""),
+      phoneNumber: z
+        .string()
+        .min(1, { message: "Phone number is required" })
+        .trim()
+        .default("")
+        .refine(isMobilePhone, "Must be a valid phone number"),
+      address: z.string().min(1, { message: "Required" }).default(""),
+      country: z.string().min(1, { message: "Required" }).default(""),
+      state: z.string().min(1, { message: "Required" }).default(""),
+      city: z.string().min(1, { message: "Required" }).default(""),
+      zipPostalCode: z.string().min(1, { message: "Required" }).default(""),
+    }),
+    billingDetails: z.object({
+      firstName: z.string().min(1, { message: "Required" }).default(""),
+      lastName: z.string().min(1, { message: "Required" }).default(""),
+      email: z.string().min(1, { message: "Required" }).default(""),
+      countryCode: z.string().min(1, { message: "Required" }).default(""),
+      phoneNumber: z
+        .string()
+        .min(1, { message: "Phone number is required" })
+        .trim()
+        .default("")
+        .refine(isMobilePhone, "Must be a valid phone number"),
+      address: z.string().min(1, { message: "Required" }).default(""),
+      country: z.string().min(1, { message: "Required" }).default(""),
+      state: z.string().min(1, { message: "Required" }).default(""),
+      city: z.string().min(1, { message: "Required" }).default(""),
+      zipPostalCode: z.string().min(1, { message: "Required" }).default(""),
+    }),
+  }),
+});
 
 export type AutoImportInputs = z.infer<typeof schema>;
 
@@ -275,19 +259,50 @@ export const emptyValue: AutoImportInputs = {
         condition: "",
         color: "",
         mileage: 0,
-        vin: "",
+        vin: 0,
         url: "",
         image: null,
         carTitleCopy: null,
         description: "",
       },
     ],
+    destinationDetails: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      countryCode: "",
+      phoneNumber: "",
+      address: "",
+      country: "",
+      state: "",
+      city: "",
+      zipPostalCode: "",
+    },
+    billingDetails: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      countryCode: "",
+      phoneNumber: "",
+      address: "",
+      country: "",
+      state: "",
+      city: "",
+      zipPostalCode: "",
+    },
   },
 };
 
 const RequestOrder = () => {
-  const { handleRequests, handleDraft, handleLocalDraft } =
-    useAutoImportContext();
+  const { user } = useAuthContext();
+
+  if (!user) return;
+
+  const { isPending, error, mutateAsync } = useSubmitAutoImportRequest(
+    user.jwt,
+  ); // todo: add snackbar for success and error
+
+  const { handleRequests, handleLocalDraft } = useAutoImportContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -317,11 +332,19 @@ const RequestOrder = () => {
     defaultValues: emptyValue,
   });
 
+  const [requestId, setRequestId] = useState("");
+
   const onSubmit: SubmitHandler<AutoImportInputs> = async (data) => {
     if (isSecondToLastStep) {
-      console.log(data.requestPackage);
-    } else if (currentStepIndex === 1) {
-      handleDraft(data);
+      console.log(data);
+      try {
+        const res = await mutateAsync(data.requestPackage);
+        console.log(res);
+        setRequestId(res.data.requestId);
+      } catch (err) {
+        console.log(err);
+        return;
+      }
     }
     next();
   };
@@ -340,6 +363,26 @@ const RequestOrder = () => {
     handleLocalDraft(formMethods.getValues());
   };
 
+  const handleStep1Validation = async () => {
+    const a = await formMethods.trigger("requestPackage.originWarehouse", {
+      shouldFocus: true,
+    });
+    const b = await formMethods.trigger("requestPackage.items", {
+      shouldFocus: true,
+    });
+    if (a && b) next();
+  };
+
+  const handleStep2Validation = async () => {
+    const a = await formMethods.trigger("requestPackage.destinationDetails", {
+      shouldFocus: true,
+    });
+    const b = await formMethods.trigger("requestPackage.billingDetails", {
+      shouldFocus: true,
+    });
+    if (a && b) next();
+  };
+
   return (
     <FormProvider {...formMethods}>
       <div className="flex max-w-[1000px] flex-col gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]">
@@ -352,10 +395,9 @@ const RequestOrder = () => {
         />
 
         {isLastStep && (
-          // todo: submit response should have requestId
           <>
             <SectionContentLayout>
-              <LabelId label="Request ID" id="R78667" center />
+              <LabelId label="Request ID" id={requestId} center />
             </SectionContentLayout>
             <CongratulationImage description="You have just successfully requested an order for Auto Import service." />
           </>
@@ -364,27 +406,52 @@ const RequestOrder = () => {
         {step}
 
         {!isLastStep ? (
-          <>
-            <div className="hidden gap-[10px] md:flex [&>*]:w-max">
-              {isFirstStep && <BackButton onClick={handleBack} />}
-              {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
-              <SaveAsDraftButton onClick={handleSaveAsDraft} />
-              <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
-            </div>
-            {/* for mobile screen */}
-            <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
-              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+          !isPending ? (
+            <>
+              <div className="hidden gap-[10px] md:flex [&>*]:w-max">
                 {isFirstStep && <BackButton onClick={handleBack} />}
                 {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
-              </div>
-              <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
-              </div>
-              <div className="col-span-full">
                 <SaveAsDraftButton onClick={handleSaveAsDraft} />
+                <ProceedButton
+                  onClick={
+                    isFirstStep
+                      ? handleStep1Validation
+                      : currentStepIndex === 1
+                        ? handleStep2Validation
+                        : formMethods.handleSubmit(onSubmit)
+                  }
+                />
+              </div>
+              {/* for mobile screen */}
+              <div className="grid w-full grid-cols-2 gap-[10px] md:hidden">
+                <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                  {isFirstStep && <BackButton onClick={handleBack} />}
+                  {!isFirstStep && !isLastStep && <BackButton onClick={back} />}
+                </div>
+                <div className="col-span-full [@media(min-width:320px)]:col-span-1">
+                  <ProceedButton
+                    onClick={
+                      isFirstStep
+                        ? handleStep1Validation
+                        : currentStepIndex === 1
+                          ? handleStep2Validation
+                          : formMethods.handleSubmit(onSubmit)
+                    }
+                  />
+                </div>
+                <div className="col-span-full">
+                  <SaveAsDraftButton onClick={handleSaveAsDraft} />
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="w-full">
+              <div className="linear-loader relative flex h-1 w-full overflow-hidden bg-gray-100">
+                <div className="bar absolute inset-0 w-full bg-primary-600"></div>
+                <div className="bar absolute inset-0 w-full bg-primary-600"></div>
               </div>
             </div>
-          </>
+          )
         ) : (
           <div className="w-full md:w-[200px]">
             <DoneButton onClick={handleFinish} />
@@ -490,6 +557,7 @@ const ItemDetailsSection = ({
     useImageHandler(emptyImage);
 
   useEffect(() => {
+    // to display on summary step
     setValue(`requestPackage.items.${index}.draftCarImage`, carImage);
     setValue(`requestPackage.items.${index}.draftCarTitleImage`, carTitleImage);
   }, [carImage, carTitleImage]);
@@ -511,46 +579,25 @@ const ItemDetailsSection = ({
             {open && (
               <div className="grid w-full grid-cols-1 gap-[30px] md:grid-cols-12">
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-4">
-                  <SelectInput
+                  <TextInput
                     id={`brand-${index}`}
                     label={"Brand"}
-                    options={
-                      <>
-                        <option value="" disabled hidden>
-                          Car Brand
-                        </option>
-                      </>
-                    }
                     {...register(`requestPackage.items.${index}.brand`)}
                   />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-4">
-                  <SelectInput
+                  <TextInput
                     id={`model-${index}`}
                     label={"Model"}
-                    options={
-                      <>
-                        <option value="" disabled hidden>
-                          Car Model
-                        </option>
-                      </>
-                    }
                     {...register(`requestPackage.items.${index}.model`)}
                   />
                 </div>
 
                 <div className="col-span-full flex items-center gap-[10px] md:col-span-4">
-                  <SelectInput
+                  <TextInput
                     id={`productionYear-${index}`}
                     label={"Production Year"}
-                    options={
-                      <>
-                        <option value="" disabled hidden>
-                          Car production year
-                        </option>
-                      </>
-                    }
                     {...register(
                       `requestPackage.items.${index}.productionYear`,
                     )}
@@ -561,7 +608,9 @@ const ItemDetailsSection = ({
                   <CurrencyInput
                     id={`carValue-${index}`}
                     label={"Car Value"}
-                    {...register(`requestPackage.items.${index}.value`)}
+                    {...register(`requestPackage.items.${index}.value`, {
+                      valueAsNumber: true,
+                    })}
                   />
                 </div>
 
@@ -601,7 +650,9 @@ const ItemDetailsSection = ({
                     id={`mileage-${index}`}
                     label={"Mileage"}
                     type="number"
-                    {...register(`requestPackage.items.${index}.mileage`)}
+                    {...register(`requestPackage.items.${index}.mileage`, {
+                      valueAsNumber: true,
+                    })}
                   />
                 </div>
 
@@ -609,7 +660,10 @@ const ItemDetailsSection = ({
                   <TextInput
                     id={`vin-${index}`}
                     label={"Vehicle Identification Number"}
-                    {...register(`requestPackage.items.${index}.vin`)}
+                    type="number"
+                    {...register(`requestPackage.items.${index}.vin`, {
+                      valueAsNumber: true,
+                    })}
                   />
                 </div>
 
@@ -637,7 +691,7 @@ const ItemDetailsSection = ({
                     id={`carTitle-${index}`}
                     label={"Upload Copy of Car Title"}
                     fileName={carTitleImage.name}
-                    {...register(`requestPackage.items.${index}.image`, {
+                    {...register(`requestPackage.items.${index}.carTitleCopy`, {
                       onChange: handleCarTitleImageChange,
                     })}
                   />
@@ -837,10 +891,14 @@ export const Step2 = () => {
   };
 
   const [radio, setRadio] = useState<BillingAddressChoicesType>("default");
-  const { register, setValue, watch } =
-    useFormContext<AutoImportInputs["requestPackage"]>();
+  const {
+    formState: { errors },
+    register,
+    setValue,
+    watch,
+  } = useFormContext<AutoImportInputs>();
   const { states, cities } = useStatesCities({
-    path: "billingDetails",
+    path: "requestPackage.billingDetails",
     watch,
   });
 
@@ -850,9 +908,12 @@ export const Step2 = () => {
 
   useEffect(() => {
     if (radio === BILLING_ADDRESS_OPTIONS[0]) {
-      setValue("billingDetails", defaultBillingAddress);
+      setValue("requestPackage.billingDetails", defaultBillingAddress);
     }
   }, [radio]);
+
+  const phoneNumberError = errors.requestPackage?.billingDetails
+    ?.phoneNumber as (FieldError & { message: string }) | undefined;
 
   return (
     <div className="flex flex-col gap-[30px]">
@@ -873,7 +934,7 @@ export const Step2 = () => {
             <TextInput
               id={"firstName"}
               label={"First Name"}
-              {...register("billingDetails.firstName")}
+              {...register("requestPackage.billingDetails.firstName")}
             />
           </div>
 
@@ -881,7 +942,7 @@ export const Step2 = () => {
             <TextInput
               id={"lastName"}
               label={"Last Name"}
-              {...register("billingDetails.lastName")}
+              {...register("requestPackage.billingDetails.lastName")}
             />
           </div>
 
@@ -890,13 +951,13 @@ export const Step2 = () => {
               id="email"
               label="Email"
               type="email"
-              {...register("billingDetails.email")}
+              {...register("requestPackage.billingDetails.email")}
             />
           </div>
 
           <div className="col-span-full md:col-span-3">
             <SelectCountryPhoneCodeInput
-              {...register("billingDetails.countryCode")}
+              {...register("requestPackage.billingDetails.countryCode")}
             />
           </div>
 
@@ -905,7 +966,8 @@ export const Step2 = () => {
               id="phone-number"
               label="Phone Number"
               type="tel"
-              {...register("billingDetails.phoneNumber")}
+              {...register("requestPackage.billingDetails.phoneNumber")}
+              errorMessage={phoneNumberError?.message}
             />
           </div>
 
@@ -913,25 +975,27 @@ export const Step2 = () => {
             <TextInput
               id={"street-address"}
               label={"Street Address"}
-              {...register("billingDetails.address")}
+              {...register("requestPackage.billingDetails.address")}
             />
           </div>
 
           <div className="col-span-4">
-            <SelectCountryInput {...register("billingDetails.country")} />
+            <SelectCountryInput
+              {...register("requestPackage.billingDetails.country")}
+            />
           </div>
 
           <div className="col-span-4">
             <SelectStateInput
               states={states}
-              {...register("billingDetails.state")}
+              {...register("requestPackage.billingDetails.state")}
             />
           </div>
 
           <div className="col-span-4">
             <SelectCityInput
               cities={cities}
-              {...register("billingDetails.city")}
+              {...register("requestPackage.billingDetails.city")}
             />
           </div>
 
@@ -939,7 +1003,7 @@ export const Step2 = () => {
             <TextInput
               id={"zipPostalCode"}
               label={"Zip Postal Code"}
-              {...register("billingDetails.zipPostalCode")}
+              {...register("requestPackage.billingDetails.zipPostalCode")}
             />
           </div>
         </CustomBillingAddressRadio>
@@ -949,12 +1013,18 @@ export const Step2 = () => {
 };
 
 const FillInShippingAddress = () => {
-  const { register, watch } =
-    useFormContext<AutoImportInputs["requestPackage"]>();
+  const {
+    formState: { errors },
+    register,
+    watch,
+  } = useFormContext<AutoImportInputs>();
   const { states, cities } = useStatesCities({
-    path: "destinationDetails",
+    path: "requestPackage.destinationDetails",
     watch,
   });
+
+  const phoneNumberError = errors.requestPackage?.destinationDetails
+    ?.phoneNumber as (FieldError & { message: string }) | undefined;
 
   return (
     <div className="flex w-full flex-col gap-[40px] py-[10px]">
@@ -963,7 +1033,7 @@ const FillInShippingAddress = () => {
           <TextInput
             id={"receiverFirstName"}
             label={"Receiver's First Name"}
-            {...register("destinationDetails.firstName")}
+            {...register("requestPackage.destinationDetails.firstName")}
           />
         </div>
 
@@ -971,7 +1041,7 @@ const FillInShippingAddress = () => {
           <TextInput
             id={"receiverLastName"}
             label={"Receiver's Last Name"}
-            {...register("destinationDetails.lastName")}
+            {...register("requestPackage.destinationDetails.lastName")}
           />
         </div>
 
@@ -980,13 +1050,13 @@ const FillInShippingAddress = () => {
             id="receiverEmail"
             label="Receiver's Email"
             type="email"
-            {...register("destinationDetails.email")}
+            {...register("requestPackage.destinationDetails.email")}
           />
         </div>
 
         <div className="col-span-full md:col-span-3">
           <SelectCountryPhoneCodeInput
-            {...register("destinationDetails.countryCode")}
+            {...register("requestPackage.destinationDetails.countryCode")}
           />
         </div>
 
@@ -995,7 +1065,8 @@ const FillInShippingAddress = () => {
             id="receiverPhoneNumber"
             label="Receiver's Phone Number"
             type="tel"
-            {...register("destinationDetails.phoneNumber")}
+            {...register("requestPackage.destinationDetails.phoneNumber")}
+            errorMessage={phoneNumberError?.message}
           />
         </div>
 
@@ -1003,25 +1074,27 @@ const FillInShippingAddress = () => {
           <TextInput
             id={"receiverAddress"}
             label={"Receiver's Address"}
-            {...register("destinationDetails.address")}
+            {...register("requestPackage.destinationDetails.address")}
           />
         </div>
 
         <div className="col-span-4">
-          <SelectCountryInput {...register("destinationDetails.country")} />
+          <SelectCountryInput
+            {...register("requestPackage.destinationDetails.country")}
+          />
         </div>
 
         <div className="col-span-4">
           <SelectStateInput
             states={states}
-            {...register("destinationDetails.state")}
+            {...register("requestPackage.destinationDetails.state")}
           />
         </div>
 
         <div className="col-span-4">
           <SelectCityInput
             cities={cities}
-            {...register("destinationDetails.city")}
+            {...register("requestPackage.destinationDetails.city")}
           />
         </div>
 
@@ -1029,7 +1102,7 @@ const FillInShippingAddress = () => {
           <TextInput
             id={"receiverZipPostalCode"}
             label={"Zip Postal Code"}
-            {...register("destinationDetails.zipPostalCode")}
+            {...register("requestPackage.destinationDetails.zipPostalCode")}
           />
         </div>
       </div>
@@ -1064,11 +1137,11 @@ export const Step3 = () => {
       })}
       <SectionHeader title="Confirm your Shipping Details" />
       <DestinationAddressDetails
-        destinationDetails={getValues("requestPackage").destinationDetails!}
+        destinationDetails={getValues("requestPackage").destinationDetails}
       />
       <SectionHeader title="Confirm your Billing Details" />
       <BillingAddress
-        billingDetails={getValues("requestPackage").billingDetails!}
+        billingDetails={getValues("requestPackage").billingDetails}
       />
     </div>
   );

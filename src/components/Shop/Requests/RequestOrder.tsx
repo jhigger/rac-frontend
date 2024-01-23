@@ -231,10 +231,7 @@ const RequestOrderForm = () => {
                   <BackButton onClick={handleBack} />
                 </div>
                 <div className="col-span-full [@media(min-width:320px)]:col-span-1">
-                  <ProceedButton
-                    onClick={formMethods.handleSubmit(onSubmit)}
-                    disabled={!formMethods.formState.isValid}
-                  />
+                  <ProceedButton onClick={formMethods.handleSubmit(onSubmit)} />
                 </div>
                 <div className="col-span-full">
                   <SaveAsDraftButton onClick={handleSaveAsDraft} />
@@ -627,6 +624,7 @@ const ItemDetailsSection = ({
                     label={"Total shipping cost to your warehouse & Sales Tax"}
                     {...register(
                       `requestPackage.items.${index}.relatedCosts.shippingToOriginWarehouseCost`,
+                      { valueAsNumber: true },
                     )}
                   />
                 </div>

@@ -123,7 +123,7 @@ const useFetchAutoAutoImportRequests = (
           clearingPaymentStatus:
             request.processingFeeStatus as AutoImportRequestPackageType["clearingPaymentStatus"],
           packageCosts: {
-            shippingCost: 0,
+            shippingCost: 0, // todo: missing
             clearingPortHandlingCost: 0, // todo: missing
             otherCharges: 0, // todo: missing
             storageCharge: 0, // todo: missing

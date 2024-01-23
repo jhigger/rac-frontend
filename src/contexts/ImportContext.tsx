@@ -8,7 +8,6 @@ import {
   type ITEM_DELIVERY_STATUS,
   type ORDER_STATUS,
   type ORIGINS,
-  type PACKAGE_DELIVERY_STATUS,
   type PAYMENT_STATUS,
   type REQUEST_STATUS,
   type SHIPPING_METHODS,
@@ -82,7 +81,6 @@ export type ImportRequestPackageType = {
   requestStatus: (typeof REQUEST_STATUS)[number];
   requestLocalDate: string;
   originWarehouse: (typeof ORIGINS)[number];
-  deliveryStatus: (typeof PACKAGE_DELIVERY_STATUS)[number];
   items: ImportItemType[];
   packageCosts: PackageCostsType;
 };

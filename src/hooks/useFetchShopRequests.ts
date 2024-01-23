@@ -47,7 +47,7 @@ const useFetchShopRequests = (
               urgent: item.urgent,
               url: "", // todo: missing
               name: item.itemName,
-              originalCost: item.itemPrice, // todo: undefined instead of number
+              originalCost: item.itemPrice,
               quantity: item.qty,
               weight: 0, // todo: missing
               height: 0, // todo: missing
@@ -56,8 +56,7 @@ const useFetchShopRequests = (
               image:
                 item.itemImage ??
                 "https://placehold.co/500x500/cac4d0/1d192b?text=No%20Image",
-              description: item.description, // todo: undefined instead of string
-              // todo: missing
+              description: item.description,
               relatedCosts: {
                 urgentPurchaseFee: 0, // todo: missing
                 processingFee: 0, // todo: missing
@@ -69,9 +68,9 @@ const useFetchShopRequests = (
             return requestItem;
           }),
           packageCosts: {
-            valueAddedTax: 0, // todo: missing
-            paymentMethodSurcharge: 0, // todo: missing
-            discount: 0, // todo: missing
+            valueAddedTax: request.vat,
+            paymentMethodSurcharge: request.paymentMethodSurcharge,
+            discount: request.discount,
           },
         };
 
@@ -128,13 +127,13 @@ export interface SfmRequest {
   updatedAt: string;
   __v: number;
   requestApprovedAt?: string;
-  discount?: number;
-  paymentMethodSurcharge?: number;
+  discount: number;
+  paymentMethodSurcharge: number;
   totalItemCostFromStore?: number;
   totalProcessingFee?: number;
   totalShippingCost?: number;
   totalUrgentPurchaseCost?: number;
-  vat?: number;
+  vat: number;
   shopForMeCost?: number;
   shopForMeCostPaidAt?: string;
   transactionDetails?: TransactionDetails;

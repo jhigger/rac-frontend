@@ -41,8 +41,6 @@ const useFetchExportRequests = (
           ),
           originWarehouse:
             request.origin as ExportRequestPackageType["originWarehouse"],
-          deliveryStatus:
-            "None delivered" as ExportRequestPackageType["deliveryStatus"], // todo: missing
           items: request.requestItems.map((item) => {
             const requestItem: ExportItemType = {
               name: item.itemName,
@@ -61,7 +59,6 @@ const useFetchExportRequests = (
                 item.itemImage ??
                 "https://placehold.co/500x500/cac4d0/1d192b?text=No%20Image",
               description: item.itemDescription,
-              // todo: missing
             };
 
             return requestItem;

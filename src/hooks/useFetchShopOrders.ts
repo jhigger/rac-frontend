@@ -88,7 +88,7 @@ const useFetchShopOrders = (
           zipPostalCode:
             order.shippingAndBillingInfo.billingInformation[0]?.zipCode ?? "",
         },
-        totalShopForMeCost: 0, // todo: missing
+        totalShopForMeCost: order.shopForMeCost,
         shopForMeStatus:
           order.shopForMeStatus as ShopOrderPackageType["shopForMeStatus"],
         totalShippingCost: order.totalShippingCost,
@@ -165,7 +165,7 @@ export interface SfmOrder {
   totalShippingCost: number;
   totalUrgentPurchaseCost: number;
   vat: number;
-  shopForMeCost?: number;
+  shopForMeCost: number;
   shopForMeCostPaidAt?: string;
   transactionDetails?: TransactionDetails;
   clearingPortHandling: number;

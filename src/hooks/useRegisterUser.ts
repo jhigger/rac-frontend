@@ -1,5 +1,5 @@
 import axios from "axios";
-import { type RegisterType, type UserType } from "~/contexts/AuthContext";
+import { type RegisterType } from "~/contexts/AuthContext";
 
 const useRegisterUser = async (inputs: RegisterType) => {
   const headersList = {
@@ -14,7 +14,11 @@ const useRegisterUser = async (inputs: RegisterType) => {
   };
 
   const response = await axios.request(reqOptions);
-  return response.data as UserType;
+  return response.data as Root;
 };
+
+export interface Root {
+  message: string;
+}
 
 export default useRegisterUser;

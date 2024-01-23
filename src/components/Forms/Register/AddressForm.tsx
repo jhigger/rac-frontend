@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { FieldError, useFormContext } from "react-hook-form";
 import { useAuthContext } from "~/contexts/AuthContext";
 import useStatesCities from "~/hooks/useStatesCities";
 import { type RegisterInputs } from "~/pages/register";
@@ -18,6 +18,10 @@ const AddressForm = () => {
     watch,
   } = useFormContext<RegisterInputs>();
   const { cities, states } = useStatesCities({ watch });
+
+  const phoneNumberError = errors.phoneNumber as
+    | (FieldError & { message: string })
+    | undefined;
 
   return (
     <>
@@ -65,7 +69,7 @@ const AddressForm = () => {
               type="tel"
               disabled={isRegistering}
               {...register("phoneNumber")}
-              errorMessage={errors.phoneNumber?.message}
+              errorMessage={phoneNumberError?.message}
             />
           </div>
         </div>

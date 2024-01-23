@@ -1,12 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { capitalizeWords } from "~/Utils";
 import { type ProfileInformationInputs } from "~/components/Settings/ProfileInformation";
 
 const useSubmitNewProfile = (token: string) => {
   const handleSubmit = async (newProfile: ProfileInformationInputs) => {
     const data = {
-      firstName: newProfile.firstName,
-      lastName: newProfile.lastName,
+      firstName: capitalizeWords(newProfile.firstName),
+      lastName: capitalizeWords(newProfile.lastName),
       country: newProfile.country,
       state: newProfile.state,
       city: newProfile.city,

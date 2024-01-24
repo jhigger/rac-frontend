@@ -1,4 +1,8 @@
 import { useRef, useState } from "react";
+import {
+  useAuthContext,
+  type TwoFactorAuthenticationType,
+} from "~/contexts/AuthContext";
 import { BackButton } from "../Buttons/BackButton";
 import ModalButton, { type ModalButtonProps } from "../Buttons/ModalButton";
 import TabContentLayout from "../Layouts/TabContentLayout";
@@ -11,17 +15,20 @@ import { type SettingsTabContentProps } from "./ProfileInformation";
 import { useAppOption } from "./useAppOption";
 import useEmailOption from "./useEmailOption";
 
-type EnabledType = "app" | "email" | null;
 type SecurityOptions = PreferenceType & {
   modalContent: () => JSX.Element;
   footerContent: ModalButtonProps["footerContent"];
 };
 
 const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
-  const [enabled, setEnabled] = useState<EnabledType>(null); // todo: get this data from server
+  const { authType } = useAuthContext();
+
+  const [enabled, setEnabled] = useState<TwoFactorAuthenticationType | null>(
+    authType,
+  );
   const buttonsRef = useRef<Array<HTMLButtonElement | null>>([]);
 
-  const toggleEnabled = (enabledOption: EnabledType) => {
+  const toggleEnabled = (enabledOption: TwoFactorAuthenticationType | null) => {
     if (enabled === null) setEnabled(enabledOption);
     else setEnabled(null);
   };
@@ -38,9 +45,9 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
       description:
         "Opt for an extra layer of security by using a Time-based One-Time Password (TOTP) authenticator app like Google Authenticator App. Scan the QR code or enter the provided key in your authenticator app to generate codes for login verification",
       onClick: () => {
-        toggleEnabled("app");
+        toggleEnabled("TOTP");
       },
-      disabled: !(enabled === "app"),
+      disabled: !(enabled === "TOTP"),
       modalContent: appOption.modalContent,
       footerContent: appOption.footerContent,
     },
@@ -70,7 +77,7 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
 
         <div className="flex flex-col gap-[20px]">
           <span className="body-lg text-gray-700">
-            {enabled === "app" ? (
+            {enabled === "TOTP" ? (
               <>
                 Your preferred method below is{" "}
                 <span className="text-primary-900">Authentication via App</span>
@@ -116,7 +123,9 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
           })}
 
           <span className="body-lg ml-6 list-item text-gray-500">
-            We recommend using an authenticator app for increased security
+            {enabled === null
+              ? "We recommend using an authenticator app for increased security"
+              : "You can only use one authentication method at a time. If you wish to switch to another one, kindly disable the current method first."}
           </span>
         </div>
 

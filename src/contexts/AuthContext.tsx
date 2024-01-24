@@ -120,7 +120,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     queryKey: ["user"],
     queryFn: async () => {
       if (loginInputs) {
-        if (sixDigitCode) {
+        if (sixDigitCode && router.asPath === "/authentication") {
           console.log("verifying otp...");
           return await submitAuthCode({
             email: loginInputs.email,
@@ -145,6 +145,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         console.log("logging in...");
         return await useLoginUser(loginInputs).then(async () => {
+          console.log("OTP sent..."); // todo: change to snackbar
           redirectTo("/authentication");
           return null;
         });

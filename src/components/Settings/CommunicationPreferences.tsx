@@ -99,7 +99,7 @@ export const PreferenceItem = ({
   disabled = false,
   onClick,
 }: PreferenceItemProps) => {
-  const [isToggled, toggle] = useToggle();
+  const [isToggled, toggle] = useToggle(!disabled);
 
   const handleClick = () => {
     toggle();
@@ -122,6 +122,7 @@ export const PreferenceItem = ({
               type="checkbox"
               disabled={disabled}
               onClick={handleClick}
+              defaultChecked={isToggled}
             />
             <label
               htmlFor={id}

@@ -78,6 +78,9 @@ import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 import useSubmitAutoImportRequest from "~/hooks/useSubmitAutoImportRequest";
 
+const minYear = 1886;
+const currentYear = new Date().getFullYear();
+
 export const schema = z.object({
   requestPackage: z.object({
     originWarehouse: z.string().min(1, "Required").default(""),
@@ -87,9 +90,12 @@ export const schema = z.object({
           brand: z.string().min(1, { message: "Required" }).default(""),
           model: z.string().min(1, { message: "Required" }).default(""),
           productionYear: z
-            .string()
-            .min(1, { message: "Required" })
-            .default(""),
+            .number()
+            .min(minYear, { message: `Minimum year is ${minYear}` })
+            .max(currentYear, {
+              message: `Maximum year is ${currentYear}`,
+            })
+            .default(2024),
           value: z.number().min(1, { message: "Required" }).default(1),
           condition: z.string().min(1, "Required").default(""),
           color: z.string().min(1, { message: "Required" }).default(""),
@@ -254,7 +260,7 @@ export const emptyValue: AutoImportInputs = {
       {
         brand: "",
         model: "",
-        productionYear: "",
+        productionYear: 2024,
         value: 0,
         condition: "",
         color: "",
@@ -598,8 +604,10 @@ const ItemDetailsSection = ({
                   <TextInput
                     id={`productionYear-${index}`}
                     label={"Production Year"}
+                    type="number"
                     {...register(
                       `requestPackage.items.${index}.productionYear`,
+                      { valueAsNumber: true },
                     )}
                   />
                 </div>

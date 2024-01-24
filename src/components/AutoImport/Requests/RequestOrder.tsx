@@ -376,7 +376,7 @@ const RequestOrder = () => {
     const b = await formMethods.trigger("requestPackage.items", {
       shouldFocus: true,
     });
-    if (a && b) next();
+    if (formMethods.getValues("requestPackage.items")) if (a && b) next();
   };
 
   const handleStep2Validation = async () => {
@@ -757,17 +757,18 @@ type DropOffAddressProps = { index: number };
 
 const DropOffAddress = ({ index }: DropOffAddressProps) => {
   const { register, watch, getValues, setValue } =
-    useFormContext<
-      NonNullable<AutoImportInputs["requestPackage"]["items"][number]>
-    >();
-  const { open, toggle } = useAccordion(Boolean(getValues("pickupDetails")));
+    useFormContext<AutoImportInputs>();
+  const { open, toggle } = useAccordion(
+    Boolean(getValues(`requestPackage.items.${index}.pickupDetails`)),
+  );
   const { states, cities } = useStatesCities({
-    path: "pickupDetails",
+    path: `requestPackage.items.${index}.pickupDetails`,
     watch,
   });
 
   useEffect(() => {
-    if (!open) setValue("pickupDetails", undefined);
+    if (!open)
+      setValue(`requestPackage.items.${index}.pickupDetails`, undefined);
     console.log(getValues());
   }, [open]);
 
@@ -800,7 +801,9 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={"contactFirstName"}
                   label={"Pick up Contact First Name"}
-                  {...register(`pickupDetails.firstName`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.firstName`,
+                  )}
                 />
               </div>
 
@@ -808,7 +811,9 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={"contactLastName"}
                   label={"Pick up Contact Last Name"}
-                  {...register(`pickupDetails.lastName`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.lastName`,
+                  )}
                 />
               </div>
 
@@ -817,13 +822,17 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={`pickUpEmail-${index}`}
                   label="Pick up Contact Email Address"
                   type="email"
-                  {...register(`pickupDetails.email`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.email`,
+                  )}
                 />
               </div>
 
               <div className="col-span-full md:col-span-3">
                 <SelectCountryPhoneCodeInput
-                  {...register(`pickupDetails.countryCode`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.countryCode`,
+                  )}
                 />
               </div>
 
@@ -832,7 +841,9 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   id={`contactPhoneNumber-${index}`}
                   label="Contact's Phone Number"
                   type="tel"
-                  {...register(`pickupDetails.phoneNumber`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.phoneNumber`,
+                  )}
                 />
               </div>
 
@@ -840,25 +851,35 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={`pickUpAddress-${index}`}
                   label={"Pick up Address"}
-                  {...register(`pickupDetails.address`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.address`,
+                  )}
                 />
               </div>
 
               <div className="col-span-full md:col-span-4">
-                <SelectCountryInput {...register(`pickupDetails.country`)} />
+                <SelectCountryInput
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.country`,
+                  )}
+                />
               </div>
 
               <div className="col-span-full md:col-span-4">
                 <SelectStateInput
                   states={states}
-                  {...register(`pickupDetails.state`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.state`,
+                  )}
                 />
               </div>
 
               <div className="col-span-full md:col-span-4">
                 <SelectCityInput
                   cities={cities}
-                  {...register(`pickupDetails.city`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.city`,
+                  )}
                 />
               </div>
 
@@ -868,7 +889,9 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                   label={"Pick up date"}
                   type="date"
                   min={new Date().toLocaleDateString()}
-                  {...register(`pickupDetails.pickUpDate`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.pickUpDate`,
+                  )}
                 />
               </div>
 
@@ -876,7 +899,19 @@ const DropOffAddress = ({ index }: DropOffAddressProps) => {
                 <TextInput
                   id={"locationType"}
                   label={"Pickup Location Type"}
-                  {...register(`pickupDetails.locationType`)}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.locationType`,
+                  )}
+                />
+              </div>
+
+              <div className="col-span-full">
+                <TextInput
+                  id={"zipPostalCode"}
+                  label={"Zip Postal Code"}
+                  {...register(
+                    `requestPackage.items.${index}.pickupDetails.zipPostalCode`,
+                  )}
                 />
               </div>
             </div>

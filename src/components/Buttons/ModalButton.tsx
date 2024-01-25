@@ -51,7 +51,7 @@ const ModalButton = (
             data-close={dataTarget}
             className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
           ></div>
-          <div className="z-50 m-auto flex h-max w-full max-w-[900px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+          <div className="z-50 m-auto flex h-max w-max max-w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
             {children}
             {footerContent?.({ dataClose: dataTarget })}
           </div>

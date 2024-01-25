@@ -17,7 +17,6 @@ import {
 } from "iconsax-react";
 import Link from "next/link";
 import { useEffect } from "react";
-import { createPortal } from "react-dom";
 import { useToggle } from "usehooks-ts";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { useNavContext } from "~/contexts/NavigationContext";
@@ -29,6 +28,7 @@ import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
+import ModalButton from "../Buttons/ModalButton";
 import { PrimaryBackButton } from "../Buttons/PrimaryBackButton";
 import { PrimaryCloseModalButton } from "../Buttons/PrimaryCloseModalButton";
 import AccordionButton from "../Forms/AccordionButton";
@@ -101,40 +101,6 @@ const MenuButton = () => {
 };
 
 const NotificationButton = () => {
-  const id = "notification";
-  const dataTarget = `#${id}`;
-
-  const { notifications } = useNotificationContext();
-
-  useEffect(() => {
-    tailmater();
-  }, []);
-
-  return (
-    <>
-      <button
-        aria-label="Notifications"
-        data-type="dialogs"
-        data-target={dataTarget}
-        className="btn relative flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
-      >
-        <NotificationBing className="text-gray-500" />
-        {notifications.length > 0 && (
-          <div className="label-sm absolute right-3 top-3 flex h-[10px] min-w-[10px] items-center justify-center rounded-full bg-error-600 p-1 text-[8px] text-white">
-            {/* put notification count here */}
-          </div>
-        )}
-      </button>
-      {createPortal(<NotificationModal id={id} />, document.body)}
-    </>
-  );
-};
-
-type NotificationModalProps = { id: string };
-
-const NotificationModal = ({ id }: NotificationModalProps) => {
-  const dataClose = `#${id}`;
-
   const {
     notifications,
     selectedNotification,
@@ -142,6 +108,10 @@ const NotificationModal = ({ id }: NotificationModalProps) => {
     handleSelectedNotification,
   } = useNotificationContext();
   const { customText, handleCustomText } = useTabContext();
+
+  useEffect(() => {
+    tailmater();
+  }, []);
 
   useEffect(() => {
     if (selectedNotification) {
@@ -156,62 +126,84 @@ const NotificationModal = ({ id }: NotificationModalProps) => {
   }, [selectedNotification]);
 
   return (
-    <div
-      id={id}
-      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] [&.show]:inset-0 [&.show]:h-screen [&.show]:opacity-100"
-    >
-      <div
-        data-close={dataClose}
-        className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
-      ></div>
-      <div className="z-50 m-auto flex h-max w-max flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
-        <RequestFormHeader title="Notifications" />
-
-        {selectedNotification ? (
+    <ModalButton
+      modalId="notifications"
+      label="Notification"
+      buttonClassName="btn relative flex h-12 w-12 items-center justify-center rounded-[6.25rem] hover:bg-surface-300 focus:bg-surface-400"
+      buttonContent={
+        <>
+          <NotificationBing className="text-gray-500" />
+          {notifications.length > 0 && (
+            <div className="label-sm absolute right-3 top-3 flex h-[10px] min-w-[10px] items-center justify-center rounded-full bg-error-600 p-1 text-[8px] text-white">
+              {/* put notification count here */}
+            </div>
+          )}
+        </>
+      }
+      footerContent={({ dataClose }) =>
+        !selectedNotification ? (
           <>
-            <div className="flex items-center gap-[15px] rounded-[20px] bg-surface-200 p-[20px] text-secondary-600">
-              <span className="title-sm">Notifications</span>
-              <ArrowLeft size={10} variant="Outline" />
-              <span className="title-sm">{customText}</span>
-            </div>
-            <div className="flex flex-col gap-[30px]">
-              <div className="flex w-[997px] flex-col gap-[30px] rounded-[20px] bg-surface-100 p-[20px]">
-                {/* //todo: replace with real content based on notification type */}
-                <PaymentConfirmedContent order={selectedNotification.order} />
-              </div>
-              <div className="w-full self-center md:max-w-[300px]">
-                <PrimaryBackButton
-                  onClick={() => handleSelectedNotification(null)}
-                />
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex flex-col gap-[30px]">
-            {notifications.length > 0 ? (
-              <div className="flex flex-col gap-[10px]">
-                {notifications.map((notification, i) => {
-                  return (
-                    <NotificationItem
-                      key={i}
-                      index={i}
-                      notification={notification}
-                    />
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="flex items-center justify-center">Empty</div>
-            )}
-            <div className="flex flex-col items-center justify-center gap-[10px] md:flex-row [&>*]:w-max">
+            <div className="hidden flex-col items-center justify-center gap-[10px] md:flex md:flex-row md:[&>*]:w-max">
               <ClearAllButton onClick={clearAll} />
               <ViewAllButton dataClose={dataClose} />
               <PrimaryCloseModalButton dataClose={dataClose} />
             </div>
+            {/* for mobile */}
+            <div className="flex flex-col items-center justify-center gap-[10px] md:hidden md:flex-row">
+              <div className="w-full">
+                <ViewAllButton dataClose={dataClose} />
+              </div>
+              <div className="flex w-full gap-[10px]">
+                <ClearAllButton onClick={clearAll} />
+                <PrimaryCloseModalButton dataClose={dataClose} />
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="w-full self-center md:max-w-[300px]">
+            <PrimaryBackButton
+              onClick={() => handleSelectedNotification(null)}
+            />
           </div>
-        )}
-      </div>
-    </div>
+        )
+      }
+    >
+      <RequestFormHeader title="Notifications" />
+
+      {selectedNotification ? (
+        <>
+          <div className="flex items-center gap-[15px] rounded-[20px] bg-surface-200 p-[20px] text-secondary-600">
+            <span className="title-sm">Notifications</span>
+            <ArrowLeft size={10} variant="Outline" />
+            <span className="title-sm">{customText}</span>
+          </div>
+          <div className="flex flex-col gap-[30px]">
+            <div className="flex w-full flex-col gap-[30px] rounded-[20px] bg-surface-100 p-[20px]">
+              {/* //todo: replace with real content based on notification type */}
+              <PaymentConfirmedContent order={selectedNotification.order} />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="flex flex-col gap-[30px]">
+          {notifications.length > 0 ? (
+            <div className="flex flex-col gap-[10px]">
+              {notifications.map((notification, i) => {
+                return (
+                  <NotificationItem
+                    key={i}
+                    index={i}
+                    notification={notification}
+                  />
+                );
+              })}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center">Empty</div>
+          )}
+        </div>
+      )}
+    </ModalButton>
   );
 };
 

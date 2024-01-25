@@ -19,6 +19,7 @@ import {
   type ShopOrderPackageType,
   type ShopRequestPackageType,
 } from "./ShopContext";
+import { notificationItems } from "~/fake data";
 
 export type NotificationContextType = {
   notifications: NotificationItemType[];
@@ -73,7 +74,7 @@ const NotificationContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleNotifications = () => {
-    setNotifications(sortNotificationByDate([])); // todo: get real data
+    setNotifications(sortNotificationByDate(notificationItems)); // todo: get real data
   };
 
   const handleSelectedNotification = (

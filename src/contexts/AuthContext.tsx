@@ -87,6 +87,7 @@ export type RegisterType = {
 export type TwoFactorAuthenticationType = "email" | "TOTP";
 
 export const restrictedPaths = [
+  "/",
   "/login",
   "/authentication",
   "/register",
@@ -217,7 +218,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     // redirect to /shop or callback route if token exist else redirect to /login
     if (!loginInputs && pathWithoutQuery[0] === "/authentication") {
       await redirectTo("/login");
-    } else if (user && !isRefetching) {
+    } else if (user) {
       if (restrictedPaths.includes(pathWithoutQuery[0])) {
         console.log("Redirecting to /shop...");
         await redirectTo("/shop");
@@ -238,7 +239,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         await redirectTo(pathWithoutQuery[0]);
       }
     } else if (!user && cookies.jwt === undefined && isRefetching) {
-      if (!restrictedPaths.includes(pathWithoutQuery[0])) {
+      if (restrictedPaths.includes(pathWithoutQuery[0])) {
         console.log("User logged out or token expired");
         console.log("Redirecting to /login...");
         await redirectTo("/login");

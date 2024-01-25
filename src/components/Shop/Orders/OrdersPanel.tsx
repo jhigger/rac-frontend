@@ -548,7 +548,6 @@ export const ShippingStatusModalLayout = ({
   const shippingStatus = orderPackage.shippingStatus;
   const maxWidth =
     shippingStatus === "cleared" ? "max-w-[1000px]" : "max-w-[700px]";
-  const marginTop = shippingStatus === "cleared" ? "md:mt-[345px]" : "";
 
   const shipmentDetails = WAREHOUSE_LOCATIONS["Nigeria Warehouse (Lagos)"];
 
@@ -556,7 +555,7 @@ export const ShippingStatusModalLayout = ({
     <div
       id={modalId}
       className={
-        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-start justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+        "ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
       }
     >
       <div
@@ -564,7 +563,7 @@ export const ShippingStatusModalLayout = ({
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
       <div
-        className={`z-50 flex h-max w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px] ${maxWidth} ${marginTop}`}
+        className={`z-50 m-auto flex h-max w-full flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px] ${maxWidth}`}
       >
         <RequestFormHeader title="Shipping Status" />
 

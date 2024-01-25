@@ -25,6 +25,7 @@ import {
   useNotificationContext,
   type NotificationItemType,
 } from "~/contexts/NotificationContext";
+import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import tailmater from "~/js/tailmater";
 import { CloseModalButton } from "../Buttons/CloseModalButton";
@@ -40,7 +41,6 @@ import { PaymentConfirmedContent } from "../Shop/Modals/PaymentConfirmed";
 import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
 import AppBarTabs from "./AppBarTabs";
 import BreadCrumbs from "./BreadCrumbs";
-import { useTabContext } from "~/contexts/TabContext";
 
 dayjs.extend(relativeTime);
 
@@ -159,13 +159,13 @@ const NotificationModal = ({ id }: NotificationModalProps) => {
   return (
     <div
       id={id}
-      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-screen [&.show]:opacity-100"
+      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] [&.show]:inset-0 [&.show]:h-screen [&.show]:opacity-100"
     >
       <div
         data-close={dataClose}
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
-      <div className="z-50 flex h-max max-h-[calc(100vh-40px)] w-max flex-col gap-[30px] overflow-y-auto rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+      <div className="z-50 m-auto flex h-max w-max flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Notifications" />
 
         {selectedNotification ? (
@@ -177,6 +177,7 @@ const NotificationModal = ({ id }: NotificationModalProps) => {
             </div>
             <div className="flex flex-col gap-[30px]">
               <div className="flex w-[997px] flex-col gap-[30px] rounded-[20px] bg-surface-100 p-[20px]">
+                {/* //todo: replace with real content based on notification type */}
                 <PaymentConfirmedContent order={selectedNotification.order} />
               </div>
               <div className="w-full self-center md:max-w-[300px]">

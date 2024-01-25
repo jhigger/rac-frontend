@@ -230,7 +230,7 @@ const AppStep3 = () => {
               </div>
             </div>
           ) : (
-            <div className="-my-[10px] flex flex-col gap-[30px] md:-mx-[14px]">
+            <div className="flex flex-col gap-[30px] md:-mx-[14px]">
               <span className="title-md md:title-lg text-gray-700">
                 Insert the provided code into your mobile authentication app.
                 Retrieve the code shown by the mobile app and proceed with the

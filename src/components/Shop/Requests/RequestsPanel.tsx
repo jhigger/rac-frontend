@@ -6,6 +6,7 @@ import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import LabelId from "~/components/LabelId";
+import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
 import { type REQUEST_STATUS } from "~/constants";
 import { type RequestPackageType } from "~/contexts/NotificationContext";
@@ -25,13 +26,9 @@ import { ImageColumn, ModalSectionContentLayout } from "../Orders/OrdersPanel";
 import RequestCheckout from "./RequestCheckout";
 import RequestDetails from "./RequestDetails";
 import RequestOrderForm, { RequestFormHeader } from "./RequestOrder";
-import { LoadingSpinner } from "~/components/LoadingScreen";
 
 const ShopRequestsPanel = () => {
-  const {
-    requestPackages,
-    isFetchingRequestPackages,
-  } = useShopContext();
+  const { requestPackages, isFetchingRequestPackages } = useShopContext();
   const { activeAction } = useTabContext();
 
   if (activeAction === "request new order") {
@@ -302,13 +299,13 @@ export const RequestStatusModalLayout = ({
   return (
     <div
       id={modalId}
-      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] md:items-center [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
+      className="ease-[cubic-bezier(0, 0, 0, 1)] fixed left-0 top-0 z-50 flex h-0 w-full items-center justify-center overflow-auto p-4 opacity-0 duration-[400ms] [&.show]:inset-0 [&.show]:h-full [&.show]:opacity-100"
     >
       <div
         data-close={dataClose}
         className="backDialog fixed z-40 hidden overflow-auto bg-black opacity-50"
       ></div>
-      <div className="z-50 flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
+      <div className="z-50 m-auto flex h-max w-full max-w-[700px] flex-col gap-[30px] rounded-[20px] bg-surface-300 p-[20px] md:p-[30px]">
         <RequestFormHeader title="Request Status" />
 
         <ModalSectionContentLayout>

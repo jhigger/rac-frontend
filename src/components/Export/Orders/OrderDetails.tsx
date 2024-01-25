@@ -1,3 +1,4 @@
+import { useToggle } from "usehooks-ts";
 import { formatCurrency } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { DestinationAddressDetails } from "~/components/AutoImport/Requests/RequestOrder";
@@ -30,7 +31,6 @@ import {
 } from "~/components/Shop/Requests/RequestOrder";
 import { useExportContext } from "~/contexts/ExportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 
 const OrderDetails = () => {
   const { orderPackages } = useExportContext();
@@ -117,7 +117,7 @@ const OrderDetails = () => {
 };
 
 const OrderInformation = ({ info }: OrderInformationProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <div className="flex flex-col gap-[10px]">

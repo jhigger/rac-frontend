@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { useEffect } from "react";
+import { useToggle } from "usehooks-ts";
 import { PrimaryBackButton } from "~/components/Buttons/PrimaryBackButton";
 import { type NOTIFICATION_TYPES } from "~/constants";
 import { type AutoImportOrderPackageType } from "~/contexts/AutoImportContext";
@@ -12,7 +13,6 @@ import {
 } from "~/contexts/NotificationContext";
 import { type ShopOrderPackageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import AccordionButton from "../Forms/AccordionButton";
@@ -133,7 +133,7 @@ const NotificationListItem = ({
   index,
   notification,
 }: NotificationListItemProps) => {
-  const { open, toggle } = useAccordion(false);
+  const [open, toggle] = useToggle(false);
   const { handleDelete } = useNotificationContext();
 
   const currentYear = new Date().getFullYear();

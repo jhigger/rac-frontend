@@ -1,5 +1,6 @@
 import { ConvertCard, Security, Wallet } from "iconsax-react";
 import { type ReactNode } from "react";
+import { useToggle } from "usehooks-ts";
 import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -7,7 +8,6 @@ import LabelId from "~/components/LabelId";
 import { type REQUEST_STATUS } from "~/constants";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import AccordionButton from "../../Forms/AccordionButton";
 import { NotRespondedStatus, RespondedStatus } from "../Orders";
 import { PurpleDetailSection } from "../Orders/ClearPackage";
@@ -161,7 +161,7 @@ export const ShopRequestItem = ({
   index,
   status,
 }: ShopRequestItemProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>
@@ -395,7 +395,7 @@ export const LabelWithTooltip = ({ label, tooltip }: LabelWithTooltipProps) => {
 type PackageOriginProps = { children: ReactNode };
 
 export const PackageOrigin = ({ children }: PackageOriginProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>
@@ -430,7 +430,7 @@ export type RequestInformationProps = {
 };
 
 export const RequestInformation = ({ info }: RequestInformationProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <div className="flex flex-col gap-[10px]">

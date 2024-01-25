@@ -6,6 +6,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useToggle } from "usehooks-ts";
 import { parseCountryCode, parseStateCode } from "~/Utils";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import ModalButton from "~/components/Buttons/ModalButton";
@@ -23,7 +24,6 @@ import {
 import { BILLING_ADDRESS_OPTIONS } from "~/constants";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
-import useAccordion from "~/hooks/useAccordion";
 import useStatesCities from "~/hooks/useStatesCities";
 
 type BusinessDetailsType = {
@@ -328,7 +328,7 @@ const DefaultBusinessAddressRadio = ({
   defaultBusinessAddress,
 }: DefaultBusinessAddressRadioProps) => {
   const checked = radio === BILLING_ADDRESS_OPTIONS[0];
-  const { open, toggle } = useAccordion(checked);
+  const [open, toggle] = useToggle(checked);
 
   const {
     email,
@@ -400,7 +400,7 @@ const CustomBusinessAddressRadio = ({
   children,
 }: CustomBusinessAddressRadioProps) => {
   const checked = radio === BILLING_ADDRESS_OPTIONS[1];
-  const { open, toggle } = useAccordion(checked);
+  const [open, toggle] = useToggle(checked);
 
   useEffect(() => {
     if (checked && !open) toggle();

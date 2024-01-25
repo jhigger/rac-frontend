@@ -10,6 +10,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { toast } from "sonner";
+import { useToggle } from "usehooks-ts";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
 import { formatCurrency, parseCountryCode, parseStateCode } from "~/Utils";
@@ -73,7 +74,6 @@ import {
   type PickupDetailsType,
 } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useImageHandler from "~/hooks/useImageHandler";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
@@ -553,7 +553,7 @@ const ItemDetailsSection = ({
   handleRemoveItem,
 }: ItemDetailsSectionProps) => {
   const { register, setValue } = useFormContext<AutoImportInputs>();
-  const { open, toggle } = useAccordion(expanded);
+  const [open, toggle] = useToggle(expanded);
 
   const emptyImage = {
     name: "No file chosen",
@@ -762,7 +762,7 @@ type DropOffAddressProps = { index: number };
 const DropOffAddress = ({ index }: DropOffAddressProps) => {
   const { register, watch, getValues, setValue } =
     useFormContext<AutoImportInputs>();
-  const { open, toggle } = useAccordion(
+  const [open, toggle] = useToggle(
     Boolean(getValues(`requestPackage.items.${index}.pickupDetails`)),
   );
   const { states, cities } = useStatesCities({
@@ -1201,7 +1201,7 @@ type DestinationAddressDetailsProps = {
 export const DestinationAddressDetails = ({
   destinationDetails,
 }: DestinationAddressDetailsProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
   const {
     firstName,
     lastName,
@@ -1382,7 +1382,7 @@ export type AutoImportOrderItemProps = {
 };
 
 const AutoImportOrderItem = ({ index, item }: AutoImportOrderItemProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>

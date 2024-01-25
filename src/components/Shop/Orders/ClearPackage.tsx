@@ -8,6 +8,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useToggle } from "usehooks-ts";
 import { parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -27,7 +28,6 @@ import {
 } from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   AndLastly,
@@ -216,7 +216,7 @@ type DestinationShippingAddressProps = {
 export const DestinationShippingAddress = ({
   destinationWarehouse,
 }: DestinationShippingAddressProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>
@@ -440,7 +440,7 @@ export const Success = ({ officeLocation }: SuccessProps) => {
 type OfficePickupAddressProps = SuccessProps;
 
 const OfficePickupAddress = ({ officeLocation }: OfficePickupAddressProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
   const { address, country, state, city, zipPostalCode } = officeLocation;
 
   return (

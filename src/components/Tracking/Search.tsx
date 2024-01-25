@@ -7,10 +7,10 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useToggle } from "usehooks-ts";
 import { capitalizeWords } from "~/Utils";
 import { SHIPPING_STATUS } from "~/constants";
 import { useTrackingContext } from "~/contexts/TrackingContext";
-import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { CustomerSupportButton } from "../AutoImport/Requests/RequestOrder";
 import { BackButton } from "../Buttons/BackButton";
@@ -151,7 +151,7 @@ const ArrivedDestination = () => {
 
   if (!orderPackage) return;
 
-  const { open, toggle } = useAccordion(
+  const [open, toggle] = useToggle(
     SHIPPING_STATUS.slice(5).includes(orderPackage.shippingStatus),
   );
 
@@ -312,7 +312,7 @@ const InTransit = () => {
 
   if (!orderPackage) return;
 
-  const { open, toggle } = useAccordion(
+  const [open, toggle] = useToggle(
     !SHIPPING_STATUS.slice(5).includes(orderPackage.shippingStatus),
   );
 
@@ -398,7 +398,7 @@ const Starting = () => {
 
   if (!orderPackage) return;
 
-  const { open, toggle } = useAccordion(
+  const [open, toggle] = useToggle(
     !SHIPPING_STATUS.slice(4).includes(orderPackage.shippingStatus),
   );
 

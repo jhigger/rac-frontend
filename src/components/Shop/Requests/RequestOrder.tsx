@@ -22,6 +22,7 @@ import {
 } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
 import { toast } from "sonner";
+import { useToggle } from "usehooks-ts";
 import { z } from "zod";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -41,7 +42,6 @@ import { useAuthContext } from "~/contexts/AuthContext";
 import { useNavContext } from "~/contexts/NavigationContext";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useImageHandler from "~/hooks/useImageHandler";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useSubmitShopRequest from "~/hooks/useSubmitShopRequest";
@@ -500,7 +500,7 @@ const ItemDetailsSection = ({
     getValues,
     setValue,
   } = useFormContext<ShopInputs>();
-  const { open, toggle } = useAccordion(expanded);
+  const [open, toggle] = useToggle(expanded);
 
   const emptyImage = {
     name: "No file chosen",

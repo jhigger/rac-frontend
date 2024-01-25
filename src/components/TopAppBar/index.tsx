@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useToggle } from "usehooks-ts";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { useNavContext } from "~/contexts/NavigationContext";
 import {
@@ -25,7 +26,6 @@ import {
   type NotificationItemType,
 } from "~/contexts/NotificationContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import tailmater from "~/js/tailmater";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
@@ -256,7 +256,7 @@ const ClearAllButton = ({ onClick }: ClearAllButtonProps) => {
 type NotificationItemProps = NotificationListItemProps;
 
 const NotificationItem = ({ index }: NotificationItemProps) => {
-  const { open, toggle } = useAccordion(false);
+  const [open, toggle] = useToggle(false);
   const { notifications, handleDelete } = useNotificationContext();
   const notification = notifications[index];
 
@@ -330,7 +330,7 @@ export const PreviewNotificationButton = ({
 };
 
 const AccountButton = () => {
-  const { open, toggle } = useAccordion(false);
+  const [open, toggle] = useToggle(false);
   const { handleLogout } = useAuthContext();
 
   return (

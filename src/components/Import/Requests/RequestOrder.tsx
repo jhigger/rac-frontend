@@ -9,6 +9,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { toast } from "sonner";
+import { useToggle } from "usehooks-ts";
 import { z } from "zod";
 import { parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -51,7 +52,6 @@ import {
 import { useAuthContext } from "~/contexts/AuthContext";
 import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useImageHandler from "~/hooks/useImageHandler";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useSubmitImportRequest from "~/hooks/useSubmitImportRequest";
@@ -359,7 +359,7 @@ const ItemDetailsSection = ({
     getValues,
     setValue,
   } = useFormContext<ImportInputs>();
-  const { open, toggle } = useAccordion(expanded);
+  const [open, toggle] = useToggle(expanded);
 
   const emptyImage = {
     name: "No file chosen",
@@ -728,7 +728,7 @@ type OfficeDeliverAddressProps = {
 export const OfficeDeliverAddress = ({
   officeLocation,
 }: OfficeDeliverAddressProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
   const { address, country, state, city, zipPostalCode } = officeLocation;
 
   return (

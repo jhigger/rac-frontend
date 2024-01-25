@@ -9,6 +9,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useToggle } from "usehooks-ts";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
@@ -54,7 +55,6 @@ import {
   type BillingDetailsType,
 } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import {
   AutoImportOrderItemDetails,
@@ -267,7 +267,7 @@ export const AutoImportOrderItem = ({
   index,
   item,
 }: AutoImportOrderItemProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>

@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { useToggle } from "usehooks-ts";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
@@ -22,7 +23,6 @@ import {
 import { WAREHOUSE_LOCATIONS } from "~/constants";
 import { useAutoImportContext } from "~/contexts/AutoImportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import { AutoImportOrderItem } from "../Orders/InitiateShipping";
 import {
   DestinationAddressDetails,
@@ -124,7 +124,7 @@ type PaymentsInformation = {
 };
 
 export const PaymentsInformation = ({ children }: PaymentsInformation) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>
@@ -146,7 +146,7 @@ export const PaymentsInformation = ({ children }: PaymentsInformation) => {
 };
 
 const OrderInformation = ({ info }: RequestInformationProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <div className="flex flex-col gap-[10px]">

@@ -1,3 +1,4 @@
+import { useToggle } from "usehooks-ts";
 import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
@@ -21,7 +22,6 @@ import {
   type ImportItemType,
 } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 
 const RequestDetails = () => {
   const { requestPackages } = useImportContext();
@@ -79,7 +79,7 @@ type ImportRequestItemProps = {
 };
 
 const ImportRequestItem = ({ index, item }: ImportRequestItemProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>
@@ -152,7 +152,7 @@ const ImportRequestItemDetails = ({ item }: ImportRequestItemDetailsProps) => {
 };
 
 export const OrderInformation = ({ info }: RequestInformationProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <div className="flex flex-col gap-[10px]">

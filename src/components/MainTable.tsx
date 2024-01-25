@@ -17,7 +17,7 @@ import {
 } from "iconsax-react";
 import { useMemo, useState, type ChangeEventHandler } from "react";
 import Balancer from "react-wrap-balancer";
-import useAccordion from "~/hooks/useAccordion";
+import { useToggle } from "usehooks-ts";
 import AccordionButton from "./Forms/AccordionButton";
 import SearchBar, { type FilterCategoriesType } from "./SearchBar";
 
@@ -286,7 +286,7 @@ const TableRow = <T extends object>({
   filters,
   columns,
 }: TableRowProps<T>) => {
-  const { open, toggle } = useAccordion(false);
+  const [open, toggle] = useToggle(false);
 
   return (
     <>

@@ -9,6 +9,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useToggle } from "usehooks-ts";
 import {
   formatCurrency,
   formatDimension,
@@ -66,7 +67,6 @@ import {
   type ImportItemType,
 } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 
@@ -256,7 +256,7 @@ const PackageConfirmation = () => {
 type ImportOrderItemProps = { index: number; item: ImportItemType };
 
 const ImportOrderItem = ({ index, item }: ImportOrderItemProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>

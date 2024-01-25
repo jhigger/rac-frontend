@@ -1,3 +1,4 @@
+import { useToggle } from "usehooks-ts";
 import { formatCurrency } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -32,7 +33,6 @@ import {
 import { type SHIPPING_STATUS } from "~/constants";
 import { useImportContext } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import { ImportOrderItem } from "./ClearPackage";
 
 const OrderDetails = () => {
@@ -124,7 +124,7 @@ export type OrderInformationProps = {
 };
 
 const OrderInformation = ({ info }: OrderInformationProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <div className="flex flex-col gap-[10px]">

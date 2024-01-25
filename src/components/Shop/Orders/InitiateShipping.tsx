@@ -15,6 +15,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useToggle } from "usehooks-ts";
 import {
   formatCurrency,
   formatDimension,
@@ -44,7 +45,6 @@ import {
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { InitiateShippingButton } from "../../Buttons/InitiateShippingButton";
 import {
@@ -290,7 +290,7 @@ type ShopOrderItemProps = {
 };
 
 export const ShopOrderItem = ({ item, index }: ShopOrderItemProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>
@@ -500,7 +500,7 @@ const BillingAddressStep = () => {
 type BillingAddressProps = { billingDetails: BillingDetailsType };
 
 export const BillingAddress = ({ billingDetails }: BillingAddressProps) => {
-  const { open, toggle } = useAccordion(true);
+  const [open, toggle] = useToggle(true);
 
   return (
     <SectionContentLayout>
@@ -861,7 +861,7 @@ export const ShippingMethod = forwardRef(
     }: ShippingMethodProps,
     ref: Ref<HTMLInputElement>,
   ) => {
-    const { open, toggle } = useAccordion(expanded);
+    const [open, toggle] = useToggle(expanded);
 
     const shippingMethodCosts = SHIPPING_METHOD_OPTIONS[value];
 

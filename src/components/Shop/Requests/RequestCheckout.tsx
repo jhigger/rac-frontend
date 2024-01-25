@@ -17,6 +17,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { useToggle } from "usehooks-ts";
 import {
   formatCurrency,
   formatWeight,
@@ -46,7 +47,6 @@ import { useAuthContext } from "~/contexts/AuthContext";
 import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
-import useAccordion from "~/hooks/useAccordion";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import useStatesCities from "~/hooks/useStatesCities";
 import AccordionButton from "../../Forms/AccordionButton";
@@ -376,7 +376,7 @@ export const DefaultBillingAddressRadio = ({
   defaultBillingAddress,
 }: DefaultBillingAddressRadioProps) => {
   const checked = radio === BILLING_ADDRESS_OPTIONS[0];
-  const { open, toggle } = useAccordion(checked);
+  const [open, toggle] = useToggle(checked);
 
   const {
     firstName,
@@ -451,7 +451,7 @@ export const CustomBillingAddressRadio = ({
   children,
 }: CustomBillingAddressRadioProps) => {
   const checked = radio === BILLING_ADDRESS_OPTIONS[1];
-  const { open, toggle } = useAccordion(checked);
+  const [open, toggle] = useToggle(checked);
 
   useEffect(() => {
     if (checked && !open) toggle();
@@ -742,7 +742,7 @@ export const PaymentMethod = forwardRef(
     { paymentMethod, expanded = false }: PaymentMethodProps,
     ref: Ref<HTMLInputElement>,
   ) => {
-    const { open, toggle } = useAccordion(expanded);
+    const [open, toggle] = useToggle(expanded);
 
     const { title, description } = paymentMethod;
 

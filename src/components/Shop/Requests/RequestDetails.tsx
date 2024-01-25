@@ -5,6 +5,7 @@ import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
 import LabelId from "~/components/LabelId";
+import TooltipContent from "~/components/TooltipContent";
 import { type REQUEST_STATUS } from "~/constants";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
@@ -218,11 +219,7 @@ const ShopRequestItemDetails = ({
         value={item.name}
         tooltip={
           status === "Responded" ? (
-            // todo: refactor to reusable component
-            <div className="flex flex-col">
-              <span>You provided: xxx</span>
-              <span>We verified: xxx</span>
-            </div>
+            <TooltipContent provided={"xxx"} verified={"xxx"} />
           ) : null
         }
         colSpanDesktop={4}

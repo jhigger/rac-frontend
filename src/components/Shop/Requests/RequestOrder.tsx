@@ -466,8 +466,6 @@ export const TooltipButton = ({ label, position }: TooltipButtonProps) => {
   return (
     <>
       {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
         <div
           role="tooltip"
           data-tooltip-id={id}

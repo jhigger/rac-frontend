@@ -171,6 +171,4 @@ const RequestsTable = () => {
   );
 };
 
-// todo: revise modal
-
 export default ExportRequestsPanel;

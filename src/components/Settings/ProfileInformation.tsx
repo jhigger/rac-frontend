@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowCircleRight2, Call, Edit, Google, Location } from "iconsax-react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -355,11 +355,11 @@ const SubTabs = ({ parentTabId, defaultTabId }: SubTabsProps) => {
 
   if (!tabs) return;
 
-  const handleRef = (el: HTMLButtonElement) => {
+  const handleRef = useCallback((el: HTMLButtonElement) => {
     if (!el) return;
     if (tabsRef.current.length >= 3) tabsRef.current.shift();
     tabsRef.current.push(el);
-  };
+  }, []);
 
   useEffect(() => {
     handleTabChange(defaultTabId);
@@ -416,7 +416,7 @@ const SubTabContentPanels = () => {
           <div
             key={`sub-panel-${id.replace(" ", "-")}`}
             id={`sub-panel-${id.replace(" ", "-")}`}
-            role="tabpanel"
+            role="subtabpanel"
             className={`duration-400 hidden w-full transition ease-in-out [&.active]:block ${
               id === activeTab && "active"
             }`}

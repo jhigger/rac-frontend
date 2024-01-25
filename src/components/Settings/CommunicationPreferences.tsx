@@ -89,6 +89,7 @@ type PreferenceItemProps = {
   title: string;
   description: string | JSX.Element;
   disabled?: boolean;
+  enabled?: boolean;
   onClick: ({ isToggled }: { isToggled: boolean }) => void;
 };
 
@@ -97,9 +98,10 @@ export const PreferenceItem = ({
   title,
   description,
   disabled = false,
+  enabled = false,
   onClick,
 }: PreferenceItemProps) => {
-  const [isToggled, toggle] = useToggle(!disabled);
+  const [isToggled, toggle] = useToggle(enabled);
 
   const handleClick = () => {
     toggle();
@@ -122,7 +124,7 @@ export const PreferenceItem = ({
               type="checkbox"
               disabled={disabled}
               onClick={handleClick}
-              defaultChecked={isToggled}
+              defaultChecked={enabled}
             />
             <label
               htmlFor={id}

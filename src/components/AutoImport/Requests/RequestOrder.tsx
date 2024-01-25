@@ -2,13 +2,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Calculator, Whatsapp } from "iconsax-react";
 import { useEffect, useState, type ChangeEvent } from "react";
 import {
-  FieldError,
   FormProvider,
   useFieldArray,
   useForm,
   useFormContext,
+  type FieldError,
   type SubmitHandler,
 } from "react-hook-form";
+import { toast } from "sonner";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
 import { formatCurrency, parseCountryCode, parseStateCode } from "~/Utils";
@@ -304,11 +305,10 @@ const RequestOrder = () => {
 
   if (!user) return;
 
-  const { isPending, error, mutateAsync } = useSubmitAutoImportRequest(
-    user.jwt,
-  ); // todo: add snackbar for success and error
+  const { isPending, mutateAsync } = useSubmitAutoImportRequest(user.jwt);
 
-  const { handleRequests, handleLocalDraft } = useAutoImportContext();
+  const { localDraft, handleRequests, handleLocalDraft } =
+    useAutoImportContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const steps: [stepsContentType, ...stepsContentType[]] = [
@@ -349,6 +349,7 @@ const RequestOrder = () => {
         setRequestId(res.data.requestId);
       } catch (err) {
         console.log(err);
+        toast("Error, check console logs");
         return;
       }
     }
@@ -365,8 +366,11 @@ const RequestOrder = () => {
   };
 
   const handleSaveAsDraft = () => {
-    handleTabChange("drafts");
+    if (localDraft) toast("Draft has been replaced");
+
+    console.log(formMethods.getValues());
     handleLocalDraft(formMethods.getValues());
+    handleTabChange("drafts");
   };
 
   const handleStep1Validation = async () => {

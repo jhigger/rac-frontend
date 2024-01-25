@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
 import { type ImportInputs } from "~/components/Import/Requests/RequestOrder";
@@ -20,13 +20,11 @@ import { type BillingDetailsType } from "./AutoImportContext";
 import { type PackageCostsType } from "./ShopContext";
 
 export type ImportContextType = {
-  draftPackage: ImportDraftPackageType | null;
   isFetchingOrderPackages: boolean;
   isFetchingRequestPackages: boolean;
   localDraft: ImportLocalDraftType;
   orderPackages: ImportOrderPackageType[];
   requestPackages: ImportRequestPackageType[];
-  handleDraft: (draftPackage: ImportDraftPackageType | null) => void;
   handleLocalDraft: (localDraft: ImportLocalDraftType) => void;
   handleOrders: () => void;
   handleRequests: () => void;
@@ -93,12 +91,9 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   const [cookies] = useCookies(["jwt"]);
   const token = cookies.jwt as string;
 
-  const [draftPackage, setDraftPackages] =
-    useState<ImportDraftPackageType | null>(null);
-
   const [localDraft, setLocalDraft] = useLocalStorage<ImportLocalDraftType>(
     "Import",
-    draftPackage,
+    null,
   );
 
   const {
@@ -113,10 +108,6 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
     isFetching: isFetchingRequestPackages,
   } = useFetchImportRequests(token);
 
-  const handleDraft = (draftPackage: ImportDraftPackageType | null) => {
-    setDraftPackages(draftPackage);
-  };
-
   const handleLocalDraft = (localDraft: ImportLocalDraftType) => {
     setLocalDraft(localDraft);
   };
@@ -130,13 +121,11 @@ const ImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const value: ImportContextType = {
-    draftPackage,
     isFetchingOrderPackages,
     isFetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,
-    handleDraft,
     handleLocalDraft,
     handleOrders,
     handleRequests,

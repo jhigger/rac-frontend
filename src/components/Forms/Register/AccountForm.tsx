@@ -1,4 +1,4 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext, type FieldError } from "react-hook-form";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { type RegisterInputs } from "~/pages/register";
 import FormHeader from "../FormHeader";
@@ -7,7 +7,19 @@ import TextInput from "../Inputs/TextInput";
 
 const AccountForm = () => {
   const { isRegistering } = useAuthContext();
-  const { register, watch } = useFormContext<RegisterInputs>();
+  const {
+    formState: { errors },
+    register,
+    watch,
+  } = useFormContext<RegisterInputs>();
+
+  const firstNameError = errors.firstName as
+    | (FieldError & { message: string })
+    | undefined;
+
+  const lastNameError = errors.lastName as
+    | (FieldError & { message: string })
+    | undefined;
 
   return (
     <>
@@ -18,12 +30,14 @@ const AccountForm = () => {
           label={"First Name"}
           disabled={isRegistering}
           {...register("firstName")}
+          errorMessage={firstNameError?.message}
         />
         <TextInput
           id={"lastName"}
           label={"Last Name"}
           disabled={isRegistering}
           {...register("lastName")}
+          errorMessage={lastNameError?.message}
         />
         <TextInput
           id="email"

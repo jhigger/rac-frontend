@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
@@ -25,9 +26,9 @@ const DraftDetails = () => {
 
   if (!user) return;
 
-  const { isPending, error, mutateAsync } = useSubmitExportRequest(user.jwt); // todo: add snackbar for success and error
+  const { isPending, mutateAsync } = useSubmitExportRequest(user.jwt);
 
-  const { localDraft, handleDraft, handleLocalDraft } = useExportContext();
+  const { localDraft, handleLocalDraft } = useExportContext();
 
   if (!localDraft) return;
 
@@ -45,7 +46,7 @@ const DraftDetails = () => {
   });
 
   useEffect(() => {
-    console.log(localDraft);
+    console.log("draft: ", localDraft);
     formMethods.reset(localDraft);
   }, [localDraft]);
 
@@ -67,6 +68,7 @@ const DraftDetails = () => {
           setRequestId(res.data.requestId);
         } catch (err) {
           console.log(err);
+          toast("Error, check console logs");
           return;
         }
       }
@@ -76,14 +78,14 @@ const DraftDetails = () => {
 
   const handleFinish = () => {
     handleTabChange("requests");
-    handleDraft(null);
     handleLocalDraft(null);
   };
 
   const handleSaveAsDraft = () => {
-    handleTabChange("drafts");
-    handleDraft(formMethods.getValues());
+    if (localDraft) toast("Draft has been replaced");
+
     handleLocalDraft(formMethods.getValues());
+    handleTabChange("drafts");
   };
 
   return (

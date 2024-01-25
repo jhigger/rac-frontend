@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
 import { type AutoImportInputs } from "~/components/AutoImport/Requests/RequestOrder";
@@ -17,13 +17,11 @@ import { type DraftImageType } from "~/hooks/useImageHandler";
 import { type PackageCostsType } from "./ShopContext";
 
 export type AutoImportContextType = {
-  draftPackage: AutoImportDraftPackageType | null;
   isFetchingOrderPackages: boolean;
   isFetchingRequestPackages: boolean;
   localDraft: AutoImportLocalDraftType;
   orderPackages: AutoImportOrderPackageType[];
   requestPackages: AutoImportRequestPackageType[];
-  handleDraft: (draftPackage: AutoImportDraftPackageType | null) => void;
   handleLocalDraft: (localDraft: AutoImportLocalDraftType) => void;
   handleOrders: () => void;
   handleRequests: () => void;
@@ -116,12 +114,9 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   const [cookies] = useCookies(["jwt"]);
   const token = cookies.jwt as string;
 
-  const [draftPackage, setDraftPackage] =
-    useState<AutoImportDraftPackageType | null>(null);
-
   const [localDraft, setLocalDraft] = useLocalStorage<AutoImportLocalDraftType>(
     "AutoImport",
-    draftPackage,
+    null,
   );
 
   const {
@@ -136,10 +131,6 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
     isFetching: isFetchingRequestPackages,
   } = useFetchAutoAutoImportRequests(token);
 
-  const handleDraft = (draftPackage: AutoImportDraftPackageType | null) => {
-    setDraftPackage(draftPackage);
-  };
-
   const handleLocalDraft = (localDraft: AutoImportLocalDraftType) => {
     setLocalDraft(localDraft);
   };
@@ -153,13 +144,11 @@ const AutoImportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const value: AutoImportContextType = {
-    draftPackage,
     isFetchingOrderPackages,
     isFetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,
-    handleDraft,
     handleLocalDraft,
     handleOrders,
     handleRequests,

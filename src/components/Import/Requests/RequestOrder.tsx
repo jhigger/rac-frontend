@@ -1,13 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, type ReactNode } from "react";
 import {
-  FieldError,
   FormProvider,
   useFieldArray,
   useForm,
   useFormContext,
+  type FieldError,
   type SubmitHandler,
 } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { parseCountryCode, parseStateCode } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -144,12 +145,12 @@ const RequestOrder = () => {
 
   if (!user) return;
 
-  const { isPending, error, mutateAsync } = useSubmitImportRequest(user.jwt); // todo: add snackbar for success and error
+  const { isPending, mutateAsync } = useSubmitImportRequest(user.jwt);
 
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep, goTo } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
-  const { handleRequests, handleLocalDraft } = useImportContext();
+  const { localDraft, handleRequests, handleLocalDraft } = useImportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ImportInputs>({
@@ -176,6 +177,7 @@ const RequestOrder = () => {
           setRequestId(res.data.requestId);
         } catch (err) {
           console.log(err);
+          toast("Error, check console logs");
           return;
         }
       }
@@ -193,8 +195,11 @@ const RequestOrder = () => {
   };
 
   const handleSaveAsDraft = () => {
-    handleTabChange("drafts");
+    if (localDraft) toast("Draft has been replaced");
+
+    console.log(formMethods.getValues());
     handleLocalDraft(formMethods.getValues());
+    handleTabChange("drafts");
   };
 
   const handleFirstStep = () => {

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { useCookies } from "react-cookie";
 import { useLocalStorage } from "usehooks-ts";
 import { type ExportInputs } from "~/components/Export/Requests/RequestOrder";
@@ -19,13 +19,11 @@ import {
 import { type PackageCostsType } from "./ShopContext";
 
 export type ExportContextType = {
-  draftPackage: ExportDraftPackageType | null;
   isFetchingOrderPackages: boolean;
   isFetchingRequestPackages: boolean;
   localDraft: ExportLocalDraftType;
   orderPackages: ExportOrderPackageType[];
   requestPackages: ExportRequestPackageType[];
-  handleDraft: (draftPackage: ExportDraftPackageType | null) => void;
   handleLocalDraft: (localDraft: ExportLocalDraftType) => void;
   handleOrders: () => void;
   handleRequests: () => void;
@@ -66,12 +64,9 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   const [cookies] = useCookies(["jwt"]);
   const token = cookies.jwt as string;
 
-  const [draftPackage, setDraftPackage] =
-    useState<ExportDraftPackageType | null>(null);
-
   const [localDraft, setLocalDraft] = useLocalStorage<ExportLocalDraftType>(
     "Export",
-    draftPackage,
+    null,
   );
 
   const {
@@ -86,10 +81,6 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
     isFetching: isFetchingRequestPackages,
   } = useFetchExportRequests(token);
 
-  const handleDraft = (draftPackage: ExportDraftPackageType | null) => {
-    setDraftPackage(draftPackage);
-  };
-
   const handleLocalDraft = (localDraft: ExportLocalDraftType) => {
     setLocalDraft(localDraft);
   };
@@ -103,13 +94,11 @@ const ExportContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const value: ExportContextType = {
-    draftPackage,
     isFetchingOrderPackages,
     isFetchingRequestPackages,
     localDraft,
     orderPackages,
     requestPackages,
-    handleDraft,
     handleLocalDraft,
     handleOrders,
     handleRequests,

@@ -13,9 +13,9 @@ const ConfirmResetPasswordForm = () => {
   const { handleConfirmPasswordReset } = useAuthContext();
   const formMethods = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data.password);
-    handleConfirmPasswordReset(data.password);
+    await handleConfirmPasswordReset(data.password);
   };
 
   return (

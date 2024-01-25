@@ -8,6 +8,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
@@ -70,7 +71,7 @@ const AccountInformation = () => {
 
   const token = user.jwt;
 
-  const { isPending, error, mutateAsync } = useSubmitNewPassword(token); // todo: add snackbar for success and error
+  const { isPending, mutateAsync } = useSubmitNewPassword(token);
 
   const { step, next, isLastStep, goTo, back } = useMultiStepForm([
     <Step1 />,
@@ -91,8 +92,9 @@ const AccountInformation = () => {
           newPassword: data.newPassword,
         });
         console.log(res);
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        console.log(err);
+        toast("Incorrect existing password");
       } finally {
         goTo(0);
         formMethods.reset();

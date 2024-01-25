@@ -2,7 +2,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowCircleRight2, Call, Edit, Google, Location } from "iconsax-react";
 import { useEffect } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { parseCountryCode, parseStateCode } from "~/Utils";
 import { useAuthContext } from "~/contexts/AuthContext";
@@ -50,16 +51,6 @@ const schema = z.object({
 
 export type ProfileInformationInputs = z.infer<typeof schema>;
 
-const emptyValue: ProfileInformationInputs = {
-  firstName: "",
-  lastName: "",
-  address: "",
-  country: "",
-  state: "",
-  city: "",
-  zipPostalCode: "",
-};
-
 export type SettingsTabContentProps = {
   handleHideTabs: () => void;
 };
@@ -71,7 +62,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
 
   const token = user.jwt;
 
-  const { isPending, error, mutateAsync } = useSubmitNewProfile(token); // todo: add snackbar for success and error
+  const { isPending, mutateAsync } = useSubmitNewProfile(token);
 
   const tabs: [TabType, ...TabType[]] = [
     {
@@ -90,7 +81,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
   const { activeTab } = useTabContext();
 
   const {
-    formState: { isValid },
+    formState: { errors, isValid },
     register,
     watch,
     handleSubmit,
@@ -98,7 +89,15 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
   } = useForm<ProfileInformationInputs>({
     mode: "all",
     resolver: zodResolver(schema),
-    defaultValues: emptyValue,
+    defaultValues: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      address: user.billingDetails.address,
+      country: user.billingDetails.country,
+      state: user.billingDetails.state,
+      city: user.billingDetails.city,
+      zipPostalCode: user.billingDetails.zipPostalCode,
+    },
   });
   const { cities, states } = useStatesCities({ watch });
 
@@ -108,12 +107,12 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
       const res = await mutateAsync(data);
       console.log(res);
       await refetch();
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      toast("Error, check console logs");
     } finally {
       reset();
     }
-    // todo: add loading state to edit personal info button
   };
 
   const { address, city, state, country, zipPostalCode } = user.billingDetails;
@@ -121,6 +120,14 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
     state,
     country,
   )}, ${parseCountryCode(country)}, ${zipPostalCode}`;
+
+  const firstNameError = errors.firstName as
+    | (FieldError & { message: string })
+    | undefined;
+
+  const lastNameError = errors.lastName as
+    | (FieldError & { message: string })
+    | undefined;
 
   return (
     <TabContentLayout>
@@ -238,6 +245,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                         label={"First Name"}
                         bg="bg-surface-300"
                         {...register("firstName")}
+                        errorMessage={firstNameError?.message}
                       />
                     </div>
 
@@ -247,6 +255,7 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
                         label={"Last Name"}
                         bg="bg-surface-300"
                         {...register("lastName")}
+                        errorMessage={lastNameError?.message}
                       />
                     </div>
 

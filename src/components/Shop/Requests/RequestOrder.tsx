@@ -17,10 +17,11 @@ import {
   useFieldArray,
   useForm,
   useFormContext,
+  type FieldError,
   type SubmitHandler,
-  FieldError,
 } from "react-hook-form";
 import { Tooltip } from "react-tooltip";
+import { toast } from "sonner";
 import { z } from "zod";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
@@ -158,12 +159,12 @@ const RequestOrderForm = () => {
 
   if (!user) return;
 
-  const { isPending, error, mutateAsync } = useSubmitShopRequest(user.jwt); // todo: add snackbar for success and error
+  const { isPending, mutateAsync } = useSubmitShopRequest(user.jwt);
 
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep } =
     useMultiStepForm([<RequestOrderStep1 />, <RequestOrderStep2 />]);
 
-  const { handleRequests, handleLocalDraft } = useShopContext();
+  const { localDraft, handleRequests, handleLocalDraft } = useShopContext();
   const { handleTabChange, handleActiveAction } = useTabContext();
 
   const formMethods = useForm<ShopInputs>({
@@ -183,6 +184,8 @@ const RequestOrderForm = () => {
         setRequestId(res.data.requestId);
       } catch (err) {
         console.log(err);
+        toast("Error, check console logs");
+
         return;
       }
     }
@@ -199,9 +202,11 @@ const RequestOrderForm = () => {
   };
 
   const handleSaveAsDraft = () => {
-    handleTabChange("drafts");
+    if (localDraft) toast("Draft has been replaced");
+
     console.log(formMethods.getValues());
     handleLocalDraft(formMethods.getValues());
+    handleTabChange("drafts");
   };
 
   return (

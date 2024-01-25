@@ -4,6 +4,7 @@ import { Roboto } from "next/font/google";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import Toaster from "~/components/Toaster";
 import AuthContextProvider from "~/contexts/AuthContext";
 import NavContextProvider from "~/contexts/NavigationContext";
 import NotificationContextProvider from "~/contexts/NotificationContext";
@@ -42,6 +43,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           <AuthContextProvider>
             <NotificationContextProvider>
               <div className={roboto.className}>
+                <Toaster />
                 <Component {...pageProps} />
               </div>
             </NotificationContextProvider>

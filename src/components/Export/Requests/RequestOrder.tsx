@@ -6,6 +6,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
+import { toast } from "sonner";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
@@ -49,12 +50,12 @@ const RequestOrder = () => {
 
   if (!user) return;
 
-  const { isPending, error, mutateAsync } = useSubmitExportRequest(user.jwt); // todo: add snackbar for success and error
+  const { isPending, mutateAsync } = useSubmitExportRequest(user.jwt);
 
   const { step, next, isFirstStep, isLastStep, isSecondToLastStep, goTo } =
     useMultiStepForm([<Step1 />, <Step2 />, <Step3 />]);
 
-  const { handleRequests, handleLocalDraft, handleDraft } = useExportContext();
+  const { localDraft, handleRequests, handleLocalDraft } = useExportContext();
   const { handleActiveAction, handleTabChange } = useTabContext();
 
   const formMethods = useForm<ExportInputs>({
@@ -81,6 +82,7 @@ const RequestOrder = () => {
           setRequestId(res.data.requestId);
         } catch (err) {
           console.log(err);
+          toast("Error, check console logs");
           return;
         }
       }
@@ -91,7 +93,6 @@ const RequestOrder = () => {
   const handleFinish = () => {
     handleRequests();
     handleTabChange("requests");
-    handleDraft(null);
   };
 
   const handleBack = () => {
@@ -99,8 +100,11 @@ const RequestOrder = () => {
   };
 
   const handleSaveAsDraft = () => {
-    handleTabChange("drafts");
+    if (localDraft) toast("Draft has been replaced");
+
+    console.log(formMethods.getValues());
     handleLocalDraft(formMethods.getValues());
+    handleTabChange("drafts");
   };
 
   const handleFirstStep = () => {

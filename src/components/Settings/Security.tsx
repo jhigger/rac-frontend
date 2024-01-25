@@ -18,6 +18,7 @@ import useEmailOption from "./useEmailOption";
 type SecurityOptions = PreferenceType & {
   modalContent: () => JSX.Element;
   footerContent: ModalButtonProps["footerContent"];
+  value: TwoFactorAuthenticationType;
 };
 
 const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
@@ -47,9 +48,10 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
       onClick: () => {
         toggleEnabled("TOTP");
       },
-      disabled: !(enabled === "TOTP"),
+      disabled: enabled !== "TOTP",
       modalContent: appOption.modalContent,
       footerContent: appOption.footerContent,
+      value: "TOTP",
     },
     {
       title: "Authentication via Email",
@@ -58,9 +60,10 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
       onClick: () => {
         toggleEnabled("email");
       },
-      disabled: !(enabled === "email"),
+      disabled: enabled !== "email",
       modalContent: emailOption.modalContent,
       footerContent: emailOption.footerContent,
+      value: "email",
     },
   ];
 
@@ -95,7 +98,7 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
           </span>
 
           {preferences.map((item, i) => {
-            const disabled = item.disabled && enabled !== null;
+            const disabled = enabled !== item.value && enabled !== null;
 
             return (
               <div key={i}>
@@ -108,6 +111,7 @@ const Security = ({ handleHideTabs }: SettingsTabContentProps) => {
                     if (!isToggled) buttonsRef.current?.[i]?.click(); // programmatically click on hidden button to show modal on enable switch
                   }}
                   disabled={disabled}
+                  enabled={enabled === item.value}
                 />
                 <ModalButton
                   modalId={`security-modal-${i}`}

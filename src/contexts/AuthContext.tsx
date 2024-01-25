@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { useCookies } from "react-cookie";
+import { toast } from "sonner";
 import { type LoginInputs } from "~/components/Forms/Login/LoginForm";
 import LoadingScreen from "~/components/LoadingScreen";
 import useFetchUser from "~/hooks/useFetchUser";
@@ -29,7 +30,7 @@ export type AuthContextType = {
   verifyingAuthCode: boolean;
   handleBackupCode: (backupCode: string) => void;
   handleCodeVerification: (sixDigitCode: string) => void;
-  handleConfirmPasswordReset: (password: string) => void;
+  handleConfirmPasswordReset: (password: string) => Promise<void>;
   handleLogin: (data: LoginInputs) => void;
   handleLogout: () => void;
   handleRegister: (data: RegisterType) => Promise<void>;
@@ -145,8 +146,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         console.log("logging in...");
         return await useLoginUser(loginInputs).then(async () => {
-          console.log("OTP sent..."); // todo: change to snackbar
-          redirectTo("/authentication");
+          console.log("OTP sent to email");
+          await redirectTo("/authentication");
           return null;
         });
       } else if (cookies.jwt) {
@@ -171,11 +172,11 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     setSixDigitCode(sixDigitCode);
   };
 
-  const handleConfirmPasswordReset = (password: string) => {
+  const handleConfirmPasswordReset = async (password: string) => {
     // todo: handle backend api useChangePassword(token, code, password)
     console.log("changing password to: ", password);
     console.log("Redirecting to login...");
-    redirectTo("/login");
+    await redirectTo("/login");
   };
 
   const handleJWTCookie = (jwtCookie: string) => {
@@ -198,30 +199,31 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     console.log("registering...");
     await useRegisterUser(inputs)
       .then(() => {
+        toast("Account creation successful");
         setLoginInputs(inputs);
       })
       .catch((e: AxiosError) => {
         const res = e.response as { data: { message: string } };
         setRegisterError(res.data.message);
-        setIsRegistering(false);
         console.log("register failed");
-      });
+      })
+      .finally(() => setIsRegistering(false));
   };
 
-  const handleRedirect = () => {
+  const handleRedirect = async () => {
     const pathWithoutQuery = router.asPath.split("?");
     if (!pathWithoutQuery[0]) return;
     // when going to restrictedPaths
     // redirect to /shop or callback route if token exist else redirect to /login
     if (!loginInputs && pathWithoutQuery[0] === "/authentication") {
-      redirectTo("/login");
+      await redirectTo("/login");
     } else if (user && !isRefetching) {
       if (restrictedPaths.includes(pathWithoutQuery[0])) {
         console.log("Redirecting to /shop...");
-        redirectTo("/shop");
+        await redirectTo("/shop");
       } else {
         console.log(`Redirecting to ${pathWithoutQuery[0]}...`);
-        redirectTo(pathWithoutQuery[0]);
+        await redirectTo(pathWithoutQuery[0]);
       }
     } else if (!user && !isRefetching) {
       if (pathWithoutQuery[0] === "/password-reset" && pathWithoutQuery[1])
@@ -230,16 +232,16 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       if (!restrictedPaths.includes(pathWithoutQuery[0])) {
         console.log("User logged out or token expired");
         console.log("Redirecting to /login...");
-        redirectTo("/login");
+        await redirectTo("/login");
       } else {
         console.log(`Redirecting to ${pathWithoutQuery[0]}...`);
-        redirectTo(pathWithoutQuery[0]);
+        await redirectTo(pathWithoutQuery[0]);
       }
     } else if (!user && cookies.jwt === undefined && isRefetching) {
       if (!restrictedPaths.includes(pathWithoutQuery[0])) {
         console.log("User logged out or token expired");
         console.log("Redirecting to /login...");
-        redirectTo("/login");
+        await redirectTo("/login");
       }
     }
   };
@@ -256,8 +258,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     return result;
   };
 
-  const redirectTo = (path: string) => {
-    void router.replace(path).catch((e) => console.log(e));
+  const redirectTo = async (path: string) => {
+    await router.replace(path).catch((e) => console.log(e));
   };
 
   useEffect(() => {
@@ -269,7 +271,7 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   }, [cookies.jwt]);
 
   useEffect(() => {
-    handleRedirect(); // redirect page when user value changes
+    void handleRedirect(); // redirect page when user value changes
   }, [user]);
 
   const value: AuthContextType = {

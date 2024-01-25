@@ -1,36 +1,15 @@
 import { ExportCircle } from "iconsax-react";
-import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { type OrderPackageType } from "~/contexts/NotificationContext";
 import { StepDescription } from "../Orders/OrdersPanel";
 import { AndLastly } from "../Requests/RequestCheckout";
-import {
-  RequestFormHeader,
-  SectionContentLayout,
-  SectionHeader,
-} from "../Requests/RequestOrder";
+import { SectionContentLayout, SectionHeader } from "../Requests/RequestOrder";
 
-type PaymentConfirmedProps = { order: OrderPackageType };
+type PaymentConfirmedContentProps = { order: OrderPackageType };
 
-const PaymentConfirmed = ({ order }: PaymentConfirmedProps) => {
-  return (
-    <div className="flex w-[997px] flex-col gap-[30px] bg-surface-300 p-[30px]">
-      <RequestFormHeader title="Confirm and Place your Order" />
-      <PaymentConfirmedContent order={order} />
-      <div className="w-full md:max-w-[200px]">
-        <CloseModalButton />
-      </div>
-    </div>
-  );
-};
-
-type PaymentConfirmedContentProps = PaymentConfirmedProps;
-
-export const PaymentConfirmedContent = ({
-  order,
-}: PaymentConfirmedContentProps) => {
+const PaymentConfirmedContent = ({ order }: PaymentConfirmedContentProps) => {
   return (
     <>
       <SectionContentLayout>
@@ -85,4 +64,4 @@ export const PaymentConfirmedContent = ({
   );
 };
 
-export default PaymentConfirmed;
+export default PaymentConfirmedContent;

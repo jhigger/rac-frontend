@@ -16,7 +16,7 @@ import {
   parseCountryCode,
   parseStateCode,
 } from "~/Utils";
-import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
+import { PrimaryCloseModalButton } from "~/components/Buttons/PrimaryCloseModalButton";
 import CongratulationImage from "~/components/CongratulationImage";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import OrderTrackingId from "~/components/OrderTrackingId";
@@ -623,7 +623,7 @@ export const StatusButtonMap = ({
       <div className="w-max whitespace-nowrap">
         {["cancelled", "not started", "cleared", "delivered"].includes(
           shippingStatus,
-        ) && <CloseModalButton dataClose={dataClose} />}
+        ) && <PrimaryCloseModalButton dataClose={dataClose} />}
         {shippingStatus === "ready for shipping" && (
           <div className="flex gap-[8px]">
             <CancelButton dataClose={dataClose} />

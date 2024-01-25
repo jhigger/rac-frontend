@@ -6,10 +6,10 @@ import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords, formatCurrency } from "~/Utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
-import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
+import { PrimaryCloseModalButton } from "~/components/Buttons/PrimaryCloseModalButton";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
@@ -333,7 +333,9 @@ const ShippingStatusModal = ({
             "cleared",
             "delivered",
             "arrived destination",
-          ].includes(status) && <CloseModalButton dataClose={dataClose} />}
+          ].includes(status) && (
+            <PrimaryCloseModalButton dataClose={dataClose} />
+          )}
           {status === "ready for shipping" && (
             <div className="flex gap-[8px]">
               <CancelButton dataClose={dataClose} />

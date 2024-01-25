@@ -16,7 +16,7 @@ import useAccordion from "~/hooks/useAccordion";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import AccordionButton from "../Forms/AccordionButton";
-import { PaymentConfirmedContent } from "../Shop/Modals/PaymentConfirmed";
+import PaymentConfirmedContent from "../Shop/Modals/PaymentConfirmedContent";
 import { SectionHeader } from "../Shop/Requests/RequestOrder";
 import { PreviewNotificationButton } from "../TopAppBar";
 

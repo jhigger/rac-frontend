@@ -4,10 +4,10 @@ import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
-import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
+import { PrimaryCloseModalButton } from "~/components/Buttons/PrimaryCloseModalButton";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
@@ -238,7 +238,7 @@ const RequestStatusModal = ({
       <div className="flex flex-row items-end justify-end">
         <div className="w-max whitespace-nowrap">
           {requestStatus === "Not Responded" && (
-            <CloseModalButton dataClose={dataClose} />
+            <PrimaryCloseModalButton dataClose={dataClose} />
           )}
           {requestStatus === "Responded" && (
             <div className="flex gap-[8px]">

@@ -7,10 +7,10 @@ import Balancer from "react-wrap-balancer";
 import { capitalizeWords, formatCurrency } from "~/Utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
 import { ClearPackageButton } from "~/components/Buttons/ClearPackageButton";
-import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
+import { PrimaryCloseModalButton } from "~/components/Buttons/PrimaryCloseModalButton";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
@@ -337,7 +337,7 @@ const ShippingStatusModal = ({
         <div className="w-max whitespace-nowrap">
           {["cancelled", "not started", "cleared", "delivered"].includes(
             status,
-          ) && <CloseModalButton dataClose={dataClose} />}
+          ) && <PrimaryCloseModalButton dataClose={dataClose} />}
           {status === "ready for shipping" && (
             <div className="flex gap-[8px]">
               <CancelButton dataClose={dataClose} />

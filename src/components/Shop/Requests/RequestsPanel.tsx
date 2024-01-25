@@ -4,7 +4,7 @@ import { useEffect, useMemo, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
 import { capitalizeWords } from "~/Utils";
-import { CloseModalButton } from "~/components/Buttons/CloseModalButton";
+import { PrimaryCloseModalButton } from "~/components/Buttons/PrimaryCloseModalButton";
 import LabelId from "~/components/LabelId";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
@@ -252,7 +252,7 @@ const RequestStatusModal = ({
       <div className="flex flex-row items-end justify-end">
         <div className="w-max whitespace-nowrap">
           {requestStatus === "Not Responded" && (
-            <CloseModalButton dataClose={dataClose} />
+            <PrimaryCloseModalButton dataClose={dataClose} />
           )}
           {requestStatus === "Responded" && (
             <div className="flex gap-[8px]">

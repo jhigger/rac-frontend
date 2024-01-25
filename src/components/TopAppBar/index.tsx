@@ -8,7 +8,6 @@ import {
   ArrowRight2,
   ArrowUp2,
   Celo,
-  CloseCircle,
   Eye,
   HambergerMenu,
   NotificationBing,
@@ -28,16 +27,16 @@ import {
 import { useTabContext } from "~/contexts/TabContext";
 import useAccordion from "~/hooks/useAccordion";
 import tailmater from "~/js/tailmater";
-import { CloseModalButton } from "../Buttons/CloseModalButton";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import { PrimaryBackButton } from "../Buttons/PrimaryBackButton";
+import { PrimaryCloseModalButton } from "../Buttons/PrimaryCloseModalButton";
 import AccordionButton from "../Forms/AccordionButton";
 import {
   notificationMessages,
   type NotificationListItemProps,
 } from "../Notifications/NotificationList";
-import { PaymentConfirmedContent } from "../Shop/Modals/PaymentConfirmed";
+import PaymentConfirmedContent from "../Shop/Modals/PaymentConfirmedContent";
 import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
 import AppBarTabs from "./AppBarTabs";
 import BreadCrumbs from "./BreadCrumbs";
@@ -207,12 +206,7 @@ const NotificationModal = ({ id }: NotificationModalProps) => {
             <div className="flex flex-col items-center justify-center gap-[10px] md:flex-row [&>*]:w-max">
               <ClearAllButton onClick={clearAll} />
               <ViewAllButton dataClose={dataClose} />
-              <CloseModalButton
-                icon={<CloseCircle size={18} variant="Bold" />}
-                label="Close"
-                dataClose={dataClose}
-                primary
-              />
+              <PrimaryCloseModalButton dataClose={dataClose} />
             </div>
           </div>
         )}

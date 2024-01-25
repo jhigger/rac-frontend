@@ -13,7 +13,7 @@ const useSubmitAutoImportRequest = (token: string) => {
       formData.append(`requestItems[${i}][model]`, item.model);
       formData.append(
         `requestItems[${i}][productionYear]`,
-        item.productionYear,
+        String(item.productionYear),
       );
       formData.append(`requestItems[${i}][carValue]`, String(item.value));
       formData.append(`requestItems[${i}][carCondition]`, item.condition);

@@ -17,7 +17,7 @@ import { PreviewNotificationButton } from ".";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import AccordionButton from "../Forms/AccordionButton";
-import PaymentConfirmedContent from "../Shop/Modals/PaymentConfirmedContent";
+import PaymentConfirmedContent from "../Modals/PaymentConfirmedContent";
 import { SectionHeader } from "../Shop/Requests/RequestOrder";
 
 const NotificationList = () => {

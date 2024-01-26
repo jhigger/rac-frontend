@@ -3,9 +3,12 @@ import CongratulationImage from "~/components/CongratulationImage";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import SuccessImportantNotice from "~/components/SuccessImportantNotice";
 import { type OrderPackageType } from "~/contexts/NotificationContext";
-import { StepDescription } from "../Orders/OrdersPanel";
-import { AndLastly } from "../Requests/RequestCheckout";
-import { SectionContentLayout, SectionHeader } from "../Requests/RequestOrder";
+import { StepDescription } from "../Shop/Orders/OrdersPanel";
+import { AndLastly } from "../Shop/Requests/RequestCheckout";
+import {
+  SectionContentLayout,
+  SectionHeader,
+} from "../Shop/Requests/RequestOrder";
 
 type PaymentConfirmedContentProps = { order: OrderPackageType };
 

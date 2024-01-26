@@ -21,7 +21,7 @@ import ModalButton from "../Buttons/ModalButton";
 import { PrimaryBackButton } from "../Buttons/PrimaryBackButton";
 import { PrimaryCloseModalButton } from "../Buttons/PrimaryCloseModalButton";
 import AccordionButton from "../Forms/AccordionButton";
-import PaymentConfirmedContent from "../Shop/Modals/PaymentConfirmedContent";
+import PaymentConfirmedContent from "../Modals/PaymentConfirmedContent";
 import { RequestFormHeader } from "../Shop/Requests/RequestOrder";
 import {
   notificationMessageCategories,

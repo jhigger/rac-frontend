@@ -25,6 +25,7 @@ const useFetchShopOrders = (
     };
 
     const response = await axios.request(reqOptions);
+    console.log(response);
     const { sfmOrders } = response.data as Root;
     const shopOrders: ShopOrderPackageType[] = sfmOrders.map((order) => {
       const orderPackage: ShopOrderPackageType = {

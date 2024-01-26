@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
+import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import NoTabsContentLayout from "~/components/Layouts/NoTabsContentLayout";
 import PageLayout from "~/components/Layouts/PageLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
@@ -36,6 +37,7 @@ const notifications = () => {
         <TopAppBar hasTabs={false} />
         <NoTabsContentLayout>
           {notifications.length > 0 ? <NotificationList /> : <Empty />}
+          <NeedHelpFAB />
         </NoTabsContentLayout>
       </PageLayout>
     </TabContextProvider>

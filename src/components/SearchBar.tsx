@@ -1,5 +1,5 @@
+import { Menu } from "@headlessui/react";
 import { FtxToken } from "iconsax-react";
-import { useState } from "react";
 import { navItems, useNavContext } from "~/contexts/NavigationContext";
 import { useTabContext } from "~/contexts/TabContext";
 import DebounceSearchInput from "./Forms/Inputs/DebounceSearchInput";
@@ -24,7 +24,7 @@ const SearchBar = ({
     <>
       <div className="hidden gap-[20px] sm:flex">
         <div className="w-max">
-          <FilterButton
+          <FilterButtonDropdown
             filterCategories={filterCategories}
             rowCount={rowCount}
           />
@@ -54,7 +54,7 @@ const SearchBar = ({
           />
         </div>
         <div className="flex w-full justify-between gap-[20px]">
-          <FilterButton
+          <FilterButtonDropdown
             filterCategories={filterCategories}
             rowCount={rowCount}
           />
@@ -79,41 +79,47 @@ type FilterButtonProps = {
   rowCount: number;
 };
 
-const FilterButton = ({ filterCategories, rowCount }: FilterButtonProps) => {
-  const [blur, setBlur] = useState(false);
-
-  const toggleBlur = () => {
-    setBlur((prev) => !prev);
-  };
-
+const FilterButtonDropdown = ({
+  filterCategories,
+  rowCount,
+}: FilterButtonProps) => {
   const handleApply = () => {
-    toggleBlur();
+    console.log("filter applied");
   };
 
   const handleCancel = () => {
-    toggleBlur();
+    console.log("filter cancelled");
   };
 
   return (
-    <div className="group relative inline-block">
-      <button
-        onClick={toggleBlur}
-        aria-label="Filter"
-        className="btn peer relative flex h-14 w-14 flex-row items-center justify-center gap-x-[12px] rounded-[20px] bg-brand p-[12px] text-sm font-medium tracking-[.00714em] text-neutral-100 group-focus-within:shadow-2xl sm:p-4 md:w-full"
-      >
-        <FtxToken variant="Bold" className="w-[18px] md:w-6" />
-        <span className="label-lg hidden text-neutral-100 [@media(min-width:1000px)]:block">
-          Filter View
-        </span>
-        <div className="label-sm absolute right-0 top-0 flex h-[16px] min-w-[16px] items-center justify-center rounded-full border-2 border-white bg-error-600 p-1 text-[8px] text-white">
-          {/* put notification count here */}
-        </div>
-      </button>
+    <Menu as="div" className="relative inline-block">
+      <div>
+        <Menu.Button
+          aria-label="Filter"
+          className="btn relative rounded-[20px] bg-brand text-sm font-medium tracking-[.00714em] text-neutral-100"
+        >
+          {({ open }) => (
+            <div
+              className={`flex h-14 w-14 flex-row items-center justify-center gap-x-[12px] rounded-[20px] p-[12px] ${
+                open ? "shadow-2xl" : ""
+              } sm:p-4 md:w-full`}
+            >
+              <FtxToken
+                variant="Bold"
+                className="w-[18px] flex-shrink-0 md:w-6"
+              />
+              <span className="label-lg hidden text-neutral-100 [@media(min-width:1000px)]:block">
+                Filter View
+              </span>
+              <div className="label-sm absolute right-0 top-0 z-40 flex h-[16px] min-w-[16px] items-center justify-center rounded-full border-2 border-white bg-error-600 p-1 text-[8px] text-white">
+                {/* put notification count here */}
+              </div>
+            </div>
+          )}
+        </Menu.Button>
+      </div>
 
-      <div
-        className={`absolute left-0 top-2 z-50 hidden max-h-[calc(100vh-314px)] w-max flex-col gap-[24px] overflow-y-auto rounded-[20px] bg-surface-200 p-[20px] shadow-md group-focus-within:inline-flex peer-focus:inline-flex md:top-16 md:max-h-[calc(100vh-274px)]
-          ${blur ? "hover:inline-flex" : "group-focus-within:hidden"}`}
-      >
+      <Menu.Items className="absolute left-0 top-2 z-50 flex max-h-[calc(100vh-314px)] w-max origin-top-left flex-col gap-[24px] overflow-y-auto rounded-[20px] bg-surface-200 p-[20px] shadow-md md:top-16 md:max-h-[calc(100vh-274px)]">
         <div className="flex flex-col gap-[10px]">
           <span className="title-md font-medium text-neutral-900">
             Show Orders that fall under the following category
@@ -130,11 +136,30 @@ const FilterButton = ({ filterCategories, rowCount }: FilterButtonProps) => {
           <span className="label-lg whitespace-nowrap text-primary-600">
             Showing {rowCount} results
           </span>
-          <ApplyFilterButton onClick={handleApply} />
-          <CancelButton onClick={handleCancel} />
+
+          <Menu.Item>
+            {({ close }) => (
+              <ApplyFilterButton
+                onClick={() => {
+                  handleApply();
+                  close();
+                }}
+              />
+            )}
+          </Menu.Item>
+          <Menu.Item>
+            {({ close }) => (
+              <CancelButton
+                onClick={() => {
+                  handleCancel();
+                  close();
+                }}
+              />
+            )}
+          </Menu.Item>
         </div>
-      </div>
-    </div>
+      </Menu.Items>
+    </Menu>
   );
 };
 

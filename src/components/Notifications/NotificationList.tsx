@@ -13,12 +13,12 @@ import {
 } from "~/contexts/NotificationContext";
 import { type ShopOrderPackageType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
+import { PreviewNotificationButton } from ".";
 import { DeleteButtonIcon } from "../Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "../Buttons/DeleteItemButton";
 import AccordionButton from "../Forms/AccordionButton";
 import PaymentConfirmedContent from "../Shop/Modals/PaymentConfirmedContent";
 import { SectionHeader } from "../Shop/Requests/RequestOrder";
-import { PreviewNotificationButton } from "../TopAppBar";
 
 const NotificationList = () => {
   const { handleCustomText } = useTabContext();
@@ -29,7 +29,7 @@ const NotificationList = () => {
   useEffect(() => {
     if (selectedNotification) {
       handleCustomText(
-        notificationMessages[selectedNotification.type].getCustomText(
+        notificationMessageCategories[selectedNotification.type].getCustomText(
           selectedNotification.order,
         ),
       );
@@ -93,7 +93,7 @@ type OrderType =
   | ExportOrderPackageType
   | AutoImportOrderPackageType;
 
-type NotificationMessagesType = Record<
+type NotificationMessageCategoriesType = Record<
   (typeof NOTIFICATION_TYPES)[number],
   {
     getMessage: (order: OrderType) => JSX.Element;
@@ -101,33 +101,34 @@ type NotificationMessagesType = Record<
   }
 >;
 
-export const notificationMessages: NotificationMessagesType = {
-  "payment confirmation": {
-    getMessage: (order) => (
-      <>
-        Your payment for the Order <b>{order.orderId}</b> has been confirmed
-      </>
-    ),
-    getCustomText: (order) => `payment confirmation - ${order.orderId}`,
-  },
-  "payment rejection": {
-    getMessage: (order) => (
-      <>
-        Your payment for the Order <b>{order.orderId}</b> has been rejected
-      </>
-    ),
-    getCustomText: (order) => `payment confirmation - ${order.orderId}`,
-  },
-  "shipment arrival": {
-    getMessage: (order) => (
-      <>
-        Your shipment <b>{order.trackingId}</b> has just arrived at its
-        destination address
-      </>
-    ),
-    getCustomText: (order) => `shipment arrival - ${order.trackingId}`,
-  },
-};
+export const notificationMessageCategories: NotificationMessageCategoriesType =
+  {
+    "payment confirmation": {
+      getMessage: (order) => (
+        <>
+          Your payment for the Order <b>{order.orderId}</b> has been confirmed
+        </>
+      ),
+      getCustomText: (order) => `payment confirmation - ${order.orderId}`,
+    },
+    "payment rejection": {
+      getMessage: (order) => (
+        <>
+          Your payment for the Order <b>{order.orderId}</b> has been rejected
+        </>
+      ),
+      getCustomText: (order) => `payment confirmation - ${order.orderId}`,
+    },
+    "shipment arrival": {
+      getMessage: (order) => (
+        <>
+          Your shipment <b>{order.trackingId}</b> has just arrived at its
+          destination address
+        </>
+      ),
+      getCustomText: (order) => `shipment arrival - ${order.trackingId}`,
+    },
+  };
 
 const NotificationListItem = ({
   index,
@@ -137,14 +138,14 @@ const NotificationListItem = ({
   const { handleDelete } = useNotificationContext();
 
   const currentYear = new Date().getFullYear();
-  const notifcationYear = new Date(notification.localDate).getFullYear();
-  const format = currentYear === notifcationYear ? "MMM D" : "MMM D YYYY";
+  const notificationYear = new Date(notification.localDate).getFullYear();
+  const format = currentYear === notificationYear ? "MMM D" : "MMM D YYYY";
 
   return (
     <div className="flex items-center gap-[20px]">
       <div className="flex flex-grow flex-col gap-[10px] rounded-[20px] border border-gray-200 bg-white p-[20px] md:flex-row md:items-center md:gap-[20px]">
         <span className="body-lg flex-grow text-start">
-          {notificationMessages[notification.type].getMessage(
+          {notificationMessageCategories[notification.type].getMessage(
             notification.order,
           )}
         </span>

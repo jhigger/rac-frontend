@@ -1,7 +1,7 @@
 import { ConvertCard, Security, Wallet } from "iconsax-react";
 import { type ReactNode } from "react";
 import { useToggle } from "usehooks-ts";
-import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
+import { formatCurrency, formatDimension, formatWeight } from "~/utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
 import LabelId from "~/components/LabelId";

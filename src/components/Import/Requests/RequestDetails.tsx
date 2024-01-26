@@ -1,5 +1,5 @@
 import { useToggle } from "usehooks-ts";
-import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
+import { formatCurrency, formatDimension, formatWeight } from "~/utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import AccordionButton from "~/components/Forms/AccordionButton";

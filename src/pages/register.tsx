@@ -10,7 +10,7 @@ import {
 import Balancer from "react-wrap-balancer";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
-import { capitalizeWords } from "~/Utils";
+import { capitalizeWords } from "~/utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { LoadingSpinner } from "~/components/LoadingScreen";

@@ -1,5 +1,5 @@
 import { useToggle } from "usehooks-ts";
-import { formatCurrency } from "~/Utils";
+import { formatCurrency } from "~/utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { DestinationAddressDetails } from "~/components/AutoImport/Requests/RequestOrder";
 import { BackButton } from "~/components/Buttons/BackButton";

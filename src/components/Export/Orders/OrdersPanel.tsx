@@ -3,7 +3,7 @@ import { BackSquare, More, TickSquare } from "iconsax-react";
 import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
-import { capitalizeWords, formatCurrency } from "~/Utils";
+import { capitalizeWords, formatCurrency } from "~/utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";

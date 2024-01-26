@@ -2,7 +2,7 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
-import { capitalizeWords } from "~/Utils";
+import { capitalizeWords } from "~/utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";

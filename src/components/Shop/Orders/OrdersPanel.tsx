@@ -15,7 +15,7 @@ import {
   formatCurrency,
   parseCountryCode,
   parseStateCode,
-} from "~/Utils";
+} from "~/utils";
 import { PrimaryCloseModalButton } from "~/components/Buttons/PrimaryCloseModalButton";
 import TrackButton from "~/components/Buttons/TrackButton";
 import CongratulationImage from "~/components/CongratulationImage";

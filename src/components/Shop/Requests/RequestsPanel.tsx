@@ -3,7 +3,7 @@ import { Security } from "iconsax-react";
 import { useEffect, useMemo, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
-import { capitalizeWords } from "~/Utils";
+import { capitalizeWords } from "~/utils";
 import { PrimaryCloseModalButton } from "~/components/Buttons/PrimaryCloseModalButton";
 import ImageColumn from "~/components/ImageColumn";
 import LabelId from "~/components/LabelId";

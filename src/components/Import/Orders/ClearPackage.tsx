@@ -8,7 +8,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { useToggle } from "usehooks-ts";
-import { formatCurrency, formatDimension, formatWeight } from "~/Utils";
+import { formatCurrency, formatDimension, formatWeight } from "~/utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";

@@ -8,7 +8,7 @@ import {
   useFormContext,
   type SubmitHandler,
 } from "react-hook-form";
-import { capitalizeWords } from "~/Utils";
+import { capitalizeWords } from "~/utils";
 import { SERVICES } from "~/constants";
 import useMultiStepForm from "~/hooks/useMultistepForm";
 import { DoneButton } from "../Buttons/DoneButton";

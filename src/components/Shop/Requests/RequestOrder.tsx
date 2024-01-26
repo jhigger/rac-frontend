@@ -24,7 +24,7 @@ import { Tooltip } from "react-tooltip";
 import { toast } from "sonner";
 import { useToggle } from "usehooks-ts";
 import { z } from "zod";
-import { formatCurrency } from "~/Utils";
+import { formatCurrency } from "~/utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DeleteButtonIcon } from "~/components/Buttons/DeleteButtonIcon";
 import { DeleteItemButton } from "~/components/Buttons/DeleteItemButton";

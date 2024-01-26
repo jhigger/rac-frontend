@@ -15,7 +15,7 @@ import {
   formatDimension,
   formatWeight,
   limitChars,
-} from "~/Utils";
+} from "~/utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";

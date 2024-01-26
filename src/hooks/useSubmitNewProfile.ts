@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { capitalizeWords } from "~/Utils";
+import { capitalizeWords } from "~/utils";
 import { type ProfileInformationInputs } from "~/components/Settings/ProfileInformation";
 
 const useSubmitNewProfile = (token: string) => {

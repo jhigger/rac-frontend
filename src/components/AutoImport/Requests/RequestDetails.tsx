@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { useToggle } from "usehooks-ts";
-import { formatCurrency } from "~/Utils";
+import { formatCurrency } from "~/utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import AccordionButton from "~/components/Forms/AccordionButton";

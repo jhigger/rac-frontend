@@ -8,7 +8,7 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { useToggle } from "usehooks-ts";
-import { capitalizeWords } from "~/Utils";
+import { capitalizeWords } from "~/utils";
 import { SHIPPING_STATUS } from "~/constants";
 import { useTrackingContext } from "~/contexts/TrackingContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";

@@ -6,7 +6,7 @@ import {
   type HTMLInputTypeAttribute,
   type Ref,
 } from "react";
-import { shortenFileName } from "~/Utils";
+import { shortenFileName } from "~/utils";
 
 type FileInputProps = {
   id: string;

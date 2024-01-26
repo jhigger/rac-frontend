@@ -2,20 +2,18 @@ import { useToggle } from "usehooks-ts";
 import { formatCurrency } from "~/Utils";
 import { PaymentsInformation } from "~/components/AutoImport/Requests/RequestDetails";
 import { BackButton } from "~/components/Buttons/BackButton";
-import { shippingStatuses } from "~/components/Import/Orders/OrderDetails";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import { type SHIPPING_STATUS, type SHOP_FOR_ME_STATUS } from "~/constants";
 import { useShopContext } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import {
-  ArrivedOriginWarehouseStatus,
   DetailsClearPackageButton,
   DetailsClearedButton,
   DetailsDeliveredButton,
   DetailsInitiateShippingButton,
-  NotArrivedOriginWarehouseStatus,
   ProcessedStatus,
-  SortedOutStatus,
+  shippingStatuses,
+  shopForMeStatuses,
 } from ".";
 import AccordionButton from "../../Forms/AccordionButton";
 import { HighlightedInfo, PackageOrigin } from "../Requests/RequestDetails";
@@ -207,12 +205,6 @@ const OrderInformation = ({ info }: OrderInformationProps) => {
       </SectionContentLayout>
     </div>
   );
-};
-
-export const shopForMeStatuses = {
-  "Purchase in progress": <ArrivedOriginWarehouseStatus />,
-  "Purchase not started": <NotArrivedOriginWarehouseStatus />,
-  "Purchase completed": <SortedOutStatus />,
 };
 
 export default OrderDetails;

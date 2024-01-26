@@ -10,7 +10,7 @@ import { type REQUEST_STATUS } from "~/constants";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import AccordionButton from "../../Forms/AccordionButton";
-import { NotRespondedStatus, RespondedStatus } from "../Orders";
+import { requestStatuses } from "../Orders";
 import { PurpleDetailSection } from "../Orders/ClearPackage";
 import { DetailSection } from "../Orders/InitiateShipping";
 import {
@@ -415,11 +415,6 @@ export const HighlightedInfo = ({ text }: HighlightedInfoProps) => {
       <p className="body-md md:label-lg text-gray-700">{text}</p>
     </div>
   );
-};
-
-export const requestStatuses = {
-  Responded: <RespondedStatus />,
-  "Not Responded": <NotRespondedStatus />,
 };
 
 export type RequestInformationProps = {

@@ -4,12 +4,14 @@ import { BackButton } from "~/components/Buttons/BackButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import LabelId from "~/components/LabelId";
-import { DetailsInitiateShippingButton } from "~/components/Shop/Orders";
+import {
+  DetailsInitiateShippingButton,
+  requestStatuses,
+} from "~/components/Shop/Orders";
 import { DetailSection } from "~/components/Shop/Orders/InitiateShipping";
 import {
   HighlightedInfo,
   PackageOrigin,
-  requestStatuses,
   type RequestInformationProps,
 } from "~/components/Shop/Requests/RequestDetails";
 import {

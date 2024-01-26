@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { BackSquare, More, TickSquare } from "iconsax-react";
 import { useEffect, useMemo } from "react";
@@ -8,12 +7,12 @@ import { capitalizeWords, formatCurrency } from "~/Utils";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
+import ImageColumn from "~/components/ImageColumn";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
 import {
-  ImageColumn,
   ShippingStatusModalLayout,
   StatusButtonMap,
   type ShippingStatusModalProps,

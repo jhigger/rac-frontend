@@ -4,12 +4,12 @@ import Balancer from "react-wrap-balancer";
 import { MoreButton } from "~/components/Buttons/MoreButton";
 import NeedHelpFAB from "~/components/Buttons/NeedHelpFAB";
 import RequestOrderButton from "~/components/Buttons/RequestOrderButton";
+import ImageColumn from "~/components/ImageColumn";
 import { RequestStatus } from "~/components/Import/Requests/RequestsPanel";
 import TabContentLayout from "~/components/Layouts/TabContentLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import MainTable from "~/components/MainTable";
 import { type FilterCategoriesType } from "~/components/SearchBar";
-import { ImageColumn } from "~/components/Shop/Orders/OrdersPanel";
 import {
   useExportContext,
   type ExportRequestPackageType,

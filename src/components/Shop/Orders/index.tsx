@@ -1,50 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 import { ClipboardTick, Ship } from "iconsax-react";
 import { useTabContext } from "~/contexts/TabContext";
-
-type OrderItemImagesProps = { images: string[] };
-
-export const OrderItemImages = ({ images }: OrderItemImagesProps) => {
-  return (
-    <div className="flex w-max items-center gap-[10px] rounded-[20px] bg-surface-100 p-[10px]">
-      <div className="hidden gap-[10px] sm:flex">
-        {images.slice(0, 4).map((src) => {
-          return (
-            <img
-              key={src}
-              src={src}
-              alt={src}
-              className="w-[84px] rounded-[13px]"
-            />
-          );
-        })}
-      </div>
-      <div className="flex sm:hidden">
-        {images.slice(0, 1).map((src) => {
-          return (
-            <img
-              key={src}
-              src={src}
-              alt={src}
-              className="w-[84px] rounded-[13px]"
-            />
-          );
-        })}
-      </div>
-      {images.length >= 5 && (
-        <>
-          <div className="label-lg hidden h-[84px] w-[84px] items-center p-[10px] text-secondary-600 sm:flex">{`${
-            images.length - 4
-          }+ more`}</div>
-          {/* for mobile screen */}
-          <div className="label-lg flex h-[84px] w-[84px] items-center p-[10px] text-secondary-600 sm:hidden">{`${
-            images.length - 1
-          }+ more`}</div>
-        </>
-      )}
-    </div>
-  );
-};
 
 export const RespondedStatus = () => {
   return (
@@ -260,4 +215,26 @@ export const DetailsDeliveredButton = () => {
       <span className="label-lg">Delivered</span>
     </button>
   );
+};
+
+export const shopForMeStatuses = {
+  "Purchase in progress": <ArrivedOriginWarehouseStatus />,
+  "Purchase not started": <NotArrivedOriginWarehouseStatus />,
+  "Purchase completed": <SortedOutStatus />,
+};
+
+export const shippingStatuses = {
+  "ready for shipping": <ShipmentNotStartedStatus />,
+  "not started": <ShipmentNotStartedStatus />,
+  processing: <ShipmentProcessingStatus />,
+  cancelled: <CancelledStatus />,
+  "in transit": <ShipmentProcessingStatus />,
+  "arrived destination": <ArrivedClearStatus />,
+  cleared: <ArrivedClearedDeliveredStatus />,
+  delivered: <ArrivedClearedDeliveredStatus />,
+};
+
+export const requestStatuses = {
+  Responded: <RespondedStatus />,
+  "Not Responded": <NotRespondedStatus />,
 };

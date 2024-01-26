@@ -5,16 +5,14 @@ import { DestinationAddressDetails } from "~/components/AutoImport/Requests/Requ
 import { BackButton } from "~/components/Buttons/BackButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import { ImportOrderItem } from "~/components/Import/Orders/ClearPackage";
-import {
-  shippingStatuses,
-  type OrderInformationProps,
-} from "~/components/Import/Orders/OrderDetails";
+import { type OrderInformationProps } from "~/components/Import/Orders/OrderDetails";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   DetailsClearedButton,
   DetailsDeliveredButton,
   DetailsInitiateShippingButton,
   ProcessedStatus,
+  shippingStatuses,
 } from "~/components/Shop/Orders";
 import {
   BillingAddress,

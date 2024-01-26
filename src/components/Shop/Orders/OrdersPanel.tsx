@@ -17,7 +17,9 @@ import {
   parseStateCode,
 } from "~/Utils";
 import { PrimaryCloseModalButton } from "~/components/Buttons/PrimaryCloseModalButton";
+import TrackButton from "~/components/Buttons/TrackButton";
 import CongratulationImage from "~/components/CongratulationImage";
+import ImageColumn from "~/components/ImageColumn";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
@@ -325,131 +327,6 @@ const OrdersTable = () => {
       data={orderPackages}
       filterCategories={filterCategories}
     />
-  );
-};
-
-type ImageColumnProps = { images: string[] };
-
-export const ImageColumn = ({ images }: ImageColumnProps) => {
-  return (
-    <div className="h-full w-full max-w-[130px] overflow-hidden rounded-[10px] border-0 bg-surface-100 p-0">
-      <div className="m-[5px] grid h-full max-h-[50px] max-w-[150px] grid-cols-2 grid-rows-2 place-items-center gap-x-[10px] gap-y-[5px]">
-        {images.length === 1 && (
-          <div className="col-span-full row-span-full flex h-[50px] items-center justify-center overflow-hidden rounded-[10px]">
-            <img
-              src={images[0]}
-              alt="package image"
-              className="min-h-full min-w-full flex-shrink-0 object-cover"
-            />
-          </div>
-        )}
-        {images.length === 2 && (
-          <>
-            <div className="col-span-1 row-span-full flex h-[50px] items-center justify-center overflow-hidden rounded-[10px]">
-              <img
-                src={images[0]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-full flex h-[50px] items-center justify-center overflow-hidden rounded-[10px]">
-              <img
-                src={images[1]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-          </>
-        )}
-        {images.length === 3 && (
-          <>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[0]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-2 flex h-[50px] items-center justify-center overflow-hidden rounded-[10px]">
-              <img
-                src={images[1]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[2]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-          </>
-        )}
-        {images.length === 4 && (
-          <>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[0]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[1]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[2]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[3]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-          </>
-        )}
-        {images.length >= 5 && (
-          <>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[0]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[1]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <img
-                src={images[2]}
-                alt="package image"
-                className="min-h-full min-w-full flex-shrink-0 object-cover"
-              />
-            </div>
-            <div className="col-span-1 row-span-1 flex h-[22px] items-center justify-center overflow-hidden rounded-[5px]">
-              <div className="label-lg flex items-center p-[10px] text-secondary-600">{`${
-                images.length - 4
-              }+`}</div>
-            </div>
-          </>
-        )}
-      </div>
-    </div>
   );
 };
 
@@ -833,29 +710,6 @@ export const StepDescription = ({
       </span>
       <span className="body-lg md:title-lg text-gray-900">{description}</span>
     </div>
-  );
-};
-
-type TrackButtonProps = ModalCloseType;
-
-export const TrackButton = ({ dataClose }: TrackButtonProps) => {
-  const { handleActiveAction } = useTabContext();
-
-  const onClick = () => {
-    handleActiveAction("track");
-  };
-  return (
-    <button
-      data-close={dataClose}
-      onClick={onClick}
-      className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"
-    >
-      <img
-        src="/images/shipping status modal/track_icon.svg"
-        alt="track icon"
-      />
-      <span className="label-lg text-white">Track</span>
-    </button>
   );
 };
 

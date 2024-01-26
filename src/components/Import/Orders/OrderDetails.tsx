@@ -5,16 +5,12 @@ import { BackButton } from "~/components/Buttons/BackButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
-  ArrivedClearStatus,
-  ArrivedClearedDeliveredStatus,
-  CancelledStatus,
   DetailsClearPackageButton,
   DetailsClearedButton,
   DetailsDeliveredButton,
   DetailsInitiateShippingButton,
   ProcessedStatus,
-  ShipmentNotStartedStatus,
-  ShipmentProcessingStatus,
+  shippingStatuses,
 } from "~/components/Shop/Orders";
 import { DestinationShippingAddress } from "~/components/Shop/Orders/ClearPackage";
 import {
@@ -170,17 +166,6 @@ const OrderInformation = ({ info }: OrderInformationProps) => {
       </SectionContentLayout>
     </div>
   );
-};
-
-export const shippingStatuses = {
-  "ready for shipping": <ShipmentNotStartedStatus />,
-  "not started": <ShipmentNotStartedStatus />,
-  processing: <ShipmentProcessingStatus />,
-  cancelled: <CancelledStatus />,
-  "in transit": <ShipmentProcessingStatus />,
-  "arrived destination": <ArrivedClearStatus />,
-  cleared: <ArrivedClearedDeliveredStatus />,
-  delivered: <ArrivedClearedDeliveredStatus />,
 };
 
 export default OrderDetails;

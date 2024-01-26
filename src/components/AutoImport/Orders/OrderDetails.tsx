@@ -2,10 +2,7 @@ import { useToggle } from "usehooks-ts";
 import { formatCurrency } from "~/Utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import AccordionButton from "~/components/Forms/AccordionButton";
-import {
-  shippingStatuses,
-  type OrderInformationProps,
-} from "~/components/Import/Orders/OrderDetails";
+import { type OrderInformationProps } from "~/components/Import/Orders/OrderDetails";
 import OrderTrackingId from "~/components/OrderTrackingId";
 import {
   DetailsClearPackageButton,
@@ -13,6 +10,7 @@ import {
   DetailsDeliveredButton,
   DetailsInitiateShippingButton,
   ProcessedStatus,
+  shippingStatuses,
 } from "~/components/Shop/Orders";
 import {
   BillingAddress,

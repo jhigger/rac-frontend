@@ -1,11 +1,34 @@
-import Logo from "~/components/Logo";
+import dynamic from "next/dynamic";
+import NoTabsContentLayout from "~/components/Layouts/NoTabsContentLayout";
+import PageLayout from "~/components/Layouts/PageLayout";
+import { LoadingSpinner } from "~/components/LoadingScreen";
+import { useAuthContext } from "~/contexts/AuthContext";
+import TabContextProvider from "~/contexts/TabContext";
+import TrackingContextProvider from "~/contexts/TrackingContext";
 
-export default function Home() {
+const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
+  loading: () => (
+    <div className="h-screen">
+      <LoadingSpinner />
+    </div>
+  ),
+});
+
+const Home = () => {
+  const { user } = useAuthContext();
+
+  if (!user) return null;
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-brand">
-      <div className="container flex flex-col items-center justify-center px-14 py-16">
-        <Logo />
-      </div>
-    </main>
+    <TabContextProvider>
+      <TrackingContextProvider>
+        <PageLayout>
+          <TopAppBar hasTabs={false} hasBreadcrumbs={false} />
+          <NoTabsContentLayout>Home</NoTabsContentLayout>
+        </PageLayout>
+      </TrackingContextProvider>
+    </TabContextProvider>
   );
-}
+};
+
+export default Home;

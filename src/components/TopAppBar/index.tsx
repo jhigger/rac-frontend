@@ -20,9 +20,14 @@ import BreadCrumbs from "./BreadCrumbs";
 
 dayjs.extend(relativeTime);
 
-type TopAppBarProps = { hasTabs?: boolean };
+type TopAppBarProps = { hasTabs?: boolean; hasBreadcrumbs?: boolean };
 
-const TopAppBar = ({ hasTabs = true }: TopAppBarProps) => {
+const TopAppBar = ({
+  hasTabs = true,
+  hasBreadcrumbs = true,
+}: TopAppBarProps) => {
+  const { activeNav } = useNavContext();
+
   return (
     <div className="sticky top-0 z-40 flex flex-col">
       <div className="flex w-full items-center justify-between gap-[10px] bg-white px-[20px] pb-[10px] pt-[25px] md:h-[120px] md:px-[40px]">
@@ -30,7 +35,10 @@ const TopAppBar = ({ hasTabs = true }: TopAppBarProps) => {
           <MenuButton />
         </div>
         <div className="hidden flex-col gap-[10px] md:flex">
-          <TopAppBarHeader />
+          <h1 className="title-lg md:headline-md text-center text-brand md:text-left">
+            {activeNav}
+          </h1>
+          {hasBreadcrumbs && <BreadCrumbs />}
         </div>
         <div className="z-50 flex flex-row items-center justify-end">
           <NotificationButton />
@@ -39,7 +47,10 @@ const TopAppBar = ({ hasTabs = true }: TopAppBarProps) => {
       </div>
       {/* mobile version */}
       <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
-        <TopAppBarHeader />
+        <h1 className="title-lg md:headline-md text-center text-brand md:text-left">
+          {activeNav}
+        </h1>
+        {hasBreadcrumbs && <BreadCrumbs />}
       </div>
 
       {/* tabs */}
@@ -49,19 +60,6 @@ const TopAppBar = ({ hasTabs = true }: TopAppBarProps) => {
         <div className="h-[20px] overflow-hidden rounded-b-[20px] border-b-[1px] border-b-gray-200 bg-white"></div>
       )}
     </div>
-  );
-};
-
-const TopAppBarHeader = () => {
-  const { activeNav } = useNavContext();
-
-  return (
-    <>
-      <h1 className="title-lg md:headline-md text-center text-brand md:text-left">
-        {activeNav}
-      </h1>
-      <BreadCrumbs />
-    </>
   );
 };
 

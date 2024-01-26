@@ -76,7 +76,7 @@ export const bottomNavItems: NavItemType[] = [
     title: "Get a Quote",
     href: "/quote",
   },
-  { src: <Celo className="text-gray-400" />, title: "Help", href: "/help" },
+  { src: <Celo className="text-gray-400" />, title: "Get Help", href: "/help" },
   {
     src: <Setting3 className="text-gray-400" />,
     title: "Settings",
@@ -88,8 +88,8 @@ export const navItems: NavItemType[] = [
   { src: <Home2 className="text-gray-400" />, title: "Home", href: "/" },
   {
     src: <Wallet3 className="text-gray-400" />,
-    title: "Billing",
-    href: "/billing",
+    title: "Payment History",
+    href: "/payment",
   },
   {
     src: <NotificationBing />,

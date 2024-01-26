@@ -7,7 +7,7 @@ const BreadCrumbs = () => {
   const { activeTab, customText } = useTabContext();
 
   return (
-    <div className="flex w-full items-center justify-center gap-[10px] px-[20px] md:gap-4 md:px-0">
+    <div className="flex w-full items-center justify-center gap-[10px] px-[20px] md:justify-start md:gap-4 md:px-0">
       <Home2 size="19" className="flex-shrink-0 text-secondary-600" />
       <ArrowLeft
         size={10}

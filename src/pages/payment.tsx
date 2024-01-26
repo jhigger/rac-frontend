@@ -14,7 +14,7 @@ const TopAppBar = dynamic(() => import("~/components/TopAppBar"), {
   ),
 });
 
-const help = () => {
+const payment = () => {
   const { user } = useAuthContext();
 
   if (!user) return null;
@@ -24,11 +24,11 @@ const help = () => {
       <TrackingContextProvider>
         <PageLayout>
           <TopAppBar hasTabs={false} />
-          <NoTabsContentLayout>Get Help</NoTabsContentLayout>
+          <NoTabsContentLayout>Payment History</NoTabsContentLayout>
         </PageLayout>
       </TrackingContextProvider>
     </TabContextProvider>
   );
 };
 
-export default help;
+export default payment;

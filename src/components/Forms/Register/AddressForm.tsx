@@ -2,6 +2,7 @@ import { useFormContext, type FieldError } from "react-hook-form";
 import { useAuthContext } from "~/contexts/AuthContext";
 import useStatesCities from "~/hooks/useStatesCities";
 import { type RegisterInputs } from "~/pages/register";
+import { capitalizeWords } from "~/utils";
 import FormHeader from "../FormHeader";
 import SelectCityInput from "../Inputs/SelectCityInput";
 import SelectCountryInput from "../Inputs/SelectCountryInput";
@@ -29,8 +30,8 @@ const AddressForm = () => {
         title="Just one more step"
         subTitle={
           <>
-            <span className="font-medium">{`Dear ${getValues(
-              "firstName",
+            <span className="font-medium">{`Dear ${capitalizeWords(
+              getValues("firstName"),
             )}, `}</span>
             Provide us your contact address
           </>

@@ -38,7 +38,9 @@ const TopAppBar = ({
           <h1 className="title-lg md:headline-md text-center text-brand md:text-left">
             {activeNav}
           </h1>
-          {hasBreadcrumbs && <BreadCrumbs />}
+          <div className="flex w-full items-center justify-center gap-[10px] px-[20px] md:justify-start md:gap-4 md:px-0">
+            {hasBreadcrumbs && <BreadCrumbs />}
+          </div>
         </div>
         <div className="z-50 flex flex-row items-center justify-end">
           <NotificationButton />
@@ -46,11 +48,13 @@ const TopAppBar = ({
         </div>
       </div>
       {/* mobile version */}
-      <div className="flex flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
+      <div className="flex w-full flex-col items-center justify-center gap-[10px] bg-white pb-[10px] md:hidden">
         <h1 className="title-lg md:headline-md text-center text-brand md:text-left">
           {activeNav}
         </h1>
-        {hasBreadcrumbs && <BreadCrumbs />}
+        <div className="flex w-full items-center justify-center gap-[10px] px-[20px] md:justify-start md:gap-4 md:px-0">
+          {hasBreadcrumbs && <BreadCrumbs />}
+        </div>
       </div>
 
       {/* tabs */}

@@ -22,7 +22,7 @@ import {
   type ReactNode,
 } from "react";
 import { type NAV_TITLES } from "~/constants";
-import { restrictedPaths } from "./AuthContext";
+import { restrictedPaths, useAuthContext } from "./AuthContext";
 
 export type NavContextType = {
   activeNav: NavTitleType;
@@ -101,6 +101,7 @@ export const navItems: NavItemType[] = [
 ];
 
 const NavContextProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useAuthContext();
   const router = useRouter();
   const previousRouteRef = useRef<string | null>(null);
   const [activeNav, setActiveNav] =
@@ -111,25 +112,23 @@ const NavContextProvider = ({ children }: { children: ReactNode }) => {
     setActiveNav(navTitle);
   };
 
-  const redirectTo = (path: string) => {
-    void router.replace(path).catch((e) => console.log(e));
-  };
-
   useEffect(() => {
     setNotFound(false);
+
+    const pathWithoutQuery = router.asPath.split("?");
     const matchedNavItem = navItems.find(
-      (navItem) => router.asPath === navItem.href,
+      (navItem) => pathWithoutQuery[0] === navItem.href,
     );
 
     if (matchedNavItem) {
+      if (!user) return void router.push("/login");
       handleActiveNavChange(matchedNavItem.title);
-      redirectTo(router.asPath);
-    } else if (!restrictedPaths.includes(router.asPath)) {
+    } else if (!restrictedPaths.includes(pathWithoutQuery[0] ?? "/login")) {
       setNotFound(true);
     }
 
     router.events?.on("routeChangeStart", () => {
-      previousRouteRef.current = router.asPath;
+      previousRouteRef.current = pathWithoutQuery[0] ?? "/login";
     });
   }, [router.asPath]);
 

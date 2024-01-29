@@ -16,15 +16,18 @@ const AccountButtonDropdown = () => {
   const { handleLogout } = useAuthContext();
   const router = useRouter();
 
-  const handleProfileInformation = () => {
-    return;
+  const handleProfileInformation = async () => {
+    await router.push("/settings?tab=1");
   };
-  const handleAccountActivities = () => {
-    return;
+
+  const handleAccountActivities = async () => {
+    await router.push("/settings?tab=1&subTab=3");
   };
-  const handleAccountSecurity = () => {
-    return;
+
+  const handleAccountSecurity = async () => {
+    await router.push("/settings?tab=3");
   };
+
   const handleHelp = async () => {
     await router.push("/help");
   };

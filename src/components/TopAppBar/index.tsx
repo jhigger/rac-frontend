@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { HambergerMenu } from "iconsax-react";
+import { useEffect } from "react";
 import { useNavContext } from "~/contexts/NavigationContext";
+import { useTabContext } from "~/contexts/TabContext";
 import { NotificationButton } from "../Notifications";
 import AccountButtonDropdown from "./AccountButtonDropdown";
 import AppBarTabs from "./AppBarTabs";
@@ -16,6 +18,12 @@ const TopAppBar = ({
   hasBreadcrumbs = true,
 }: TopAppBarProps) => {
   const { activeNav } = useNavContext();
+  const { activeTab, handleTabChange } = useTabContext();
+
+  useEffect(() => {
+    // hack to move tab indicator based on params on first render
+    if (activeTab) handleTabChange(activeTab);
+  }, []);
 
   return (
     <div className="sticky top-0 z-40 flex flex-col">

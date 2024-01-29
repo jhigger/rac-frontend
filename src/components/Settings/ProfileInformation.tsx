@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowCircleRight2, Call, Edit, Google, Location } from "iconsax-react";
-import { useCallback, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 import { useForm, type FieldError, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { parseCountryCode, parseStateCode } from "~/utils";
 import { useAuthContext } from "~/contexts/AuthContext";
 import TabContextProvider, {
   useTabContext,
@@ -13,6 +13,7 @@ import TabContextProvider, {
 } from "~/contexts/TabContext";
 import useStatesCities from "~/hooks/useStatesCities";
 import useSubmitNewProfile from "~/hooks/useSubmitNewProfile";
+import { parseCountryCode, parseStateCode } from "~/utils";
 import { BackButton } from "../Buttons/BackButton";
 import { CloseModalButton } from "../Buttons/CloseModalButton";
 import ModalButton from "../Buttons/ModalButton";
@@ -55,6 +56,12 @@ export type SettingsTabContentProps = {
   handleHideTabs: () => void;
 };
 
+const subTabMap: Record<number, TabType["id"]> = {
+  1: "account information",
+  2: "additional information",
+  3: "activities",
+};
+
 const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
   const { user, refetch } = useAuthContext();
 
@@ -63,6 +70,11 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
   const token = user.jwt;
 
   const { isPending, mutateAsync } = useSubmitNewProfile(token);
+
+  const router = useRouter();
+  const [defaultSubTabId, setDefaultSubTabId] = useState<TabType["id"] | null>(
+    subTabMap[Number(router.query.subTab)] ?? null,
+  );
 
   const tabs: [TabType, ...TabType[]] = [
     {
@@ -114,6 +126,10 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
       reset();
     }
   };
+
+  useEffect(() => {
+    setDefaultSubTabId(subTabMap[Number(router.query.subTab)] ?? null);
+  }, [router.query]);
 
   const { address, city, state, country, zipPostalCode } = user.billingDetails;
   const location = `${address}, ${city}, ${parseStateCode(
@@ -333,8 +349,14 @@ const ProfileInformation = ({ handleHideTabs }: SettingsTabContentProps) => {
           </div>
         </SectionContentLayout>
 
-        <TabContextProvider tabs={tabs} defaultTabId={"account information"}>
-          <SubTabs parentTabId={activeTab} defaultTabId="account information" />
+        <TabContextProvider
+          tabs={tabs}
+          defaultTabId={defaultSubTabId ?? "account information"}
+        >
+          <SubTabs
+            parentTabId={activeTab}
+            defaultTabId={defaultSubTabId ?? "account information"}
+          />
         </TabContextProvider>
 
         <div className="w-full md:max-w-[169px]">

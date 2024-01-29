@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import NoTabsContentLayout from "~/components/Layouts/NoTabsContentLayout";
 import PageLayout from "~/components/Layouts/PageLayout";
 import { LoadingSpinner } from "~/components/LoadingScreen";
@@ -38,13 +39,22 @@ const SettingsContent = dynamic(
   },
 );
 
+const tabMap: Record<number, TabType["id"]> = {
+  1: "profile information",
+  2: "communication preferences",
+  3: "security",
+};
+
 const settings = () => {
   const { user } = useAuthContext();
 
   if (!user) return null;
 
-  const [showTabs, setShowTabs] = useState(false);
-  const [defaultTabId, setDefaultTabId] = useState<TabType["id"] | null>(null);
+  const router = useRouter();
+  const [showTabs, setShowTabs] = useState(Boolean(router.query.tab));
+  const [defaultTabId, setDefaultTabId] = useState<TabType["id"] | null>(
+    tabMap[Number(router.query.tab)] ?? null,
+  );
 
   const handleShowTabs = (tabId: TabType["id"]) => {
     setShowTabs(true);
@@ -55,6 +65,10 @@ const settings = () => {
     setShowTabs(false);
     setDefaultTabId(null);
   };
+
+  useEffect(() => {
+    setDefaultTabId(tabMap[Number(router.query.tab)] ?? null);
+  }, [router.query]);
 
   const tabs: [TabType, ...TabType[]] = [
     {
@@ -75,7 +89,10 @@ const settings = () => {
   ];
 
   return (
-    <TabContextProvider tabs={tabs} defaultTabId={defaultTabId}>
+    <TabContextProvider
+      tabs={tabs}
+      defaultTabId={defaultTabId ?? "profile information"}
+    >
       <PageLayout>
         <TopAppBar hasTabs={showTabs} />
         {!showTabs && (

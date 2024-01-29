@@ -40,16 +40,16 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <link rel="icon" href="/images/brand_icon.svg" />
       </Head>
       <QueryClientProvider client={queryClient}>
-        <NavContextProvider>
-          <AuthContextProvider>
+        <AuthContextProvider>
+          <NavContextProvider>
             <NotificationContextProvider>
               <div className={roboto.className}>
                 <Toaster />
                 <Component {...pageProps} />
               </div>
             </NotificationContextProvider>
-          </AuthContextProvider>
-        </NavContextProvider>
+          </NavContextProvider>
+        </AuthContextProvider>
       </QueryClientProvider>
     </>
   );

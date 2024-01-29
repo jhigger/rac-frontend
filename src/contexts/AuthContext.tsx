@@ -223,8 +223,8 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         console.log("Redirecting to /shop...");
         await redirectTo("/shop");
       } else {
-        console.log(`Redirecting to ${pathWithoutQuery[0]}...`);
-        await redirectTo(pathWithoutQuery[0]);
+        // console.log(`Redirecting to ${pathWithoutQuery[0]}...`);
+        // await redirectTo(pathWithoutQuery[0]);
       }
     } else if (!user && !isRefetching) {
       if (pathWithoutQuery[0] === "/password-reset" && pathWithoutQuery[1])

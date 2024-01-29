@@ -52,7 +52,7 @@ const SettingsContent = ({ handleShowTabs }: SettingContentsProps) => {
         {settingItems.map((item) => {
           return (
             <SectionContentLayout key={item.title}>
-              <div className="col-span-1 flex h-full w-full flex-col gap-[10px] md:-mx-[14px] flex-grow">
+              <div className="col-span-1 flex h-full w-full flex-grow flex-col gap-[10px] md:-mx-[14px]">
                 <h4 className="title-md md:title-lg text-gray-700">
                   {item.title}
                 </h4>

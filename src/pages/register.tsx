@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useEffect } from "react";
 import {
   FormProvider,
   useForm,
@@ -8,9 +9,9 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import Balancer from "react-wrap-balancer";
+import { toast } from "sonner";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import { z } from "zod";
-import { capitalizeWords } from "~/utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { ProceedButton } from "~/components/Buttons/ProceedButton";
 import { LoadingSpinner } from "~/components/LoadingScreen";
@@ -18,6 +19,7 @@ import Logo from "~/components/Logo";
 import { useAuthContext } from "~/contexts/AuthContext";
 import { loading } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import { capitalizeWords } from "~/utils";
 
 const AccountForm = dynamic(
   () => import("~/components/Forms/Register/AccountForm"),
@@ -114,6 +116,10 @@ const register = () => {
     await handleRegister(registerData);
   };
 
+  useEffect(() => {
+    if (registerError) toast(registerError);
+  }, [registerError]);
+
   const isFieldTouched = (fieldName: FieldName<RegisterInputs>) =>
     formMethods.formState.touchedFields[fieldName];
   const hasFieldError = (fieldName: FieldName<RegisterInputs>) =>
@@ -141,10 +147,6 @@ const register = () => {
             className="mb-[30px] mt-[100px] flex w-full max-w-[600px] flex-col items-center justify-center gap-[30px] rounded-[20px] bg-white p-[20px] md:p-[30px]"
           >
             {step}
-
-            {registerError && (
-              <span className="text-error-600">{registerError}</span>
-            )}
 
             <div className="flex gap-4">
               {!isRegistering && !isFirstStep && (

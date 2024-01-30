@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useEffect } from "react";
 import { FormProvider, useForm, type SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 import { LoadingSpinner } from "~/components/LoadingScreen";
 import { useAuthContext } from "~/contexts/AuthContext";
 import FormHeader from "../FormHeader";
@@ -21,6 +22,10 @@ const LoginForm = () => {
   };
 
   if (user) return null;
+
+  useEffect(() => {
+    if (loginError) toast("Email or password is incorrect");
+  }, [loginError]);
 
   return (
     <FormProvider {...formMethods}>
@@ -45,10 +50,6 @@ const LoginForm = () => {
             {...formMethods.register("password")}
           />
         </div>
-
-        {loginError && (
-          <span className="text-error-500">Email or password is incorrect</span>
-        )}
 
         <LoginButton
           disabled={isAuthenticating || isFetchingUser}

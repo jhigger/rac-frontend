@@ -16,13 +16,6 @@ import {
   type SubmitHandler,
 } from "react-hook-form";
 import { useToggle } from "usehooks-ts";
-import {
-  formatCurrency,
-  formatDimension,
-  formatWeight,
-  parseCountryCode,
-  parseStateCode,
-} from "~/utils";
 import { BackButton } from "~/components/Buttons/BackButton";
 import { DoneButton } from "~/components/Buttons/DoneButton";
 import { PayNowButton } from "~/components/Buttons/PayNowButton";
@@ -46,6 +39,13 @@ import { type BillingDetailsType } from "~/contexts/AutoImportContext";
 import { useShopContext, type ShopItemType } from "~/contexts/ShopContext";
 import { useTabContext } from "~/contexts/TabContext";
 import useMultiStepForm from "~/hooks/useMultistepForm";
+import {
+  formatCurrency,
+  formatDimension,
+  formatWeight,
+  parseCountryCode,
+  parseStateCode,
+} from "~/utils";
 import { InitiateShippingButton } from "../../Buttons/InitiateShippingButton";
 import {
   AndLastly,
@@ -214,6 +214,8 @@ export const InitiateShippingAgreement = ({
   back,
   next,
 }: InitiateShippingAgreement) => {
+  const [checked, toggle] = useToggle(false);
+
   return (
     <div className="flex w-full flex-col gap-[10px]">
       <div className="flex w-full items-center gap-[10px] rounded-[20px] border-[1px] border-gray-200 px-[15px] py-[10px]">
@@ -221,10 +223,8 @@ export const InitiateShippingAgreement = ({
           type="checkbox"
           name="checked-demo"
           className="h-[18px] w-[18px] rounded-[2px] accent-primary-600 hover:accent-primary-600"
-          checked={undefined}
-          onChange={() => {
-            return;
-          }}
+          checked={checked}
+          onChange={toggle}
         />
         <span className="body-md md:body-lg text-neutral-900">
           I agree to pay for the shipment cost upon arrival/clearing for my
@@ -237,7 +237,7 @@ export const InitiateShippingAgreement = ({
           <BackButton onClick={back} />
         </div>
         <div className="w-full md:max-w-[249px]">
-          <InitiateShippingButton onClick={next} />
+          <InitiateShippingButton onClick={next} disabled={!checked} />
         </div>
       </div>
 

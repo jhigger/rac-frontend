@@ -2,10 +2,13 @@ import { Ship } from "iconsax-react";
 import { useTabContext } from "~/contexts/TabContext";
 import { type ModalCloseType } from "../Shop/Requests/RequestsPanel";
 
-type InitiateShippingButtonProps = Partial<ModalCloseType>;
+type InitiateShippingButtonProps = Partial<ModalCloseType> & {
+  disabled?: boolean;
+};
 
 export const InitiateShippingButton = ({
   dataClose,
+  disabled = false,
   onClick,
 }: InitiateShippingButtonProps) => {
   const { handleActiveAction, handleTabChange } = useTabContext();
@@ -17,6 +20,7 @@ export const InitiateShippingButton = ({
 
   return (
     <button
+      disabled={disabled}
       onClick={onClick ?? handleClick}
       data-close={dataClose}
       className="btn relative flex w-full flex-row items-center justify-center gap-x-2 rounded-[6.25rem] bg-primary-600 px-4 py-2.5 text-sm font-medium tracking-[.00714em] text-white md:px-6"

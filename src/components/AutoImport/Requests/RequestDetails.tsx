@@ -79,7 +79,7 @@ const RequestDetails = () => {
       />
       <SectionHeader title="Billing Details" />
       <BillingAddress billingDetails={requestPackage.billingDetails} />
-      {status === "Responded" && (
+      {status === "responded" && (
         <PaymentsInformation>
           <DetailSection
             label="Total Shipment Cost"
@@ -115,7 +115,7 @@ const RequestDetails = () => {
       )}
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        {status === "Responded" && <InitiateShippingButton />}
+        {status === "responded" && <InitiateShippingButton />}
       </div>
     </div>
   );
@@ -173,7 +173,7 @@ const OrderInformation = ({ info }: RequestInformationProps) => {
                 />
               </div>
               <div className="flex w-max items-center md:col-span-4">
-                {info.status === "Responded" && (
+                {info.status === "responded" && (
                   <DetailsInitiateShippingButton />
                 )}
               </div>

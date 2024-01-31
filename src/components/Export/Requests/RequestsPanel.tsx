@@ -155,7 +155,7 @@ const RequestsTable = () => {
     () => [
       {
         category: "Order request status",
-        categoryFilters: [{ label: "Responded" }, { label: "Not responded" }],
+        categoryFilters: [{ label: "responded" }, { label: "Not responded" }],
       },
     ],
     [],

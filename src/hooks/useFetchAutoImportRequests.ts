@@ -32,7 +32,7 @@ const useFetchAutoAutoImportRequests = (
         const requestPackage: AutoImportRequestPackageType = {
           requestId: request.requestId,
           requestStatus:
-            request.requestStatus as AutoImportRequestPackageType["requestStatus"],
+            request.requestStatus.toLowerCase() as AutoImportRequestPackageType["requestStatus"],
           requestLocalDate: new Date(request.createdAt).toLocaleString(
             "en-US",
             {

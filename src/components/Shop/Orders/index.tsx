@@ -235,6 +235,6 @@ export const shippingStatuses = {
 };
 
 export const requestStatuses = {
-  Responded: <RespondedStatus />,
-  "Not Responded": <NotRespondedStatus />,
+  responded: <RespondedStatus />,
+  "not responded": <NotRespondedStatus />,
 };

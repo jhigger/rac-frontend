@@ -11,7 +11,7 @@ export const SHIPPING_STATUS = [
   "delivered",
 ] as const;
 
-export const REQUEST_STATUS = ["Responded", "Not Responded"] as const;
+export const REQUEST_STATUS = ["responded", "not responded"] as const;
 
 export const ID_TYPE = [
   "Tracking ID",

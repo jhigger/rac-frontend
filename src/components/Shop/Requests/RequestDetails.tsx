@@ -80,7 +80,7 @@ const RequestDetails = () => {
           <div className="col-span-full">
             <HighlightedInfo
               text={
-                status === "Responded" ? (
+                status === "responded" ? (
                   <>
                     The <b className="text-neutral-900">shop for me cost</b>{" "}
                     could have been changed/updated by our staff if they
@@ -113,7 +113,7 @@ const RequestDetails = () => {
             label="Total Shop For Me Cost"
             value={formatCurrency(totalShopForMeCost)}
             colSpanDesktop={4}
-            tooltip={requestPackage.requestStatus === "Responded" ? "" : null}
+            tooltip={requestPackage.requestStatus === "responded" ? "" : null}
           />
           <DetailSection
             label="Payment Status"
@@ -125,7 +125,7 @@ const RequestDetails = () => {
 
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        {status === "Responded" && <RedProceedToCheckoutButton />}
+        {status === "responded" && <RedProceedToCheckoutButton />}
       </div>
     </div>
   );
@@ -177,7 +177,7 @@ export const ShopRequestItem = ({
           <>
             <HighlightedInfo
               text={
-                status === "Responded"
+                status === "responded"
                   ? "These details could have been changed/updated by our staffs if they observed differences between the ones you provided and the ones we verified from the store, however we will inform you about it."
                   : "These details could be changed/updated by our staffs if they observe differences between the ones you provided and the ones we verified from the store, however we will inform you about it."
               }
@@ -218,7 +218,7 @@ const ShopRequestItemDetails = ({
         label="Item Name"
         value={item.name}
         tooltip={
-          status === "Responded" ? (
+          status === "responded" ? (
             <TooltipContent provided={"xxx"} verified={"xxx"} />
           ) : null
         }
@@ -237,32 +237,32 @@ const ShopRequestItemDetails = ({
       <DetailSection
         label="Weight"
         value={formatWeight(item.weight)}
-        tooltip={status === "Responded" ? "" : null}
+        tooltip={status === "responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Height"
         value={formatDimension(item.height)}
-        tooltip={status === "Responded" ? "" : null}
+        tooltip={status === "responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Length"
         value={formatDimension(item.length)}
-        tooltip={status === "Responded" ? "" : null}
+        tooltip={status === "responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Width"
         value={formatDimension(item.width)}
-        tooltip={status === "Responded" ? "" : null}
+        tooltip={status === "responded" ? "" : null}
         colSpanDesktop={2}
       />
       <DetailSection
         label="Product/Item Picture"
         value={item.image as string}
         image
-        tooltip={status === "Responded" ? "" : null}
+        tooltip={status === "responded" ? "" : null}
       />
       <DetailSection label="Product Description" value={item.description} />
 
@@ -273,7 +273,7 @@ const ShopRequestItemDetails = ({
             label={property.label}
             value={property.value}
             colSpanDesktop={3}
-            tooltip={status === "Responded" ? "" : null}
+            tooltip={status === "responded" ? "" : null}
           />
         );
       })}
@@ -315,7 +315,7 @@ const ShopRequestItemRelatedCosts = ({
 
           <HighlightedInfo
             text={
-              status === "Responded"
+              status === "responded"
                 ? "These costs could have been changed/updated by our staffs if they observed differences between the details you provided and the ones we verified from the store."
                 : "These costs could be changed/updated by our staffs if they observe differences between the details you provided and the ones we verify from the store, however we will inform you about it."
             }
@@ -343,11 +343,11 @@ const ShopRequestItemRelatedCosts = ({
       <PurpleDetailSection
         label="Processing Fee"
         value={formatCurrency(relatedCosts.processingFee)}
-        tooltip={status === "Responded" ? "" : null} // todo: add tooltip
+        tooltip={status === "responded" ? "" : null} // todo: add tooltip
         colSpanDesktop={4}
       />
 
-      {status === "Responded" && (
+      {status === "responded" && (
         <PurpleDetailSection
           label="Shipping to Origin Warehouse Cost"
           value={formatCurrency(relatedCosts.shippingToOriginWarehouseCost)}
@@ -358,7 +358,7 @@ const ShopRequestItemRelatedCosts = ({
       <PurpleDetailSection
         label="Shop For Me Cost"
         value={formatCurrency(relatedCosts.shopForMeCost)}
-        tooltip={status === "Responded" ? "" : null} // todo: add tooltip
+        tooltip={status === "responded" ? "" : null} // todo: add tooltip
         colSpanDesktop={4}
       />
     </>
@@ -447,7 +447,7 @@ export const RequestInformation = ({ info }: RequestInformationProps) => {
                 />
               </div>
               <div className="flex w-max items-center md:col-span-4">
-                {info.status === "Responded" && <ProceedToCheckoutButton />}
+                {info.status === "responded" && <ProceedToCheckoutButton />}
               </div>
             </div>
           )}

@@ -59,7 +59,7 @@ const RequestDetails = () => {
       </div>
       <div className="flex w-max gap-[10px] whitespace-nowrap">
         <BackButton onClick={handleBack} />
-        {status === "Responded" && <InitiateShippingButton />}
+        {status === "responded" && <InitiateShippingButton />}
       </div>
     </div>
   );

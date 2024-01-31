@@ -25,8 +25,8 @@ const useFetchImportOrders = (
     };
 
     const response = await axios.request(reqOptions);
-    const { importRequests } = response.data as Root; // todo: change type to order
-    const importOrderPackages: ImportOrderPackageType[] = importRequests.map(
+    const { importOrders } = response.data as Root;
+    const importOrderPackages: ImportOrderPackageType[] = importOrders.map(
       (order) => {
         const orderPackage: ImportOrderPackageType = {
           orderId: order.orderId,
@@ -93,14 +93,14 @@ const useFetchImportOrders = (
           shippingPaymentStatus:
             order.totalShippingCostFeeStatus as ImportOrderPackageType["shippingPaymentStatus"],
           packageCosts: {
-            shippingCost: 0, // todo: missing
-            clearingPortHandlingCost: 0, // todo: missing
-            otherCharges: 0, // todo: missing
-            storageCharge: 0, // todo: missing
-            insurance: 0, // todo: missing
-            valueAddedTax: 0, // todo: missing
-            paymentMethodSurcharge: 0, // todo: missing
-            discount: 0, // todo: missing
+            shippingCost: order.shippingCost,
+            clearingPortHandlingCost: order.portHandling,
+            otherCharges: order.otherCharges,
+            storageCharge: order.storageCharges,
+            insurance: order.insurance,
+            valueAddedTax: order.vat,
+            paymentMethodSurcharge: order.paymentMethodSurcharge,
+            discount: order.discount,
           },
         };
 
@@ -115,9 +115,8 @@ const useFetchImportOrders = (
     queryKey: ["importOrders"],
     queryFn: async () => {
       console.log("fetching user order packages");
-      // const res = await handleFetch(); // todo: get real data
-      // const packages = res;
-      const packages = [] as ImportOrderPackageType[];
+      const res = await handleFetch();
+      const packages = res;
       if (packages.length > 0) {
         console.log("user order packages: ", packages);
         return packages;
@@ -135,12 +134,16 @@ const useFetchImportOrders = (
 
 export interface Root {
   success: boolean;
-  totalrequests: number;
-  importRequests: ImportRequest[];
+  totalOrders: number;
+  importOrders: ImportOrder[];
 }
 
-export interface ImportRequest {
+export interface ImportOrder {
   shippingAndBillingInfo: ShippingAndBillingInfo;
+  orderDate: string;
+  shippingFeeStatus: string;
+  totalShippingFeeStatus: string;
+  totalShippingFeePaidAt: string;
   _id: string;
   user: string;
   origin: string;
@@ -159,14 +162,24 @@ export interface ImportRequest {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  destination?: string;
-  transactionDetails?: TransactionDetails;
-  requestApprovedAt?: string;
+  destination: string;
+  discount: number;
+  insurance: number;
+  otherCharges: number;
+  paymentMethodSurcharge: number;
+  portHandling: number;
+  requestApprovedAt: string;
+  shippingCost: number;
+  storageCharges: number;
+  totalShippingFee: number;
+  vat: number;
+  initiateShippingConsent: boolean;
+  shipmentInitiatedAt: string;
 }
 
 export interface ShippingAndBillingInfo {
   billingInformation: BillingInformation[];
-  shipmentAddress?: ShipmentAddress;
+  shipmentAddress: ShipmentAddress;
 }
 
 export interface BillingInformation {
@@ -184,6 +197,16 @@ export interface BillingInformation {
 }
 
 export interface ShipmentAddress {
+  receiverFirstName: string;
+  receiverLastName: string;
+  receiverEmail: string;
+  receiverCountryCode: string;
+  receiverPhone: string;
+  receiverHouseAddress: string;
+  receiverCountry: string;
+  receiverState: string;
+  receiverCity: string;
+  receiverZipCode: string;
   _id: string;
 }
 
@@ -196,16 +219,6 @@ export interface RequestItem {
   itemOriginalCost: number;
   itemImage: string;
   itemDescription: string;
-  _id: string;
-}
-
-export interface TransactionDetails {
-  bankType: string;
-  transactionDate: string;
-  transactionTime: string;
-  phoneNumber: string;
-  paymentReceipt: string;
-  additionalNote: string;
   _id: string;
 }
 

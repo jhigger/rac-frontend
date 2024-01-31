@@ -32,7 +32,7 @@ const useFetchShopRequests = (
         const requestPackage: ShopRequestPackageType = {
           requestId: request.requestId,
           requestStatus:
-            request.requestStatus as ShopRequestPackageType["requestStatus"],
+            request.requestStatus.toLowerCase() as ShopRequestPackageType["requestStatus"],
           requestLocalDate: new Date(request.createdAt).toLocaleString(
             "en-US",
             {

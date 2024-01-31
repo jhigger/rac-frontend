@@ -2,7 +2,6 @@ import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
 import { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import Balancer from "react-wrap-balancer";
-import { capitalizeWords } from "~/utils";
 import { CancelButton } from "~/components/Buttons/CancelButton";
 import { InitiateShippingButton } from "~/components/Buttons/InitiateShippingButton";
 import { MoreButton } from "~/components/Buttons/MoreButton";
@@ -26,6 +25,7 @@ import {
 } from "~/contexts/ImportContext";
 import { useTabContext } from "~/contexts/TabContext";
 import tailmater from "~/js/tailmater";
+import { capitalizeWords } from "~/utils";
 import RequestDetails from "./RequestDetails";
 import RequestOrder from "./RequestOrder";
 
@@ -166,7 +166,7 @@ const RequestsTable = () => {
     () => [
       {
         category: "Order request status",
-        categoryFilters: [{ label: "Responded" }, { label: "Not responded" }],
+        categoryFilters: [{ label: "responded" }, { label: "Not responded" }],
       },
     ],
     [],
@@ -194,8 +194,8 @@ export const RequestStatus = ({
   const dataTarget = `#${modalId}`;
 
   const buttonStyles = {
-    "Not Responded": "bg-gray-200 text-gray-700",
-    Responded: "bg-brand-orange text-white",
+    "not responded": "bg-gray-200 text-gray-700",
+    responded: "bg-brand-orange text-white",
   };
 
   const status = requestPackage.requestStatus;
@@ -237,10 +237,10 @@ const RequestStatusModal = ({
 
       <div className="flex flex-row items-end justify-end">
         <div className="w-max whitespace-nowrap">
-          {requestStatus === "Not Responded" && (
+          {requestStatus === "not responded" && (
             <PrimaryCloseModalButton dataClose={dataClose} />
           )}
-          {requestStatus === "Responded" && (
+          {requestStatus === "responded" && (
             <div className="flex gap-[8px]">
               <CancelButton dataClose={dataClose} />
               <InitiateShippingButton dataClose={dataClose} />
@@ -256,9 +256,9 @@ export const RequestStatusContentMap = ({
   requestStatus,
 }: RequestStatusContentMapProps) => {
   const content = {
-    "Not Responded":
+    "not responded":
       "Your request has not be responded to yet. Kindly check back later.",
-    Responded:
+    responded:
       "Your request has been responded to. Kindly proceed to initiate shipping.",
   };
 

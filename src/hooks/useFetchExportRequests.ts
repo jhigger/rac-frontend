@@ -32,7 +32,7 @@ const useFetchExportRequests = (
         const requestPackage: ExportRequestPackageType = {
           requestId: request.requestId,
           requestStatus:
-            request.requestStatus as ExportRequestPackageType["requestStatus"],
+            request.requestStatus.toLowerCase() as ExportRequestPackageType["requestStatus"],
           requestLocalDate: new Date(request.createdAt).toLocaleString(
             "en-US",
             {

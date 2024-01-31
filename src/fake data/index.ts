@@ -711,7 +711,7 @@ export const shopOrders: ShopOrderPackageType[] = [
 export const shopRequests: ShopRequestPackageType[] = [
   {
     requestId: "R08751",
-    requestStatus: "Not Responded",
+    requestStatus: "not responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -750,7 +750,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "R08752",
-    requestStatus: "Responded",
+    requestStatus: "responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -785,7 +785,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "R08753",
-    requestStatus: "Not Responded",
+    requestStatus: "not responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -820,7 +820,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "R08754",
-    requestStatus: "Responded",
+    requestStatus: "responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -855,7 +855,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "R08755",
-    requestStatus: "Not Responded",
+    requestStatus: "not responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -890,7 +890,7 @@ export const shopRequests: ShopRequestPackageType[] = [
   },
   {
     requestId: "R08756",
-    requestStatus: "Responded",
+    requestStatus: "responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -1295,7 +1295,7 @@ export const importOrders: ImportOrderPackageType[] = [
 export const importRequests: ImportRequestPackageType[] = [
   {
     requestId: "R08751",
-    requestStatus: "Not Responded",
+    requestStatus: "not responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -1330,7 +1330,7 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "R08752",
-    requestStatus: "Responded",
+    requestStatus: "responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -1365,7 +1365,7 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "R08753",
-    requestStatus: "Not Responded",
+    requestStatus: "not responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -1415,7 +1415,7 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "R08754",
-    requestStatus: "Responded",
+    requestStatus: "responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -1450,7 +1450,7 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "R08755",
-    requestStatus: "Not Responded",
+    requestStatus: "not responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -1485,7 +1485,7 @@ export const importRequests: ImportRequestPackageType[] = [
   },
   {
     requestId: "R08756",
-    requestStatus: "Responded",
+    requestStatus: "responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -2464,7 +2464,7 @@ export const autoImportOrders: AutoImportOrderPackageType[] = [
 export const autoImportRequests: AutoImportRequestPackageType[] = [
   {
     requestId: "R08756",
-    requestStatus: "Responded",
+    requestStatus: "responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
@@ -2542,7 +2542,7 @@ export const autoImportRequests: AutoImportRequestPackageType[] = [
   },
   {
     requestId: "R08755",
-    requestStatus: "Not Responded",
+    requestStatus: "not responded",
     requestLocalDate: new Date().toLocaleString("en-US", {
       hour12: false,
     }),
